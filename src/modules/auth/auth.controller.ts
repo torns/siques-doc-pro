@@ -9,22 +9,22 @@ import { User } from 'src/core/decorators/user.decorators';
 @Controller('auth')
 export class AuthController {
     constructor(
-        private readonly authService:AuthService
-    ){}
+        private readonly authService: AuthService
+    ) { }
 
     @Post("login")
     @UseInterceptors(ClassSerializerInterceptor)
-    async login(@Body() data:LoginDto){
+    async login(@Body() data: LoginDto) {
         return await this.authService.login(data)
 
     }
 
     @Get("test")
     @UseGuards(AuthGuard('jwt'))
-    async authTest(@User() user){
+    async authTest(@User() user) {
         console.log(user)
         return {
-            message:"ok"
+            message: "ok"
         }
     }
 }
