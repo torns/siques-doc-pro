@@ -8,7 +8,8 @@ export class Post {
     @Column()
     title:string;
 
-    @Column("longtext")
+    // nullable可为空
+    @Column("longtext",{nullable:true})
     body:string;
 
     @CreateDateColumn()
