@@ -45,5 +45,9 @@ async updataPassword(id:string,data:UpdatePasswordDto){
 
 }
 
+async findByName(name:string){
+    return await this.userRepository.findOne({name})
+}
+
 
 }
