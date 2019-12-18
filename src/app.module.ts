@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import { PostModule } from './modules/post/post.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PostModule } from './modules/post/post.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
     PostModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
