@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany, ManyToMany, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm"
 import * as bcrypt from "bcryptjs"
 import {Exclude} from "class-transformer"
 import { Post } from "../post/post.entity";
+
 
 @Entity()
 export class User {
@@ -21,13 +22,9 @@ export class User {
     @UpdateDateColumn()
     updated:Date;
 
-
-    @OneToMany(type => Post,post =>post.user)
+    
+    @OneToMany(type=>Post,post=>post.user)
     posts:Post[]
-
-    @ManyToMany(type=>Post,post=>post.liked)
-    @JoinTable()
-    voted:Post[]
 
 
     @BeforeInsert()

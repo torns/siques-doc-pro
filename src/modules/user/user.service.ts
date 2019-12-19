@@ -23,7 +23,7 @@ export class UserService {
 
     async show(id: string) {
         const entity = await this.userRepository.findOne(id, {
-            relations: ["posts"]
+            relations: ['posts']
         });
         if (!entity) {
             throw new NotFoundException("没找到用户")
@@ -36,6 +36,7 @@ export class UserService {
         if (!entity) {
             throw new NotFoundException("没找到用户")
         }
+
 
         const pass = await entity.comparePassword(password)
         if (!pass) {
@@ -53,7 +54,7 @@ export class UserService {
 
     async liked(id: number) {
         return this.userRepository
-        .findOne(id,{relations:["voted","voted.user"]});
+            .findOne(id, { relations: ["voted", "voted.user"] });
     }
 
 }

@@ -1,9 +1,12 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, Query, Options, ParseIntPipe } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { ListOptions } from 'src/core/decorators/list-options.decorators';
+import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
+
 
 
 @Controller('posts')
@@ -12,19 +15,19 @@ export class PostController {
         private readonly postService: PostService
     ) { }
 
-    @Post()
-    @UseGuards(AuthGuard("jwt"))
-    async store(@Body() data: PostDto, @User() user: UserEntity) {
-        console.log(data)
-        return await this.postService.store(data, user)
-    }
+@Post()
+@UseGuards(AuthGuard("jwt"))
+async store(@Body() data:PostDto,@User() user:UserEntity){
+    console.log(data)
+    return await this.postService.store(data,user)
+}
 
 
-    @Get()
-    @UseInterceptors(ClassSerializerInterceptor)
-    async index() {
-        return await this.postService.index()
-    }
+@Get()
+@UseInterceptors(ClassSerializerInterceptor)
+async index(@ListOptions() Options:ListOptionsInterface){
+    return await this.postService.index(Options)
+}
 
 
 
