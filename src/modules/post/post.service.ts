@@ -7,6 +7,7 @@ import { User } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
 import { Tag } from '../tag/tag.entity';
 
+
 @Injectable()
 export class PostService {
     constructor(
@@ -54,7 +55,7 @@ export class PostService {
     }
 
     async index(options: ListOptionsInterface) {
-        const { categories,tags } = options
+        const { categories,tags,page,limit,sort,order } = options
         const queryBuilder = await this.postRepository
             .createQueryBuilder('post');
         // 添加两个关系relation
@@ -70,7 +71,21 @@ export class PostService {
             queryBuilder.andWhere('tag.name IN(:...tags)', { tags })
         }
 
-        const entities = queryBuilder.getMany();
+        // 限制查询数量
+        queryBuilder
+        .take(limit)
+        .skip(limit*(page-1));
+        //获取结果以及数量
+
+        // 排序
+        queryBuilder
+        .orderBy({
+            // ASC升序 DESC降序
+            // "post.created":"DESC"
+            [`post.${sort}`]: order
+        })
+
+        const entities = queryBuilder.getManyAndCount();
         return entities
 
     }

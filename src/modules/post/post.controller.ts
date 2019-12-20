@@ -6,6 +6,7 @@ import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptions } from 'src/core/decorators/list-options.decorators';
 import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
+import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 
 
@@ -24,8 +25,8 @@ async store(@Body() data:PostDto,@User() user:UserEntity){
 
 
 @Get()
-@UseInterceptors(ClassSerializerInterceptor)
-async index(@ListOptions() Options:ListOptionsInterface){
+@UseInterceptors(ClassSerializerInterceptor,TransformInterceptor)
+async index(@ListOptions({limit:10,sort:"updated",order:"DESC"}) Options:ListOptionsInterface){
     return await this.postService.index(Options)
 }
 
@@ -33,7 +34,7 @@ async index(@ListOptions() Options:ListOptionsInterface){
 
     @Get(':id')
     async show(@Param("id") id: string) {
-        console.log(id)
+        // console.log(id)
         return await this.postService.show(id)
     }
 
