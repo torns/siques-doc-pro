@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import * as bcrypt from "bcryptjs"
 import {Exclude} from "class-transformer"
 import { Post } from "../post/post.entity";
-
+import { Comment} from "../comment/comment.entity"
 
 @Entity()
 export class User {
@@ -11,8 +11,9 @@ export class User {
 
     @Column('varchar',{unique:true})
     name:string;
-
-    @Column()
+    
+    //密码去除，除非指定
+    @Column({select:false}) 
     @Exclude()
     password:string;
 
@@ -22,10 +23,13 @@ export class User {
     @UpdateDateColumn()
     updated:Date;
 
-    
+    z
     @OneToMany(type=>Post,post=>post.user)
     posts:Post[]
 
+
+    @OneToMany(type=>Comment,comment=>comment.user)
+    comments:Comment[]
 
     @BeforeInsert()
     // 更新之前先比对
@@ -35,6 +39,7 @@ export class User {
     }
 
     async comparePassword(password:string){
+      
         return await bcrypt.compareSync(password,this.password)
     }
 
