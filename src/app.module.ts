@@ -9,6 +9,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RoleModule } from './modules/role/role.module';
+import { FileModule } from './modules/file/file.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { RoleModule } from './modules/role/role.module';
     TagModule,
     CommentModule,
     RoleModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
