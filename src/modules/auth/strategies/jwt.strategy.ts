@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: JwtPayload) {
-        console.log(payload)
+        // console.log(payload)
         const { name } = payload;
         const entity = await this.userService.findByName(name);
         // 如果token有效，但是未找到用户
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException("未找到用户")
         }
 
-        
+
         return entity
     }
 }

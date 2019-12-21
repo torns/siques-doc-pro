@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository, Entity } from 'typeorm';
+import { Repository, Entity, createQueryBuilder } from 'typeorm';
 import { UserDto, UpdatePasswordDto } from './user.dto';
 
 @Injectable()
@@ -48,12 +48,14 @@ export class UserService {
 
     }
 
-    async findByName(name: string,password?:boolean) {
+    async findByName(name: string, password?: boolean) {
         const querryBuilder = await this.userRepository
-        .createQueryBuilder("user");
-        querryBuilder.where("user.name = :name",{name});
+            .createQueryBuilder("user");
+        querryBuilder.where("user.name = :name", { name })
+            .leftJoinAndSelect("user.roles", "roles")
+            ;
 
-        if(password){
+        if (password) {
             querryBuilder.addSelect("user.password")
         }
         const entity = querryBuilder.getOne()
@@ -63,6 +65,33 @@ export class UserService {
     async liked(id: number) {
         return this.userRepository
             .findOne(id, { relations: ["voted", "voted.user"] });
+    }
+
+    //更新用户 
+    async update(id: number, data: UserDto) {
+        const { roles } = data;
+        const entity = await this.userRepository.findOne(id);
+        if (roles) {
+            entity.roles = roles;
+        }
+        return await this.userRepository.save(entity)
+    }
+
+    //检查用户是否有资源权限
+    async possess(
+        id: number,
+        resource: string,
+        resourceId: number,
+    ) {
+        const result = await this.userRepository
+            .createQueryBuilder("user")
+            .where('user.id = :id', { id })
+            .leftJoin(`user.${resource}`, resource)
+            .andWhere(`${resource}.id=:resourceId`, { resourceId })
+            .getCount();
+
+        return result === 1 ? true : false;
+
     }
 
 }

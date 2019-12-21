@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { RoleModule } from './modules/role/role.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { CommentModule } from './modules/comment/comment.module';
     CategoryModule,
     TagModule,
     CommentModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

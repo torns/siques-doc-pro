@@ -7,13 +7,19 @@ import { User as UserEntity } from '../user/user.entity';
 import { ListOptions } from 'src/core/decorators/list-options.decorators';
 import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
-
+import { AccessGuard } from 'src/core/guards/access.guard';
+import { Resource } from 'src/core/enums/resource.enum';
+import {Permissions}from "src/core/decorators/permissions.decorators"
+import { Possession } from 'src/core/enums/possession.enum';
+import { UserService } from '../user/user.service';
+import { UserRole } from 'src/core/enums/user-role.enum';
 
 
 @Controller('posts')
 export class PostController {
     constructor(
-        private readonly postService: PostService
+        private readonly postService: PostService,
+   
     ) { }
 
 @Post()
@@ -38,7 +44,12 @@ async index(@ListOptions({limit:10,sort:"updated",order:"DESC"}) Options:ListOpt
         return await this.postService.show(id)
     }
 
+
+
     @Put(':id')
+    @UseGuards(AuthGuard("jwt"),AccessGuard)
+    //用户需要拥有这条资源的所有权才可以修改
+    @Permissions({resource:Resource.POST,possession:Possession.OWN,role:UserRole.VIP})
     async update(@Param("id") id: string, @Body() data: Partial<PostDto>) {
         console.log(data)
         return await this.postService.update(id, data)
