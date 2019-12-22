@@ -7,11 +7,8 @@ import { Tag } from '../tag/tag.entity';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([Post,Tag]),
-    UserModule
-  ],
+  imports: [TypeOrmModule.forFeature([Post, Tag]), UserModule],
   controllers: [PostController],
-  providers: [PostService]
+  providers: [PostService],
 })
 export class PostModule {}

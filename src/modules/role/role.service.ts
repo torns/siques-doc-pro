@@ -6,14 +6,12 @@ import { RoleDto } from './role.dto';
 
 @Injectable()
 export class RoleService {
+  constructor(
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
+  ) {}
 
-    constructor(
-        @InjectRepository(Role)
-        private readonly roleRepository:Repository<Role>
-    ){ }
-
-    async store(data:RoleDto){
-        return await this.roleRepository.save(data);
-    }
-
+  async store(data: RoleDto) {
+    return await this.roleRepository.save(data);
+  }
 }

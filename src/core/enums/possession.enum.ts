@@ -1,3 +1,3 @@
 export enum Possession {
-    OWN = "own"
+  OWN = 'own',
 }

@@ -1,57 +1,54 @@
-import { createParamDecorator } from "@nestjs/common";
-import { ListOptionsInterface } from "../interface/list-options.interface";
+import { createParamDecorator } from '@nestjs/common';
+import { ListOptionsInterface } from '../interface/list-options.interface';
 //导出一个参数装饰器@user()=req.user
-export const ListOptions = createParamDecorator((data: Partial<ListOptionsInterface> = {}, req) => {
-
+export const ListOptions = createParamDecorator(
+  (data: Partial<ListOptionsInterface> = {}, req) => {
     let { categories, tags, page, limit, sort, order } = req.query;
     if (categories) {
-        categories = categories.split("-");
+      categories = categories.split('-');
     }
 
     if (tags) {
-        tags = tags.split("-")
+      tags = tags.split('-');
     }
 
     if (page) {
-        page = parseInt(page)
+      page = parseInt(page);
     } else {
-        page = 1;
+      page = 1;
     }
 
     if (limit) {
-        limit = parseInt(limit)
-    } else if ((limit === undefined) && data.limit) {
-        limit = data.limit;
-
+      limit = parseInt(limit);
+    } else if (limit === undefined && data.limit) {
+      limit = data.limit;
     } else {
-        limit = 3;
+      limit = 3;
     }
 
     if (sort) {
-        sort = sort
-    } else if ((sort === undefined) && data.sort) {
-        sort = data.sort;
-    }
-    else {
-        sort = "created";
+      sort = sort;
+    } else if (sort === undefined && data.sort) {
+      sort = data.sort;
+    } else {
+      sort = 'created';
     }
 
     if (order) {
-        order = order.toUpperCase();
-    } else if ((order === undefined) && data.order) {
-        order = data.order;
-    }
-    else {
-        order = "DESC"
+      order = order.toUpperCase();
+    } else if (order === undefined && data.order) {
+      order = data.order;
+    } else {
+      order = 'DESC';
     }
 
     return {
-        categories,
-        tags,
-        page,
-        limit,
-        sort,
-        order
-    }
-
-})
+      categories,
+      tags,
+      page,
+      limit,
+      sort,
+      order,
+    };
+  },
+);

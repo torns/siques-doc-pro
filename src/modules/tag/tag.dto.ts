@@ -1,4 +1,4 @@
-export class TagDto{
-    readonly name:string;
-    readonly alias:string;
+export class TagDto {
+  readonly name: string;
+  readonly alias: string;
 }

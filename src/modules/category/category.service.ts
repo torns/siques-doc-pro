@@ -6,15 +6,13 @@ import { CategoryDto } from './category.dto';
 
 @Injectable()
 export class CategoryService {
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
 
-    constructor(
-        @InjectRepository(Category)
-        private readonly categoryRepository: Repository<Category>
-    ) { }
-
-     async store(data:CategoryDto){
-        const entity = await this.categoryRepository.create(data)
-        return await this.categoryRepository.save(entity)
-     }
-
+  async store(data: CategoryDto) {
+    const entity = await this.categoryRepository.create(data);
+    return await this.categoryRepository.save(entity);
+  }
 }

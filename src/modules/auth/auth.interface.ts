@@ -1,4 +1,4 @@
-export interface JwtPayload{
-    id:number;
-    name:string;
+export interface JwtPayload {
+  id: number;
+  name: string;
 }

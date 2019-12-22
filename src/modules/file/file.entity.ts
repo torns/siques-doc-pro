@@ -1,22 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class File {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    originalname: string;
+  @Column()
+  originalname: string;
 
-    @Column()
-    filename: string;
+  @Column()
+  filename: string;
 
+  @Column()
+  mimetype: string;
 
-    @Column()
-    mimetype: string;
-
-    @Column()
-    size: number;
-
-
+  @Column()
+  size: number;
 }

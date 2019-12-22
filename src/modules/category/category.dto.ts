@@ -1,4 +1,4 @@
-export class CategoryDto{
-    readonly name:string;
-    readonly alias:string;
+export class CategoryDto {
+  readonly name: string;
+  readonly alias: string;
 }

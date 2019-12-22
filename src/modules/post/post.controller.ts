@@ -1,4 +1,18 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, Query, Options, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Query,
+  Options,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -9,86 +23,73 @@ import { ListOptionsInterface } from 'src/core/interface/list-options.interface'
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 import { AccessGuard } from 'src/core/guards/access.guard';
 import { Resource } from 'src/core/enums/resource.enum';
-import {Permissions}from "src/core/decorators/permissions.decorators"
+import { Permissions } from 'src/core/decorators/permissions.decorators';
 import { Possession } from 'src/core/enums/possession.enum';
 import { UserService } from '../user/user.service';
 import { UserRole } from 'src/core/enums/user-role.enum';
 
-
 @Controller('posts')
 export class PostController {
-    constructor(
-        private readonly postService: PostService,
-   
-    ) { }
+  constructor(private readonly postService: PostService) {}
 
-@Post()
-@UseGuards(AuthGuard("jwt"))
-async store(@Body() data:PostDto,@User() user:UserEntity){
-    console.log(data)
-    return await this.postService.store(data,user)
-}
+  @Post()
+  @UseGuards(AuthGuard('jwt'))
+  async store(@Body() data: PostDto, @User() user: UserEntity) {
+    console.log(data);
+    return await this.postService.store(data, user);
+  }
 
+  @Get()
+  @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
+  async index(
+    @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' })
+    Options: ListOptionsInterface,
+  ) {
+    return await this.postService.index(Options);
+  }
 
-@Get()
-@UseInterceptors(ClassSerializerInterceptor,TransformInterceptor)
-async index(@ListOptions({limit:10,sort:"updated",order:"DESC"}) Options:ListOptionsInterface){
-    return await this.postService.index(Options)
-}
+  @Get(':id')
+  async show(@Param('id') id: string) {
+    // console.log(id)
+    return await this.postService.show(id);
+  }
 
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'), AccessGuard)
+  //用户需要拥有这条资源的所有权才可以修改
+  @Permissions({
+    resource: Resource.POST,
+    possession: Possession.OWN,
+    role: UserRole.VIP,
+  })
+  async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
+    console.log(data);
+    return await this.postService.update(id, data);
+  }
 
+  @Delete(':id')
+  async delete(@Param() id: string) {
+    return await this.postService.delete(id);
+  }
 
-    @Get(':id')
-    async show(@Param("id") id: string) {
-        // console.log(id)
-        return await this.postService.show(id)
-    }
+  @Post(':id/vote')
+  @UseGuards(AuthGuard('jwt'))
+  async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return await this.postService.vote(id, user);
+  }
 
+  @Delete(':id/vote')
+  @UseGuards(AuthGuard('jwt'))
+  async unvote(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.postService.unvote(id, user);
+  }
 
-
-    @Put(':id')
-    @UseGuards(AuthGuard("jwt"),AccessGuard)
-    //用户需要拥有这条资源的所有权才可以修改
-    @Permissions({resource:Resource.POST,possession:Possession.OWN,role:UserRole.VIP})
-    async update(@Param("id") id: string, @Body() data: Partial<PostDto>) {
-        console.log(data)
-        return await this.postService.update(id, data)
-    }
-
-    @Delete(":id")
-    async delete(@Param() id: string) {
-        return await this.postService.delete(id)
-
-    }
-
-
-    @Post(":id/vote")
-    @UseGuards(AuthGuard("jwt"))
-    async vote(
-        @Param("id", ParseIntPipe) id: number,
-        @User() user: UserEntity,
-    ) {
-
-        return await this.postService.vote(id, user);
-    }
-
-
-    @Delete(":id/vote")
-    @UseGuards(AuthGuard("jwt"))
-    async unvote(
-        @Param("id", ParseIntPipe) id: number,
-        @User() user: UserEntity,
-
-    ) {
-
-        return await this.postService.unvote(id, user);
-    }
-
-
-    @Get(":id/liked")
-    @UseInterceptors(ClassSerializerInterceptor)
-    async liked(@Param("id",ParseIntPipe) id:number){
-        return await this.postService.liked(id);
-    }
-
+  @Get(':id/liked')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.liked(id);
+  }
 }

@@ -4,14 +4,10 @@ import { RoleDto } from './role.dto';
 
 @Controller('roles')
 export class RoleController {
+  constructor(private readonly roleService: RoleService) {}
 
-    constructor(
-        private readonly roleService:RoleService
-    ){}
-
-    @Post()
-    async store(@Body() data:RoleDto){
-        return await this.roleService.store(data);
-    }
-
+  @Post()
+  async store(@Body() data: RoleDto) {
+    return await this.roleService.store(data);
+  }
 }

@@ -10,46 +10,48 @@ import { UserService } from 'src/modules/user/user.service';
 @Injectable()
 export class AccessGuard implements CanActivate {
   constructor(
-    private readonly reflector:Reflector,
-    private readonly userService:UserService
-  ){}
+    private readonly reflector: Reflector,
+    private readonly userService: UserService,
+  ) {}
 
-  async validatePermissons(permissions:PermissionInterface[],
-    user:User,resourceId:number){
-      const results =permissions.map(async permission=>{
-        const {role,resource,possession}= permission;
+  async validatePermissons(
+    permissions: PermissionInterface[],
+    user: User,
+    resourceId: number,
+  ) {
+    const results = permissions.map(async permission => {
+      const { role, resource, possession } = permission;
 
-        let hasrole:boolean = true;
-        let hasPossession:boolean  = true;
+      let hasrole: boolean = true;
+      let hasPossession: boolean = true;
 
-        if(possession ===Possession.OWN){
-          hasPossession =await this.userService.possess(user.id,resource,resourceId)
-        }
-        
-        
-        if(role){
-          hasrole = user.roles.some(UserRole=>UserRole.name= role)
-        }
+      if (possession === Possession.OWN) {
+        hasPossession = await this.userService.possess(
+          user.id,
+          resource,
+          resourceId,
+        );
+      }
 
-        return hasrole && hasPossession
-      } );
-      return Promise.all(results)
+      if (role) {
+        hasrole = user.roles.some(UserRole => (UserRole.name = role));
+      }
+
+      return hasrole && hasPossession;
+    });
+    return Promise.all(results);
   }
 
- async  canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean>{
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const permissions = this.reflector.get(
-      "permissions",context.getHandler()
-    )
+    const permissions = this.reflector.get('permissions', context.getHandler());
 
-    const results =await this.validatePermissons(
+    const results = await this.validatePermissons(
       permissions,
       request.user,
-      parseInt(request.params.id)
-    )
- 
+      parseInt(request.params.id),
+    );
+
     return results.includes(true);
   }
 }
