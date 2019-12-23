@@ -16,7 +16,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { CommentDto } from './comment.dto';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('评论')
 @Controller()
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}

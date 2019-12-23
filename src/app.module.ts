@@ -10,6 +10,8 @@ import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RoleModule } from './modules/role/role.module';
 import { FileModule } from './modules/file/file.module';
+import { CollectionModule } from './modules/collection/collection.module';
+
 
 @Module({
   imports: [
@@ -31,8 +33,10 @@ import { FileModule } from './modules/file/file.module';
     CommentModule,
     RoleModule,
     FileModule,
+    CollectionModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

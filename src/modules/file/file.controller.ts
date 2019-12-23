@@ -12,7 +12,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
 import { UploadFileDto } from './file.dto';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('上传')
 @Controller('files')
 export class FileController {
   constructor(private readonly fileService: FileService) {}

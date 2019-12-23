@@ -16,6 +16,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccessGuard } from 'src/core/guards/access.guard';
 import { UserRole } from 'src/core/enums/user-role.enum';
 import { Permissions } from 'src/core/decorators/permissions.decorators';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('用户')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

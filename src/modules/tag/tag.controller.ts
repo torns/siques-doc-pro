@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { TagDto } from './tag.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('标签')
 @Controller('tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}

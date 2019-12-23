@@ -27,7 +27,9 @@ import { Permissions } from 'src/core/decorators/permissions.decorators';
 import { Possession } from 'src/core/enums/possession.enum';
 import { UserService } from '../user/user.service';
 import { UserRole } from 'src/core/enums/user-role.enum';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('文章')
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -55,7 +57,8 @@ export class PostController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'), AccessGuard)
+  @ApiQuery({ name: 'role', enum: UserRole })
+  @UseGuards(AuthGuard(), AccessGuard)
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
     resource: Resource.POST,
@@ -73,13 +76,13 @@ export class PostController {
   }
 
   @Post(':id/vote')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard())
   async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
     return await this.postService.vote(id, user);
   }
 
   @Delete(':id/vote')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard())
   async unvote(
     @Param('id', ParseIntPipe) id: number,
     @User() user: UserEntity,

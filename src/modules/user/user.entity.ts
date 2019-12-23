@@ -15,6 +15,7 @@ import { Exclude } from 'class-transformer';
 import { Post } from '../post/post.entity';
 import { Comment } from '../comment/comment.entity';
 import { Role } from '../role/role.entity';
+import { Collection } from '../collection/collection.entity';
 
 @Entity()
 export class User {
@@ -35,18 +36,24 @@ export class User {
   @UpdateDateColumn()
   updated: Date;
 
-  z;
+  // 一个用户拥有多篇文章
   @OneToMany(
     type => Post,
     post => post.user,
   )
   posts: Post[];
 
+  // 一个用户拥有多条评论
   @OneToMany(
     type => Comment,
     comment => comment.user,
   )
   comments: Comment[];
+
+  // 一个用户拥有多个集合
+  @OneToMany(type => Collection, collection => collection.user)
+  collections: Collection[];
+
 
   // 多个角色对应多个用户
   @ManyToMany(

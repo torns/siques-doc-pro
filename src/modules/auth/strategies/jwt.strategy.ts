@@ -19,6 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // console.log(payload)
     const { name } = payload;
     const entity = await this.userService.findByName(name);
+
     // 如果token有效，但是未找到用户
     if (!entity) {
       throw new UnauthorizedException('未找到用户');
