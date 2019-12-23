@@ -1,0 +1,174 @@
+@import "./variables";
+// reset
+// 防止自己撑大
+* {
+  margin: 0;
+  padding: 0;
+}
+
+//界面防抖
+html, body {height:100%;overflow:auto;margin: 0;}
+html{overflow-y:scroll;}
+
+::-webkit-scrollbar{
+  width:0;
+  height:0;
+}
+
+
+
+//第一个参数为键值及键名 第二个为对象
+@each $colorkey, $color in $colors {
+  .text-#{$colorkey} {
+    color: $color;
+  }
+  .bg-#{$colorkey} {
+    background-color: $color;
+  }
+}
+
+// text overflow
+.text-ellipsis{
+  display:inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+// shadow
+// box-shadow:
+@each $var in (left,right,bottom,right) {
+
+  
+}
+
+// text align
+//第一个参数为变量 第二个为集合
+@each $var in (left, center, right) {
+  .text-#{$var} {
+    text-align: $var !important;
+  }
+}
+
+@each $sizekey, $size in $font-sizes {
+  .fs-#{$sizekey} {
+    font-size: $size * $base-font-size;
+  }
+}
+// width heigh
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.h-80 {
+  height: 100%;
+}
+
+.scroll-hide{
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+}
+
+// flex 布局
+.d-flex {
+  display: flex;
+}
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.showoff{
+  display: none;
+}
+
+@each $key, $value in $flex-jc {
+  .jc-#{$key} {
+    justify-content: $value;
+  }
+}
+
+@each $key, $value in $flex-ai {
+  .ai-#{$key} {
+    align-items: $value;
+  }
+}
+
+.flex-1 {
+  flex: 1;
+}
+// 占满整个盒子
+.flex-1 {
+  flex-grow: 1;
+}
+
+// 三层循环嵌套
+// m-0 ,mx-0
+@each $typeKey, $type in $spacing-types {
+  // .m-1{ margin:0.25rem}
+  @each $sizekey, $size in $spacing-sizes {
+    // .mt-1{ margin-top:0.25rem}
+    .#{$typeKey}-#{$sizekey} {
+      #{$type}: $size * $spacing-base-size;
+    }
+  }
+  // .mx-1
+  @each $sizekey, $size in $spacing-sizes {
+    // .mt-1{ margin-top:0.25rem}
+    .#{$typeKey}x-#{$sizekey} {
+      #{$type}-left: $size * $spacing-base-size;
+      #{$type}-right: $size * $spacing-base-size;
+    }
+  }
+  // .my-1
+  @each $sizekey, $size in $spacing-sizes {
+    // .mt-1{ margin-top:0.25rem}
+    .#{$typeKey}y-#{$sizekey} {
+      #{$type}-top: $size * $spacing-base-size;
+      #{$type}-bottom: $size * $spacing-base-size;
+    }
+  }
+
+  @each $directionKey, $direction in $spacing-directions {
+    @each $sizekey, $size in $spacing-sizes {
+      // .mt-1{ margin-top:0.25rem}
+      .#{$typeKey}#{$directionKey}-#{$sizekey} {
+        #{$type}-#{$direction}: $size * $spacing-base-size;
+      }
+    }
+  }
+}
+
+.btn {
+  border: none;
+  
+  font-size: map-get($font-sizes, "xll") * $base-font-size;
+  background-color: transparent;
+  &:hover,&:focus{
+    color:#409EFF;
+    border-color: none;
+    background-color: transparent;
+  }
+
+  
+}
+
+
+
+//borders
+@each $dir in (top,right,bottom,left) {
+  .border-#{$dir}{
+    border-#{$dir}:1px solid $border-color;
+  }
+}
