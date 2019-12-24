@@ -14,7 +14,7 @@ export class PostService {
     private readonly postRepository: Repository<Post>,
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
-  ) {}
+  ) { }
 
   async beforeTag(tags: Partial<Tag>[]) {
     const _tags = tags.map(async item => {
@@ -50,6 +50,13 @@ export class PostService {
       user,
     });
     return entity;
+  }
+  async showPost(id: number) {
+
+    return await this.postRepository
+      .createQueryBuilder('post')
+      .where('collectionId=:id', { id })
+      .getMany();
   }
 
   async index(options: ListOptionsInterface) {
@@ -94,13 +101,13 @@ export class PostService {
 
     await this.postRepository.update(id, data);
 
-    const entity = await this.postRepository.findOne(id, {
-      relations: ['category', 'tags'],
-    });
-    if (tags) {
-      entity.tags = await this.beforeTag(tags);
-    }
-    return await this.postRepository.save(entity);
+    // const entity = await this.postRepository.findOne(id, {
+    //   relations: ['category', 'tags'],
+    // });
+    // if (tags) {
+    //   entity.tags = await this.beforeTag(tags);
+    // }
+    // return await this.postRepository.save(entity);
   }
 
   async delete(id: string) {

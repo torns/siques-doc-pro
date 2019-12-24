@@ -32,22 +32,28 @@ import { ApiQuery, ApiTags } from '@nestjs/swagger';
 @ApiTags('文章')
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly postService: PostService) { }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async store(@Body() data: PostDto, @User() user: UserEntity) {
-    console.log(data);
+
     return await this.postService.store(data, user);
   }
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
   async index(
-    @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' })
+    @ListOptions({ limit: 10, sort: 'updated', order: 'ASC' })
     Options: ListOptionsInterface,
   ) {
     return await this.postService.index(Options);
+  }
+
+  @Get("collections/:id")
+  @UseGuards(AuthGuard('jwt'))
+  async showPost(@Param("id", ParseIntPipe) id: number) {
+    return await this.postService.showPost(id)
   }
 
   @Get(':id')
@@ -58,15 +64,15 @@ export class PostController {
 
   @Put(':id')
   @ApiQuery({ name: 'role', enum: UserRole })
-  @UseGuards(AuthGuard(), AccessGuard)
+  @UseGuards(AuthGuard())
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
     resource: Resource.POST,
     possession: Possession.OWN,
-    role: UserRole.VIP,
+    role: UserRole.USER,
   })
   async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
-    console.log(data);
+
     return await this.postService.update(id, data);
   }
 

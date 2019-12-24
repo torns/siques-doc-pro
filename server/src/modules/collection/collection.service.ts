@@ -28,4 +28,8 @@ export class CollectionService {
             .getMany();
     }
 
+    async removeCollection(id: number) {
+        return await this.CollectionRepository.delete(id)
+    }
+
 }

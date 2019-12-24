@@ -19,6 +19,7 @@ export default class Tinymce extends Vue {
   };
   height: number = 50;
   model: any = [];
+  body: any = "";
 
   tinymceId =
     "vue-tinymce-" + +new Date() + ((Math.random() * 1000).toFixed(0) + "");
@@ -26,10 +27,15 @@ export default class Tinymce extends Vue {
     this.initTinymce();
   }
   submit() {
-    console.log(this.getContent());
+    this.body = this.getContent();
+
+    this.$emit("submit");
   }
   getContent() {
     return window.tinymce.get(this.tinymceId).getContent();
+  }
+  setContent(body) {
+    return window.tinymce.get(this.tinymceId).setContent(body);
   }
   initTinymce() {
     window.tinymce.init({

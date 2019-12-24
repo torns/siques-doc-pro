@@ -7,5 +7,6 @@ export class PostDto {
   @ApiProperty({ description: '文章内容' })
   readonly body: string;
   readonly category: Category;
+
   tags: Tag[];
 }

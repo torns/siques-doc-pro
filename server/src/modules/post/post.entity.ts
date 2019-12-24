@@ -8,12 +8,15 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  TableForeignKey,
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 
 import { User } from '../user/user.entity';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
+import { Collection } from '../collection/collection.entity';
+import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
 
 @Entity()
 export class Post {
@@ -59,4 +62,10 @@ export class Post {
     comment => comment.post,
   )
   comments: Comment[];
+
+  @ManyToOne(type => Collection, collection => collection.posts, {
+    onDelete: 'CASCADE',
+  })
+
+  collection: Collection;
 }

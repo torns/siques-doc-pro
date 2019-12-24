@@ -36,7 +36,10 @@ html{overflow-y:scroll;}
 }
 
 
-
+//鼠标样式
+.point{
+  cursor: pointer;
+}
 // shadow
 // box-shadow:
 @each $var in (left,right,bottom,right) {
@@ -55,6 +58,12 @@ html{overflow-y:scroll;}
 @each $sizekey, $size in $font-sizes {
   .fs-#{$sizekey} {
     font-size: $size * $base-font-size;
+  }
+}
+
+@each $sizekey, $size in $line-height {
+  .lh-#{$sizekey} {
+    line-height: $size * $base-line-height;
   }
 }
 // width heigh
@@ -153,7 +162,7 @@ html{overflow-y:scroll;}
 .btn {
   border: none;
   
-  font-size: map-get($font-sizes, "xll") * $base-font-size;
+  // font-size: map-get($font-sizes, "xll") * $base-font-size;
   background-color: transparent;
   &:hover,&:focus{
     color:#409EFF;
