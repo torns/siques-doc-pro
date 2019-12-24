@@ -2,13 +2,14 @@
   <div>
     <el-container>
       <el-aside class="collections" width="18%">
-        <div class="d-flex flex-column">
-          <el-button type="primary">
-            <router-link to="/">回首页</router-link>
-          </el-button>
-          <div class="text-left lh-3">
+        <div class="d-flex flex-column mt-4">
+          <div class="lh-2 point backBtn fs-xs">
+            <router-link tag="div" to="/">回首页</router-link>
+          </div>
+
+          <div class="text-left lh-3 mt-2 fs-sm">
             <div type="plain" class="point" @click="show=!show">
-              <i class="el-icon-folder-add pl-4"></i> 新建文集
+              <i class="el-icon-folder-add pl-3"></i> 新建文集
             </div>
             <transition
               enter-active-class="animated slideInLeft"
@@ -20,12 +21,12 @@
                 <el-button type="text" @click="show=!show">取消</el-button>
               </div>
             </transition>
-            <ul class="lh-3 pr-3" v-for="collect in collections" :key="collect.id">
-              <li
-                :class="selectedCollection==collect.id?'d-flex jc-between bd-left':'d-flex jc-between'"
-                type="primary"
-                @click="selectCollect(collect.id)"
-              >
+            <ul
+              :class="selectedCollection==collect.id?'lh-3 pr-3 bd-left':'lh-3 pr-3'"
+              v-for="collect in collections"
+              :key="collect.id"
+            >
+              <li class="d-flex jc-between" @click="selectCollect(collect.id)">
                 <div class="text-ellipsis">{{collect.name}}</div>
                 <!-- <el-popconfirm title="这是一段内容确定删除吗？">
                   <el-button class="btn" icon="el-icon-s-tools" slot="reference"></el-button>
@@ -42,6 +43,22 @@
                 </el-dropdown>
               </li>
             </ul>
+            <div>
+              <el-dropdown class="footer-left fs-sm" trigger="click" @command="handleEditor">
+                <span>
+                  <i class="el-icon-s-operation pr-2"></i>设置
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item icon="el-icon-toilet-paper" command="a">默认编辑器</el-dropdown-item>
+
+                  <el-dropdown-item icon="el-icon-set-up">设置显示模式</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>a
+            <div class="footer-right fs-sm">
+              遇到问题
+              <i class="el-icon-question"></i>
+            </div>
           </div>
         </div>
       </el-aside>
@@ -49,7 +66,7 @@
         <div type="primary" class="creatpost point pl-4" @click="creatPost">
           <i class="el-icon-circle-plus pr-2"></i>新建文章
         </div>
-        <ul v-for="post in posts" :key="post.id">
+        <ul v-for="post in posts" :key="post.id" :class="selectedPost==post.id?'post-bd-left':''">
           <li class="d-flex jc-between" type="primary" @click="selectPost(post.id)">
             <i class="el-icon-document fs-ll pt-4 pl-3"></i>
 
@@ -58,15 +75,16 @@
             <el-dropdown
               placement="bottom-start"
               class="pr-3"
-              trigger="hover"
+              trigger="click"
               @command="handlePost"
             >
               <span>
                 <i class="el-icon-s-tools el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-chat-dot-round" :command="'a.'+post.id">修改文章标题</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-edit-outline">移动文章</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-delete" :command="post.id">删除文章</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-delete" :command="'c.'+post.id">删除文章</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <!-- </i> -->
@@ -76,11 +94,12 @@
       <el-main
         :style="!selectedPost?'display:flex;flex-direction:row;justify-content:center;align-items:center;':''"
       >
-        <tinymce v-if="selectedPost" ref="tinymce" @submit="updatePost"></tinymce>
+        <div v-if="selectedPost">
+          <tinymce v-if="editor" ref="tinymce" @submit="updatePost"></tinymce>
 
+          <markdown v-if="!editor"></markdown>
+        </div>
         <div v-else class="bg" style="flex:1">抒写</div>
-
-        <markdown></markdown>
       </el-main>
     </el-container>
   </div>
@@ -101,6 +120,8 @@ export default class Post extends Vue {
   selectedCollection: number;
   selectedPost: number = null;
   posts: any = "";
+
+  editor: boolean = true;
 
   mounted() {
     this.fetchCollect();
@@ -165,6 +186,7 @@ export default class Post extends Vue {
     const res = await this.$http.get("/collections");
     this.collections = res.data;
     this.selectedCollection = res.data[0].id;
+    // 根据集合id拿到post的id
     this.fetchPost(this.selectedCollection);
   }
 
@@ -173,6 +195,8 @@ export default class Post extends Vue {
     this.selectedCollection = id;
     this.posts = res.data;
   }
+
+  async;
 
   async handleCollection(command: number) {
     this.$confirm("此操作将永久删除该文集，是否继续?", "提示", {
@@ -188,19 +212,57 @@ export default class Post extends Vue {
         return;
       });
   }
-  async handlePost(command: number) {
-    const res = await this.$http.delete(`/posts/${command}`);
-    this.$notify({
-      title: "成功",
-      type: "success",
-      message: "删除成功"
-    });
-    this.fetchPost(this.selectedCollection);
+  async handlePost(command) {
+    const id = command.split(".")[1];
+    if (command.split(".")[0] == "a") {
+      this.$prompt("请输入标题", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(async ({ value }) => {
+          await this.$http.put(`/posts/${id}`, { title: value });
+          this.fetchPost(this.selectedCollection);
+          this.$notify({
+            title: "成功",
+            type: "success",
+            message: "修改成功 "
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+    }
+    if (command.split(".")[0] == "c") {
+      const res = await this.$http.delete(`/posts/${id}`);
+      this.$notify({
+        title: "成功",
+        type: "success",
+        message: "删除成功"
+      });
+      this.fetchPost(this.selectedCollection);
+    }
+  }
+
+  async handleEditor(command) {
+    if (command == "a") {
+      this.editor = !this.editor;
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.backBtn {
+  margin-top: 100px;
+  border: 1px solid #ec7259;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 20px;
+  color: #ec7259;
+}
 .postlist ul {
   position: relative;
   margin-bottom: 0;
@@ -219,6 +281,12 @@ export default class Post extends Vue {
 }
 .bd-left {
   border-left: 3px solid #ec7259;
+
+  background-color: #666;
+}
+.post-bd-left {
+  border-left: 5px solid #ec7259;
+  background-color: #e6e6e6;
 }
 
 .collections ul {
@@ -227,7 +295,7 @@ export default class Post extends Vue {
 
   li {
     list-style-type: none;
-    padding-left: 20px;
+    padding-left: 13px;
   }
 
   &:hover {
@@ -244,7 +312,7 @@ export default class Post extends Vue {
   background-color: #404040;
   color: white;
   text-align: center;
-
+  position: relative;
   height: 100vh;
 }
 
@@ -259,5 +327,27 @@ export default class Post extends Vue {
   font-size: 64px;
   color: #e6e6e6;
   text-shadow: 0 1px 0 #fff;
+}
+
+.footer-left {
+  position: absolute;
+  bottom: 1%;
+  left: 5%;
+  cursor: pointer;
+  color: #999;
+  &:hover {
+    color: white;
+  }
+}
+
+.footer-right {
+  position: absolute;
+  bottom: 1%;
+  right: 5%;
+  cursor: pointer;
+  color: #999;
+  &:hover {
+    color: white;
+  }
 }
 </style>

@@ -1,5 +1,4 @@
 export default {
-    minHeight: '360px',
     previewStyle: 'vertical',
     useCommandShortcut: true,
     useDefaultHTMLSanitizer: true,

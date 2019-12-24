@@ -1,7 +1,7 @@
 <template>
   <div>
     <textarea v-model="model.content" :id="tinymceId" class="tinymce-textarea" />
-    <el-button type="primary" @click="submit">发布</el-button>
+    <el-button type="primary" @click="submit">发布文章</el-button>
   </div>
 </template>
 
