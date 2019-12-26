@@ -11,7 +11,12 @@ import { CommentModule } from './modules/comment/comment.module';
 import { RoleModule } from './modules/role/role.module';
 import { FileModule } from './modules/file/file.module';
 import { CollectionModule } from './modules/collection/collection.module';
+import { AvatorModule } from './modules/avator/avator.module';
+import { ImageProcessModule } from './modules/image-process/image-process.module';
+import { SmsModule } from './modules/sms/sms.module';
 
+import dotenv from "dotenv";
+dotenv.config()
 
 @Module({
   imports: [
@@ -34,6 +39,9 @@ import { CollectionModule } from './modules/collection/collection.module';
     RoleModule,
     FileModule,
     CollectionModule,
+    AvatorModule,
+    ImageProcessModule,
+    SmsModule,
 
   ],
   controllers: [AppController],

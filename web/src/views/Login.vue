@@ -33,6 +33,10 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onRegister">注册</el-button>
+          <!-- <div>
+            验证码：
+            <input type="text" />
+          </div>-->
         </el-form-item>
       </el-form>
     </div>

@@ -9,6 +9,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  ManyToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
@@ -16,6 +17,7 @@ import { Post } from '../post/post.entity';
 import { Comment } from '../comment/comment.entity';
 import { Role } from '../role/role.entity';
 import { Collection } from '../collection/collection.entity';
+import { Avator } from '../avator/avator.entity';
 
 @Entity()
 export class User {
@@ -65,6 +67,9 @@ export class User {
   )
   @JoinTable()
   roles: Role[];
+
+  @ManyToOne(type => Avator, avator => avator.user)
+  avator: Avator[]
 
   @BeforeInsert()
   // 更新之前先比对

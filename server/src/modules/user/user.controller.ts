@@ -35,7 +35,7 @@ export class UserController {
   @Get(':id')
   // 排除用户密码
   @UseInterceptors(ClassSerializerInterceptor)
-  async show(@Param() id: string) {
+  async show(@Param("id", ParseIntPipe) id: number) {
     return await this.userService.show(id);
   }
 

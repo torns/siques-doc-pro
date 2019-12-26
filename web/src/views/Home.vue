@@ -57,6 +57,11 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Home extends Vue {
   logout() {
     localStorage.token = "";
+    this.$notify({
+      title: "成功",
+      type: "success",
+      message: "退出登录成功 "
+    });
   }
 }
 </script>
