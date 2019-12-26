@@ -16,9 +16,16 @@
               leave-active-class="animated slideOutLeft"
             >
               <div v-if="show">
-                <el-input v-model="newCollection" placeholder="请输入文集名..."></el-input>
-                <el-button type="plain" @click="createCollect">提交</el-button>
-                <el-button type="text" @click="show=!show">取消</el-button>
+                <el-input v-focus="show" v-model="newCollection" placeholder="请输入文集名..."></el-input>
+                <div class="d-flex jc-around">
+                  <el-button
+                    class="btn my-2"
+                    style="border:1px solid #ec7259;color:#ec7259;line-height:6px;border-radius:16px"
+                    type="info"
+                    @click="createCollect"
+                  >提交</el-button>
+                  <el-button type="text" @click="show=!show;newCollection=''">取消</el-button>
+                </div>
               </div>
             </transition>
             <ul
@@ -28,9 +35,7 @@
             >
               <li class="d-flex jc-between" @click="selectCollect(collect.id)">
                 <div class="text-ellipsis">{{collect.name}}</div>
-                <!-- <el-popconfirm title="这是一段内容确定删除吗？">
-                  <el-button class="btn" icon="el-icon-s-tools" slot="reference"></el-button>
-                </el-popconfirm>-->
+
                 <el-dropdown class="text-white" trigger="click" @command="handleCollection">
                   <span>
                     <i class="el-icon-s-tools el-icon--right"></i>
@@ -49,12 +54,15 @@
                   <i class="el-icon-s-operation pr-2"></i>设置
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-toilet-paper" command="a">默认编辑器</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-toilet-paper" command="a">
+                    默认编辑器
+                    <span class="text-blue">({{defaultEditor?'富文本编辑器':'markdown编辑器'}})</span>
+                  </el-dropdown-item>
 
                   <el-dropdown-item icon="el-icon-set-up">设置显示模式</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-            </div>a
+            </div>
             <div class="footer-right fs-sm">
               遇到问题
               <i class="el-icon-question"></i>
@@ -62,7 +70,7 @@
           </div>
         </div>
       </el-aside>
-      <el-aside class="postlist" width="23%" style="background-color:white;color:#333">
+      <el-aside id="post" class="postlist" width="23%" style="background-color:white;color:#333">
         <div type="primary" class="creatpost point pl-4" @click="creatPost">
           <i class="el-icon-circle-plus pr-2"></i>新建文章
         </div>
@@ -95,9 +103,9 @@
         :style="!selectedPost?'display:flex;flex-direction:row;justify-content:center;align-items:center;':''"
       >
         <div v-if="selectedPost">
-          <tinymce v-if="editor" ref="tinymce" @submit="updatePost"></tinymce>
+          <tinymce v-if="selectEditor" ref="tinymce" @submit="updatePost"></tinymce>
 
-          <markdown v-if="!editor"></markdown>
+          <markdown v-if="!selectEditor" ref="markdown" @submit="updatePost"></markdown>
         </div>
         <div v-else class="bg" style="flex:1">抒写</div>
       </el-main>
@@ -117,14 +125,16 @@ export default class Post extends Vue {
   collections: any = [];
   newCollection: any = "";
   show: boolean = false;
-  selectedCollection: number;
+  selectedCollection: number = null;
   selectedPost: number = null;
   posts: any = "";
-
-  editor: boolean = true;
+  defaultEditor: boolean = null;
+  selectEditor: boolean = null;
+  // true是tinymce
 
   mounted() {
     this.fetchCollect();
+    this.fetchEditor();
   }
   async createCollect() {
     if (this.newCollection == "") {
@@ -142,6 +152,7 @@ export default class Post extends Vue {
     });
     this.fetchCollect();
     this.show = false;
+    this.newCollection = "";
   }
 
   async selectCollect(id) {
@@ -151,24 +162,62 @@ export default class Post extends Vue {
   async selectPost(id) {
     this.selectedPost = id;
     const res = await this.$http.get(`/posts/${id}`);
-
-    this.$refs.tinymce.setContent(res.data.body);
+    this.selectEditor = res.data.editor;
+    if (res.data.editor) {
+      this.$nextTick(() => {
+        this.$refs.tinymce.setContent(res.data.body);
+      });
+    } else {
+      this.$nextTick(() => {
+        this.$refs.markdown.setContent(res.data.body);
+      });
+    }
   }
 
   async creatPost() {
-    const now = dayjs(new Date()).format("YYYY-MM-DD");
+    if (this.selectedCollection != null) {
+      const now = dayjs(new Date()).format("YYYY-MM-DD");
 
-    const data = {
-      title: now,
-      body: "",
-      collection: this.selectedCollection
-    };
-    const res = await this.$http.post("/posts", data);
-    this.selectCollect(this.selectedCollection);
+      const data = {
+        title: now,
+        body: "",
+        collection: this.selectedCollection,
+        editor: this.defaultEditor
+      };
+
+      const loading = this.$loading({
+        target: "#post",
+        lock: true,
+        text: "拼命加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      setTimeout(async () => {
+        await this.$http.post("/posts", data);
+        this.selectCollect(this.selectedCollection);
+        loading.close();
+        this.$notify({
+          title: "成功",
+          type: "success",
+          message: "添加成功"
+        });
+      }, 2000);
+    } else {
+      this.$notify({
+        title: "错误",
+        type: "error",
+        message: "请先创建文集"
+      });
+    }
   }
 
   async updatePost() {
-    const body = this.$refs.tinymce.body;
+    //不同的编辑器方式不同
+    if (this.selectEditor) {
+      var body = this.$refs.tinymce.body;
+    } else {
+      body = this.$refs.markdown.body;
+    }
 
     const data = {
       title: "now",
@@ -184,10 +233,12 @@ export default class Post extends Vue {
 
   async fetchCollect() {
     const res = await this.$http.get("/collections");
-    this.collections = res.data;
-    this.selectedCollection = res.data[0].id;
-    // 根据集合id拿到post的id
-    this.fetchPost(this.selectedCollection);
+    if (res.data.length != 0) {
+      this.collections = res.data;
+      this.selectedCollection = res.data[0].id;
+      // 根据集合id拿到post的id
+      this.fetchPost(this.selectedCollection);
+    }
   }
 
   async fetchPost(id) {
@@ -195,8 +246,6 @@ export default class Post extends Vue {
     this.selectedCollection = id;
     this.posts = res.data;
   }
-
-  async;
 
   async handleCollection(command: number) {
     this.$confirm("此操作将永久删除该文集，是否继续?", "提示", {
@@ -248,8 +297,22 @@ export default class Post extends Vue {
 
   async handleEditor(command) {
     if (command == "a") {
-      this.editor = !this.editor;
+      this.defaultEditor = !this.defaultEditor;
+      const body = {
+        editor: this.defaultEditor
+      };
+      this.$http.put("users/editor", body);
+      this.$notify({
+        title: "成功",
+        type: "success",
+        message: "设置成功"
+      });
     }
+  }
+
+  async fetchEditor() {
+    const res = await this.$http.get("users");
+    this.defaultEditor = res.data.editor;
   }
 }
 </script>

@@ -36,6 +36,9 @@ export class User {
   @UpdateDateColumn()
   updated: Date;
 
+  @Column('tinyint')
+  editor: boolean;
+
   // 一个用户拥有多篇文章
   @OneToMany(
     type => Post,

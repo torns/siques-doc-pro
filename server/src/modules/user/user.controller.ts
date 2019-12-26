@@ -17,11 +17,14 @@ import { AccessGuard } from 'src/core/guards/access.guard';
 import { UserRole } from 'src/core/enums/user-role.enum';
 import { Permissions } from 'src/core/decorators/permissions.decorators';
 import { ApiTags } from '@nestjs/swagger';
+import { get } from 'http';
+import { User } from 'src/core/decorators/user.decorators';
+import { User as userEntity } from './user.entity';
 
 @ApiTags('用户')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   async create(@Body() data: UserDto) {
@@ -35,6 +38,22 @@ export class UserController {
   async show(@Param() id: string) {
     return await this.userService.show(id);
   }
+
+  @Put("editor")
+  @UseGuards(AuthGuard("jwt"))
+
+  async changeEditor(@User() user: userEntity, @Body() body) {
+
+    return await this.userService.changeEditor(user.id, body);
+  }
+
+  //获取编辑器的路由
+  @Get()
+  @UseGuards(AuthGuard("jwt"))
+  async showEditor(@User() user: userEntity) {
+    return await this.userService.showEditor(user.id);
+  }
+
 
   @Put(':id/password')
   @UseInterceptors(ClassSerializerInterceptor)

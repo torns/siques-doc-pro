@@ -13,7 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       defaultStrategy: 'jwt',
     }),
     JwtModule.register({
-      secretOrPrivateKey: 'sadjyunbng-0=hrnasdasdlghzxhc',
+      secret: 'sadjyunbng-0=hrnasdasdlghzxhc',
       signOptions: {
         expiresIn: '12h', //12h 7d
       },
@@ -23,4 +23,4 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   providers: [AuthService, JwtStrategy],
   exports: [PassportModule],
 })
-export class AuthModule {}
+export class AuthModule { }

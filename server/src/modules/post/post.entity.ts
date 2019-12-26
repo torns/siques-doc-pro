@@ -26,6 +26,9 @@ export class Post {
   @Column()
   title: string;
 
+  @Column()
+  editor: boolean;
+
   // nullable可为空
   @Column('longtext', { nullable: true })
   body: string;
@@ -66,6 +69,5 @@ export class Post {
   @ManyToOne(type => Collection, collection => collection.posts, {
     onDelete: 'CASCADE',
   })
-
   collection: Collection;
 }

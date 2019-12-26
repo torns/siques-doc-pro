@@ -1,5 +1,8 @@
 <template>
-  <div class="text-left" id="editorSection" />
+  <div>
+    <div class="text-left" id="editorSection" />
+    <el-button class="mt-3" type="primary" @click="submit">发布文章</el-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,6 +18,7 @@ import Editor from "tui-editor";
 
 @Component({})
 export default class MarkDown extends Vue {
+  body: any = "";
   mounted() {
     this.initEditor();
   }
@@ -23,15 +27,20 @@ export default class MarkDown extends Vue {
       el: document.getElementById("editorSection"),
       initialEditType: "markdown",
       language: "zh_CN",
-      height: "60vh",
+      height: "80vh",
       ...defalutConfig
     });
   }
+  submit() {
+    this.body = this.getContent();
 
-  setValue(value) {
+    this.$emit("submit");
+  }
+
+  setContent(value) {
     this.editor.setValue(value);
   }
-  getValue() {
+  getContent() {
     return this.editor.getValue();
   }
 }

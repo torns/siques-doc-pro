@@ -42,12 +42,14 @@ export class PostController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
   @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
   async index(
-    @ListOptions({ limit: 10, sort: 'updated', order: 'ASC' })
-    Options: ListOptionsInterface,
+    @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
+    Options: ListOptionsInterface, @User() user: UserEntity
   ) {
-    return await this.postService.index(Options);
+
+    return await this.postService.index(Options, user.id);
   }
 
   @Get("collections/:id")
@@ -63,13 +65,13 @@ export class PostController {
   }
 
   @Put(':id')
-  @ApiQuery({ name: 'role', enum: UserRole })
-  @UseGuards(AuthGuard())
+  // @ApiQuery({ name: 'role', enum: UserRole })
+  @UseGuards(AuthGuard("jwt"), AccessGuard)
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
     resource: Resource.POST,
     possession: Possession.OWN,
-    role: UserRole.USER,
+    // role: UserRole.USER,
   })
   async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
 

@@ -15,6 +15,11 @@ html{overflow-y:scroll;}
   height:0;
 }
 
+ul li {
+  list-style-type: none;
+  cursor: pointer;
+}
+
 
 
 //第一个参数为键值及键名 第二个为对象

@@ -1,10 +1,11 @@
-import { Controller, Post, UseGuards, Param, Body, Get, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, UseGuards, Param, Body, Get, Delete, ParseIntPipe, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CollectionService } from './collection.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CollectionDto } from './collection.dto';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 @Controller('collections')
 @UseGuards(AuthGuard("jwt"))
@@ -21,6 +22,7 @@ export class CollectionController {
     }
 
     @Get()
+    @UseInterceptors()
     async showCollection(@User() user: UserEntity) {
 
         return await this.CollectionService.showCollection(user.id)

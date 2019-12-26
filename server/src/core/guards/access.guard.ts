@@ -12,13 +12,14 @@ export class AccessGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   async validatePermissons(
     permissions: PermissionInterface[],
     user: User,
     resourceId: number,
   ) {
+    // console.log(User)
     const results = permissions.map(async permission => {
       const { role, resource, possession } = permission;
 
@@ -34,7 +35,7 @@ export class AccessGuard implements CanActivate {
       }
 
       if (role) {
-        hasrole = user.roles.some(UserRole => (UserRole.name = role));
+        hasrole = user.roles.some(UserRole => (UserRole.name === role));
       }
 
       return hasrole && hasPossession;
@@ -49,7 +50,7 @@ export class AccessGuard implements CanActivate {
     const results = await this.validatePermissons(
       permissions,
       request.user,
-      parseInt(request.params.id),
+      parseInt(request.params.id), //请求地址中的id参数
     );
 
     return results.includes(true);

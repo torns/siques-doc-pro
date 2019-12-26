@@ -59,11 +59,11 @@ export class PostService {
       .getMany();
   }
 
-  async index(options: ListOptionsInterface) {
+  async index(options: ListOptionsInterface, id: number) {
     const { categories, tags, page, limit, sort, order } = options;
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
-    queryBuilder.leftJoinAndSelect('post.user', 'user');
+    // queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     // where筛选
@@ -74,7 +74,7 @@ export class PostService {
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
-
+    queryBuilder.where('userId=:id', { id })
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
     //获取结果以及数量

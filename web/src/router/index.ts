@@ -9,7 +9,11 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
+    children: [
+      { path: "/u", name: "user", component: () => import("../views/MyPage.vue") },
+      { path: '', name: 'home', component: () => import('../views/Cover.vue') },
+    ]
   },
   {
     path: "/post",

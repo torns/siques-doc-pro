@@ -13,7 +13,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
   async store(data: UserDto) {
     const { name } = data;
     const user = await this.userRepository.findOne({ name });
@@ -89,5 +89,20 @@ export class UserService {
       .getCount();
 
     return result === 1 ? true : false;
+  }
+
+  //改变编辑器
+  async changeEditor(id: number, body) {
+    const { editor } = body
+
+    const entity = await this.userRepository.findOne(id)
+
+    entity.editor = editor
+    // 这里用更新才行？
+    return await this.userRepository.update(id, entity);
+  }
+
+  async showEditor(id: number) {
+    return await this.userRepository.findOne(id);
   }
 }

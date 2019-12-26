@@ -6,6 +6,7 @@ import "./style.scss";
 import './plugins/element.js'
 import http from "./http.js"
 import animated from "animate.css"
+import "./directive"
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http
