@@ -4,23 +4,53 @@
 * {
   margin: 0;
   padding: 0;
+  
 }
+
 
 //界面防抖
-html, body {height:100%;overflow:auto;margin: 0;}
-html{overflow-y:scroll;}
+html, body {height:100%;overflow:auto;margin: 0; -webkit-text-size-adjust: none;}
+// html{overflow-y:scroll;}
 
-::-webkit-scrollbar{
-  width:0;
-  height:0;
-}
 
 ul li {
   list-style-type: none;
   cursor: pointer;
 }
 
+//布局
+.contanier {
+  text-align: left;
+}
+.main {
+  min-width: 730px;
 
+  height: 100%;
+}
+.leftside {
+  width: 53%;
+  height: 100%;
+}
+.sidebar {
+  width: 100%;
+  height: 100%;
+}
+
+code {
+  font-family: Source Code Pro;
+  font-size: 13.3px;
+}
+
+// 滑动
+
+// 阴影
+.shadow-1{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+
+.shadow-2{
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
 
 //第一个参数为键值及键名 第二个为对象
 @each $colorkey, $color in $colors {
@@ -50,6 +80,29 @@ ul li {
 @each $var in (left,right,bottom,right) {
 
   
+}
+
+//字体样式
+@each $fontkey,$font in $fonts {
+  .font-#{$fontkey}{
+    font-family: $font;
+  }
+  
+}
+// 悬浮
+.hoverlink{
+  &:hover{
+    text-decoration: underline;
+
+  }
+ 
+}
+
+.visitlink{
+  &:visited{
+    color: #969696
+  }
+ 
 }
 
 // text align

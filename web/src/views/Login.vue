@@ -1,7 +1,7 @@
 <template>
   <div class="sign">
     <div class="logo">抒写</div>
-    <div class="main" v-if="show">
+    <div class="loginContain" v-if="show">
       <div class="title d-flex jc-center">
         <el-button type="primary" @click="show=true">登录</el-button>
         <el-button type="primary" @click="show=false">注册</el-button>
@@ -19,7 +19,7 @@
       </el-form>
     </div>
 
-    <div class="main" v-else>
+    <div class="loginContain" v-else>
       <div class="title d-flex jc-center">
         <el-button type="primary" @click="show=true">登录</el-button>
         <el-button type="primary" @click="show=false">注册</el-button>
@@ -84,7 +84,7 @@ export default class Login extends Vue {
   top: 56px;
   margin-left: 50px;
 }
-.main {
+.loginContain {
   width: 400px;
   margin: 60px auto 0;
   padding: 50px 50px 30px;

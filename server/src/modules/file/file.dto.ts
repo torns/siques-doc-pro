@@ -1,4 +1,5 @@
 export class UploadFileDto {
+
   readonly fieldname: string;
   readonly originalname: string;
   readonly encoding: string;

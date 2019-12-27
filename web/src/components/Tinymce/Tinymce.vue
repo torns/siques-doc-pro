@@ -17,7 +17,7 @@ export default class Tinymce extends Vue {
     es: "es_MX",
     ja: "ja"
   };
-  height: number = 50;
+  height: number = 70;
   model: any = [];
   body: any = "";
 
@@ -38,6 +38,8 @@ export default class Tinymce extends Vue {
     return window.tinymce.get(this.tinymceId).setContent(body);
   }
   initTinymce() {
+    // 上传问题
+    window.http = this.$http;
     window.tinymce.init({
       selector: `#${this.tinymceId}`,
       language: this.languageTypeList["zh"],
@@ -47,7 +49,25 @@ export default class Tinymce extends Vue {
       code_dialog_height: 450,
       code_dialog_width: 1000,
       advlist_bullet_styles: "square",
-      advlist_number_styles: "default"
+      advlist_number_styles: "default",
+
+      images_upload_handler: async (blobInfo, success, failure) => {
+        const now = new Date();
+
+        let params = new FormData();
+        const filename = blobInfo.blob().name;
+
+        params.append("file", blobInfo.blob(), filename);
+
+        let config = {
+          headers: { "Content-Type": "multipart/form-data" }
+        };
+
+        const res = await window.http.post("/files/ali", params, config);
+        const url = res.data.url + "?x-oss-process=style/" + "post-picture";
+
+        success(url);
+      }
     });
   }
 }

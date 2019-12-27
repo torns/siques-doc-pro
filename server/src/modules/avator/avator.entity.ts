@@ -23,6 +23,6 @@ export class Avator {
     getUrl() {
 
         const appUrl = process.env.APP_URL;
-        this.url = `${appUrl}/avator/${this.id}`
+        this.url = `${appUrl}/static/${this.filename}`
     }
 }

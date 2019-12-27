@@ -9,6 +9,11 @@ import {
   JoinTable,
   OneToMany,
   TableForeignKey,
+  ViewColumn,
+  VersionColumn,
+  BeforeUpdate,
+  Generated,
+
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 
@@ -33,11 +38,16 @@ export class Post {
   @Column('longtext', { nullable: true })
   body: string;
 
+
+
   @CreateDateColumn()
   created: Date;
 
   @UpdateDateColumn()
   updated: Date;
+
+  @Column()
+  views: number;
 
   @ManyToOne(
     type => User,
@@ -70,4 +80,6 @@ export class Post {
     onDelete: 'CASCADE',
   })
   collection: Collection;
+
+
 }

@@ -4,12 +4,17 @@
     <div class="main">
       <div class="pt-5">
         <div class="title d-flex">
-          <el-avatar
-            :size="75"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-          ></el-avatar>
+          <div v-if="message">
+            <el-avatar
+              :size="75"
+              v-if="message.avator.url"
+              :src="message.avator.url"
+              class="shadow-1"
+            ></el-avatar>
+            <el-avatar :size="75" v-else src="../assets/avator.jpg" class="shadow-1"></el-avatar>
+          </div>
           <div class="pl-4 pt-2">
-            <strong>秋刀不是鱼</strong>
+            <strong v-if="message">{{message.name}}</strong>
             <div class="d-flex pt-2 fs-xs">
               <div>
                 <div v-if="posts">{{posts.length}}</div>
@@ -38,7 +43,7 @@
 
         <ul class="pt-3">
           <li v-for="post in posts" :key="post.id" class="text-gray">
-            <div class="fs-m">{{post.title}}</div>
+            <router-link tag="div" class="fs-m" :to="`/p/${post.id}`">{{post.title}}</router-link>
             <div class="d-flex fs-xs pt-2">
               <div>
                 <i class="el-icon-view pr-2">
@@ -56,7 +61,7 @@
                 </i>
               </div>
 
-              <div>{{post.created}}</div>
+              <div>{{$dayjs(post.created).format("MM.DD HH:MM")}}</div>
             </div>
             <el-divider></el-divider>
           </li>
@@ -73,16 +78,17 @@ import dayjs from "dayjs";
 @Component({})
 export default class MyPage extends Vue {
   posts: [] = null;
+  message: [] = null;
   mounted() {
     this.fetchData();
   }
 
   async fetchData() {
     const res = await this.$http.get("/posts");
-    res.data.map(e => {
-      e.created = dayjs(e.created).format("MM.DD HH:MM");
-    });
-    this.posts = res.data;
+
+    const message = await this.$http.get("/users");
+    this.message = message.data;
+    this.posts = res.data[0];
   }
 }
 </script>
@@ -109,5 +115,8 @@ export default class MyPage extends Vue {
 }
 .el-divider--horizontal {
   margin: 12px 0;
+}
+.el-avatar {
+  background: white;
 }
 </style>

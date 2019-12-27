@@ -1,40 +1,73 @@
 <template>
-  <div class="contanier h-100 d-flex">
+  <div class="contanier h-100 d-flex pt-5">
     <div class="leftside"></div>
     <div class="main">
-      <div class="pt-5">message</div>
+      <div>
+        <div>
+          <img
+            src="../assets/cover.png"
+            style="object-fit:cover;max-width: -webkit-fill-available;
+}"
+            class="pb-3"
+          />
+          <div>为你推荐</div>
+          <el-divider></el-divider>
+          <div v-for="post in posts" :key="post.id" class="pt-2 pb-4">
+            <router-link
+              tag="div"
+              class="hoverlink point visitlink pb-2 fs-lg"
+              style="font-weight: 600;"
+              :to="`/p/${post.id}`"
+            >{{post.title}}</router-link>
+            <div class="text-gray fs-xm lh-2">
+              <div v-html="post.body"></div>
+              <div class="d-flex">
+                <div class="el-icon-success hoverlink lh-2"></div>
+                <div class="pl-1 pr-3">×0 · 赞</div>
+                <div class="pr-2 hoverlink">{{post.user.name}} ·</div>
+                <div>{{$dayjs(post.created).format("MM月DD日")}}</div>
+                <div>{{post.category}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="sidebar"></div>
+    <div class="sidebar text-left pl-5">
+      <div>
+        <div>会员中心</div>
+        <div>优选连载</div>
+        <div>抒写版块</div>
+        <div>抒写大学堂</div>
+      </div>
+      <div>推荐作者</div>
+    </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 @Component({})
 export default class MyPage extends Vue {
-  fetchPost() {}
+  posts: [] = null;
+  mounted() {
+    this.fetchPost();
+  }
+  async fetchPost() {
+    const res = await this.$http.get("/posts/all");
+
+    this.posts = res.data;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.contanier {
-  text-align: left;
-}
-.main {
-  min-width: 36em;
-
-  height: 100%;
-}
-.leftside {
-  width: 53%;
-  height: 100%;
-}
-.sidebar {
-  width: 100%;
-  height: 100%;
-}
 .el-divider--vertical {
   height: inherit;
+}
+
+.el-divider--horizontal {
+  margin: 15px 0;
 }
 </style>

@@ -14,15 +14,25 @@ import { UploadFileDto } from './file.dto';
 import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
 
+
 @ApiTags('上传')
 @Controller('files')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(private readonly fileService: FileService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async store(@UploadedFile() data: UploadFileDto) {
     return await this.fileService.store(data);
+  }
+
+  //阿里云上传
+  @Post("ali")
+  @UseInterceptors(FileInterceptor('file'))
+  async storeAli(@UploadedFile("file") file) {
+
+
+    return await this.fileService.storeAli(file);
   }
 
   @Get('serve/:id')

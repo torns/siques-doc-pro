@@ -90,9 +90,72 @@ export class PostService {
     return entities;
   }
 
-  async show(id: string) {
-    const entites = await this.postRepository.findOne(id);
-    return entites;
+  //获取主页文章列表
+  async getAll(options: ListOptionsInterface) {
+    const { categories, tags, page, limit, sort, order } = options;
+    const queryBuilder = await this.postRepository.createQueryBuilder('post');
+    // 添加两个关系relation
+
+    queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.leftJoinAndSelect('post.tags', 'tag');
+    queryBuilder.innerJoinAndSelect("post.user", "user")
+
+    // where筛选
+    if (categories) {
+      queryBuilder.where('category.alias IN(:...categories)', { categories });
+    }
+
+    if (tags) {
+      queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
+    }
+
+
+
+
+    // 限制查询数量
+    queryBuilder.take(limit).skip(limit * (page - 1));
+    //获取结果以及数量
+
+    // 排序
+    queryBuilder.orderBy({
+      // ASC升序 DESC降序
+
+      [`post.${sort}`]: order,
+    });
+
+
+    const entities = queryBuilder.getManyAndCount();
+
+    return entities;
+  }
+
+  async show(id: string, user: User) {
+    // const entites = await this.postRepository.findOne(id, {
+    //   relations: ["user"],
+    // });
+
+
+
+
+    const queryBuilder = await this.postRepository.createQueryBuilder("post")
+    queryBuilder.innerJoinAndSelect("post.user", "user")
+    queryBuilder.leftJoinAndSelect("user.avator", "avator")
+    // queryBuilder.update(Post)
+    //   .set({ views: () => "views + 1" })
+    //   .execute();
+    queryBuilder.where('post.id =:id', { id })
+
+    const entities = await queryBuilder.getOne();
+    // 文章不属于自己才增加浏览量
+    if ((entities.user.id) != user.id) {
+      await this.postRepository.createQueryBuilder()
+        .update(Post)
+        .where('post.id =:id', { id })
+        .set({ views: () => "views + 1" })
+        .execute();
+    }
+
+    return entities;
   }
 
   async update(id: string, data: Partial<PostDto>) {

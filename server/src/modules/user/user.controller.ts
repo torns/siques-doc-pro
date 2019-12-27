@@ -47,11 +47,11 @@ export class UserController {
     return await this.userService.changeEditor(user.id, body);
   }
 
-  //获取编辑器的路由
+  //获取个人设置信息
   @Get()
   @UseGuards(AuthGuard("jwt"))
-  async showEditor(@User() user: userEntity) {
-    return await this.userService.showEditor(user.id);
+  async showMessage(@User() user: userEntity) {
+    return await this.userService.showMessage(user.id);
   }
 
 

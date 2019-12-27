@@ -1,10 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors()
+  app.useStaticAssets(join(__dirname, '../uploads/', 'avator'), {
+    prefix: '/static/', // 虚拟名称 http://localhost:3000/static/...png
+  });
   const options = new DocumentBuilder()
     .setTitle('后台API管理系统')
     .setDescription('')

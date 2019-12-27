@@ -115,7 +115,9 @@ export class UserService {
     return await this.userRepository.update(id, entity);
   }
 
-  async showEditor(id: number) {
-    return await this.userRepository.findOne(id);
+  async showMessage(id: number) {
+    return await this.userRepository.findOne(id, {
+      relations: ["avator"]
+    });
   }
 }

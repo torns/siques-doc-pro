@@ -1,15 +1,22 @@
 <template>
-  <div id="app">
+  <div id="app" class="font-songti">
     <router-view :key="$route.path"></router-view>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
 export default class App extends Vue {}
 </script>
 
-<style>
+<style lang="scss">
+.el-avatar > img {
+  object-fit: fill;
+  width: 100%;
+}
+.el-menu-item * {
+  vertical-align: unset !important;
+}
 </style>

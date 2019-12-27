@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <el-container style="height:100vh">
-      <el-header>
+      <el-header class="shadow-1">
         <el-menu
           :default-active="$route.path"
           class="el-menu-demo d-flex"
@@ -36,9 +36,12 @@
             <el-menu-item index="/u">我的主页</el-menu-item>
             <el-menu-item @click="logout">退出登录</el-menu-item>
           </el-submenu>
-
-          <el-menu-item :span="4" index="/login">用户</el-menu-item>
           <el-menu-item :span="4" index="/post">写文章</el-menu-item>
+
+          <el-menu-item :span="4" index="/login">立即登录</el-menu-item>
+          <el-menu-item :span="4" index="/login">
+            <el-button type="primary">免费注册</el-button>
+          </el-menu-item>
         </el-menu>
         <div class="line"></div>
       </el-header>

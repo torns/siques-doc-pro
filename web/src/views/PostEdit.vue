@@ -77,8 +77,10 @@
         <ul v-for="post in posts" :key="post.id" :class="selectedPost==post.id?'post-bd-left':''">
           <li class="d-flex jc-between" type="primary" @click="selectPost(post.id)">
             <i class="el-icon-document fs-ll pt-4 pl-3"></i>
+            <div class="text-ellipsis">
+              <span>{{post.title}}</span>
+            </div>
 
-            <i>{{post.title}}</i>
             <!-- <i class="el-icon-s-tools pt-4 pr-2"> -->
             <el-dropdown
               placement="bottom-start"
@@ -90,7 +92,10 @@
                 <i class="el-icon-s-tools el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-chat-dot-round" :command="'a.'+post.id">修改文章标题</el-dropdown-item>
+                <el-dropdown-item
+                  icon="el-icon-chat-dot-round"
+                  :command="'a.'+post.id +'.'+post.title"
+                >修改文章标题</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-edit-outline">移动文章</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-delete" :command="'c.'+post.id">删除文章</el-dropdown-item>
               </el-dropdown-menu>
@@ -103,9 +108,9 @@
         :style="!selectedPost?'display:flex;flex-direction:row;justify-content:center;align-items:center;':''"
       >
         <div v-if="selectedPost">
-          <tinymce v-if="selectEditor" ref="tinymce" @submit="updatePost"></tinymce>
+          <tinymce v-show="selectEditor" ref="tinymce" @submit="updatePost"></tinymce>
 
-          <markdown v-if="!selectEditor" ref="markdown" @submit="updatePost"></markdown>
+          <markdown v-show="!selectEditor" ref="markdown" @submit="updatePost"></markdown>
         </div>
         <div v-else class="bg" style="flex:1">抒写</div>
       </el-main>
@@ -163,6 +168,7 @@ export default class Post extends Vue {
     this.selectedPost = id;
     const res = await this.$http.get(`/posts/${id}`);
     this.selectEditor = res.data.editor;
+
     if (res.data.editor) {
       this.$nextTick(() => {
         this.$refs.tinymce.setContent(res.data.body);
@@ -220,7 +226,6 @@ export default class Post extends Vue {
     }
 
     const data = {
-      title: "now",
       body: body
     };
     const res = await this.$http.put(`/posts/${this.selectedPost}`, data);
@@ -241,7 +246,7 @@ export default class Post extends Vue {
     }
   }
 
-  async fetchPost(id) {
+  async fetchPost(id: any) {
     const res = await this.$http.get(`/posts/collections/${id}`);
     this.selectedCollection = id;
     this.posts = res.data;
@@ -263,6 +268,7 @@ export default class Post extends Vue {
   }
   async handlePost(command) {
     const id = command.split(".")[1];
+
     if (command.split(".")[0] == "a") {
       this.$prompt("请输入标题", "提示", {
         confirmButtonText: "确定",

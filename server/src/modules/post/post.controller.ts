@@ -28,6 +28,7 @@ import { Possession } from 'src/core/enums/possession.enum';
 import { UserService } from '../user/user.service';
 import { UserRole } from 'src/core/enums/user-role.enum';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AutoincrementInterceptor } from 'src/core/interceptors/autoincrement.interceptor';
 
 @ApiTags('文章')
 @Controller('posts')
@@ -43,13 +44,23 @@ export class PostController {
 
   @Get()
   @UseGuards(AuthGuard())
-  @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
+  @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
     Options: ListOptionsInterface, @User() user: UserEntity
   ) {
 
     return await this.postService.index(Options, user.id);
+  }
+
+
+  @Get("all")
+  @UseInterceptors(TransformInterceptor)
+  async getAll(@ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
+  Options: ListOptionsInterface
+  ) {
+
+    return await this.postService.getAll(Options);
   }
 
   @Get("collections/:id")
@@ -59,9 +70,14 @@ export class PostController {
   }
 
   @Get(':id')
-  async show(@Param('id') id: string) {
+  @UseGuards(AuthGuard())
+
+  async show(@Param('id') id: string, @User() user: UserEntity) {
     // console.log(id)
-    return await this.postService.show(id);
+
+    return await this.postService.show(id, user);
+
+
   }
 
   @Put(':id')

@@ -7,10 +7,13 @@ import './plugins/element.js'
 import http from "./http.js"
 import animated from "animate.css"
 import "./directive"
+import dayjs from "dayjs"
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http
+Vue.prototype.$dayjs = dayjs
 Vue.use(animated)
+
 
 new Vue({
   router,
