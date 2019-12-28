@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="sidebar">
-      <div class="pl-2 box1" style="position:relative;left:70px">条款</div>
+      <!-- <div class="pl-2 box1" style="position:relative;left:70px">条款</div> -->
     </div>
   </div>
 </template>

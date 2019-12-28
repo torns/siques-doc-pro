@@ -21,11 +21,6 @@ const routes = [
     name: "post",
     component: PostEdit
   },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/Login.vue")
-  }
   // {
   //   path: "/post",
   //   name: "post",

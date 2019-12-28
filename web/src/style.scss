@@ -24,8 +24,10 @@ ul li {
 }
 .main {
   min-width: 730px;
-
   height: 100%;
+  @media (min-width:730px) {
+    width: auto;
+  }
 }
 .leftside {
   width: 53%;

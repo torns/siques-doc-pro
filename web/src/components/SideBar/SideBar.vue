@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-3">
+  <div class="ml-3 sidebar">
     <div class="shadow-1" style="width:260px;height:174px;background-color:white;">广告加载中</div>
     <div class="shadow-1 mt-2 box1">精读</div>
     <div class="box1 mt-2 shadow-1">推荐阅读</div>
@@ -18,5 +18,10 @@ export default class SideBar extends Vue {}
   width: 260px;
   height: auto;
   background-color: white;
+}
+.sidebar {
+  @media (max-width: 968px) {
+    display: none;
+  }
 }
 </style>

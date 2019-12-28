@@ -70,15 +70,18 @@ export class PostController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
 
-  async show(@Param('id') id: string, @User() user: UserEntity) {
+  async show(@Param('id') id: string) {
     // console.log(id)
 
-    return await this.postService.show(id, user);
+    return await this.postService.show(id);
 
 
   }
+
+
+
 
   @Put(':id')
   // @ApiQuery({ name: 'role', enum: UserRole })

@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <el-container style="height:100vh">
-      <el-header class="shadow-1">
+    <el-container style="height:100vh;">
+      <el-header class="shadow-1" style="position:sticky;top:0;z-index: 10;">
         <el-menu
           :default-active="$route.path"
-          class="el-menu-demo d-flex"
+          class="el-menu-demo"
           mode="horizontal"
           :gutter="20"
           router
@@ -38,11 +38,20 @@
           </el-submenu>
           <el-menu-item :span="4" index="/post">写文章</el-menu-item>
 
-          <el-menu-item :span="4" index="/login">立即登录</el-menu-item>
-          <el-menu-item :span="4" index="/login">
-            <el-button type="primary">免费注册</el-button>
+          <el-menu-item
+            v-if="!UserNotExist"
+            :span="4"
+            @click="dialogFormVisible = true,isRegister = false"
+          >立即登录</el-menu-item>
+          <el-menu-item :span="4">
+            <el-button
+              v-if="!UserNotExist"
+              type="primary"
+              @click="dialogFormVisible = true,isRegister = true"
+            >免费注册</el-button>
           </el-menu-item>
         </el-menu>
+
         <div class="line"></div>
       </el-header>
       <div class="h-100">
@@ -50,6 +59,77 @@
       </div>
       <!-- <el-footer>Footer</el-footer> -->
     </el-container>
+    <el-dialog width="500px" :title="isRegister?'注册':'登录'" :visible.sync="dialogFormVisible">
+      <el-form v-if="isRegister" :model="RegisterDto">
+        <el-form-item label="你的名字" :label-width="formLabelWidth">
+          <el-input height="10" placeholder="常用昵称" v-model="RegisterDto.name" autocomplete="off">
+            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="手机号" :label-width="formLabelWidth">
+          <el-input
+            height="10"
+            placeholder="11位手机号"
+            v-model="RegisterDto.phonenumber"
+            autocomplete="off"
+          >
+            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input
+            show-password
+            placeholder="不少于6位的密码"
+            v-model="RegisterDto.password"
+            autocomplete="off"
+          >
+            <i slot="prefix" class="el-icon-paperclip pl-1"></i>
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <el-form v-else :model="LoginDto">
+        <el-form-item label="手机号或Email" :label-width="formLabelWidth">
+          <el-input
+            height="10"
+            placeholder="11位手机号或Email"
+            v-model="LoginDto.phonenumber"
+            autocomplete="off"
+          >
+            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input
+            show-password
+            placeholder="请输入密码"
+            v-model="LoginDto.password"
+            autocomplete="off"
+          >
+            <i slot="prefix" class="el-icon-paperclip pl-1"></i>
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <div class="pt-2" style="width:320px;margin:0 auto;">
+        <div class="dialog-footer pb-2">
+          <el-button v-if="isRegister" type="success" @click="register">注册</el-button>
+          <el-button v-else type="success" @click="login">登录</el-button>
+        </div>
+
+        <div class="dialog-footer d-flex flex-column">
+          <el-divider content-position="center">更多登录方式</el-divider>
+
+          <el-button v-if="isRegister" type="message" @click="isRegister = false">已有账号登录</el-button>
+          <el-button v-else type="message" @click="isRegister = true">注册新账号</el-button>
+        </div>
+        <div class="pt-2" style="margin-bottom:-10px">
+          继续即表示你同意
+          <a href="#">《服务条款》</a> 和
+          <a href="#">《隐私政策》</a>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -58,13 +138,45 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component({})
 export default class Home extends Vue {
+  dialogFormVisible: boolean = false;
+  isRegister: boolean = false;
+  LoginDto: any = {};
+  RegisterDto: any = {};
+  UserNotExist: boolean = localStorage.UserNotExist;
+  formLabelWidth: string = "120";
+
+  async login() {
+    const res = await this.$http.post("/auth/login", this.LoginDto);
+    localStorage.token = res.data.token;
+    this.$notify({
+      title: "",
+      type: "success",
+      message: "登录成功"
+    });
+    this.dialogFormVisible = false;
+    localStorage.UserNotExist = false;
+    this.$router.go(0); //刷新页面
+  }
+
+  async register() {
+    const res = await this.$http.post("/users", this.RegisterDto);
+    this.$notify({
+      title: "",
+      type: "success",
+      message: "注册成功"
+    });
+    this.isRegister = false;
+  }
+
   logout() {
     localStorage.token = "";
+    localStorage.UserNotExist = "";
     this.$notify({
       title: "成功",
       type: "success",
       message: "退出登录成功 "
     });
+    this.$router.go(0);
   }
 }
 </script>
@@ -82,5 +194,31 @@ export default class Home extends Vue {
 }
 .item {
   right: 17px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+}
+.el-form {
+  width: 320px;
+  margin: 0 auto;
+  input {
+    height: 35px;
+  }
+}
+
+.el-form-item__label {
+  line-height: 20px !important;
+}
+.el-dialog__header {
+  background-color: whitesmoke;
+}
+.el-form-item {
+  margin-bottom: 10px !important;
+}
+.dialog-footer .el-button {
+  padding: 9px 0 !important;
+  width: 320px !important;
 }
 </style>

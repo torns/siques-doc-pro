@@ -129,31 +129,22 @@ export class PostService {
     return entities;
   }
 
-  async show(id: string, user: User) {
-    // const entites = await this.postRepository.findOne(id, {
-    //   relations: ["user"],
-    // });
-
-
-
+  async show(id: string) {
 
     const queryBuilder = await this.postRepository.createQueryBuilder("post")
     queryBuilder.innerJoinAndSelect("post.user", "user")
     queryBuilder.leftJoinAndSelect("user.avator", "avator")
-    // queryBuilder.update(Post)
-    //   .set({ views: () => "views + 1" })
-    //   .execute();
+
     queryBuilder.where('post.id =:id', { id })
 
     const entities = await queryBuilder.getOne();
     // 文章不属于自己才增加浏览量
-    if ((entities.user.id) != user.id) {
-      await this.postRepository.createQueryBuilder()
-        .update(Post)
-        .where('post.id =:id', { id })
-        .set({ views: () => "views + 1" })
-        .execute();
-    }
+
+    await this.postRepository.createQueryBuilder()
+      .update(Post)
+      .where('post.id =:id', { id })
+      .set({ views: () => "views + 1" })
+      .execute();
 
     return entities;
   }

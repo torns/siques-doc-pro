@@ -32,13 +32,18 @@ export class User {
   @Exclude()
   password: string;
 
+  @Column({ select: false, unique: true })
+  @Exclude()
+  phonenumber: string;
+
+
   @CreateDateColumn()
   created: Date;
 
   @UpdateDateColumn()
   updated: Date;
 
-  @Column('tinyint')
+  @Column('tinyint', { default: 0 })
   editor: boolean;
 
   // 一个用户拥有多篇文章

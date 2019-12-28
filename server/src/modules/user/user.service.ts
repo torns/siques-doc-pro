@@ -15,8 +15,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) { }
   async store(data: UserDto) {
-    const { name } = data;
-    const user = await this.userRepository.findOne({ name });
+    const { phonenumber } = data;
+    const user = await this.userRepository.findOne({ phonenumber });
     if (user) {
       throw new BadRequestException('用户已存在');
     }
@@ -63,10 +63,10 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(name: string, password?: boolean) {
+  async findByName(phonenumber: string, password?: boolean) {
     const querryBuilder = await this.userRepository.createQueryBuilder('user');
     querryBuilder
-      .where('user.name = :name', { name })
+      .where('user.phonenumber = :phonenumber', { phonenumber })
       .leftJoinAndSelect('user.roles', 'roles');
 
     if (password) {

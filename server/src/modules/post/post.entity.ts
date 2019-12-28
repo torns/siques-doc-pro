@@ -46,7 +46,7 @@ export class Post {
   @UpdateDateColumn()
   updated: Date;
 
-  @Column()
+  @Column({ default: 0 })
   views: number;
 
   @ManyToOne(
@@ -69,6 +69,9 @@ export class Post {
   )
   @JoinTable()
   tags: Tag[];
+
+  //多个用户
+
 
   @OneToMany(
     type => Comment,

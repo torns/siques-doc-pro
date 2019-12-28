@@ -9,21 +9,21 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(data: LoginDto) {
-    const { name, password } = data;
-    const entity = await this.userService.findByName(name, true);
+    const { phonenumber, password } = data;
+    const entity = await this.userService.findByName(phonenumber, true);
 
     if (!entity) {
-      throw new UnauthorizedException('用户名不存在');
+      throw new UnauthorizedException('用户不存在');
     }
 
     if (!(await entity.comparePassword(password))) {
       throw new UnauthorizedException('密码不匹配');
     }
     const { id } = entity;
-    const payload = { id, name };
+    const payload = { id, phonenumber };
     const token = this.signToken(payload);
     return {
       ...payload,

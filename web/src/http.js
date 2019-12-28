@@ -21,12 +21,13 @@ http.interceptors.response.use(res => {
 }, err => {
 
     if (err.response.data.error) {
-        Vue.prototype.$message({
+        console.log(err.response.data)
+        Vue.prototype.$notify({
             type: "error",
             message: err.response.data.message
         })
         if (err.response.status == 401) {
-            router.push("/login")
+            // router.push("/login")
         }
     }
 

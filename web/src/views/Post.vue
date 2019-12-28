@@ -2,9 +2,32 @@
   <div style="min-height:100%;height:auto">
     <div class="contanier d-flex pt-3 bg-light pb-3">
       <div class="leftside"></div>
-      <div class="main font-songti bg-white shadow-2">
+      <div class="main font-songti bg-white shadow-2" style="position:relative">
         <div>
           <div v-if="post.title" style="padding:25px">
+            <div class="d-flex flex-column menu-button">
+              <el-button
+                class="mb-2 ml-2"
+                type="success"
+                icon="el-icon-edit"
+                circle
+                style="width:fit-content;"
+              ></el-button>
+              <el-button
+                class="mb-2"
+                type="info"
+                icon="el-icon-check"
+                circle
+                style="width:fit-content;"
+              ></el-button>
+              <el-button
+                class="mb-2"
+                type="info"
+                icon="el-icon-message"
+                circle
+                style="width:fit-content;"
+              ></el-button>
+            </div>
             <h1 class="py-4">{{post.title}}</h1>
             <div class="d-flex py-3">
               <img
@@ -37,6 +60,7 @@
       <div class="sidebar">
         <side-bar></side-bar>
       </div>
+      <el-backtop></el-backtop>
     </div>
     <el-footer class="mt-2"></el-footer>
   </div>
@@ -81,6 +105,11 @@ export default class Post extends Vue {
 </script>
 
 <style lang="scss" >
+.menu-button {
+  position: fixed;
+  margin-left: -6em;
+  margin-top: 10em;
+}
 .avator {
   width: 60px !important;
   height: 60px !important;
