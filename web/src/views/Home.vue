@@ -1,49 +1,86 @@
 <template>
   <div class="home">
     <el-container style="height:100vh;">
-      <el-header class="shadow-1" style="position:sticky;top:0;z-index: 10;">
+      <el-header style="position:sticky;top:0;z-index: 10;">
         <el-menu
           :default-active="$route.path"
-          class="el-menu-demo"
+          class="el-menu-demo shadow-1"
           mode="horizontal"
-          :gutter="20"
           router
         >
-          <el-menu-item :span="4">
+          <el-menu-item>
             <img src="../assets/banner.png" style="object-fit:cover;height:100%;" />
           </el-menu-item>
 
-          <el-menu-item :span="4" index="/">
+          <el-menu-item index="/">
             <i class="el-icon-discover"></i> 发现
           </el-menu-item>
 
-          <el-menu-item :span="4" index="3">关注</el-menu-item>
-          <el-badge :value="3" class="item"></el-badge>
-          <el-submenu :span="4" index="4">
-            <template slot="title">消息</template>
-            <el-menu-item index="4-1">评论</el-menu-item>
-            <el-menu-item index="4-2">简信</el-menu-item>
-            <el-menu-item index="4-3">投稿请求</el-menu-item>
-            <el-menu-item index="4-3">喜欢和赞</el-menu-item>
-            <el-menu-item index="4-3">关注</el-menu-item>
-            <el-menu-item index="4-3">赞赏和付费</el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-document-checked"></i> 关注
+          </el-menu-item>
+
+          <el-submenu index="4" :show-timeout="0" :hide-timeout="0">
+            <template slot="title">
+              <i class="el-icon-bell"></i> 消息
+            </template>
+            <el-menu-item index="/notification/comments">
+              <i class="el-icon-chat-dot-round"></i>评论
+            </el-menu-item>
+            <el-menu-item index="/notification/message">
+              <i class="el-icon-wallet"></i>简信
+            </el-menu-item>
+            <el-menu-item index="/notification/request">
+              <i class="el-icon-s-order"></i> 投稿请求
+            </el-menu-item>
+            <el-menu-item index="/notification/like">
+              <i class="el-icon-s-opportunity"></i> 喜欢和赞
+            </el-menu-item>
+            <el-menu-item index="/notification/follow">
+              <i class="el-icon-star-on"></i> 关注
+            </el-menu-item>
+            <el-menu-item index="/notification/pay">
+              <i class="el-icon-shopping-cart-2"></i> 赞赏和付费
+            </el-menu-item>
           </el-submenu>
 
-          <el-menu-item :span="4" index="5">Aa</el-menu-item>
+          <el-menu-item>
+            <el-popover placement="top" width="160" v-model="visible">
+              <div style="text-align: left; margin: 0">
+                <div>夜间模式</div>
+                <el-button size="mini" type="text" @click="visible = false">开启</el-button>
+                <el-button type="primary" size="mini" @click="visible = false">关闭</el-button>
+              </div>
+              <el-button slot="reference">Aa</el-button>
+            </el-popover>
+          </el-menu-item>
 
-          <el-submenu :span="4" index="6">
+          <el-submenu index="6" :show-timeout="0" :hide-timeout="0">
             <template slot="title">个人信息</template>
+            <el-menu-item index="/u">
+              <i class="el-icon-user-solid"></i> 我的主页
+            </el-menu-item>
+
+            <el-menu-item index="/u">
+              <i class="el-icon-star-on"></i> 收藏的文章
+            </el-menu-item>
+            <el-menu-item index="/u">喜欢的文章</el-menu-item>
             <el-menu-item index="/u">我的主页</el-menu-item>
+            <el-menu-item index="/u">设置</el-menu-item>
+            <el-menu-item index="/u">帮助与反馈</el-menu-item>
             <el-menu-item @click="logout">退出登录</el-menu-item>
           </el-submenu>
-          <el-menu-item :span="4" index="/post">写文章</el-menu-item>
+
+          <el-menu-item :span="4" index="/post">
+            <el-button type="primary" round>写文章</el-button>
+          </el-menu-item>
 
           <el-menu-item
             v-if="!UserNotExist"
-            :span="4"
             @click="dialogFormVisible = true,isRegister = false"
           >立即登录</el-menu-item>
-          <el-menu-item :span="4">
+
+          <el-menu-item>
             <el-button
               v-if="!UserNotExist"
               type="primary"
@@ -57,7 +94,6 @@
       <div class="h-100">
         <router-view :key="$route.path"></router-view>
       </div>
-      <!-- <el-footer>Footer</el-footer> -->
     </el-container>
     <el-dialog width="500px" :title="isRegister?'注册':'登录'" :visible.sync="dialogFormVisible">
       <el-form v-if="isRegister" :model="RegisterDto">
@@ -136,7 +172,10 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue } from "vue-property-decorator";
-@Component({})
+import SearchBtn from "../components/SearchBtn/SearchButton.vue";
+@Component({
+  components: { "search-button": SearchBtn }
+})
 export default class Home extends Vue {
   dialogFormVisible: boolean = false;
   isRegister: boolean = false;
@@ -144,7 +183,16 @@ export default class Home extends Vue {
   RegisterDto: any = {};
   UserNotExist: boolean = localStorage.UserNotExist;
   formLabelWidth: string = "120";
-
+  visible: boolean = false;
+  mounted() {
+    this.$watch(
+      localStorage.status,
+      function() {
+        console.log(123);
+      },
+      { deep: true }
+    );
+  }
   async login() {
     const res = await this.$http.post("/auth/login", this.LoginDto);
     localStorage.token = res.data.token;

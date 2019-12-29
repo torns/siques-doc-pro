@@ -7,26 +7,15 @@
           <div v-if="post.title" style="padding:25px">
             <div class="d-flex flex-column menu-button">
               <el-button
-                class="mb-2 ml-2"
                 type="success"
-                icon="el-icon-edit"
                 circle
-                style="width:fit-content;"
-              ></el-button>
-              <el-button
-                class="mb-2"
-                type="info"
                 icon="el-icon-check"
-                circle
                 style="width:fit-content;"
+                @click="like"
               ></el-button>
-              <el-button
-                class="mb-2"
-                type="info"
-                icon="el-icon-message"
-                circle
-                style="width:fit-content;"
-              ></el-button>
+              <i class="pl-1 my-1">{{liked}}赞</i>
+              <el-button type="info" icon="el-icon-check" circle style="width:fit-content;"></el-button>
+              <i class="mt-1">赞赏</i>
             </div>
             <h1 class="py-4">{{post.title}}</h1>
             <div class="d-flex py-3">
@@ -87,8 +76,10 @@ export default class Post extends Vue {
   @Prop()
   id: number;
   post: any = "";
+  liked: number = 0;
   mounted() {
     this.fetchpost(this.id);
+    this.fetchliked();
   }
   updated() {
     highlightCode();
@@ -100,6 +91,15 @@ export default class Post extends Vue {
       res.data.body = md.render(res.data.body);
     }
     this.post = res.data;
+  }
+
+  async fetchliked() {
+    const res = await this.$http.get(`/users/${this.id}/liked/count`);
+    this.liked = res.data;
+  }
+  async like() {
+    await this.$http.get(`/users/${this.id}/like`);
+    this.fetchliked();
   }
 }
 </script>

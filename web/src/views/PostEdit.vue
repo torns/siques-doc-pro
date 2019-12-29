@@ -130,7 +130,7 @@ export default class Post extends Vue {
   collections: any = [];
   newCollection: any = "";
   show: boolean = false;
-  selectedCollection: number = null;
+  selectedCollection: any = null;
   selectedPost: number = null;
   posts: any = "";
   defaultEditor: boolean = null;
@@ -318,7 +318,7 @@ export default class Post extends Vue {
 
   async fetchEditor() {
     const res = await this.$http.get("users");
-    this.defaultEditor = res.data.editor;
+    this.defaultEditor = res.data.editor == 1 ? true : false;
   }
 }
 </script>

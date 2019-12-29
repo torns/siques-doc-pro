@@ -20,11 +20,15 @@ import { ApiTags } from '@nestjs/swagger';
 import { get } from 'http';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as userEntity } from './user.entity';
+import { PostService } from '../post/post.service';
+import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 @ApiTags('用户')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService,
+
+  ) { }
 
   @Post()
   async create(@Body() data: UserDto) {
@@ -47,7 +51,7 @@ export class UserController {
     return await this.userService.changeEditor(user.id, body);
   }
 
-  //获取个人设置信息
+  // 获取个人设置信息
   @Get()
   @UseGuards(AuthGuard("jwt"))
   async showMessage(@User() user: userEntity) {
@@ -64,12 +68,8 @@ export class UserController {
     return await this.userService.updataPassword(id, data);
   }
 
-  @Get(':id/liked')
-  @UseInterceptors(ClassSerializerInterceptor)
-  async liked(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.liked(id);
-  }
 
+  //修改密码
   @Put(':id')
   @UseGuards(AuthGuard('jwt'), AccessGuard)
   //必须是admin角色才可以通过这条路由
@@ -87,4 +87,41 @@ export class UserController {
   ) {
     return await this.userService.possess(id, resource, resourceId);
   }
+
+  // // 谁点过赞前端请求问题
+
+  // @Get(':id/like')
+  // @UseGuards(AuthGuard())
+  // async userliked(@Param() data: string, @User() user: userEntity) {
+  //   console.log(data)
+  //   return await this.userService.userliked(user.id)
+
+  // }
+
+  // 用户点赞
+
+  @Get(':id/like')
+  @UseGuards(AuthGuard())
+  @UseInterceptors(ClassSerializerInterceptor)
+  async like(@Param('id', ParseIntPipe) id: number, @User() user: userEntity) {
+    return await this.userService.like(id, user);
+  }
+
+  // 文章受赞数量
+  @Get(':id/liked/count')
+
+  async countliked(@Param('id', ParseIntPipe) postId: number) {
+    return this.userService.countliked(postId);
+  }
+
+  // 给谁点赞的具体信息
+
+  @Get(':id/liked')
+  @UseGuards(AuthGuard())
+  @UseInterceptors(TransformInterceptor)
+  async liked(@User() user: userEntity) {
+    return this.userService.liked(user.id);
+  }
+
+
 }

@@ -14,6 +14,8 @@ export class PostService {
     private readonly postRepository: Repository<Post>,
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) { }
 
   async beforeTag(tags: Partial<Tag>[]) {
@@ -185,11 +187,76 @@ export class PostService {
       .remove(id);
   }
 
-  async liked(id: number) {
-    return await this.postRepository
-      .createQueryBuilder()
-      .relation(Post, 'liked')
-      .of(id)
-      .loadMany();
+  //点赞和消除
+  async like(id: number, user: User) {
+
+    try {
+      await this.postRepository
+        .createQueryBuilder()
+        .relation(Post, 'likes')
+        .of(id)
+        .add(user);
+    } catch{
+      await this.postRepository
+        .createQueryBuilder()
+        .relation(Post, 'likes')
+        .of(id)
+        .remove(user);
+    }
+
   }
+
+
+  // 被谁点过数量
+  async countliked(id: number) {
+
+    const res = await this.postRepository
+      .createQueryBuilder()
+      .relation(Post, 'likes')
+      .of(id)
+      .loadMany()
+
+
+    return res.length
+  }
+  // 被谁点过赞
+  async liked(id: number) {
+
+    const res = await this.postRepository
+      .createQueryBuilder()
+      .relation(Post, 'likes')
+      .of(id)
+      .loadMany()
+    return res
+  }
+
+  //这里提供Userid可以找出给哪篇文章点过赞//关注？
+  // async liked_posts(id: number) {
+  //   console.log(id)
+  //   return await this.postRepository
+  //     .createQueryBuilder("post")
+  //     .where('post.id = :id', { id })
+  //     .leftJoinAndSelect("post.likes", "likes")
+  // .innerJoinAndSelect("post.user", "user")
+  //     .getMany()
+
+
+
+  // }
+
+  async liked_posts(id: number) {
+    console.log(id)
+    return await this.postRepository
+      .createQueryBuilder("post")
+      .where('post.id = :id', { id })
+      .leftJoinAndSelect("post.likes", "likes")
+      .innerJoinAndSelect("post.user", "user")
+      .getMany()
+
+
+
+  }
+
+
+
 }

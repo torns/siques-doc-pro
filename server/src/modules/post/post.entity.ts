@@ -70,7 +70,10 @@ export class Post {
   @JoinTable()
   tags: Tag[];
 
-  //多个用户
+
+  @ManyToMany(type => User, user => user.posts, { eager: true })
+
+  users: User[];
 
 
   @OneToMany(

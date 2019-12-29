@@ -6,9 +6,10 @@ import { Post } from './post.entity';
 import { Tag } from '../tag/tag.entity';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
+import { User } from '../user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Tag]), UserModule, AuthModule],
+  imports: [TypeOrmModule.forFeature([Post, Tag, User]), UserModule, AuthModule],
   controllers: [PostController],
   providers: [PostService],
 })

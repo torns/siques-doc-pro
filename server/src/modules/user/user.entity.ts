@@ -73,6 +73,14 @@ export class User {
   @JoinTable()
   roles: Role[];
 
+  //多个角色
+  @ManyToMany(type => Post,
+    post => post.user, {
+    cascade: true
+  })
+  @JoinTable()
+  likes: Post[];
+
   @ManyToOne(type => Avator, avator => avator.user)
   avator: Avator[]
 

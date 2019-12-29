@@ -36,38 +36,40 @@
           </div>
         </div>
 
-        <ul class="d-flex mt-4">
-          <li class="border-bottom">文章</li>
-          <li class="pl-2">动态</li>
-          <li class="pl-2">最新评论</li>
-        </ul>
         <div>
-          <ul class="pt-3">
-            <li v-for="post in posts" :key="post.id" class="text-gray">
-              <router-link tag="div" class="fs-m" :to="`/p/${post.id}`">{{post.title}}</router-link>
-              <div class="d-flex fs-xs pt-2">
-                <div>
-                  <i class="el-icon-view pr-2">
-                    <span class="pl-1">0</span>
-                  </i>
-                </div>
-                <div>
-                  <i class="el-icon-chat-square pr-2">
-                    <span class="pl-1">0</span>
-                  </i>
-                </div>
-                <div>
-                  <i class="el-icon-star-off pr-2">
-                    <span class="pl-1">0</span>
-                  </i>
-                </div>
-
-                <div>{{$dayjs(post.created).format("MM.DD HH:MM")}}</div>
-              </div>
-              <el-divider></el-divider>
-            </li>
+          <ul class="d-flex mt-4">
+            <li class="border-bottom">文章</li>
+            <li class="pl-2">动态</li>
+            <li class="pl-2">最新评论</li>
           </ul>
-          <div v-if="posts&&posts.length==0" class="pt-3">还没有写文章o</div>
+          <div>
+            <ul class="pt-3">
+              <li v-for="post in posts" :key="post.id" class="text-gray">
+                <router-link tag="div" class="fs-m" :to="`/p/${post.id}`">{{post.title}}</router-link>
+                <div class="d-flex fs-xs pt-2">
+                  <div>
+                    <i class="el-icon-view pr-2">
+                      <span class="pl-1">0</span>
+                    </i>
+                  </div>
+                  <div>
+                    <i class="el-icon-chat-square pr-2">
+                      <span class="pl-1">0</span>
+                    </i>
+                  </div>
+                  <div>
+                    <i class="el-icon-star-off pr-2">
+                      <span class="pl-1">0</span>
+                    </i>
+                  </div>
+
+                  <div>{{$dayjs(post.created).format("MM.DD HH:MM")}}</div>
+                </div>
+                <el-divider></el-divider>
+              </li>
+            </ul>
+            <div v-if="posts&&posts.length==0" class="pt-3">还没有写文章o</div>
+          </div>
         </div>
       </div>
     </div>
@@ -84,6 +86,7 @@ export default class MyPage extends Vue {
   message = [];
   mounted() {
     this.fetchData();
+    this.fetchLiked_Posts();
   }
 
   async fetchData() {
@@ -93,6 +96,10 @@ export default class MyPage extends Vue {
 
     this.message = message.data;
     this.posts = res.data[0];
+  }
+
+  async fetchLiked_Posts() {
+    const res = this.$http.get("users/1/liked");
   }
 }
 </script>

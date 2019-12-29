@@ -9,7 +9,16 @@
 
 
 //界面防抖
-html, body {height:100%;overflow:auto;margin: 0; -webkit-text-size-adjust: none;}
+html, body {
+  height:100%;
+
+  -webkit-text-size-adjust: none;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  :focus {
+    outline: none;
+}
+}
 // html{overflow-y:scroll;}
 
 
@@ -44,6 +53,8 @@ code {
 }
 
 // 滑动
+
+
 
 // 阴影
 .shadow-1{
@@ -98,6 +109,13 @@ code {
 
   }
  
+}
+
+.hoverbg{
+  &:hover{
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
 }
 
 .visitlink{
@@ -161,6 +179,11 @@ code {
 .showoff{
   display: none;
 }
+
+.margin{
+  margin: 0 auto;
+}
+
 
 @each $key, $value in $flex-jc {
   .jc-#{$key} {

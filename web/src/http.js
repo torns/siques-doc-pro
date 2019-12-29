@@ -26,8 +26,9 @@ http.interceptors.response.use(res => {
             type: "error",
             message: err.response.data.message
         })
+
         if (err.response.status == 401) {
-            // router.push("/login")
+            localStorage.status = 402
         }
     }
 

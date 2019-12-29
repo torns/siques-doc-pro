@@ -5,14 +5,18 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository, Entity, createQueryBuilder } from 'typeorm';
+import { Repository, Entity, createQueryBuilder, QueryBuilder } from 'typeorm';
 import { UserDto, UpdatePasswordDto } from './user.dto';
+import { Post } from '../post/post.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+
   ) { }
   async store(data: UserDto) {
     const { phonenumber } = data;
@@ -47,6 +51,20 @@ export class UserService {
 
     return user;
   }
+
+  //传入的用户id
+  async userliked(id: number) {
+    console.log(id)
+    const res = await this.postRepository
+      .createQueryBuilder()
+      .relation(Post, 'user')
+      .of(id)
+      .loadMany()
+    return res
+
+  }
+
+
   async updataPassword(id: string, data: UpdatePasswordDto) {
     const { password, newpassword } = data;
     const entity = await this.userRepository.findOne(id);
@@ -76,11 +94,6 @@ export class UserService {
     return entity;
   }
 
-  async liked(id: number) {
-    return this.userRepository.findOne(id, {
-      relations: ['voted', 'voted.user'],
-    });
-  }
 
   //更新用户
   async update(id: number, data: UserDto) {
@@ -120,4 +133,59 @@ export class UserService {
       relations: ["avator"]
     });
   }
+
+
+  //点赞和消除
+  async like(id: number, user: User) {
+    console.log(user.id, id)
+    try {
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'likes')
+        .of(user)
+        .add(id);
+    } catch{
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'likes')
+        .of(user)
+        .remove(id);
+    }
+
+  }
+  // 被谁点过数量 给的是postid
+  // leftjoin就是把符合的数据返回
+  //leftJoinandselect就是会把符合的数据以及子表的数据带出来
+  async countliked(id: number) {
+    // 这里要给postid
+    console.log(id)
+    const res = await this.userRepository
+      .createQueryBuilder("user")
+      .leftJoin("user.likes", "likes")
+      .where("postId=:id", { id })
+      .getMany()
+    return res.length
+  }
+
+
+
+  // 给哪些文章点过赞 用户id
+  async liked(id: number) {
+
+    const res = await this.postRepository
+      .createQueryBuilder("post")
+
+      .relation(User, 'likes')
+
+      .of(id)
+
+
+
+      .loadMany()
+
+    return res
+  }
+
+
+
 }

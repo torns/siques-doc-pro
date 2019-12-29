@@ -77,7 +77,6 @@ export class PostController {
 
     return await this.postService.show(id);
 
-
   }
 
 
@@ -117,9 +116,41 @@ export class PostController {
     return await this.postService.unvote(id, user);
   }
 
-  @Get(':id/liked')
+  // @Get(':id/liked')
+  // @UseInterceptors(ClassSerializerInterceptor)
+  // async liked(@Param('id', ParseIntPipe) id: number) {
+  //   return await this.postService.liked(id);
+  // }
+
+
+  // 点赞
+  @Get(':id/like')
+  @UseGuards(AuthGuard())
   @UseInterceptors(ClassSerializerInterceptor)
-  async liked(@Param('id', ParseIntPipe) id: number) {
-    return await this.postService.liked(id);
+  async like(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return this.postService.like(id, user);
   }
+
+  // 文章受赞数量
+  @Get(':id/liked/count')
+
+  async countliked(@Param('id', ParseIntPipe) id: number) {
+    return this.postService.countliked(id);
+  }
+
+  // 文章被谁点过的具体信息
+  @Get(':id/liked')
+
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return this.postService.liked(id);
+  }
+
+  // 喜欢的文章
+  @Get(":id/liked_posts")
+  @UseGuards(AuthGuard())
+  async liked_posts(@User() user: UserEntity) {
+
+    return await this.postService.liked_posts(user.id)
+  }
+
 }
