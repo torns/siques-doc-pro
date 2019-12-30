@@ -1,6 +1,7 @@
 import axios from "axios"
 import Vue from "vue"
 import router from "./router"
+import store from "./store"
 
 
 const http = axios.create({
@@ -12,23 +13,29 @@ http.interceptors.request.use((config) => {
         config.headers.Authorization = "Bearer " + (localStorage.token || "")
     } return config
 }, err => {
+
     return Promise.reject(err)
 })
 
 //添加一个反应拦截器
 http.interceptors.response.use(res => {
+
     return res
 }, err => {
 
     if (err.response.data.error) {
-        console.log(err.response.data)
+
         Vue.prototype.$notify({
             type: "error",
             message: err.response.data.message
         })
 
         if (err.response.status == 401) {
-            localStorage.status = 402
+            // 赋值store.states
+
+            store.state.loginFormVisible = true
+            store.state.UserNotExist = true
+
         }
     }
 

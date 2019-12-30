@@ -33,7 +33,15 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/components/toolbar.js"
+    "src/components/toolbar.js",
+    "src/store/index.js",
+    "src/plugins/element.js",
+    "src/directive.js",
+    "src/http.js",
+    "src/mixin.js",
+    "src/components/Tinymce/toolbar.js",
+    "src/components/markdown/defalut-config.js",
+    "src/components/Tinymce/plugins.js"
   ],
   "exclude": [
     "node_modules"

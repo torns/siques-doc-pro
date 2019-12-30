@@ -9,6 +9,8 @@ import animated from "animate.css"
 import "./directive"
 import dayjs from "dayjs"
 import mixin from "./mixin"
+import store from './store'
+
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http
@@ -19,5 +21,6 @@ Vue.use(animated)
 new Vue({
   mixins: [mixin],
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

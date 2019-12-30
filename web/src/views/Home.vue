@@ -76,15 +76,14 @@
           </el-menu-item>
 
           <el-menu-item
-            v-if="!UserNotExist"
-            @click="dialogFormVisible = true,isRegister = false"
+            v-if="$store.state.UserNotExist"
+            @click="$store.state.loginFormVisible = true,isRegister = false"
           >立即登录</el-menu-item>
-
           <el-menu-item>
             <el-button
-              v-if="!UserNotExist"
+              v-if="this.$store.state.UserNotExist"
               type="primary"
-              @click="dialogFormVisible = true,isRegister = true"
+              @click="$store.state.loginFormVisible = true,isRegister = true"
             >免费注册</el-button>
           </el-menu-item>
         </el-menu>
@@ -95,7 +94,11 @@
         <router-view :key="$route.path"></router-view>
       </div>
     </el-container>
-    <el-dialog width="500px" :title="isRegister?'注册':'登录'" :visible.sync="dialogFormVisible">
+    <el-dialog
+      width="500px"
+      :title="isRegister?'注册':'登录'"
+      :visible.sync="$store.state.loginFormVisible"
+    >
       <el-form v-if="isRegister" :model="RegisterDto">
         <el-form-item label="你的名字" :label-width="formLabelWidth">
           <el-input height="10" placeholder="常用昵称" v-model="RegisterDto.name" autocomplete="off">
@@ -177,21 +180,15 @@ import SearchBtn from "../components/SearchBtn/SearchButton.vue";
   components: { "search-button": SearchBtn }
 })
 export default class Home extends Vue {
-  dialogFormVisible: boolean = false;
   isRegister: boolean = false;
   LoginDto: any = {};
   RegisterDto: any = {};
-  UserNotExist: boolean = localStorage.UserNotExist;
+
   formLabelWidth: string = "120";
   visible: boolean = false;
+  watch: {};
   mounted() {
-    this.$watch(
-      localStorage.status,
-      function() {
-        console.log(123);
-      },
-      { deep: true }
-    );
+    window.addEventListener("unload", this.saveState);
   }
   async login() {
     const res = await this.$http.post("/auth/login", this.LoginDto);
@@ -201,8 +198,9 @@ export default class Home extends Vue {
       type: "success",
       message: "登录成功"
     });
-    this.dialogFormVisible = false;
-    localStorage.UserNotExist = false;
+
+    this.$store.state.loginFormVisible = false;
+    this.$store.state.UserNotExist = false;
     this.$router.go(0); //刷新页面
   }
 
@@ -218,13 +216,17 @@ export default class Home extends Vue {
 
   logout() {
     localStorage.token = "";
-    localStorage.UserNotExist = "";
+    this.$store.state.UserNotExist = true;
     this.$notify({
       title: "成功",
       type: "success",
       message: "退出登录成功 "
     });
     this.$router.go(0);
+  }
+
+  saveState() {
+    localStorage.setItem("state", JSON.stringify(this.$store.state));
   }
 }
 </script>
