@@ -6,7 +6,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: localStorage.getItem("state") ? JSON.parse(localStorage.getItem("state")) : {
     UserNotExist: true,
-    loginFormVisible: false
+    loginFormVisible: false,
+    userName: "",
+    userId: "",
+    postLength: ""
+
   },
   mutations: {
     setTrue(state) {

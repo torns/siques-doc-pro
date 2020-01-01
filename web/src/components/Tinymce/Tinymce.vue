@@ -64,7 +64,7 @@ export default class Tinymce extends Vue {
         };
 
         const res = await window.http.post("/files/ali", params, config);
-        const url = res.data.url + "?x-oss-process=style/" + "post-picture";
+        const url = res.data.url + "?x-oss-process=style/" + "nest-picture";
 
         success(url);
       }

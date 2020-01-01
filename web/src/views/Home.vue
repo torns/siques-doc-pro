@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <el-container style="height:100vh;">
+    <el-container>
+      <div style="height:2px;" class="bg-primary"></div>
       <el-header style="position:sticky;top:0;z-index: 10;">
         <el-menu
           :default-active="$route.path"
@@ -16,7 +17,7 @@
             <i class="el-icon-discover"></i> 发现
           </el-menu-item>
 
-          <el-menu-item index="3">
+          <el-menu-item index="/follow">
             <i class="el-icon-document-checked"></i> 关注
           </el-menu-item>
 
@@ -55,23 +56,33 @@
             </el-popover>
           </el-menu-item>
 
-          <el-submenu index="6" :show-timeout="0" :hide-timeout="0">
-            <template slot="title">个人信息</template>
-            <el-menu-item index="/u">
+          <el-submenu
+            v-if="$store.state.UserNotExist == false"
+            index="6"
+            :show-timeout="0"
+            :hide-timeout="0"
+            style="right: 15%;position: absolute;"
+          >
+            <template slot="title">
+              <el-avatar :size="35" src="../assets/avator.jpg" class="shadow-1">
+                <img src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/avator/avator.jpg" />
+              </el-avatar>
+            </template>
+            <el-menu-item index="/u/mypage">
               <i class="el-icon-user-solid"></i> 我的主页
             </el-menu-item>
 
-            <el-menu-item index="/u">
+            <el-menu-item index="/u/collect">
               <i class="el-icon-star-on"></i> 收藏的文章
             </el-menu-item>
-            <el-menu-item index="/u">喜欢的文章</el-menu-item>
-            <el-menu-item index="/u">我的主页</el-menu-item>
-            <el-menu-item index="/u">设置</el-menu-item>
-            <el-menu-item index="/u">帮助与反馈</el-menu-item>
+            <el-menu-item index="/u/like">喜欢的文章</el-menu-item>
+
+            <el-menu-item index="/u/setting">设置</el-menu-item>
+            <el-menu-item index="/u/help">帮助与反馈</el-menu-item>
             <el-menu-item @click="logout">退出登录</el-menu-item>
           </el-submenu>
 
-          <el-menu-item :span="4" index="/post">
+          <el-menu-item :span="4" index="/post" style="right: 2%;position: absolute;">
             <el-button type="primary" round>写文章</el-button>
           </el-menu-item>
 
@@ -157,8 +168,9 @@
         </div>
 
         <div class="dialog-footer d-flex flex-column">
-          <el-divider content-position="center">更多登录方式</el-divider>
-
+          <div class="py-4">
+            <el-divider content-position="center">更多登录方式</el-divider>
+          </div>
           <el-button v-if="isRegister" type="message" @click="isRegister = false">已有账号登录</el-button>
           <el-button v-else type="message" @click="isRegister = true">注册新账号</el-button>
         </div>
@@ -188,6 +200,7 @@ export default class Home extends Vue {
   visible: boolean = false;
   watch: {};
   mounted() {
+    this.fetchuser();
     window.addEventListener("unload", this.saveState);
   }
   async login() {
@@ -222,9 +235,19 @@ export default class Home extends Vue {
       type: "success",
       message: "退出登录成功 "
     });
-    this.$router.go(0);
+    this.$router.push("/");
   }
 
+  async fetchuser() {
+    if (this.$store.state.UserNotExist == false) {
+      const res = await this.$http.get("users");
+      this.$store.state.userName = res.data.name;
+      this.$store.state.userId = res.data.id;
+      this.$store.state.postLength = res.data.posts.length;
+    }
+  }
+
+  //刷新保存状态
   saveState() {
     localStorage.setItem("state", JSON.stringify(this.$store.state));
   }

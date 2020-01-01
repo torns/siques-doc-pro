@@ -19,4 +19,16 @@ export default class App extends Vue {}
 .el-menu-item * {
   vertical-align: unset !important;
 }
+.image-caption {
+  justify-content: center;
+  display: flex;
+  img {
+    object-fit: contain;
+  }
+  @media (max-width: 36em) {
+    img {
+      width: -webkit-fill-available;
+    }
+  }
+}
 </style>

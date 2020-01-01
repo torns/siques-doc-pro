@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Body } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, QueryBuilder } from 'typeorm';
 import { Post } from './post.entity';
@@ -53,6 +53,8 @@ export class PostService {
     });
     return entity;
   }
+
+  // 根据集合id查文章
   async showPost(id: number) {
 
     return await this.postRepository
@@ -134,6 +136,8 @@ export class PostService {
   async show(id: string) {
 
     const queryBuilder = await this.postRepository.createQueryBuilder("post")
+
+    queryBuilder.addSelect("post.body")
     queryBuilder.innerJoinAndSelect("post.user", "user")
     queryBuilder.leftJoinAndSelect("user.avator", "avator")
 
@@ -156,14 +160,16 @@ export class PostService {
     delete data.tags;
 
     await this.postRepository.update(id, data);
+    //如果修改的是body才执行
+    if (data.body) {
+      await this.postRepository.createQueryBuilder()
+        // .addSelect('post.body')
+        .update(Post)
+        .where("post.id=:id", { id })
+        .set({ alias: data.body.substring(0, 100) })
+        .execute();
+    }
 
-    // const entity = await this.postRepository.findOne(id, {
-    //   relations: ['category', 'tags'],
-    // });
-    // if (tags) {
-    //   entity.tags = await this.beforeTag(tags);
-    // }
-    // return await this.postRepository.save(entity);
   }
 
   async delete(id: string) {
@@ -230,32 +236,29 @@ export class PostService {
     return res
   }
 
-  //这里提供Userid可以找出给哪篇文章点过赞//关注？
+
+
   // async liked_posts(id: number) {
-  //   console.log(id)
+
   //   return await this.postRepository
   //     .createQueryBuilder("post")
   //     .where('post.id = :id', { id })
   //     .leftJoinAndSelect("post.likes", "likes")
-  // .innerJoinAndSelect("post.user", "user")
+  //     .innerJoinAndSelect("post.user", "user")
   //     .getMany()
 
 
 
   // }
+  async getbody() {
+    const querryBuilder = await this.postRepository.createQueryBuilder('post');
 
-  async liked_posts(id: number) {
-    console.log(id)
-    return await this.postRepository
-      .createQueryBuilder("post")
-      .where('post.id = :id', { id })
-      .leftJoinAndSelect("post.likes", "likes")
-      .innerJoinAndSelect("post.user", "user")
-      .getMany()
+    querryBuilder.addSelect('post.body');
 
-
-
+    const entity = querryBuilder.getOne();
+    return entity;
   }
+
 
 
 

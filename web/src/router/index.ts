@@ -12,10 +12,16 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-      { path: "/u", name: "user", meta: { requireAuth: true }, component: () => import("../views/MyPage.vue") },
+      { path: "/u/:name", name: "user", meta: { requireAuth: true }, component: () => import("../views/MyPage.vue"), props: true },
       { path: '', name: 'home', component: () => import('../views/Cover.vue') },
       { path: '/p/:id', name: 'posts', component: () => import('../views/Post.vue'), props: true },
       { path: '/Notification/:name', meta: { requireAuth: true }, name: 'notification', component: () => import('../views/Notification.vue'), props: true },
+      {
+        path: "/follow",
+        name: "follow",
+        component: () => import('../views/Follow.vue'),
+        meta: { requireAuth: true },
+      },
     ]
   },
   {
@@ -24,6 +30,7 @@ const routes = [
     component: PostEdit,
     meta: { requireAuth: true },
   },
+
   // {
   //   path: "/post",
   //   name: "post",

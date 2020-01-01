@@ -42,7 +42,7 @@ export class UserService {
       .orderBy("avator.id", "DESC")
       .limit(1)
       .getOne();
-    console.log(result.avator)
+
     const user = {
       ...entity,
       avator: result.avator ? result.avator : null
@@ -114,6 +114,7 @@ export class UserService {
       .andWhere(`${resource}.id=:resourceId`, { resourceId })
       .getCount();
 
+    // console.log(id, resource, resourceId)
     return result === 1 ? true : false;
   }
 
@@ -129,9 +130,12 @@ export class UserService {
   }
 
   async showMessage(id: number) {
-    return await this.userRepository.findOne(id, {
-      relations: ["avator"]
-    });
+
+    return await this.userRepository.createQueryBuilder("user")
+      .where("user.id=:id", { id })
+      .leftJoinAndSelect("user.posts", "posts.id")
+      .getOne()
+
   }
 
 
@@ -169,23 +173,35 @@ export class UserService {
 
 
 
-  // 给哪些文章点过赞 用户id
+  // 给哪些文章点过赞 id:用户
   async liked(id: number) {
 
-    const res = await this.postRepository
-      .createQueryBuilder("post")
+    const res = await this.userRepository
+      .findOne(id, { relations: ['likes', "likes.user"] })
 
-      .relation(User, 'likes')
+    return res
+  }
 
+  // 用户之间关注关注
+  async follow(userid1: number, userid2: number) {
+
+    const res = await this.userRepository
+      .createQueryBuilder("user")
+      .relation(User, "follows")
+      .of(userid1)
+      .add(userid2)
+  }
+
+  async getfollows(id) {
+
+    const res = await this.userRepository
+      .createQueryBuilder("user")
+      .relation(User, "follows")
       .of(id)
-
-
 
       .loadMany()
 
     return res
   }
-
-
 
 }

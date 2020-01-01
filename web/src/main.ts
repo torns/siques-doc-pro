@@ -10,7 +10,8 @@ import "./directive"
 import dayjs from "dayjs"
 import mixin from "./mixin"
 import store from './store'
-
+import './plugins/fontawesome.js';
+import 'element-ui/lib/theme-chalk/display.css';
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http

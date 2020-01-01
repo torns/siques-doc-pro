@@ -55,7 +55,7 @@ export class PostController {
 
 
   @Get("all")
-  @UseInterceptors(TransformInterceptor)
+
   async getAll(@ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
   Options: ListOptionsInterface
   ) {
@@ -85,6 +85,7 @@ export class PostController {
   @Put(':id')
   // @ApiQuery({ name: 'role', enum: UserRole })
   @UseGuards(AuthGuard("jwt"), AccessGuard)
+
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
     resource: Resource.POST,
@@ -145,12 +146,12 @@ export class PostController {
     return this.postService.liked(id);
   }
 
-  // 喜欢的文章
-  @Get(":id/liked_posts")
-  @UseGuards(AuthGuard())
-  async liked_posts(@User() user: UserEntity) {
+  // // 喜欢的文章
+  // @Get(":id/liked_posts")
+  // @UseGuards(AuthGuard())
+  // async liked_posts(@User() user: UserEntity) {
 
-    return await this.postService.liked_posts(user.id)
-  }
+  //   return await this.postService.liked_posts(user.id)
+  // }
 
 }

@@ -1,55 +1,58 @@
 <template>
-  <div style="min-height:100%;height:auto">
-    <div class="contanier d-flex pt-3 bg-light pb-3">
-      <div class="leftside"></div>
-      <div class="main font-songti bg-white shadow-2" style="position:relative">
-        <div>
-          <div v-if="post.title" style="padding:25px">
-            <div class="d-flex flex-column menu-button">
-              <el-button
-                type="success"
-                circle
-                icon="el-icon-check"
-                style="width:fit-content;"
-                @click="like"
-              ></el-button>
-              <i class="pl-1 my-1">{{liked}}赞</i>
-              <el-button type="info" icon="el-icon-check" circle style="width:fit-content;"></el-button>
-              <i class="mt-1">赞赏</i>
-            </div>
-            <h1 class="py-4">{{post.title}}</h1>
-            <div class="d-flex py-3">
-              <img
-                v-if="post.user.avator!=null"
-                :src="post.user.avator.url"
-                alt="无"
-                class="avator shadow-1 contain"
-              />
-              <img v-else src="../assets/avator.jpg" alt="无" class="avator shadow-1 contain" />
+  <div class="bg-light">
+    <div class="container pt-4 pb-3">
+      <el-row type="flex" :gutter="20">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <div class="font-songti bg-white shadow-2">
+            <div>
+              <div v-if="post.title" style="padding:25px">
+                <div class="d-flex flex-column menu-button">
+                  <el-button
+                    type="success"
+                    circle
+                    icon="el-icon-check"
+                    style="width:fit-content;"
+                    @click="like"
+                  ></el-button>
+                  <i class="pl-1 my-1">{{liked}}赞</i>
+                  <el-button type="info" icon="el-icon-check" circle style="width:fit-content;"></el-button>
+                  <i class="mt-1">赞赏</i>
+                </div>
+                <h1 class="py-4">{{post.title}}</h1>
+                <div class="d-flex py-3">
+                  <img
+                    v-if="post.user.avator!=null"
+                    :src="post.user.avator.url"
+                    alt="无"
+                    class="avator shadow-1 contain"
+                  />
+                  <img v-else src="../assets/avator.jpg" alt="无" class="avator shadow-1 contain" />
 
-              <div class="pl-2">
-                <div class="d-flex">
-                  <div>{{post.user.name}}</div>
-                  <el-button type="text" class="btn">关注</el-button>
+                  <div class="pl-2">
+                    <div class="d-flex ai-baseline">
+                      <div class="pr-2">{{post.user.name}}</div>
+                      <el-button type="text" class="btn" @click="follow(post.user.id)">关注</el-button>
+                    </div>
+                    <div class="d-flex fs-xm">
+                      <div class="pr-2">{{$dayjs(post.created).format("YYYY.MM.DD HH:MM:ss")}}</div>
+                      <div class="pr-2">字数：0</div>
+                      <div>阅读：{{post.views}}</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="d-flex fs-xm">
-                  <div class="pr-2">{{$dayjs(post.created).format("YYYY.MM.DD HH:MM:ss")}}</div>
-                  <div class="pr-2">字数：0</div>
-                  <div>阅读：{{post.views}}</div>
-                </div>
+
+                <div v-if="post.body" v-html="post.body" class="article lh-3"></div>
+                <div></div>
               </div>
             </div>
-
-            <div v-if="post.body" v-html="post.body" class="article lh-3"></div>
-            <div></div>
           </div>
-        </div>
-      </div>
-
-      <div class="sidebar">
-        <side-bar></side-bar>
-      </div>
-      <el-backtop></el-backtop>
+        </el-col>
+        <el-col class="hidden-md-and-down" :xs="0" :sm="6" :md="8" :lg="4" :xl="4">
+          <div>
+            <side-bar></side-bar>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <el-footer class="mt-2"></el-footer>
   </div>
@@ -101,30 +104,51 @@ export default class Post extends Vue {
     await this.$http.get(`/users/${this.id}/like`);
     this.fetchliked();
   }
+
+  async follow(id) {
+    // 提供用户id
+    await this.$http.get(`/users/${id}/follow`);
+  }
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
+.container {
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (max-width: 36em) {
+    width: auto;
+  }
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
+  @media (min-width: 992px) {
+    max-width: 960px;
+  }
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+  }
+}
+
+.menu-button {
+  @media (max-width: 1200px) {
+    display: none;
+  }
+}
+
 .menu-button {
   position: fixed;
   margin-left: -6em;
   margin-top: 10em;
 }
+
 .avator {
   width: 60px !important;
   height: 60px !important;
   border-radius: 50%;
 }
-p img {
-  object-fit: contain;
-  width: 100%;
-}
-.main {
-  min-width: 730px !important;
-}
-.contain {
-  object-fit: contain;
-}
+
 h1 {
   font-size: 30px;
   font-weight: 700;

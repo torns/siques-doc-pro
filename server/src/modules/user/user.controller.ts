@@ -22,11 +22,14 @@ import { User } from 'src/core/decorators/user.decorators';
 import { User as userEntity } from './user.entity';
 import { PostService } from '../post/post.service';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
+import { transcode } from 'buffer';
 
 @ApiTags('用户')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService,
+  constructor(
+    private readonly userService: UserService,
+
 
   ) { }
 
@@ -123,5 +126,18 @@ export class UserController {
     return this.userService.liked(user.id);
   }
 
+  // 关注 id是要关注的用户的id
+  @Get(":id/follow")
+  @UseGuards(AuthGuard())
+  async follow(@User() user: userEntity, @Param("id", ParseIntPipe) id: number) {
+    return this.userService.follow(id, user.id)
+  }
+
+  //查询自己关注的所有人
+  @Get(":id/follows")
+  @UseGuards(AuthGuard())
+  async getfollows(@User() user: userEntity) {
+    return await this.userService.getfollows(user.id)
+  }
 
 }

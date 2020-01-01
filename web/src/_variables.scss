@@ -1,15 +1,16 @@
 // colors
 $colors: (
-  "primary": #db933f,
+  "primary": #009a61,
   "white": #fff,
   "light": #f9f9f9,
-  "info": #4b67af,
+  "info": #fcf8e3,
   "blue": #4394e4,
   "black": #333,
   "dark": #222,
   "gray": #999,
   "dark-1": #343440,
   "light-1": #d4d9de,
+  
 );
 
 $fonts:(
@@ -64,7 +65,8 @@ $flex-ai: (
   start: flex-end,
   end: flex-end,
   center: center,
-  stretch: stretch
+  stretch: stretch,
+  baseline:baseline
 );
 
 // 常用边距

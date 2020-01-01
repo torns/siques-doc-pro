@@ -8,20 +8,20 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
-  TableForeignKey,
-  ViewColumn,
-  VersionColumn,
   BeforeUpdate,
   Generated,
+  AfterLoad,
+  BeforeInsert,
 
 } from 'typeorm';
 import { Category } from '../category/category.entity';
-
+import * as bcrypt from 'bcryptjs';
 import { User } from '../user/user.entity';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
 import { Collection } from '../collection/collection.entity';
 import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Post {
@@ -35,9 +35,14 @@ export class Post {
   editor: boolean;
 
   // nullable可为空
-  @Column('longtext', { nullable: true })
+  @Column('longtext', { nullable: true, select: false })
+  @Exclude()
   body: string;
 
+
+
+  @Column({ default: "" })
+  alias: string;
 
 
   @CreateDateColumn()
@@ -49,6 +54,7 @@ export class Post {
   @Column({ default: 0 })
   views: number;
 
+  // 多个文章对应一个用户
   @ManyToOne(
     type => User,
     user => user.posts,
@@ -71,7 +77,7 @@ export class Post {
   tags: Tag[];
 
 
-  @ManyToMany(type => User, user => user.posts, { eager: true })
+  @ManyToMany(type => User, user => user.posts)
 
   users: User[];
 
@@ -87,5 +93,9 @@ export class Post {
   })
   collection: Collection;
 
+  @AfterLoad()
+  async insertAlias() {
 
+    // this.alias = await this.body.substring(0, 100)
+  }
 }

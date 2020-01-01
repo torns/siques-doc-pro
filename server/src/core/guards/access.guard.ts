@@ -6,12 +6,14 @@ import { User } from 'src/modules/user/user.entity';
 import { UserRole } from '../enums/user-role.enum';
 import { Possession } from '../enums/possession.enum';
 import { UserService } from 'src/modules/user/user.service';
+import { PostService } from 'src/modules/post/post.service';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly userService: UserService,
+
   ) { }
 
   async validatePermissons(
@@ -19,7 +21,11 @@ export class AccessGuard implements CanActivate {
     user: User,
     resourceId: number,
   ) {
-    // console.log(User)
+
+    // const entity = await this.postService.getbody();
+    // await entity.insertAlias()
+    // console.log(permissions)
+
     const results = permissions.map(async permission => {
       const { role, resource, possession } = permission;
 
@@ -37,6 +43,7 @@ export class AccessGuard implements CanActivate {
       if (role) {
         hasrole = user.roles.some(UserRole => (UserRole.name === role));
       }
+
 
       return hasrole && hasPossession;
     });

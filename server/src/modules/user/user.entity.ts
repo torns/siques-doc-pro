@@ -36,6 +36,8 @@ export class User {
   @Exclude()
   phonenumber: string;
 
+  @Column()
+  introduction: string;
 
   @CreateDateColumn()
   created: Date;
@@ -73,11 +75,18 @@ export class User {
   @JoinTable()
   roles: Role[];
 
+
+  //一个用户关注另一个用户
+  @ManyToMany(
+    type => User,
+    user => User,
+  )
+  @JoinTable()
+  follows: User[];
+
   //多个角色
   @ManyToMany(type => Post,
-    post => post.user, {
-    cascade: true
-  })
+    post => post.user)
   @JoinTable()
   likes: Post[];
 
