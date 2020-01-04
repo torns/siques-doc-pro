@@ -1,33 +1,45 @@
 <template>
   <div class="bg-light">
     <div class="container pt-4 pb-3">
-      <el-row type="flex" :gutter="20">
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+      <el-row type="flex" :gutter="0">
+        <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-2">
             <div>
               <div v-if="post.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
                   <el-button
-                    type="success"
+                    class="hover-3"
+                    type="plain"
                     circle
-                    icon="el-icon-check"
                     style="width:fit-content;"
                     @click="like"
-                  ></el-button>
-                  <i class="pl-1 my-1">{{liked}}赞</i>
-                  <el-button type="info" icon="el-icon-check" circle style="width:fit-content;"></el-button>
-                  <i class="mt-1">赞赏</i>
+                  >
+                    <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+                  </el-button>
+                  <i class="pl-1 mt-1">{{liked}}赞</i>
+                  <el-button type="text" circle>
+                    <font-awesome-icon :icon="['fas', 'bookmark']" />
+                  </el-button>
+                  <i></i>
+                  <el-button style="margin-top:-15px" type="text" circle>
+                    <font-awesome-icon :icon="['fab', 'rocketchat']" />
+                  </el-button>
+                  <i></i>
+                  <el-button style="margin-top:-15px" type="text" circle>
+                    <font-awesome-icon :icon="['fas', 'share-alt']" />
+                  </el-button>
                 </div>
                 <h1 class="py-4">{{post.title}}</h1>
                 <div class="d-flex py-3">
-                  <img
-                    v-if="post.user.avator!=null"
-                    :src="post.user.avator.url"
-                    alt="无"
-                    class="avator shadow-1 contain"
-                  />
-                  <img v-else src="../assets/avator.jpg" alt="无" class="avator shadow-1 contain" />
-
+                  <router-link :to="`/u/${post.user.id}`">
+                    <img
+                      v-if="post.user.avator!=null"
+                      :src="post.user.avator.url"
+                      alt="无"
+                      class="avator shadow-1 contain"
+                    />
+                    <img v-else src="../assets/avator.jpg" alt="无" class="avator shadow-1 contain" />
+                  </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
                       <div class="pr-2">{{post.user.name}}</div>
@@ -42,12 +54,46 @@
                 </div>
 
                 <div v-if="post.body" v-html="post.body" class="article lh-3"></div>
-                <div></div>
+                <div class="text-primary mt-3">
+                  阅读：{{post.views}}
+                  <span>.</span>
+                  {{$dayjs(Date.now()-(new Date(post.created)).getTime()).format("发布于DD天 HH小时 MM分钟前")}}
+                </div>
+                <div class="d-flex jc-center my-4">
+                  <el-button class="hover-3" type="plain">
+                    <font-awesome-icon class="pr-2" :icon="['far', 'thumbs-up']" />赞
+                  </el-button>
+                  <el-button class="hover-3" type="plain">
+                    <font-awesome-icon class="pr-2" :icon="['far', 'bookmark']" />收藏
+                  </el-button>
+                  <el-button class="hover-3" type="plain">
+                    <font-awesome-icon class="pr-2" :icon="['far', 'share-square']" />分享
+                  </el-button>
+                </div>
+                <div class="text-center text-gray">本作品系 原创 ， 采用《署名-非商业性使用-禁止演绎 4.0 国际》许可协议</div>
+                <el-divider></el-divider>
               </div>
             </div>
           </div>
+          <div>
+            <div class="fs-xl py-1 pt-4">0条评论</div>
+            <div class="py-4 px-3 bg-white border-radius shadow-1" style="min-height:100px">
+              <div class="d-flex jc-around">
+                <el-avatar>user</el-avatar>
+                <el-input style="width:85%" type="textarea" placeholder="撰写评论"></el-input>
+              </div>
+              <div class="text-right mt-4">
+                <el-button type="primary">提交评论</el-button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="fs-xl py-1 pt-4">推荐阅读</div>
+            <div class="py-4 px-3 bg-white border-radius shadow-1" style="min-height:100px"></div>
+          </div>
         </el-col>
-        <el-col class="hidden-md-and-down" :xs="0" :sm="6" :md="8" :lg="4" :xl="4">
+        <el-col class="hidden-md-and-down pl-2" :xs="0" :sm="6" :md="8" :lg="6" :xl="6">
           <div>
             <side-bar></side-bar>
           </div>
@@ -124,7 +170,7 @@ export default class Post extends Vue {
     max-width: 720px;
   }
   @media (min-width: 992px) {
-    max-width: 960px;
+    max-width: 900px;
   }
   @media (min-width: 1200px) {
     max-width: 1140px;
@@ -147,6 +193,7 @@ export default class Post extends Vue {
   width: 60px !important;
   height: 60px !important;
   border-radius: 50%;
+  object-fit: contain;
 }
 
 h1 {

@@ -52,9 +52,9 @@ export class UserService {
     return user;
   }
 
-  //传入的用户id
+  //传入的用户id,用户点过赞的文章
   async userliked(id: number) {
-    console.log(id)
+
     const res = await this.postRepository
       .createQueryBuilder()
       .relation(Post, 'user')
@@ -97,12 +97,9 @@ export class UserService {
 
   //更新用户
   async update(id: number, data: UserDto) {
-    const { roles } = data;
-    const entity = await this.userRepository.findOne(id);
-    if (roles) {
-      entity.roles = roles;
-    }
-    return await this.userRepository.save(entity);
+
+    const entity = await this.userRepository.update(id, data);
+
   }
 
   //检查用户是否有资源权限
@@ -133,27 +130,43 @@ export class UserService {
 
     return await this.userRepository.createQueryBuilder("user")
       .where("user.id=:id", { id })
-      .leftJoinAndSelect("user.posts", "posts.id")
+      .leftJoinAndSelect("user.posts", "posts")
+      .leftJoinAndSelect("user.follows", "follows")
       .getOne()
 
   }
 
 
-  //点赞和消除
+  //点赞和消除 id是文章id
   async like(id: number, user: User) {
-    console.log(user.id, id)
+
     try {
       await this.userRepository
         .createQueryBuilder()
         .relation(User, 'likes')
         .of(user)
         .add(id);
+
+      await this.postRepository
+        .createQueryBuilder()
+        .update(Post)
+        .where('post.id =:id', { id })
+        .set({ likes: () => "likes + 1" })
+        .execute();
+
     } catch{
       await this.userRepository
         .createQueryBuilder()
         .relation(User, 'likes')
         .of(user)
         .remove(id);
+
+      await this.postRepository
+        .createQueryBuilder()
+        .update(Post)
+        .where('post.id =:id', { id })
+        .set({ likes: () => "likes - 1" })
+        .execute();
     }
 
   }
@@ -162,7 +175,7 @@ export class UserService {
   //leftJoinandselect就是会把符合的数据以及子表的数据带出来
   async countliked(id: number) {
     // 这里要给postid
-    console.log(id)
+
     const res = await this.userRepository
       .createQueryBuilder("user")
       .leftJoin("user.likes", "likes")
@@ -182,7 +195,7 @@ export class UserService {
     return res
   }
 
-  // 用户之间关注关注
+  // 用户之间关注
   async follow(userid1: number, userid2: number) {
 
     const res = await this.userRepository
@@ -192,6 +205,7 @@ export class UserService {
       .add(userid2)
   }
 
+  //关注了谁
   async getfollows(id) {
 
     const res = await this.userRepository
@@ -200,6 +214,14 @@ export class UserService {
       .of(id)
 
       .loadMany()
+
+    return res
+  }
+  //谁关注了我,以及他们的头像
+  async whofollows(id) {
+    // console.log(id)
+    const res = await this.userRepository
+      .findOne(id, { relations: ["follows", "user", "user.avator"] })
 
     return res
   }

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import PostEdit from "../views/PostEdit.vue";
 import store from "../store"
+import Page from "../views/Page.vue"
 
 Vue.use(VueRouter);
 
@@ -12,7 +13,8 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-      { path: "/u/:name", name: "user", meta: { requireAuth: true }, component: () => import("../views/MyPage.vue"), props: true },
+
+      { path: "/u/:id", name: "user", meta: { requireAuth: true }, component: Page, props: true },
       { path: '', name: 'home', component: () => import('../views/Cover.vue') },
       { path: '/p/:id', name: 'posts', component: () => import('../views/Post.vue'), props: true },
       { path: '/Notification/:name', meta: { requireAuth: true }, name: 'notification', component: () => import('../views/Notification.vue'), props: true },

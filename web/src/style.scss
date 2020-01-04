@@ -11,10 +11,13 @@
 //界面防抖
 html, body {
   height:100%;
-
+  
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   overflow-x: hidden;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  word-break: break-all;
   :focus {
     outline: none;
 }
@@ -22,44 +25,57 @@ html, body {
 // html{overflow-y:scroll;}
 
 
-ul li {
+li {
   list-style-type: none;
   cursor: pointer;
 }
 
 //布局
-.contanier {
-  text-align: left;
-}
-.main {
-  min-width: 730px;
-  height: 100%;
-  @media (min-width:730px) {
-    width: auto;
+.container {
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 768px) {
+    width: 750px;
+    
+  }
+  @media (min-width: 992px) {
+    width: 970px;
+  }
+  @media (min-width: 1200px) {
+    width: 1140px;
   }
 }
-.leftside {
-  width: 53%;
-  height: 100%;
-  @media (max-width:730px) {
-    display: none;
-  }
-
-}
-.sidebar {
-  width: 100%;
-  height: 100%;
- 
-}
-
 code {
   font-family: Source Code Pro;
   font-size: 13.3px;
 }
 
-// 滑动
 
 
+// 透明度
+.opacity25 {
+  opacity: 0.25;
+}
+
+@each $opacitykey,$opacity in $opacitys {
+  .opacity#{$opacitykey}{
+    opacity:$opacity ;
+  }
+  
+}
+
+.border-radius{
+  border-radius: 10px;
+}
+
+.border-dash{
+  border: 1px dashed #dddddd;
+}
+
+.border-solid{
+  border: 1px solid #dddddd;
+}
 
 // 阴影
 .shadow-1{
@@ -129,6 +145,16 @@ code {
     color: white;
 
 }
+//去阴影
+
+
+.hover-1{
+  &:hover{
+    opacity: 0.8!important;
+    
+  }
+}
+
 
 .hover-2{
   &:hover{
@@ -137,8 +163,27 @@ code {
     
   }
 }
-    
 
+
+.hover-3{
+  &:hover{
+  background-color: #009a61;
+  color: white;
+  }
+
+}
+    
+//遮罩
+.hover-mask {
+  &::content{
+    content: "";
+    width: 20px;
+    height: 200px;
+    
+    background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
+  }
+  
+}
 
 .visitlink{
   &:visited{
@@ -147,9 +192,9 @@ code {
  
 }
 
-.el-divider--horizontal{
-  margin:0;
-}
+
+
+
 // text align
 //第一个参数为变量 第二个为集合
 @each $var in (left, center, right) {

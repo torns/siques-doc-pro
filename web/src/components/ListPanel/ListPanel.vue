@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="pt-3">
+    <ul v-if="posts" class="pt-3">
       <li v-for="post in posts" :key="post.id" class="text-gray">
         <router-link tag="div" class="fs-m text-primary" :to="`/p/${post.id}`">{{post.title}}</router-link>
         <div class="d-flex fs-xs pt-2">
@@ -27,6 +27,7 @@
         </div>
       </li>
     </ul>
+    <div v-else>(ﾟ∀ﾟ ) 暂时没有任何数据</div>
   </div>
 </template>
 

@@ -17,7 +17,7 @@ export default class Tinymce extends Vue {
     es: "es_MX",
     ja: "ja"
   };
-  height: number = 70;
+  height: number = 60;
   model: any = [];
   body: any = "";
 

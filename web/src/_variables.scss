@@ -5,12 +5,14 @@ $colors: (
   "light": #f9f9f9,
   "info": #fcf8e3,
   "blue": #4394e4,
+  "darkblue":#275380,
+  "orange": #FF5F57,
   "black": #333,
   "dark": #222,
   "gray": #999,
   "dark-1": #343440,
-  "light-1": #d4d9de,
-  
+  "light-1": #F6F6F6,
+   "border":#eee,
 );
 
 $fonts:(
@@ -20,7 +22,7 @@ $fonts:(
 
 );
 
-$border-color: map-get($colors, "light-1");
+$border-color: map-get($colors, "border");
 // font size 的工具类
 $base-font-size: 1rem;
 $font-sizes: (
@@ -93,3 +95,11 @@ $spacing-sizes: (
   6: 4.5,
   7: 6
 );
+
+$opacitys:(
+  20: 0.2,
+  40: 0.4,
+  60: 0.6,
+  80: 0.8,
+  100: 1,
+)

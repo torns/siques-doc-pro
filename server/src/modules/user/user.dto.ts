@@ -5,6 +5,11 @@ export class UserDto {
   readonly name: string;
   readonly password: string;
   readonly roles: Role[];
+  readonly city: string;
+  readonly school: string;
+  readonly organization: string;
+  readonly website: string;
+  readonly introduction: string;
 }
 
 export class UpdatePasswordDto {

@@ -9,8 +9,12 @@ export default new Vuex.Store({
     loginFormVisible: false,
     userName: "",
     userId: "",
-    postLength: ""
-
+    otherId: "",
+    userCreated: "",
+    postLength: "",
+    myFollowers: "",
+    isValid: "",
+    personalData: ""
   },
   mutations: {
     setTrue(state) {

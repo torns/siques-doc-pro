@@ -28,6 +28,7 @@ export class CollectionController {
         return await this.CollectionService.showCollection(user.id)
     }
 
+
     @Delete(":id")
     async removeCollection(@Param("id", ParseIntPipe) id: number) {
         return await this.CollectionService.removeCollection(id)

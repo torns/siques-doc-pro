@@ -35,7 +35,7 @@ export class UserController {
 
   @Post()
   async create(@Body() data: UserDto) {
-    console.log(data);
+
     return await this.userService.store(data);
   }
 
@@ -72,11 +72,19 @@ export class UserController {
   }
 
 
-  //修改密码
+  // //修改密码
+  // @Put(':id')
+  // @UseGuards(AuthGuard('jwt'), AccessGuard)
+  // //必须是admin角色才可以通过这条路由
+  // @Permissions({ role: UserRole.ADMIN })
+  // async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserDto) {
+  //   return await this.userService.update(id, data);
+  // }
+
+
+  // 更新用户信息
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'), AccessGuard)
-  //必须是admin角色才可以通过这条路由
-  @Permissions({ role: UserRole.ADMIN })
+  @UseGuards(AuthGuard('jwt'))
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserDto) {
     return await this.userService.update(id, data);
   }
@@ -96,7 +104,7 @@ export class UserController {
   // @Get(':id/like')
   // @UseGuards(AuthGuard())
   // async userliked(@Param() data: string, @User() user: userEntity) {
-  //   console.log(data)
+  //
   //   return await this.userService.userliked(user.id)
 
   // }
@@ -138,6 +146,13 @@ export class UserController {
   @UseGuards(AuthGuard())
   async getfollows(@User() user: userEntity) {
     return await this.userService.getfollows(user.id)
+  }
+
+  //查询谁关注了自己
+  @Get(":id/whofollows")
+  @UseGuards(AuthGuard())
+  async whofollows(@User() user: userEntity, @Param("id", ParseIntPipe) id: number) {
+    return await this.userService.whofollows(id)
   }
 
 }

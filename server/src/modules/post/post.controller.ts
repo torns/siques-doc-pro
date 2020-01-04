@@ -42,26 +42,27 @@ export class PostController {
     return await this.postService.store(data, user);
   }
 
-  @Get()
+  @Get(":id/user")
   @UseGuards(AuthGuard())
   @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
-    Options: ListOptionsInterface, @User() user: UserEntity
+    Options: ListOptionsInterface, @Param("id", ParseIntPipe) id: number, @User() user: UserEntity
   ) {
 
-    return await this.postService.index(Options, user.id);
+    return await this.postService.index(Options, id);
   }
 
 
   @Get("all")
 
-  async getAll(@ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
+  async getAll(@ListOptions({ limit: 10, sort: 'likes', order: 'DESC' }) //updated降序 ASC DESC
   Options: ListOptionsInterface
   ) {
 
     return await this.postService.getAll(Options);
   }
+
 
   @Get("collections/:id")
   @UseGuards(AuthGuard('jwt'))

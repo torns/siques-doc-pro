@@ -9,7 +9,7 @@
     </div>
 
     <div class="container">
-      <el-row style="margin-left: -5px;margin-right: -5px;" class="h-100 d-flex pt-4" :gutter="20">
+      <el-row class="d-flex pt-4" :gutter="0">
         <el-col class="hidden-sm-and-down" :xs="0" :sm="4" :md="5" :lg="4" :xl="4">
           <div class="d-flex" style="flex-direction: row-reverse;">
             <ul class="text-left fs-xm">
@@ -25,14 +25,13 @@
             </ul>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+        <el-col class="px-2" :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
           <div>
             <div>
               <el-carousel height="150px" style="border-radius: 5px;" direction="vertical">
                 <el-carousel-item v-for="item in 4" :key="item">
                   <div
-                    style="background: url(https://image-static.segmentfault.com/299/579/2995795553-5e0acc638a96c);
-    background-size: cover;height:150px"
+                    style="background: url(https://image-static.segmentfault.com/299/579/2995795553-5e0acc638a96c);background-size: cover;height:150px"
                     class="w-100"
                   ></div>
                   <div class="mask"></div>
@@ -42,26 +41,42 @@
               <div class="pt-3">为你推荐</div>
 
               <el-divider></el-divider>
-              <div v-for="post in posts" :key="post.id" class="pt-2 pb-4">
-                <router-link
-                  tag="div"
-                  class="hoverlink point visitlink pb-2 fs-lg"
-                  :to="`/p/${post.id}`"
-                >{{post.title}}</router-link>
-                <div class="text-gray fs-xm lh-2">
-                  <div v-html="post.alias+' ...'"></div>
-                  <div class="d-flex">
-                    <div class="d-flex point">
-                      <i class="el-icon-success hover-1 lh-2"></i>
 
-                      <div class="pl-1 pr-3 text-primary hoverlink">×0 · 赞</div>
+              <ul
+                class="infinite-list"
+                infinite-scroll-disabled="loading"
+                v-infinite-scroll="load"
+                infinite-scroll-distance="0"
+                style="heihgt:200px"
+              >
+                <li v-for="(post,$index) in posts" :key="$index">
+                  <router-link
+                    tag="div"
+                    class="hoverlink point visitlink fs-lg"
+                    :to="`/p/${post.id}`"
+                  >{{post.title}}</router-link>
+                  <div class="text-gray fs-xm lh-2">
+                    <!-- 过滤 -->
+                    <span>{{post.alias | capitalize}}...</span>
+                    <div class="d-flex mb-3">
+                      <div class="d-flex point">
+                        <i class="el-icon-success hover-1 lh-2"></i>
+
+                        <div class="pl-1 pr-3 text-primary hoverlink">×{{post.likes}} · 赞</div>
+                      </div>
+                      <div class="pr-2">{{post.user.name}} ·</div>
+                      <div>{{$dayjs(post.created).format("MM月DD日")}}</div>
+                      <div>{{post.category}}</div>
                     </div>
-                    <div class="pr-2">{{post.user.name}} ·</div>
-                    <div>{{$dayjs(post.created).format("MM月DD日")}}</div>
-                    <div>{{post.category}}</div>
                   </div>
+                </li>
+                <div v-if="loading" class="my-3 text-primary fs-xl">
+                  <i class="el-icon-loading"></i> Loading
                 </div>
-              </div>
+                <div v-if="noMore" class="my-3 text-primary fs-xl">
+                  <i class="el-icon-loading"></i> (ﾟ∀ﾟ )没有更多内容了
+                </div>
+              </ul>
             </div>
           </div>
         </el-col>
@@ -86,9 +101,15 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-@Component({})
+
+@Component({
+  components: {}
+})
 export default class MyPage extends Vue {
-  posts: [] = null;
+  count = 1;
+  loading = false;
+  noMore = false;
+  posts = [];
   category: string = "suggest";
   links = [
     { name: "为你推荐", alias: "suggest", tag: "far", icon: "address-card" },
@@ -102,9 +123,27 @@ export default class MyPage extends Vue {
     this.fetchPost();
   }
   async fetchPost() {
-    const res = await this.$http.get("/posts/all");
+    const res = await this.$http.get("/posts/all?limit=10&page=1");
 
-    this.posts = res.data[0];
+    this.posts = res.data;
+  }
+
+  async fetchHotPost() {
+    const res = await this.$http.get("/posts/all?limit=10&page=1");
+
+    this.posts = res.data;
+  }
+
+  async load() {
+    this.loading = true;
+    this.count += 1;
+
+    var clock = setTimeout(async () => {
+      const res = await this.$http.get(`/posts/all?limit=4&page=${this.count}`);
+      this.posts = this.posts.concat(res.data);
+
+      this.loading = false;
+    }, 2500);
   }
 
   fetchCategory(alias) {
@@ -131,21 +170,5 @@ export default class MyPage extends Vue {
   left: 0;
   background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
   border-radius: 4px;
-}
-
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-  @media (min-width: 768px) {
-    width: 750px;
-  }
-  @media (min-width: 992px) {
-    width: 970px;
-  }
-  @media (min-width: 1200px) {
-    width: 1140px;
-  }
 }
 </style>

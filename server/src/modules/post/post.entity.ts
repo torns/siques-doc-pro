@@ -54,6 +54,9 @@ export class Post {
   @Column({ default: 0 })
   views: number;
 
+  @Column({ default: 0 })
+  likes: number;
+
   // 多个文章对应一个用户
   @ManyToOne(
     type => User,
@@ -77,9 +80,11 @@ export class Post {
   tags: Tag[];
 
 
-  @ManyToMany(type => User, user => user.posts)
+  @ManyToMany(type => User, user => user.likes)
 
   users: User[];
+
+
 
 
   @OneToMany(

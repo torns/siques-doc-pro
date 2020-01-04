@@ -10,6 +10,7 @@ import {
   ManyToMany,
   JoinTable,
   ManyToOne,
+  RelationId,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
@@ -36,8 +37,22 @@ export class User {
   @Exclude()
   phonenumber: string;
 
-  @Column()
+  @Column({ nullable: true })
   introduction: string;
+
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  school: string;
+
+  @Column({ nullable: true })
+  organization: string;
+
+  @Column({ nullable: true })
+  website: string;
+
+
 
   @CreateDateColumn()
   created: Date;
@@ -79,10 +94,19 @@ export class User {
   //一个用户关注另一个用户
   @ManyToMany(
     type => User,
-    user => User,
+    follows => follows.user,
   )
   @JoinTable()
   follows: User[];
+
+  @ManyToMany(
+    type => User,
+    user => user.follows,
+  )
+  user: User[];
+
+
+
 
   //多个角色
   @ManyToMany(type => Post,

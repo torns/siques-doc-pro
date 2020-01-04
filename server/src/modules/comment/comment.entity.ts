@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
@@ -33,6 +35,22 @@ export class Comment {
     { nullable: false },
   )
   post: Post;
+
+  // 多个评论对应多个评论
+  @ManyToMany(
+    type => Comment,
+    parents => parents.children,
+  )
+  @JoinTable()
+  parent: Comment;
+
+  @ManyToMany(
+    type => Comment,
+    children => children.parent,
+  )
+  children: Comment[];
+
+
 
   @ManyToOne(
     type => User,

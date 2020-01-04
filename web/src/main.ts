@@ -12,6 +12,9 @@ import mixin from "./mixin"
 import store from './store'
 import './plugins/fontawesome.js';
 import 'element-ui/lib/theme-chalk/display.css';
+import "./filter"
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http

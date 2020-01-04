@@ -1,19 +1,19 @@
 <template>
-  <div class="contanier h-100 d-flex">
-    <div class="leftside"></div>
-    <div class="main pt-5 d-flex">
-      <div style="width:30%">
-        <div class="pb-2">全部关注</div>
-
-        <el-divider></el-divider>
-        <ul class="pt-2">
-          <li v-for="(follow,index) in follows" :key="index">{{follow.name}}</li>
+  <div class="contanier h-100">
+    <el-row
+      type="flex"
+      style="margin-left: -5px;margin-right: -5px;"
+      class="h-100 pt-4 text-right"
+      :gutter="20"
+    >
+      <el-col class="hidden-sm-and-down" :xs="0" :sm="4" :md="5" :lg="4" :xl="4">
+        <ul>
+          <li v-for="(follow,id) in follows" :key="id">{{follow.name}}</li>
         </ul>
-      </div>
-      <div class="flex-1 pl-3">全部推荐</div>
-    </div>
-
-    <div class="sidebar"></div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14"></el-col>
+      <el-col class="hidden-sm-and-down" :xs="0" :sm="6" :md="6" :lg="6" :xl="6"></el-col>
+    </el-row>
   </div>
 </template>
 

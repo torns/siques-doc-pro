@@ -20,7 +20,7 @@
                 <div class="d-flex jc-around">
                   <el-button
                     class="btn my-2"
-                    style="border:1px solid #ec7259;color:#ec7259;line-height:6px;border-radius:16px"
+                    style="border:1px solid #009a61;color:#009a61;line-height:6px;border-radius:16px"
                     type="info"
                     @click="createCollect"
                   >提交</el-button>
@@ -108,6 +108,9 @@
         :style="!selectedPost?'display:flex;flex-direction:row;justify-content:center;align-items:center;':''"
       >
         <div v-if="selectedPost">
+          <div class="my-3">
+            <el-input size="medium" v-model="title" placeholder></el-input>
+          </div>
           <tinymce v-show="selectEditor" ref="tinymce" @submit="updatePost"></tinymce>
 
           <markdown v-show="!selectEditor" ref="markdown" @submit="updatePost"></markdown>
@@ -135,6 +138,7 @@ export default class Post extends Vue {
   posts: any = "";
   defaultEditor: boolean = null;
   selectEditor: boolean = null;
+  title: string = "";
   // true是tinymce
 
   mounted() {
@@ -169,6 +173,7 @@ export default class Post extends Vue {
     const res = await this.$http.get(`/posts/${id}`);
     this.selectEditor = res.data.editor;
 
+    this.title = res.data.title;
     if (res.data.editor) {
       this.$nextTick(() => {
         this.$refs.tinymce.setContent(res.data.body);
@@ -226,6 +231,7 @@ export default class Post extends Vue {
     }
 
     const data = {
+      title: this.title,
       body: body
     };
     const res = await this.$http.put(`/posts/${this.selectedPost}`, data);
@@ -326,11 +332,11 @@ export default class Post extends Vue {
 <style lang="scss" scoped>
 .backBtn {
   margin-top: 100px;
-  border: 1px solid #ec7259;
+  border: 1px solid #009a61;
   width: 80%;
   margin: 0 auto;
   border-radius: 20px;
-  color: #ec7259;
+  color: #009a61;
 }
 .postlist ul {
   position: relative;
@@ -349,12 +355,12 @@ export default class Post extends Vue {
   }
 }
 .bd-left {
-  border-left: 3px solid #ec7259;
+  border-left: 3px solid #009a61;
 
   background-color: #666;
 }
 .post-bd-left {
-  border-left: 5px solid #ec7259;
+  border-left: 5px solid #009a61;
   background-color: #e6e6e6;
 }
 

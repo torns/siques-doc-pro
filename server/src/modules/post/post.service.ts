@@ -104,6 +104,7 @@ export class PostService {
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     queryBuilder.innerJoinAndSelect("post.user", "user")
 
+
     // where筛选
     if (categories) {
       queryBuilder.where('category.alias IN(:...categories)', { categories });
@@ -128,7 +129,7 @@ export class PostService {
     });
 
 
-    const entities = queryBuilder.getManyAndCount();
+    const entities = queryBuilder.getMany();
 
     return entities;
   }

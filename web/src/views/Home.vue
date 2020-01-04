@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <el-container>
+  <div class="home" style="overflow:auto;height:100vh">
+    <!-- 父元素设置高度以及overflow，实现页面滚动的重要条件 -->
+    <el-container style>
       <div style="height:2px;" class="bg-primary"></div>
       <el-header style="position:sticky;top:0;z-index: 10;">
         <el-menu
@@ -47,12 +48,15 @@
 
           <el-menu-item>
             <el-popover placement="top" width="160" v-model="visible">
-              <div style="text-align: left; margin: 0">
+              <div style="text-align: center; margin: 0">
                 <div>夜间模式</div>
-                <el-button size="mini" type="text" @click="visible = false">开启</el-button>
-                <el-button type="primary" size="mini" @click="visible = false">关闭</el-button>
+                <div class="d-flex jc-center pt-3">
+                  <el-button size="mini" type="primary" @click="visible = false">开启</el-button>
+
+                  <el-button type="text" size="mini" @click="visible = false">关闭</el-button>
+                </div>
               </div>
-              <el-button slot="reference">Aa</el-button>
+              <el-button type="text" slot="reference">Aa</el-button>
             </el-popover>
           </el-menu-item>
 
@@ -68,18 +72,17 @@
                 <img src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/avator/avator.jpg" />
               </el-avatar>
             </template>
-            <el-menu-item index="/u/mypage">
+            <el-menu-item :index="`/u/${this.$store.state.userId }`">
               <i class="el-icon-user-solid"></i> 我的主页
             </el-menu-item>
 
-            <el-menu-item index="/u/collect">
-              <i class="el-icon-star-on"></i> 收藏的文章
+            <el-menu-item index="/u">
+              <i class="el-icon-star-on"></i> 我的收藏
             </el-menu-item>
-            <el-menu-item index="/u/like">喜欢的文章</el-menu-item>
 
-            <el-menu-item index="/u/setting">设置</el-menu-item>
+            <el-menu-item index="/u/setting">个人设置</el-menu-item>
             <el-menu-item index="/u/help">帮助与反馈</el-menu-item>
-            <el-menu-item @click="logout">退出登录</el-menu-item>
+            <el-menu-item @click="logout">退出</el-menu-item>
           </el-submenu>
 
           <el-menu-item :span="4" index="/post" style="right: 2%;position: absolute;">
@@ -98,9 +101,8 @@
             >免费注册</el-button>
           </el-menu-item>
         </el-menu>
-
-        <div class="line"></div>
       </el-header>
+
       <div class="h-100">
         <router-view :key="$route.path"></router-view>
       </div>
@@ -200,7 +202,7 @@ export default class Home extends Vue {
   visible: boolean = false;
   watch: {};
   mounted() {
-    this.fetchuser();
+    // this.fetchuser();
     window.addEventListener("unload", this.saveState);
   }
   async login() {
@@ -244,6 +246,19 @@ export default class Home extends Vue {
       this.$store.state.userName = res.data.name;
       this.$store.state.userId = res.data.id;
       this.$store.state.postLength = res.data.posts.length;
+      this.$store.state.userCreated = res.data.created;
+      this.$store.state.myFollowers = res.data.follows.length;
+
+      const personal = [
+        {
+          city: res.data.city,
+          school: res.data.school,
+          organization: res.data.organization,
+          website: res.data.website
+        }
+      ];
+
+      this.$store.state.personalData = personal;
     }
   }
 
