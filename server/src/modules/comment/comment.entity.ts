@@ -28,6 +28,9 @@ export class Comment {
   @UpdateDateColumn()
   updated: Date;
 
+  @Column({ default: 0 })
+  like: number
+
   //多个评论对应一篇文章
   @ManyToOne(
     type => Post,
@@ -37,18 +40,18 @@ export class Comment {
   post: Post;
 
   // 多个评论对应多个评论
-  @ManyToMany(
-    type => Comment,
-    parents => parents.children,
-  )
-  @JoinTable()
-  parent: Comment;
+  // @ManyToMany(
+  //   type => Comment,
+  //   parents => parents.children,
+  // )
+  // @JoinTable()
+  // parent: Comment;
 
-  @ManyToMany(
-    type => Comment,
-    children => children.parent,
-  )
-  children: Comment[];
+  // @ManyToMany(
+  //   type => Comment,
+  //   children => children.parent,
+  // )
+  // children: Comment[];
 
 
 

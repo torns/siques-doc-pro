@@ -76,14 +76,41 @@
             </div>
           </div>
           <div>
-            <div class="fs-xl py-1 pt-4">0条评论</div>
+            <div v-if="post.comments" class="fs-xl py-1 pt-4">{{post.comments.length}}条评论</div>
             <div class="py-4 px-3 bg-white border-radius shadow-1" style="min-height:100px">
               <div class="d-flex jc-around">
                 <el-avatar>user</el-avatar>
-                <el-input style="width:85%" type="textarea" placeholder="撰写评论"></el-input>
+                <el-input style="width:85%" v-model="comment" type="textarea" placeholder="撰写评论"></el-input>
               </div>
               <div class="text-right mt-4">
-                <el-button type="primary">提交评论</el-button>
+                <el-button type="primary" @click="sendComment">提交评论</el-button>
+              </div>
+
+              <div v-if="post.comments" class="commentBody pt-3 px-4">
+                <div v-for="(comment,index) in post.comments" :key="index">
+                  <div class="d-flex pb-4">
+                    <div class="mr-3">
+                      <el-avatar>user</el-avatar>
+                    </div>
+                    <div>
+                      <div class="d-flex">
+                        <div style="font-weight:600" class="text-primary">{{comment.user.name}}：</div>
+                        <span>{{comment.body}}</span>
+                      </div>
+                      <div class="d-flex fs-sm ai-baseline">
+                        <el-button type="text">
+                          <font-awesome-icon class="text-gray" :icon="['far', 'thumbs-up']" />
+                        </el-button>
+
+                        <div class="text-primary px-2 point">回复</div>
+
+                        <div
+                          class="fs-xxs"
+                        >{{$dayjs(Date.now()-(new Date(comment.created)).getTime()).format("DD天 HH小时前")}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -126,6 +153,7 @@ export default class Post extends Vue {
   id: number;
   post: any = "";
   liked: number = 0;
+  comment = "";
   mounted() {
     this.fetchpost(this.id);
     this.fetchliked();
@@ -155,6 +183,22 @@ export default class Post extends Vue {
     // 提供用户id
     await this.$http.get(`/users/${id}/follow`);
   }
+
+  async sendComment() {
+    const data = {
+      body: this.comment
+    };
+    await this.$http.post(`/posts/${this.id}/comments`, data);
+    this.$notify({
+      type: "success",
+      message: "评论成功",
+      title: "成功"
+    });
+    this.comment = "";
+    this.fetchpost(this.id);
+  }
+
+  async sendreply() {}
 }
 </script>
 
