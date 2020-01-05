@@ -25,4 +25,15 @@ export default class App extends Vue {}
   max-width: -webkit-fill-available;
   margin: 0.667em 0;
 }
+
+.el-popover {
+  height: 440px !important;
+
+  .el-radio-button__inner {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
 </style>

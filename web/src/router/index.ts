@@ -13,8 +13,8 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-
-      { path: "/u/:id", name: "user", meta: { requireAuth: true }, component: Page, props: true },
+      { path: "/u/", name: "Auth", component: Page, },
+      { path: "/u/:id", name: "user", component: Page, props: true },
       { path: '', name: 'home', component: () => import('../views/Cover.vue') },
       { path: '/p/:id', name: 'posts', component: () => import('../views/Post.vue'), props: true },
       { path: '/Notification/:name', meta: { requireAuth: true }, name: 'notification', component: () => import('../views/Notification.vue'), props: true },

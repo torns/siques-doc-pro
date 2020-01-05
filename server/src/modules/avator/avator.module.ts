@@ -10,19 +10,19 @@ import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Avator]),
-    MulterModule.register({
-      dest: "./uploads/avator",
-      fileFilter: (req, file, callback) => {
-        const mimetype = ["image/png", "image/jpg", "image/jpeg"]
-        const allowed = mimetype.some(type => type === file.mimetype)
+    // MulterModule.register({
+    //   dest: "./uploads/avator",
+    //   fileFilter: (req, file, callback) => {
+    //     const mimetype = ["image/png", "image/jpg", "image/jpeg"]
+    //     const allowed = mimetype.some(type => type === file.mimetype)
 
-        if (allowed) {
-          callback(null, true)
-        } else {
-          callback(new BadRequestException("不支持上传此文件"), false)
-        }
-      }
-    }),
+    //     if (allowed) {
+    //       callback(null, true)
+    //     } else {
+    //       callback(new BadRequestException("不支持上传此文件"), false)
+    //     }
+    //   }
+    // }),
     AuthModule
   ],
   controllers: [AvatorController],

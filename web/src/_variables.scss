@@ -22,6 +22,8 @@ $fonts:(
 
 );
 
+$color-red:map-get($colors, "orange");
+
 $border-color: map-get($colors, "border");
 // font size 的工具类
 $base-font-size: 1rem;

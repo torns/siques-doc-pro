@@ -56,7 +56,7 @@ export class PostController {
 
   @Get("all")
 
-  async getAll(@ListOptions({ limit: 10, sort: 'likes', order: 'DESC' }) //updated降序 ASC DESC
+  async getAll(@ListOptions({ limit: 10, sort: 'liked', order: 'DESC' }) //updated降序 ASC DESC
   Options: ListOptionsInterface
   ) {
 

@@ -62,7 +62,7 @@
                       <div class="d-flex point">
                         <i class="el-icon-success hover-1 lh-2"></i>
 
-                        <div class="pl-1 pr-3 text-primary hoverlink">×{{post.likes}} · 赞</div>
+                        <div class="pl-1 pr-3 text-primary hoverlink">×{{post.liked}} · 赞</div>
                       </div>
                       <div class="pr-2">{{post.user.name}} ·</div>
                       <div>{{$dayjs(post.created).format("MM月DD日")}}</div>

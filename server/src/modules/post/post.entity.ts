@@ -55,7 +55,7 @@ export class Post {
   views: number;
 
   @Column({ default: 0 })
-  likes: number;
+  liked: number;
 
   // 多个文章对应一个用户
   @ManyToOne(

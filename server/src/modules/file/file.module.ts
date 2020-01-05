@@ -4,9 +4,11 @@ import { FileService } from './file.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { File } from './file.entity';
+import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([File]),
+    AuthModule
     // MulterModule.register({
     //   dest: './uploads',
     //   fileFilter: (req, file, callback) => {

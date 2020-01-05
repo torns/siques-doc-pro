@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Avator } from './avator.entity';
 import { Repository } from 'typeorm';
 import { ImageProcessService } from '../image-process/image-process.service';
+import Client from "../../core/oos/ali"
+import dayjs from "dayjs"
 
 @Injectable()
 export class AvatorService {
@@ -24,7 +26,30 @@ export class AvatorService {
         )
     }
 
+    async storeAli(data: UploadFileDto, user: User) {
+        //上传头像 头像还需要裁剪
+
+        const now = new Date()
+        const date = dayjs(now).format("YYYY-MM-DD/")
+        const res = await Client.put("avator/" + user.id + "/" + date + data.originalname, data.buffer);
+
+        const url = res.url + "?x-oss-process=style/" + "avator-picture";
+        await this.avatorRepository.save({
+            filename: res.name, user, url: url
+
+        })
+
+        return res
+
+
+    }
+
+    //头像链接获取及展示
     async show(id: number) {
-        return await this.avatorRepository.findOne(id);
+        return await this.avatorRepository.createQueryBuilder("avator")
+            .where("avator.userid =:id", { id })
+            .orderBy("created", "DESC")
+            .getOne()
+
     }
 }

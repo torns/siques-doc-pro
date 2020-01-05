@@ -7,9 +7,11 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
+import { Reply } from './Reply.entity';
 
 @Entity()
 export class Comment {
@@ -29,7 +31,7 @@ export class Comment {
   updated: Date;
 
   @Column({ default: 0 })
-  like: number
+  liked: number
 
   //多个评论对应一篇文章
   @ManyToOne(
@@ -38,6 +40,10 @@ export class Comment {
     { nullable: false },
   )
   post: Post;
+
+  //一个评论对应多个回复
+  @OneToMany(type => Reply, reply => reply.parent_id)
+  reply: Reply[]
 
   // 多个评论对应多个评论
   // @ManyToMany(

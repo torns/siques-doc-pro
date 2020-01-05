@@ -140,10 +140,11 @@ export class PostService {
 
     queryBuilder.addSelect("post.body")
     queryBuilder.innerJoinAndSelect("post.user", "user")
-    queryBuilder.leftJoinAndSelect("post.comments", "comments")
-    queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
-    queryBuilder.leftJoinAndSelect("commentUser.avator", "commentUserAvator")
-      .orderBy("comments.created", "DESC")
+    // queryBuilder.leftJoinAndSelect("post.comments", "comments")
+    // queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
+
+    // queryBuilder.leftJoinAndSelect("commentUser.avator", "commentUserAvator")
+    //   .orderBy("comments.created", "DESC")
     queryBuilder.leftJoinAndSelect("user.avator", "avator")
 
     queryBuilder.where('post.id =:id', { id })

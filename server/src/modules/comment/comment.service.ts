@@ -52,7 +52,23 @@ export class CommentService {
 
   }
 
+  async PostCommentLike(id: number) {
+    console.log(id)
+    await this.commentRepository.createQueryBuilder()
+      .update(Comment)
+      .where("comment.id=:id", { id })
+      .set({ liked: () => "liked+1" })
+      .execute();
 
+  }
+
+  async PostReplyLike(id: number) {
+    await this.replyRepository.createQueryBuilder()
+      .update(Reply)
+      .where("reply.id", { id })
+      .set({ liked: () => "liked+1" })
+      .execute();
+  }
 
 
   async update(id: number, data: CommentDto) {
@@ -63,14 +79,36 @@ export class CommentService {
     return await this.commentRepository.delete(id);
   }
 
+
+  //展示评论以及子评论
   async showPostComments(id: number) {
     return await this.commentRepository
       .createQueryBuilder('comment')
+      .orderBy("comment.created", "ASC")
       .leftJoinAndSelect('comment.user', 'user')
+      .leftJoinAndSelect('comment.reply', 'reply')
+      .addOrderBy("reply.created", "ASC")
+      .leftJoinAndSelect('reply.from_uid', 'from_uid')
+      .leftJoinAndSelect('reply.to_uid', 'to_uid')
+
       .leftJoin('comment.post', 'post')
+
       .where('post.id=:id', { id })
+
       .getMany();
   }
+
+  //查找子评论
+  // async showPostReply() {
+  //   const id = 2
+  //   return await this.replyRepository
+  //     .createQueryBuilder("reply")
+  //     .where("reply.parent_id=:id", { id })
+  //     .innerJoinAndSelect("reply.parent_id", "parent")
+  //     .getMany()
+
+
+  // }
 
   async showUserComments(id: number) {
     return await this.commentRepository

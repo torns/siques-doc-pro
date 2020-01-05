@@ -28,12 +28,12 @@ export class FileService {
     return await this.fileRespository.findOne(id);
   }
 
-  async storeAli(file) {
+  async storeAli(file, id: number) {
     const now = new Date()
-    const date = dayjs(now).format("YYYY/MM/DD/")
+    const date = dayjs(now).format("YYYY-MM-DD")
 
-
-    const res = await client.put(date + file.originalname, file.buffer);
+    //上传图片
+    const res = await client.put(id + "/" + date + "/" + file.originalname, file.buffer);
     return res
   }
 }

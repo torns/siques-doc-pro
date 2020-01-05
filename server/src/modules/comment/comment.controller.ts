@@ -61,6 +61,15 @@ export class CommentController {
   }
 
 
+  //评论点赞 id是主评论的编号
+  @Get("posts/:id/comments/like")
+  @UseGuards(AuthGuard())
+  async PostCommentLike(@Param("id", ParseIntPipe) id: number) {
+
+    return await this.commentService.PostCommentLike(id)
+  }
+
+
 
 
   @Put('comments/:id')
@@ -82,6 +91,14 @@ export class CommentController {
     return await this.commentService.showPostComments(id);
   }
 
+  //统计一篇文章的子评论
+  // @Get('posts/:id/reply')
+  // async showPostReply(@Param('id', ParseIntPipe) id: number) {
+  //   return await this.commentService.showPostReply();
+  // }
+
+
+  // 找到自己给谁评论过
   @Get('users/:id/comments')
   async showUserComments(@Param('id', ParseIntPipe) id: number) {
     return await this.commentService.showUserComments(id);

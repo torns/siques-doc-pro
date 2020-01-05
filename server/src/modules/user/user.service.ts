@@ -151,7 +151,7 @@ export class UserService {
         .createQueryBuilder()
         .update(Post)
         .where('post.id =:id', { id })
-        .set({ likes: () => "likes + 1" })
+        .set({ liked: () => "liked + 1" })
         .execute();
 
     } catch{
@@ -165,7 +165,7 @@ export class UserService {
         .createQueryBuilder()
         .update(Post)
         .where('post.id =:id', { id })
-        .set({ likes: () => "likes - 1" })
+        .set({ liked: () => "liked - 1" })
         .execute();
     }
 

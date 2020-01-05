@@ -17,21 +17,28 @@ export class AvatorController {
     @UseGuards(AuthGuard())
     @UseInterceptors(FileInterceptor("avator"))
     async store(@UploadedFile() data: UploadFileDto, @User() user: userEntity) {
-        return await this.avatorService.store(data, user)
+        console.log(data)
+        return await this.avatorService.storeAli(data, user)
     }
 
+    // @Get(":id")
+    // async server(@Param("id", ParseIntPipe) id: number, @Res() res: Response, @Query("size") size: string) {
+    //     const file = await this.avatorService.show(id)
+    //     let { filename } = file
+    //     if (size) {
+    //         filename = `${filename}-${size}`;
+    //     }
+    //     res.sendFile(filename, {
+    //         root: "uploads/avator",
+    //         headers: {
+    //             "Content-type": file.mimetype
+    //         }
+    //     })
+    // }
+
     @Get(":id")
-    async server(@Param("id", ParseIntPipe) id: number, @Res() res: Response, @Query("size") size: string) {
-        const file = await this.avatorService.show(id)
-        let { filename } = file
-        if (size) {
-            filename = `${filename}-${size}`;
-        }
-        res.sendFile(filename, {
-            root: "uploads/avator",
-            headers: {
-                "Content-type": file.mimetype
-            }
-        })
+    async showAvator(@Param("id", ParseIntPipe) id: number) {
+        return await this.avatorService.show(id)
+
     }
 }

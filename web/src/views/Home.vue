@@ -22,11 +22,9 @@
             <i class="el-icon-document-checked"></i> 关注
           </el-menu-item>
 
-          <el-submenu index="4" :show-timeout="0" :hide-timeout="0">
-            <template slot="title">
-              <i class="el-icon-bell"></i> 消息
-            </template>
-            <el-menu-item index="/notification/comments">
+          <el-menu-item :show-timeout="0" :hide-timeout="0">
+            <el-popover style="height:400px!important" placement="bottom" trigger="click">
+              <!-- <el-menu-item index="/notification/comments">
               <i class="el-icon-chat-dot-round"></i>评论
             </el-menu-item>
             <el-menu-item index="/notification/message">
@@ -43,8 +41,31 @@
             </el-menu-item>
             <el-menu-item index="/notification/pay">
               <i class="el-icon-shopping-cart-2"></i> 赞赏和付费
-            </el-menu-item>
-          </el-submenu>
+              </el-menu-item>-->
+              <div class="d-flex flex-column h-100">
+                <el-radio-group v-model="topRadio" size="small">
+                  <el-radio-button label="message">
+                    <font-awesome-icon class="fs-xm" :icon="['fas', 'lightbulb']" />
+                  </el-radio-button>
+                  <el-radio-button label="class">
+                    <font-awesome-icon class="fs-xm" :icon="['fab', 'cloudversify']" />
+                  </el-radio-button>
+                  <el-radio-button label="friend">
+                    <font-awesome-icon class="fs-xm" :icon="['fas', 'male']" />
+                  </el-radio-button>
+                </el-radio-group>
+                <div class="flex-1 pt-3"></div>
+                <el-divider></el-divider>
+                <div class="d-flex jc-between">
+                  <div>全部标记为已读</div>
+                  <div>查看全部</div>
+                </div>
+              </div>
+              <el-button type="text" slot="reference">
+                <i class="el-icon-bell"></i>
+              </el-button>
+            </el-popover>
+          </el-menu-item>
 
           <el-menu-item>
             <el-popover placement="top" width="160" v-model="visible">
@@ -197,7 +218,7 @@ export default class Home extends Vue {
   isRegister: boolean = false;
   LoginDto: any = {};
   RegisterDto: any = {};
-
+  topRadio = "";
   formLabelWidth: string = "120";
   visible: boolean = false;
   watch: {};
@@ -265,6 +286,10 @@ export default class Home extends Vue {
   //刷新保存状态
   saveState() {
     localStorage.setItem("state", JSON.stringify(this.$store.state));
+  }
+
+  change() {
+    console.log(123);
   }
 }
 </script>

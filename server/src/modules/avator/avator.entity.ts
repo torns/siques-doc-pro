@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, AfterLoad } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, AfterLoad, CreateDateColumn } from "typeorm";
 import { User } from "../user/user.entity";
 
 @Entity()
@@ -9,15 +9,17 @@ export class Avator {
     @Column()
     filename: string
 
-    @Column()
+    @Column({ nullable: true })
     mimetype: string
 
-
+    @Column({ nullable: true })
+    url: string
 
     @ManyToOne(type => User, user => user.avator, { nullable: true })
     user: User
 
-    url: string
+    @CreateDateColumn()
+    created: Date
 
     @AfterLoad()
     getUrl() {

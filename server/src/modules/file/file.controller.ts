@@ -7,12 +7,16 @@ import {
   Param,
   ParseIntPipe,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
 import { UploadFileDto } from './file.dto';
 import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/core/decorators/user.decorators';
+import { User as UserEntity } from '../user/user.entity';
 
 
 @ApiTags('上传')
@@ -28,11 +32,12 @@ export class FileController {
 
   //阿里云上传
   @Post("ali")
+  @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
-  async storeAli(@UploadedFile("file") file) {
+  async storeAli(@UploadedFile("file") file, @User() user: UserEntity) {
 
 
-    return await this.fileService.storeAli(file);
+    return await this.fileService.storeAli(file, user.id);
   }
 
   @Get('serve/:id')
