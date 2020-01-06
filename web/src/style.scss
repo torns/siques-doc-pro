@@ -14,6 +14,7 @@ html, body {
   
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
+  
   overflow-x: hidden;
   box-sizing: border-box;
   flex-wrap: wrap;
@@ -30,6 +31,9 @@ li {
   cursor: pointer;
 }
 
+
+
+
 //布局
 .container {
   margin-right: auto;
@@ -37,6 +41,7 @@ li {
 
   @media (min-width: 768px) {
     width: 750px;
+   
     
   }
   @media (min-width: 992px) {
@@ -198,6 +203,13 @@ code {
     transition: transform 0.5s;
     transform: scaleX(0);
     transform-origin: right;
+  }
+}
+
+.hover-5{
+
+  &:hover{
+  
   }
 }
     

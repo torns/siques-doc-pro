@@ -85,12 +85,20 @@ export class CommentService {
     return await this.commentRepository
       .createQueryBuilder('comment')
       .orderBy("comment.created", "ASC")
-      .leftJoinAndSelect('comment.user', 'user')
-      .leftJoinAndSelect('comment.reply', 'reply')
-      .addOrderBy("reply.created", "ASC")
-      .leftJoinAndSelect('reply.from_uid', 'from_uid')
-      .leftJoinAndSelect('reply.to_uid', 'to_uid')
+      .leftJoin('comment.user', 'user')
+      .addSelect(["user.name", "user.id"])
+      .leftJoin('user.avator', 'avator')
+      .addSelect(["avator.url"])
 
+      .leftJoinAndSelect('comment.reply', 'reply')
+
+      .addOrderBy("reply.created", "ASC")
+      .leftJoin('reply.from_uid', 'from_uid')
+      .addSelect(["from_uid.name", "from_uid.id"])
+
+
+      .leftJoin('reply.to_uid', 'to_uid')
+      .addSelect(["to_uid.name", "to_uid.id"])
       .leftJoin('comment.post', 'post')
 
       .where('post.id=:id', { id })

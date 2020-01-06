@@ -11,6 +11,7 @@ import {
   JoinTable,
   ManyToOne,
   RelationId,
+  OneToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
@@ -114,7 +115,7 @@ export class User {
   @JoinTable()
   likes: Post[];
 
-  @ManyToOne(type => Avator, avator => avator.user)
+  @OneToMany(type => Avator, avator => avator.user)
   avator: Avator[]
 
   @BeforeInsert()

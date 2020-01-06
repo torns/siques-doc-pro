@@ -11,6 +11,7 @@ export default new Vuex.Store({
     userId: "",
     otherId: "",
     userCreated: "",
+    userAvator: "",
     postLength: "",
     myFollowers: "",
     isValid: "",

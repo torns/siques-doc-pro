@@ -13,8 +13,20 @@
                   src="../assets/avator.jpg"
                   class="shadow-1"
                 >
-                  <img src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/avator/avator.jpg" />
+                  <img v-if="avatorUrl" :src="avatorUrl" class="avatar" />
+
+                  <img v-else src="../assets/avator.jpg" />
                 </el-avatar>
+                <el-upload
+                  class="avatar-uploader hover-5 text-center"
+                  action="string"
+                  :http-request="uploadAvator"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <el-button size="small" type="text">上传头像</el-button>
+                </el-upload>
               </div>
 
               <ul class="icon-list d-flex jc-between fs-xl pt-2">
@@ -79,7 +91,7 @@
               ></div>
               <div
                 class="profile__heading--desc-body"
-                style="height:196px;background-color: #EEEEEE;"
+                style="height:210px;background-color: #EEEEEE;"
               >
                 暂时没有个人简介,
                 <el-button type="text">立即添加</el-button>
@@ -153,6 +165,7 @@ export default class MyPage extends Vue {
   currentComponent: string = "MyHomepage";
   messageBox: string = "";
   show: boolean = false;
+  avatorUrl = "";
   showname: string = "";
   user: any = "";
   messageLinks = [
@@ -246,6 +259,44 @@ export default class MyPage extends Vue {
   async fetchUser() {
     const res = await this.$http.get(`/users/${this.id}`);
     this.user = res.data;
+    this.avatorUrl = res.data.avator[0].url;
+  }
+
+  async uploadAvator(param) {
+    let params = new FormData();
+
+    params.append("avator", param.file, param.file.name);
+
+    let config = {
+      headers: { "Content-Type": "multipart/form-data" }
+    };
+
+    const res = await this.$http.post("/avators", params, config);
+
+    this.$notify({
+      title: "成功",
+      type: "success",
+      message: "上传成功"
+    });
+  }
+
+  // 头像上传相关
+
+  handleAvatarSuccess(res, file) {
+    this.avatorUrl = URL.createObjectURL(file.raw);
+  }
+  beforeAvatarUpload(file) {
+    const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+
+    const isLt2M = file.size / 1024 / 1024 < 0.5;
+
+    if (!isJPG) {
+      this.$message.error("上传头像图片只能是 JPG 格式!");
+    }
+    if (!isLt2M) {
+      this.$message.error("上传头像图片大小不能超过 500k!");
+    }
+    return isJPG && isLt2M;
   }
 
   edit() {}

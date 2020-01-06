@@ -38,7 +38,7 @@ export class UserService {
     const querryBuilder = this.userRepository.createQueryBuilder("user")
     const result = await querryBuilder.where("user.id =:id", { id })
       .leftJoinAndSelect("user.avator", "avator")
-      .select(["user.id", 'avator.id'])
+      .select(["user.id", 'avator.id', 'avator.url'])
       .orderBy("avator.id", "DESC")
       .limit(1)
       .getOne();
@@ -130,8 +130,13 @@ export class UserService {
 
     return await this.userRepository.createQueryBuilder("user")
       .where("user.id=:id", { id })
-      .leftJoinAndSelect("user.posts", "posts")
       .leftJoinAndSelect("user.follows", "follows")
+      .leftJoinAndSelect("user.avator", "avator")
+      .limit(1)
+      .addOrderBy("avator.id", "DESC")
+
+
+
       .getOne()
 
   }

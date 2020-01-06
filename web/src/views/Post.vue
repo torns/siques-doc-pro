@@ -7,6 +7,7 @@
             <div>
               <div v-if="post.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
+                  <div class="mb-2 text-center">{{liked}}</div>
                   <el-button
                     class="hover-3"
                     type="plain"
@@ -16,7 +17,7 @@
                   >
                     <font-awesome-icon :icon="['fas', 'thumbs-up']" />
                   </el-button>
-                  <i class="pl-1 mt-1">{{liked}}赞</i>
+                  <i></i>
                   <el-button type="text" circle>
                     <font-awesome-icon :icon="['fas', 'bookmark']" />
                   </el-button>
@@ -35,12 +36,14 @@
                 <div class="d-flex py-3">
                   <router-link :to="`/u/${post.user.id}`">
                     <img
-                      v-if="post.user.avator!=null"
-                      :src="post.user.avator.url"
-                      alt="无"
+                      v-if="!post.user.avator[0]"
+                      src="../assets/avator.jpg"
                       class="avator shadow-1 contain"
                     />
-                    <img v-else src="../assets/avator.jpg" alt="无" class="avator shadow-1 contain" />
+
+                    <div v-else>
+                      <img :src="post.user.avator[0].url" class="avator shadow-1 contain" />
+                    </div>
                   </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
@@ -62,8 +65,9 @@
                   {{$dayjs(Date.now()-(new Date(post.created)).getTime()).format("发布于DD天 HH小时 MM分钟前")}}
                 </div>
                 <div class="d-flex jc-center my-4">
-                  <el-button class="hover-3" type="plain">
-                    <font-awesome-icon class="pr-2" :icon="['far', 'thumbs-up']" />赞
+                  <el-button class="hover-3" type="plain" @click="like">
+                    <font-awesome-icon class="pr-2" :icon="['far', 'thumbs-up']" />
+                    {{liked}} 赞
                   </el-button>
 
                   <el-button class="hover-3" type="plain">
@@ -99,7 +103,12 @@
                   <div class="pb-4">
                     <div class="d-flex">
                       <div class="mr-3">
-                        <el-avatar>user</el-avatar>
+                        <router-link tag="div" class="point" :to="`/u/${comment.user.id}`">
+                          <el-avatar class="shadow-1">
+                            <div v-if="!comment.user.avator[0]">user</div>
+                            <img v-else :src="comment.user.avator[0].url" alt />
+                          </el-avatar>
+                        </router-link>
                       </div>
                       <div>
                         <div class="d-flex">
@@ -198,8 +207,10 @@
         </el-col>
       </el-row>
     </div>
-    <el-backtop target=".container"></el-backtop>
+
     <el-footer class="mt-2"></el-footer>
+    <el-backtop></el-backtop>
+    <back-top @bck2Top="bck2Top"></back-top>
   </div>
 </template>
 
@@ -215,10 +226,15 @@ const highlightCode = () => {
 import { Vue, Component, Prop } from "vue-property-decorator";
 import footer from "../components/footer/Footer.vue";
 import sidebar from "../components/SideBar/SideBar.vue";
+import BackToTop from "../components/BackToTop/Back2Top.vue";
 var MarkdownIt = require("markdown-it"),
   md = new MarkdownIt();
 @Component({
-  components: { "el-footer": footer, "side-bar": sidebar }
+  components: {
+    "el-footer": footer,
+    "side-bar": sidebar,
+    "back-top": BackToTop
+  }
 })
 export default class Post extends Vue {
   @Prop()
@@ -237,6 +253,11 @@ export default class Post extends Vue {
   updated() {
     highlightCode();
   }
+
+  bck2Top() {
+    window.scrollTo(0, 0);
+  }
+
   async fetchpost(id) {
     if (!this.post) {
       const res = await this.$http.get(`posts/${id}`);

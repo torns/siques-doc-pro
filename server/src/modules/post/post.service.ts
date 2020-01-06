@@ -146,6 +146,8 @@ export class PostService {
     // queryBuilder.leftJoinAndSelect("commentUser.avator", "commentUserAvator")
     //   .orderBy("comments.created", "DESC")
     queryBuilder.leftJoinAndSelect("user.avator", "avator")
+      .addOrderBy("avator.created", "DESC")
+      .limit(1)
 
     queryBuilder.where('post.id =:id', { id })
 
@@ -172,6 +174,7 @@ export class PostService {
         // .addSelect('post.body')
         .update(Post)
         .where("post.id=:id", { id })
+        //截取一部分的数据
         .set({ alias: data.body.substring(0, 100) })
         .execute();
     }

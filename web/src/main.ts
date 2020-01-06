@@ -8,13 +8,12 @@ import http from "./http.js"
 import animated from "animate.css"
 import "./directive"
 import dayjs from "dayjs"
-import mixin from "./mixin"
+import myMixin from "./mixin"
 import store from './store'
 import './plugins/fontawesome.js';
 import 'element-ui/lib/theme-chalk/display.css';
 import "./filter"
-import infiniteScroll from 'vue-infinite-scroll'
-Vue.use(infiniteScroll)
+
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http
@@ -23,7 +22,7 @@ Vue.use(animated)
 
 
 new Vue({
-  mixins: [mixin],
+  mixins: [myMixin],
   router,
   store,
   render: h => h(App)

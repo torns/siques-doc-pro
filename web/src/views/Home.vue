@@ -89,8 +89,9 @@
             style="right: 15%;position: absolute;"
           >
             <template slot="title">
-              <el-avatar :size="35" src="../assets/avator.jpg" class="shadow-1">
-                <img src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/avator/avator.jpg" />
+              <el-avatar :size="35" class="shadow-1">
+                <img v-if="this.$store.state.userAvator" :src="this.$store.state.userAvator" />
+                <img v-else src="../assets/avator.jpg" />
               </el-avatar>
             </template>
             <el-menu-item :index="`/u/${this.$store.state.userId }`">
@@ -106,7 +107,7 @@
             <el-menu-item @click="logout">退出</el-menu-item>
           </el-submenu>
 
-          <el-menu-item :span="4" index="/post" style="right: 2%;position: absolute;">
+          <el-menu-item class="write" :span="4" index="/post" style="right: 2%;position: absolute;">
             <el-button type="primary" round>写文章</el-button>
           </el-menu-item>
 
@@ -222,10 +223,7 @@ export default class Home extends Vue {
   formLabelWidth: string = "120";
   visible: boolean = false;
   watch: {};
-  mounted() {
-    // this.fetchuser();
-    window.addEventListener("unload", this.saveState);
-  }
+
   async login() {
     const res = await this.$http.post("/auth/login", this.LoginDto);
     localStorage.token = res.data.token;
@@ -259,33 +257,6 @@ export default class Home extends Vue {
       message: "退出登录成功 "
     });
     this.$router.push("/");
-  }
-
-  async fetchuser() {
-    if (this.$store.state.UserNotExist == false) {
-      const res = await this.$http.get("users");
-      this.$store.state.userName = res.data.name;
-      this.$store.state.userId = res.data.id;
-      this.$store.state.postLength = res.data.posts.length;
-      this.$store.state.userCreated = res.data.created;
-      this.$store.state.myFollowers = res.data.follows.length;
-
-      const personal = [
-        {
-          city: res.data.city,
-          school: res.data.school,
-          organization: res.data.organization,
-          website: res.data.website
-        }
-      ];
-
-      this.$store.state.personalData = personal;
-    }
-  }
-
-  //刷新保存状态
-  saveState() {
-    localStorage.setItem("state", JSON.stringify(this.$store.state));
   }
 
   change() {

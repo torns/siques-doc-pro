@@ -15,16 +15,16 @@ export class Avator {
     @Column({ nullable: true })
     url: string
 
-    @ManyToOne(type => User, user => user.avator, { nullable: true })
+    @ManyToOne(type => User, user => user.avator, { nullable: false })
     user: User
 
     @CreateDateColumn()
     created: Date
 
-    @AfterLoad()
-    getUrl() {
+    // @AfterLoad()
+    // getUrl() {
 
-        const appUrl = process.env.APP_URL;
-        this.url = `${appUrl}/static/${this.filename}`
-    }
+    //     const appUrl = process.env.APP_URL;
+    //     this.url = `${appUrl}/static/${this.filename}`
+    // }
 }

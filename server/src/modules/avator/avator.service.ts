@@ -31,13 +31,33 @@ export class AvatorService {
 
         const now = new Date()
         const date = dayjs(now).format("YYYY-MM-DD/")
-        const res = await Client.put("avator/" + user.id + "/" + date + data.originalname, data.buffer);
+        const ss = dayjs(now).format("ss")
+        const res = await Client.put("avator/" + user.id + "/" + date + ss + data.originalname, data.buffer);
 
         const url = res.url + "?x-oss-process=style/" + "avator-picture";
-        await this.avatorRepository.save({
-            filename: res.name, user, url: url
 
-        })
+        const id = user.id
+        const result = this.avatorRepository.createQueryBuilder("avator")
+            .where("userId =:id", { id })
+            .getOne()
+        if (!result) {
+            console.log(1)
+            await this.avatorRepository.save({
+                filename: res.name, user, url: url
+
+            })
+        } else {
+            console.log(1)
+            await this.avatorRepository.createQueryBuilder("avator")
+                .update(Avator)
+                .where("userId =:id", { id })
+                .update({
+                    filename: res.name, user, url: url
+
+                })
+                .execute()
+        }
+
 
         return res
 

@@ -1,18 +1,22 @@
+var myMixin = {
 
-var mixin = {
-    data: function () {
-        return {
+    mounted() {
 
-
-        }
     },
-
     watch: {
         "$route": function () {
 
             window.scrollTo(0, 0);
-        },
 
-    }
+
+        },
+        data() {
+            return {
+                scroll: ""
+            }
+        }
+
+    },
+
 }
-export default mixin
+export default myMixin
