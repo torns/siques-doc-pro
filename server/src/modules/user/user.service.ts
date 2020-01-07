@@ -225,7 +225,7 @@ export class UserService {
 
     return res
   }
-  //粉丝,以及他们的头像
+  // 用户的粉丝,以及他们的头像
   async whofollows(id) {
     // console.log(id)
     const res = await this.userRepository
@@ -233,5 +233,8 @@ export class UserService {
 
     return res
   }
+
+
+
 
 }

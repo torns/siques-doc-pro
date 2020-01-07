@@ -9,7 +9,8 @@ export class Reply {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @ManyToOne(type => Comment, comment => comment.reply)
+    @ManyToOne(type => Comment, comment => comment.reply,
+        { onDelete: 'CASCADE' })
     parent_id: string;
 
     // @Column()

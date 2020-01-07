@@ -62,7 +62,7 @@ export default class App extends Vue {
 
 .el-popover {
   height: 440px !important;
-
+  width: 337px;
   .el-radio-button__inner {
     padding-left: 50px !important;
     padding-right: 50px !important;
@@ -75,5 +75,15 @@ export default class App extends Vue {
   @media (max-width: 768px) {
     display: none;
   }
+}
+
+//首页标签
+.el-badge__content.is-fixed {
+  top: 15px !important;
+  right: 1px !important;
+}
+
+.el-menu.el-menu--horizontal {
+  border-bottom: none !important;
 }
 </style>

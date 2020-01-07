@@ -34,6 +34,7 @@ export class CommentController {
     @Body() data: CommentDto,
     @User() user: UserEntity,
   ) {
+    console.log(data)
     return await this.commentService.storePostComment(id, user, data);
   }
 

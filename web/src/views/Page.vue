@@ -221,6 +221,10 @@ export default class MyPage extends Vue {
     {
       name: `${this.id != this.$store.state.userId ? "他" : "我"}的关注`,
       alias: "follow"
+    },
+    {
+      name: `${this.id != this.$store.state.userId ? "他" : "我"}的收藏夹`,
+      alias: "collection"
     }
   ];
 

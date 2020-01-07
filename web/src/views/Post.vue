@@ -3,7 +3,7 @@
     <div class="container pt-4 pb-3">
       <el-row type="flex" :gutter="0">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-          <div class="font-songti bg-white shadow-2">
+          <div class="font-songti bg-white shadow-1 border-radius">
             <div>
               <div v-if="post.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
@@ -300,7 +300,8 @@ export default class Post extends Vue {
   async sendComment() {
     if (this.comment) {
       const data = {
-        body: this.comment
+        body: this.comment,
+        owner_uid: this.post.user.id //这个资源的用户id
       };
       await this.$http.post(`/posts/${this.id}/comments`, data);
       this.$notify({
@@ -392,15 +393,11 @@ h1 {
 }
 
 .hljs {
-  // display: grid !important;
-  border-radius: 5px;
-
-  margin-right: 0;
-
-  color: whitesmoke !important;
-
-  padding: 0.5em 2em !important;
-  box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.7);
+  padding: 0.5rem;
+  max-height: 35rem;
+  line-height: 1.5;
+  background-color: #e9ecef !important;
+  overflow: auto;
 }
 
 .article h2,

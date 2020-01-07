@@ -33,6 +33,9 @@ export class Comment {
   @Column({ default: 0 })
   liked: number
 
+  @Column('tinyint', { default: 0 })
+  is_read: boolean
+
   //多个评论对应一篇文章
   @ManyToOne(
     type => Post,
@@ -41,8 +44,15 @@ export class Comment {
   )
   post: Post;
 
+  @ManyToOne(
+    type => User
+  )
+  owner_uid: string
+
+
   //一个评论对应多个回复
-  @OneToMany(type => Reply, reply => reply.parent_id)
+  @OneToMany(type => Reply, reply => reply.parent_id,
+    { cascade: true })
   reply: Reply[]
 
   // 多个评论对应多个评论

@@ -2,7 +2,7 @@
   <div class="home" style="overflow:auto;height:100vh">
     <!-- 父元素设置高度以及overflow，实现页面滚动的重要条件 -->
     <el-container style>
-      <div style="height:2px;" class="bg-primary"></div>
+      <div style="height:3px;" class="bg-primary"></div>
       <el-header style="position:sticky;top:0;z-index: 10;">
         <el-menu
           :default-active="$route.path"
@@ -15,45 +15,51 @@
           </el-menu-item>
 
           <el-menu-item index="/">
-            <i class="el-icon-discover"></i> 发现
+            <span style="font-weight:600" class="text-primary fs-md">首页</span>
           </el-menu-item>
 
           <el-menu-item index="/follow">
-            <i class="el-icon-document-checked"></i> 关注
+            <span class="fs-md">问答</span>
           </el-menu-item>
 
           <el-menu-item :show-timeout="0" :hide-timeout="0">
-            <el-popover style="height:400px!important" placement="bottom" trigger="click">
-              <!-- <el-menu-item index="/notification/comments">
-              <i class="el-icon-chat-dot-round"></i>评论
-            </el-menu-item>
-            <el-menu-item index="/notification/message">
-              <i class="el-icon-wallet"></i>简信
-            </el-menu-item>
-            <el-menu-item index="/notification/request">
-              <i class="el-icon-s-order"></i> 投稿请求
-            </el-menu-item>
-            <el-menu-item index="/notification/like">
-              <i class="el-icon-s-opportunity"></i> 喜欢和赞
-            </el-menu-item>
-            <el-menu-item index="/notification/follow">
-              <i class="el-icon-star-on"></i> 关注
-            </el-menu-item>
-            <el-menu-item index="/notification/pay">
-              <i class="el-icon-shopping-cart-2"></i> 赞赏和付费
-              </el-menu-item>-->
+            <el-popover style="height:400px!important;" placement="bottom" trigger="click">
               <div class="d-flex flex-column h-100">
-                <el-radio-group v-model="topRadio" size="small">
+                <el-radio-group @change="change" v-model="topRadio" size="small">
                   <el-radio-button label="message">
                     <font-awesome-icon class="fs-xm" :icon="['fas', 'lightbulb']" />
                   </el-radio-button>
                   <el-radio-button label="class">
                     <font-awesome-icon class="fs-xm" :icon="['fab', 'cloudversify']" />
                   </el-radio-button>
-                  <el-radio-button label="friend">
+                  <el-radio-button label="follow">
                     <font-awesome-icon class="fs-xm" :icon="['fas', 'male']" />
                   </el-radio-button>
                 </el-radio-group>
+
+                <div v-if="topRadio=='message'">
+                  <div class="py-1 lh-2" v-for="(notify,index) in notifies.comment" :key="index">
+                    <router-link tag="span" :to="`/u/${notify.user.id}`">
+                      <span class="hover-4 point pr-1 text-primary">{{notify.user.name}}</span>
+                    </router-link>评论了你的
+                    <router-link tag="span" :to="`/p/${notify.post.id}`">
+                      <span class="point text-primary">{{notify.post.title}}</span>
+                    </router-link>
+                  </div>
+                </div>
+
+                <div v-if="topRadio=='follow'">
+                  <div
+                    class="py-1 lh-2"
+                    v-for="(notify,index) in notifies.follow.user"
+                    :key="index"
+                  >
+                    <router-link tag="span" :to="`/u/${notify.id}`">
+                      <span class="hover-4 text-primary point pr-1">{{notify.name}}</span>
+                    </router-link>关注了你
+                  </div>
+                </div>
+
                 <div class="flex-1 pt-3"></div>
                 <el-divider></el-divider>
                 <div class="d-flex jc-between">
@@ -65,6 +71,25 @@
                 <i class="el-icon-bell"></i>
               </el-button>
             </el-popover>
+          </el-menu-item>
+
+          <el-menu-item :show-timeout="0" :hide-timeout="0">
+            <el-badge value="new" type="primary" class="item">
+              <el-popover style="height:400px!important;" placement="bottom" trigger="click">
+                <div class="d-flex flex-column h-100">
+                  <div class="flex-1 pt-3"></div>
+                  <el-divider></el-divider>
+                  <div class="d-flex jc-between">
+                    <div class="point">全部标记为已读</div>
+                    <router-link tag="div" class="point hover-4" to="/notification">查看全部</router-link>
+                  </div>
+                </div>
+
+                <el-button type="text" slot="reference">
+                  <font-awesome-icon class="fs-xm" :icon="['far', 'envelope']" />
+                </el-button>
+              </el-popover>
+            </el-badge>
           </el-menu-item>
 
           <el-menu-item>
@@ -219,10 +244,15 @@ export default class Home extends Vue {
   isRegister: boolean = false;
   LoginDto: any = {};
   RegisterDto: any = {};
-  topRadio = "";
+  topRadio = "message";
+  notifies = "";
   formLabelWidth: string = "120";
+
   visible: boolean = false;
-  watch: {};
+
+  mounted() {
+    this.fetchNotify();
+  }
 
   async login() {
     const res = await this.$http.post("/auth/login", this.LoginDto);
@@ -259,9 +289,12 @@ export default class Home extends Vue {
     this.$router.push("/");
   }
 
-  change() {
-    console.log(123);
+  async fetchNotify() {
+    const res = await this.$http.get("/notification");
+    this.notifies = res.data;
   }
+
+  async change(e) {}
 }
 </script>
 

@@ -17,7 +17,7 @@
                 @click="fetchCategory(link.alias)"
                 v-for="(link,index) in links"
                 :key="index"
-                :class="link.alias==category?'bg-1 pr-6  pl-3 py-2':''+`pr-6 hover-2 pl-3 py-2`"
+                :class="(link.alias==category?'bg-1 ':'hover-2 ')+`pr-6  pl-3 py-2`"
               >
                 <font-awesome-icon class="pr-1" :icon="[link.tag, link.icon]" />
                 {{link.name}}
