@@ -128,17 +128,19 @@ export class UserService {
 
   async showMessage(id: number) {
 
-    return await this.userRepository.createQueryBuilder("user")
+    const res1 = await this.userRepository.createQueryBuilder("user")
       .where("user.id=:id", { id })
       .leftJoinAndSelect("user.follows", "follows")
       .leftJoinAndSelect("user.avator", "avator")
       .limit(1)
       .addOrderBy("avator.id", "DESC")
-
-
-
       .getOne()
 
+    //粉丝
+    const res2 = await this.userRepository
+      .findOne(id, { relations: ["follows", "user", "user.avator"] })
+
+    return { ...res1, ...res2 }
   }
 
 
@@ -215,14 +217,15 @@ export class UserService {
 
     const res = await this.userRepository
       .createQueryBuilder("user")
-      .relation(User, "follows")
-      .of(id)
-
-      .loadMany()
+      .leftJoinAndSelect("user.follows", "follows")
+      .leftJoin("follows.avator", "avator")
+      .addSelect("avator.url")
+      .where("user.id=:id", { id })
+      .getMany()
 
     return res
   }
-  //谁关注了我,以及他们的头像
+  //粉丝,以及他们的头像
   async whofollows(id) {
     // console.log(id)
     const res = await this.userRepository

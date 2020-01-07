@@ -141,11 +141,10 @@ export class UserController {
     return this.userService.follow(id, user.id)
   }
 
-  //查询自己关注的所有人
+  //查询关注的所有人
   @Get(":id/follows")
-  @UseGuards(AuthGuard())
-  async getfollows(@User() user: userEntity) {
-    return await this.userService.getfollows(user.id)
+  async getfollows(@Param("id", ParseIntPipe) id: number) {
+    return await this.userService.getfollows(id)
   }
 
   //查询谁关注了自己

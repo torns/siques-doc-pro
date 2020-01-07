@@ -110,13 +110,13 @@
       >
         <el-col class="hidden-sm-and-down" :xs="0" :sm="4" :md="5" :lg="4" :xl="4">
           <div class="d-flex jc-around">
-            <div>
+            <div class="point" @click="handleComponent({0:'myFollowers'})">
               <div>关注了</div>
-              <span>0人</span>
+              <span>{{this.followers.length}}人</span>
             </div>
             <el-divider direction="vertical"></el-divider>
 
-            <div @click="handleComponent" class="pl-1 point">
+            <div @click="handleComponent({0:'myFans'})" class="pl-1 point">
               <div>粉丝</div>
               <span>{{this.$store.state.myFollowers}}人</span>
             </div>
@@ -149,11 +149,13 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import MyHomepage from "../components/Mypage/MyHomepage.vue";
 import MyPost from "../components/Mypage/MyPost.vue";
-import MyFollower from "../components/Mypage/MyFollower.vue";
+import MyFans from "../components/Mypage/MyFans.vue";
+import MyFollowers from "../components/Mypage/MyFollowers.vue";
+
 import MySideBar from "../components/Mypage/MySideBar.vue";
 
 @Component({
-  components: { MyHomepage, MyPost, MySideBar, MyFollower }
+  components: { MyHomepage, MyPost, MySideBar, MyFans, MyFollowers }
 })
 export default class MyPage extends Vue {
   @Prop()
@@ -161,6 +163,7 @@ export default class MyPage extends Vue {
   introduction: string = "";
   collections: string = "";
   followers: string = "";
+  fans: string = "";
   defaultLink: string = "MyHomepage";
   currentComponent: string = "MyHomepage";
   messageBox: string = "";
@@ -214,6 +217,10 @@ export default class MyPage extends Vue {
     {
       name: `${this.id != this.$store.state.userId ? "他" : "我"}的提问`,
       alias: "myWebsite"
+    },
+    {
+      name: `${this.id != this.$store.state.userId ? "他" : "我"}的关注`,
+      alias: "follow"
     }
   ];
 
@@ -228,8 +235,16 @@ export default class MyPage extends Vue {
     this.collections = res.data;
   }
 
+  //查询粉丝
   async fetchFollowers() {
     const res = await this.$http.get(`/users/${this.id}/whofollows`);
+    this.fans = res.data;
+  }
+
+  // 查询关注的人
+
+  async fetchFollow() {
+    const res = await this.$http.get(`/users/${this.id}/follows`);
     this.followers = res.data;
   }
 
@@ -238,9 +253,9 @@ export default class MyPage extends Vue {
     this.currentComponent = alias;
   }
   //关注组件
-  handleComponent() {
+  handleComponent(e) {
     this.defaultLink = "";
-    this.currentComponent = "MyFollower";
+    this.currentComponent = `${e[0]}`;
   }
 
   async save(alias) {

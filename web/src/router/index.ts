@@ -17,7 +17,7 @@ const routes = [
       { path: "/u/:id", name: "user", component: Page, props: true },
       { path: '', name: 'home', component: () => import('../views/Cover.vue') },
       { path: '/p/:id', name: 'posts', component: () => import('../views/Post.vue'), props: true },
-      { path: '/Notification/:name', meta: { requireAuth: true }, name: 'notification', component: () => import('../views/Notification.vue'), props: true },
+      { path: '/notification', meta: { requireAuth: true }, name: 'notification', component: () => import('../views/Notification.vue') },
       {
         path: "/follow",
         name: "follow",

@@ -22,6 +22,7 @@ export default class App extends Vue {
       this.$store.state.userId = res.data.id;
       this.$store.state.userCreated = res.data.created;
       this.$store.state.myFollowers = res.data.follows.length;
+
       this.$store.state.userAvator = res.data.avator[0].url;
 
       const personal = [

@@ -57,8 +57,8 @@
                 <div class="flex-1 pt-3"></div>
                 <el-divider></el-divider>
                 <div class="d-flex jc-between">
-                  <div>全部标记为已读</div>
-                  <div>查看全部</div>
+                  <div class="point">全部标记为已读</div>
+                  <router-link tag="div" class="point hover-4" to="/notification">查看全部</router-link>
                 </div>
               </div>
               <el-button type="text" slot="reference">
