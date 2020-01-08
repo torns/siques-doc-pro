@@ -119,7 +119,7 @@
                 <img v-else src="../assets/avator.jpg" />
               </el-avatar>
             </template>
-            <el-menu-item :index="`/u/${this.$store.state.userId }`">
+            <el-menu-item :index="`/u`">
               <i class="el-icon-user-solid"></i> 我的主页
             </el-menu-item>
 

@@ -29,17 +29,18 @@ export default class PageComponent extends Vue {
   }
 
   async fetch() {
-    console.log(this.id);
-    const res = await this.$http.get(`/posts/${this.id}/user`);
-    this.posts = res.data[0];
-  }
-
-  async handleClick(tab) {
-    if (tab.name == "liked_posts") {
-      const res = await this.$http.get("users/1/liked");
-      this.posts = res.data.likes;
+    if (this.id) {
+      const res = await this.$http.get(`/posts/${this.id}/user`);
+      this.posts = res.data[0];
+    } else {
+      const res = await this.$http.get(
+        `/posts/${this.$store.state.userId}/user`
+      );
+      this.posts = res.data[0];
     }
   }
+
+  async handleClick(tab) {}
 }
 </script>
 

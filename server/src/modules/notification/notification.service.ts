@@ -29,7 +29,7 @@ export class NotificationService {
             .leftJoin("comment.post", "post")
             .addSelect(["post.id", "post.title"])
             .getMany()
-
+        console.log(comment)
         const follow = await this.UserRepository
             .findOne(id, { relations: ["user"] })
         return { comment, follow }

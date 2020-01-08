@@ -50,7 +50,7 @@
           </el-col>
           <el-col :xs="12" :sm="9" :md="9" :lg="9" :xl="10">
             <div class="d-flex pb-1">
-              <h2 class="pr-4 text-ellipsis">{{user.name}}</h2>
+              <h2 class="pr-4 text-ellipsis">{{id?user.name:this.$store.state.userName}}</h2>
               <el-button type="text">查看完整档案</el-button>
             </div>
             <div class="fs-xl pb-3">
@@ -110,15 +110,15 @@
       >
         <el-col class="hidden-sm-and-down" :xs="0" :sm="4" :md="5" :lg="4" :xl="4">
           <div class="d-flex jc-around">
-            <div class="point" @click="handleComponent({0:'myFollowers'})">
+            <div class="point" @click="handleComponent({0:'Followers'})">
               <div>关注了</div>
-              <span>{{this.followers.length}}人</span>
+              <span>{{id?this.followers.length:this.$store.state.myFollowers}}人</span>
             </div>
             <el-divider direction="vertical"></el-divider>
 
-            <div @click="handleComponent({0:'myFans'})" class="pl-1 point">
+            <div @click="handleComponent({0:'Fans'})" class="pl-1 point">
               <div>粉丝</div>
-              <span>{{this.$store.state.myFollowers}}人</span>
+              <span>{{id?this.user.length:this.$store.state.myFans}}人</span>
             </div>
           </div>
           <div>
@@ -147,25 +147,25 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import MyHomepage from "../components/Mypage/MyHomepage.vue";
-import MyPost from "../components/Mypage/MyPost.vue";
-import MyFans from "../components/Mypage/MyFans.vue";
-import MyFollowers from "../components/Mypage/MyFollowers.vue";
+import Homepage from "../components/Page/Homepage.vue";
+import Post from "../components/Page/Post.vue";
+import Fans from "../components/Page/Fans.vue";
+import Followers from "../components/Page/Followers.vue";
 
-import MySideBar from "../components/Mypage/MySideBar.vue";
+import SideBar from "../components/Page/SideBar.vue";
 
 @Component({
-  components: { MyHomepage, MyPost, MySideBar, MyFans, MyFollowers }
+  components: { Homepage, Post, SideBar, Fans, Followers }
 })
-export default class MyPage extends Vue {
+export default class Page extends Vue {
   @Prop()
   id: string;
   introduction: string = "";
   collections: string = "";
   followers: string = "";
   fans: string = "";
-  defaultLink: string = "MyHomepage";
-  currentComponent: string = "MyHomepage";
+  defaultLink: string = "Homepage";
+  currentComponent: string = "Homepage";
   messageBox: string = "";
   show: boolean = false;
   avatorUrl = "";
@@ -203,34 +203,34 @@ export default class MyPage extends Vue {
   ];
   pageLinks = [
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的主页`,
-      alias: "MyHomepage"
+      name: `${this.id ? "他" : "我"}的主页`,
+      alias: "Homepage"
     },
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的文章`,
-      alias: "myPost"
+      name: `${this.id ? "他" : "我"}的文章`,
+      alias: "Post"
     },
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的回答`,
-      alias: "myQue"
+      name: `${this.id ? "他" : "我"}的回答`,
+      alias: "Que"
     },
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的提问`,
-      alias: "myWebsite"
+      name: `${this.id ? "他" : "我"}的提问`,
+      alias: "Website"
     },
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的关注`,
+      name: `${this.id ? "他" : "我"}的关注`,
       alias: "follow"
     },
     {
-      name: `${this.id != this.$store.state.userId ? "他" : "我"}的收藏夹`,
+      name: `${this.id ? "他" : "我"}的收藏夹`,
       alias: "collection"
     }
   ];
 
   mounted() {
     // this.fetchCollect();
-    this.fetchFollowers();
+
     this.fetchUser();
   }
 
@@ -239,24 +239,19 @@ export default class MyPage extends Vue {
     this.collections = res.data;
   }
 
-  //查询粉丝
-  async fetchFollowers() {
-    const res = await this.$http.get(`/users/${this.id}/whofollows`);
-    this.fans = res.data;
-  }
+  // //查询粉丝
+  // async fetchFollowers() {
+  //   const res = await this.$http.get(`/users/${this.id}/whofollows`);
+  //   this.fans = res.data;
+  // }
 
   // 查询关注的人
-
-  async fetchFollow() {
-    const res = await this.$http.get(`/users/${this.id}/follows`);
-    this.followers = res.data;
-  }
 
   async changeComponent(alias) {
     this.defaultLink = alias;
     this.currentComponent = alias;
   }
-  //关注组件
+  //关注&&粉丝
   handleComponent(e) {
     this.defaultLink = "";
     this.currentComponent = `${e[0]}`;
@@ -275,10 +270,18 @@ export default class MyPage extends Vue {
     });
     this.messageBox = "";
   }
+
+  // 如果有id把这个用户的信息都查出来
   async fetchUser() {
-    const res = await this.$http.get(`/users/${this.id}`);
-    this.user = res.data;
-    this.avatorUrl = res.data.avator[0].url;
+    if (this.id) {
+      const res = await this.$http.get(`/users/${this.id}`);
+      this.user = res.data;
+      try {
+        this.avatorUrl = res.data.avator[0].url;
+      } catch {
+        this.avatorUrl = "";
+      }
+    }
   }
 
   async uploadAvator(param) {

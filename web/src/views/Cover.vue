@@ -14,7 +14,7 @@
           <div class="d-flex" style="flex-direction: row-reverse;">
             <ul class="text-left fs-xm">
               <li
-                @click="fetchCategory(link.alias)"
+                @click="handleCategory(link.alias,link.sort)"
                 v-for="(link,index) in links"
                 :key="index"
                 :class="(link.alias==category?'bg-1 ':'hover-2 ')+`pr-6  pl-3 py-2`"
@@ -112,12 +112,48 @@ export default class MyPage extends Vue {
   posts = [];
   category: string = "suggest";
   links = [
-    { name: "为你推荐", alias: "suggest", tag: "far", icon: "address-card" },
-    { name: "近期热门", alias: "hot", tag: "far", icon: "thumbs-up" },
-    { name: "最新内容", alias: "new", tag: "far", icon: "compass" },
-    { name: "前端", alias: "frontEnd", tag: "fab", icon: "js-square" },
-    { name: "后端", alias: "backEnd", tag: "fab", icon: "bitbucket" },
-    { name: "小程序", alias: "miniProgram", tag: "fab", icon: "cloudsmith" }
+    {
+      name: "为你推荐",
+      alias: "suggest",
+      sort: "liked",
+      tag: "far",
+      icon: "address-card"
+    },
+    {
+      name: "近期热门",
+      alias: "hot",
+      sort: "liked",
+      tag: "far",
+      icon: "thumbs-up"
+    },
+    {
+      name: "最新内容",
+      alias: "new",
+      sort: "created",
+      tag: "far",
+      icon: "compass"
+    },
+    {
+      name: "前端",
+      alias: "frontEnd",
+      sort: "liked",
+      tag: "fab",
+      icon: "js-square"
+    },
+    {
+      name: "后端",
+      alias: "backEnd",
+      sort: "liked",
+      tag: "fab",
+      icon: "bitbucket"
+    },
+    {
+      name: "小程序",
+      alias: "miniProgram",
+      sort: "liked",
+      tag: "fab",
+      icon: "cloudsmith"
+    }
   ];
   mounted() {
     this.fetchPost();
@@ -134,6 +170,7 @@ export default class MyPage extends Vue {
     this.posts = res.data;
   }
 
+  //还有问题
   async load() {
     this.loading = true;
     this.count += 1;
@@ -146,8 +183,13 @@ export default class MyPage extends Vue {
     }, 2500);
   }
 
-  fetchCategory(alias) {
+  async handleCategory(alias, sort) {
     this.category = alias;
+    this.count = 1;
+    const res = await this.$http.get(
+      `/posts/all?limit=15&page=${this.count}&sort=${sort}`
+    );
+    this.posts = res.data;
   }
 }
 </script>

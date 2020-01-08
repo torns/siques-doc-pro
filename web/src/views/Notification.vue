@@ -3,7 +3,11 @@
     <el-row type="flex" class="pt-4">
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-          <el-tab-pane label="通知提醒" name="first">通知提醒</el-tab-pane>
+          <el-tab-pane label="通知提醒" name="first">
+            <el-button type="text">全部标记为已读</el-button>
+
+            <div>{{}}</div>
+          </el-tab-pane>
           <el-tab-pane label="私信消息" name="second">私信消息</el-tab-pane>
         </el-tabs>
       </el-col>
@@ -20,13 +24,18 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class Notification extends Vue {
   @Prop()
   name: string;
-  follows = "";
+  notifies = "";
   activeName = "first";
-  mounted() {}
-
-  handleClick(e) {
-    console.log(e);
+  mounted() {
+    this.fetchNotify();
   }
+
+  async fetchNotify() {
+    const res = await this.$http.get("/notification");
+    this.notifies = res.data;
+  }
+
+  handleClick(e) {}
 }
 </script>
 

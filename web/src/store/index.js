@@ -14,6 +14,7 @@ export default new Vuex.Store({
     userAvator: "",
     postLength: "",
     myFollowers: "",
+    myFans: "",
     isValid: "",
     personalData: ""
   },
