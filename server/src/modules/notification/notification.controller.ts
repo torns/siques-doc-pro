@@ -1,8 +1,9 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Param, Body } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { NotificationDto } from './noticication.dto';
 
 
 @Controller('notification')
@@ -14,7 +15,14 @@ export class NotificationController {
     @Get()
     @UseGuards(AuthGuard())
     async commentMessage(@User() user: UserEntity) {
-        return this.notificationService.commentMessage(user.id)
+        return await this.notificationService.commentMessage(user.id)
+    }
+
+
+    @Post()
+    @UseGuards(AuthGuard())
+    async storeLetter(@User() user: UserEntity, @Body() data: NotificationDto) {
+        return await this.notificationService.storeLetter(user, data)
     }
 
 

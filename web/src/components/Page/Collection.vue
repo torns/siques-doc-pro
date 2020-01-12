@@ -2,6 +2,7 @@
   <div>
     <el-tabs stretch v-model="mypageActiveName" @tab-click="handleClick">
       <el-tab-pane label="文章" name="mypost">
+        <div v-if="posts.length==0">(ﾟ∀ﾟ ) 暂时没有任何数据</div>
         <list-panel :posts="posts"></list-panel>
       </el-tab-pane>
       <el-tab-pane label="动态" name="second">(ﾟ∀ﾟ ) 暂时没有任何数据</el-tab-pane>

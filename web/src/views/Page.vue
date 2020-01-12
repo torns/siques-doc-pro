@@ -7,14 +7,13 @@
           <el-col class="mr-6" :xs="6" :sm="4" :md="4" :lg="4" :xl="4">
             <div style="width:157.5px;height:157.5">
               <div class="point">
-                <el-avatar
-                  style="width:auto"
-                  :size="157.5"
-                  src="../assets/avator.jpg"
-                  class="shadow-1"
-                >
-                  <img v-if="avatorUrl" :src="avatorUrl" class="avatar" />
-
+                <el-avatar style="width:auto" :size="157.5" class="shadow-1">
+                  <img
+                    style="background-color:white;"
+                    v-if="id?avatorUrl:this.$store.state.userAvator"
+                    :src="id?avatorUrl:this.$store.state.userAvator"
+                    class="avatar"
+                  />
                   <img v-else src="../assets/avator.jpg" />
                 </el-avatar>
                 <el-upload
@@ -25,7 +24,7 @@
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <el-button size="small" type="text">上传头像</el-button>
+                  <el-button v-if="!id" size="small" type="text">上传头像</el-button>
                 </el-upload>
               </div>
 
@@ -112,13 +111,15 @@
           <div class="d-flex jc-around">
             <div class="point" @click="handleComponent({0:'Followers'})">
               <div>关注了</div>
-              <span>{{id?this.followers.length:this.$store.state.myFollowers}}人</span>
+              <span v-if="this.user.follows">{{this.user.follows.length}}人</span>
+              <span v-else>{{this.$store.state.myFollowers}}人</span>
             </div>
             <el-divider direction="vertical"></el-divider>
 
             <div @click="handleComponent({0:'Fans'})" class="pl-1 point">
               <div>粉丝</div>
-              <span>{{id?this.user.length:this.$store.state.myFans}}人</span>
+              <span v-if="this.user.user">{{this.user.user.length}}人</span>
+              <span v-else>{{this.$store.state.myFans}}人</span>
             </div>
           </div>
           <div>
@@ -130,7 +131,12 @@
               v-for="(link,index) in pageLinks"
               :key="index"
               @click="changeComponent(link.alias)"
-            >{{link.name}}</li>
+            >
+              <div class="d-flex jc-between">
+                <div>{{link.name}}</div>
+                <div class="pr-3 text-gray">{{link.count}}</div>
+              </div>
+            </li>
           </ul>
         </el-col>
         <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
@@ -148,26 +154,26 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Homepage from "../components/Page/Homepage.vue";
-import Post from "../components/Page/Post.vue";
+import PostList from "../components/Page/PostList.vue";
 import Fans from "../components/Page/Fans.vue";
 import Followers from "../components/Page/Followers.vue";
 
 import SideBar from "../components/Page/SideBar.vue";
+import Collection from "../components/Page/Collection.vue";
 
 @Component({
-  components: { Homepage, Post, SideBar, Fans, Followers }
+  components: { Homepage, PostList, SideBar, Fans, Followers, Collection }
 })
 export default class Page extends Vue {
   @Prop()
   id: string;
   introduction: string = "";
   collections: string = "";
-  followers: string = "";
-  fans: string = "";
   defaultLink: string = "Homepage";
   currentComponent: string = "Homepage";
   messageBox: string = "";
   show: boolean = false;
+  postCount: number = 0;
   avatorUrl = "";
   showname: string = "";
   user: any = "";
@@ -208,7 +214,8 @@ export default class Page extends Vue {
     },
     {
       name: `${this.id ? "他" : "我"}的文章`,
-      alias: "Post"
+      alias: "PostList",
+      count: ""
     },
     {
       name: `${this.id ? "他" : "我"}的回答`,
@@ -228,9 +235,7 @@ export default class Page extends Vue {
     }
   ];
 
-  mounted() {
-    // this.fetchCollect();
-
+  created() {
     this.fetchUser();
   }
 
@@ -276,6 +281,9 @@ export default class Page extends Vue {
     if (this.id) {
       const res = await this.$http.get(`/users/${this.id}`);
       this.user = res.data;
+      //* 改变数组中的数据的重要步骤*/
+      this.$set(this.pageLinks[1], "count", res.data.posts.length);
+
       try {
         this.avatorUrl = res.data.avator[0].url;
       } catch {
@@ -295,6 +303,7 @@ export default class Page extends Vue {
 
     const res = await this.$http.post("/avators", params, config);
 
+    this.$store.state.userAvator = res.data.url;
     this.$notify({
       title: "成功",
       type: "success",

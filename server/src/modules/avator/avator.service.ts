@@ -37,17 +37,18 @@ export class AvatorService {
         const url = res.url + "?x-oss-process=style/" + "avator-picture";
 
         const id = user.id
-        const result = this.avatorRepository.createQueryBuilder("avator")
+        const result = await this.avatorRepository.createQueryBuilder("avator")
             .where("userId =:id", { id })
             .getOne()
+
         if (!result) {
-            console.log(1)
+
             await this.avatorRepository.save({
                 filename: res.name, user, url: url
 
             })
         } else {
-            console.log(1)
+
             await this.avatorRepository.createQueryBuilder("avator")
                 .update(Avator)
                 .where("userId =:id", { id })

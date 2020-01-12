@@ -43,11 +43,10 @@ export class PostController {
   }
 
   @Get(":id/user")
-  @UseGuards(AuthGuard())
   @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
-    Options: ListOptionsInterface, @Param("id", ParseIntPipe) id: number, @User() user: UserEntity
+    Options: ListOptionsInterface, @Param("id", ParseIntPipe) id: number
   ) {
 
     return await this.postService.index(Options, id);

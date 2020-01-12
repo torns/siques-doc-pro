@@ -51,7 +51,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (localStorage.token) {
+    if (localStorage.token && store.state.UserNotExist == false) {
       next()
     } else {
 

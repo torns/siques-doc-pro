@@ -1,0 +1,47 @@
+{
+  "name": "nuxt-web",
+  "version": "1.0.0",
+  "description": "My magnificent Nuxt.js project",
+  "author": "ericheshenghao",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-regular-svg-icons": "^5.12.0",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.4.0",
+    "@nuxtjs/pwa": "^3.0.0-0",
+    "@nuxtjs/style-resources": "^1.0.0",
+    "dayjs": "^1.8.19",
+    "element-ui": "^2.4.11",
+    "hljs": "^6.2.3",
+    "markdown-it": "^10.0.0",
+    "nuxt": "^2.0.0",
+    "tui-editor": "^1.4.10",
+    "vue-property-decorator": "^8.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/typescript-build": "^0.5.5",
+    "@nuxtjs/eslint-config": "^1.0.1",
+    "@nuxtjs/eslint-module": "^1.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "node-sass": "^4.13.0",
+    "prettier": "^1.16.4",
+    "sass-loader": "^8.0.1",
+    "scss": "^0.2.4",
+    "scss-loader": "0.0.1"
+  }
+}

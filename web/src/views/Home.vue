@@ -22,7 +22,11 @@
             <span class="fs-md">问答</span>
           </el-menu-item>
 
-          <el-menu-item :show-timeout="0" :hide-timeout="0">
+          <el-menu-item
+            v-if="this.$store.state.UserNotExist == false"
+            :show-timeout="0"
+            :hide-timeout="0"
+          >
             <el-popover style="height:400px!important;" placement="bottom" trigger="click">
               <div class="d-flex flex-column h-100">
                 <el-radio-group @change="change" v-model="topRadio" size="small">
@@ -49,13 +53,15 @@
                 </div>
 
                 <div v-if="topRadio=='follow'">
+                  <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
+
                   <div
-                    class="py-1 lh-2"
+                    class="py-1 lh-2 bg-2"
                     v-for="(notify,index) in notifies.follow.user"
                     :key="index"
                   >
                     <router-link tag="span" :to="`/u/${notify.id}`">
-                      <span class="hover-4 text-primary point pr-1">{{notify.name}}</span>
+                      <span class="ml-2 hover-4 text-primary point pr-1">{{notify.name}}</span>
                     </router-link>关注了你
                   </div>
                 </div>
@@ -73,8 +79,8 @@
             </el-popover>
           </el-menu-item>
 
-          <el-menu-item :show-timeout="0" :hide-timeout="0">
-            <el-badge value="new" type="primary" class="item">
+          <el-menu-item class="pl-4" :show-timeout="0" :hide-timeout="0">
+            <el-badge value="new" type="primary" class="item pl-2">
               <el-popover style="height:400px!important;" placement="bottom" trigger="click">
                 <div class="d-flex flex-column h-100">
                   <div class="flex-1 pt-3"></div>
@@ -115,7 +121,11 @@
           >
             <template slot="title">
               <el-avatar :size="35" class="shadow-1">
-                <img v-if="this.$store.state.userAvator" :src="this.$store.state.userAvator" />
+                <img
+                  style="background-color:white;"
+                  v-if="this.$store.state.userAvator"
+                  :src="this.$store.state.userAvator"
+                />
                 <img v-else src="../assets/avator.jpg" />
               </el-avatar>
             </template>
@@ -290,8 +300,10 @@ export default class Home extends Vue {
   }
 
   async fetchNotify() {
-    const res = await this.$http.get("/notification");
-    this.notifies = res.data;
+    if (this.$store.state.UserNotExist == false) {
+      const res = await this.$http.get("/notification");
+      this.notifies = res.data;
+    }
   }
 
   async change(e) {}
@@ -337,5 +349,9 @@ export default class Home extends Vue {
 .dialog-footer .el-button {
   padding: 9px 0 !important;
   width: 320px !important;
+}
+
+.el-popover {
+  padding: 0 !important;
 }
 </style>

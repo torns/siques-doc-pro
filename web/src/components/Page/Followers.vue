@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex jc-between header border-bottom py-1 px-3">
-      <div class="fs-xl pb-3">我的关注</div>
+      <div class="fs-xl pb-3">{{id?"他":"我"}}的关注</div>
     </div>
     <div class="body">
       <div style="height:150px" class="mt-4 bg-light-1 border-dash">

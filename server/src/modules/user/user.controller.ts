@@ -43,8 +43,16 @@ export class UserController {
   // 排除用户密码
 
   async show(@Param("id", ParseIntPipe) id: number) {
-    return await this.userService.show(id);
+    return await this.userService.showMessage(id);
   }
+
+  // 获取个人信息
+  @Get()
+  @UseGuards(AuthGuard("jwt"))
+  async showMessage(@User() user: userEntity) {
+    return await this.userService.showMessage(user.id);
+  }
+
 
   @Put("editor")
   @UseGuards(AuthGuard("jwt"))
@@ -54,12 +62,6 @@ export class UserController {
     return await this.userService.changeEditor(user.id, body);
   }
 
-  // 获取个人设置信息
-  @Get()
-  @UseGuards(AuthGuard("jwt"))
-  async showMessage(@User() user: userEntity) {
-    return await this.userService.showMessage(user.id);
-  }
 
 
   @Put(':id/password')

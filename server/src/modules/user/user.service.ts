@@ -40,7 +40,7 @@ export class UserService {
       .leftJoinAndSelect("user.avator", "avator")
       .select(["user.id", 'avator.id', 'avator.url'])
       .orderBy("avator.id", "DESC")
-      .limit(1)
+      // .limit(1)
       .getOne();
 
     const user = {
@@ -50,6 +50,26 @@ export class UserService {
 
 
     return user;
+  }
+
+
+
+  async showMessage(id: number) {
+
+    const res1 = await this.userRepository.createQueryBuilder("user")
+      .where("user.id=:id", { id })
+      .leftJoinAndSelect("user.follows", "follows")
+      .leftJoinAndSelect("user.avator", "avator")
+      .leftJoin("user.posts", "posts")
+      .addSelect(["posts.id"])
+      .addOrderBy("avator.id", "DESC")
+      .getOne()
+
+    //粉丝
+    const res2 = await this.userRepository
+      .findOne(id, { relations: ["follows", "user", "user.avator"] })
+
+    return { ...res1, ...res2 }
   }
 
   //传入的用户id,用户点过赞的文章
@@ -126,22 +146,6 @@ export class UserService {
     return await this.userRepository.update(id, entity);
   }
 
-  async showMessage(id: number) {
-
-    const res1 = await this.userRepository.createQueryBuilder("user")
-      .where("user.id=:id", { id })
-      .leftJoinAndSelect("user.follows", "follows")
-      .leftJoinAndSelect("user.avator", "avator")
-      .limit(1)
-      .addOrderBy("avator.id", "DESC")
-      .getOne()
-
-    //粉丝
-    const res2 = await this.userRepository
-      .findOne(id, { relations: ["follows", "user", "user.avator"] })
-
-    return { ...res1, ...res2 }
-  }
 
 
   //点赞和消除 id是文章id

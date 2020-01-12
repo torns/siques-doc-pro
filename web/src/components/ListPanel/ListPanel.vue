@@ -2,25 +2,11 @@
   <div>
     <ul v-if="posts" class="pt-3">
       <li v-for="post in posts" :key="post.id" class="text-gray">
-        <router-link tag="div" class="fs-m text-primary" :to="`/p/${post.id}`">{{post.title}}</router-link>
-        <div class="d-flex fs-xs pt-2">
-          <div>
-            <i class="el-icon-view pr-2">
-              <span class="pl-1">0</span>
-            </i>
-          </div>
-          <div>
-            <i class="el-icon-chat-square pr-2">
-              <span class="pl-1">0</span>
-            </i>
-          </div>
-          <div>
-            <i class="el-icon-star-off pr-2">
-              <span class="pl-1">0</span>
-            </i>
-          </div>
+        <div class="d-flex fs-xm">
+          <div style="padding: 0 10px;" class="bg-2 mr-2">xx票</div>
+          <router-link tag="div" class="flex-1 text-primary" :to="`/p/${post.id}`">{{post.title}}</router-link>
 
-          <div>{{$dayjs(post.created).format("MM.DD HH:MM")}}</div>
+          <div>{{$dayjs(post.created).format("YYYY-MM-DD")}}</div>
         </div>
         <div class="py-3">
           <el-divider></el-divider>
@@ -41,5 +27,8 @@ export default class ListPanel extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.el-divider--horizontal {
+  margin: 0 auto !important;
+}
 </style>

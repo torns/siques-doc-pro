@@ -17,7 +17,7 @@ export class AvatorController {
     @UseGuards(AuthGuard())
     @UseInterceptors(FileInterceptor("avator"))
     async store(@UploadedFile() data: UploadFileDto, @User() user: userEntity) {
-        console.log(data)
+
         return await this.avatorService.storeAli(data, user)
     }
 
