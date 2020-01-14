@@ -20,7 +20,11 @@
             >
               <div class="avator d-flex flex-column ai-center">
                 <el-avatar class="shadow-1">
-                  <img v-if="follow.avator[0]" :src="follow.avator[0].url" />
+                  <img
+                    v-if="follow.avator[0]"
+                    :src="follow.avator[0].url"
+                    class="bg-white"
+                  />
                   <img v-else src="~/static/avator.jpg" />
                 </el-avatar>
                 {{ follow.name }}
@@ -50,7 +54,7 @@ export default class Follows extends Vue {
       this.follows = res.data[0]
     } else {
       const res = await this.$http.get(
-        `users/${this.$store.state.userId}/follows`
+        `users/${this.$store.state.user.userId}/follows`
       )
       this.follows = res.data[0]
     }

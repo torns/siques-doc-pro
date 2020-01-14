@@ -20,6 +20,7 @@ import { Comment } from '../comment/comment.entity';
 import { Role } from '../role/role.entity';
 import { Collection } from '../collection/collection.entity';
 import { Avator } from '../avator/avator.entity';
+import { Bookmark } from '../bookmark/bookmark.entity';
 
 @Entity()
 export class User {
@@ -53,8 +54,6 @@ export class User {
   @Column({ nullable: true })
   website: string;
 
-
-
   @CreateDateColumn()
   created: Date;
 
@@ -79,9 +78,11 @@ export class User {
   comments: Comment[];
 
   // 一个用户拥有多个集合
-  @OneToMany(type => Collection, collection => collection.user)
+  @OneToMany(
+    type => Collection,
+    collection => collection.user,
+  )
   collections: Collection[];
-
 
   // 多个角色对应多个用户
   @ManyToMany(
@@ -90,7 +91,6 @@ export class User {
   )
   @JoinTable()
   roles: Role[];
-
 
   //一个用户关注另一个用户
   @ManyToMany(
@@ -106,17 +106,24 @@ export class User {
   )
   user: User[];
 
-
-
+  //一个用户关注多个收藏夹
+  @ManyToMany(type => Bookmark)
+  @JoinTable()
+  bookmarks: Bookmark[];
 
   //多个角色
-  @ManyToMany(type => Post,
-    post => post.user)
+  @ManyToMany(
+    type => Post,
+    post => post.user,
+  )
   @JoinTable()
   likes: Post[];
 
-  @OneToMany(type => Avator, avator => avator.user)
-  avator: Avator[]
+  @OneToMany(
+    type => Avator,
+    avator => avator.user,
+  )
+  avator: Avator[];
 
   @BeforeInsert()
   // 更新之前先比对

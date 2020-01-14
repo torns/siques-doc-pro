@@ -63,7 +63,10 @@
                         {{ $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss') }}
                       </div>
                       <div class="pr-2">字数：{{ $route.params.id }}</div>
-                      <div>阅读：{{ post.views }}</div>
+                      <div>
+                        阅读：{{ post.views }}
+                        {{ this.$store.state.UserNotExist }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -82,7 +85,7 @@
                     ).format('发布于DD天 HH小时 MM分钟前')
                   }}
                 </div>
-                <div class="d-flex jc-center my-4">
+                <div class="d-flex jc-center my-4 ">
                   <el-button @click="like" class="hover-3" type="plain">
                     <font-awesome-icon
                       :icon="['far', 'thumbs-up']"
@@ -113,10 +116,11 @@
               </div>
             </div>
           </div>
-          <div>
-            <div v-if="fetchedComment" class="fs-xl py-1 pt-4">
+          <div class="pt-4">
+            <div v-if="fetchedComment" class="fs-xl py-1">
               {{ fetchedComment.length }}条评论
             </div>
+            <div v-else class="fs-xl py-1">0条评论</div>
             <div
               class="py-4 bg-white border-radius shadow-1"
               style="min-height:100px"
@@ -318,18 +322,19 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-// import hljs from 'hljs'
+
+import hljs from 'highlight.js'
 import footer from '~/components/footer/Footer.vue'
 import sidebar from '~/components/SideBar/SideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
 
-// const highlightCode = () => {
-//   const preEl = document.querySelectorAll('pre code')
+const highlightCode = () => {
+  const preEl = document.querySelectorAll('pre code')
 
-//   preEl.forEach((el) => {
-//     hljs.highlightBlock(el)
-//   })
-// }
+  preEl.forEach((el) => {
+    hljs.highlightBlock(el)
+  })
+}
 
 const MarkdownIt = require('markdown-it')
 const md = new MarkdownIt()
@@ -342,17 +347,10 @@ const md = new MarkdownIt()
 })
 export default class Post extends Vue {
   async asyncData({ params, $api }) {
-    const id = params.id // When calling /abc the slug will be "abc"
-    const post = await $api.$get(`posts/${id}`)
-
-    this.liked = post.liked
-    if (!post.editor) {
-      post.body = md.render(post.body)
-    }
-
-    return { post }
+    const id = await params.id // When calling /abc the slug will be "abc"
+    console.log(id)
   }
-  id: any
+
   post: any = ''
   liked: number = 0
   comment = ''
@@ -362,10 +360,14 @@ export default class Post extends Vue {
   showComment = ''
   mounted() {
     this.fetchpost(this.id)
-    // this.fetchComment()
+    this.fetchComment()
   }
   updated() {
-    // highlightCode()
+    highlightCode()
+  }
+  // TS中的计算属性
+  get id(): any {
+    return this.$route.params.id
   }
 
   bck2Top() {
@@ -394,8 +396,12 @@ export default class Post extends Vue {
   }
 
   async like() {
-    await this.$http.get(`/users/${this.id}/like`)
-    this.fetchpost(this.id)
+    if (this.$store.state.UserNotExist === false) {
+      await this.$http.get(`/users/${this.id}/like`)
+      this.fetchpost(this.id)
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   async commentLike(id) {
@@ -463,24 +469,6 @@ export default class Post extends Vue {
 </script>
 
 <style lang="scss">
-.container {
-  margin-right: auto;
-  margin-left: auto;
-
-  @media (max-width: 36em) {
-    width: auto;
-  }
-  @media (min-width: 768px) {
-    max-width: 720px;
-  }
-  @media (min-width: 992px) {
-    max-width: 900px;
-  }
-  @media (min-width: 1200px) {
-    max-width: 1140px;
-  }
-}
-
 .menu-button {
   @media (max-width: 1200px) {
     display: none;

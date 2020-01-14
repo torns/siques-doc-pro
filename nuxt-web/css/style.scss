@@ -1,48 +1,45 @@
-@import "./variables";
+@import './variables';
 // reset
 // 防止自己撑大
 * {
   margin: 0;
   padding: 0;
-  
 }
 
+//重置图标大小？
+.svg-inline--fa {
+  width: auto !important;
+}
 
 //界面防抖
-html, body {
-  height:100%;
-  
+html,
+body {
+  height: 100%;
+
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
-  
+
   overflow-x: hidden;
   box-sizing: border-box;
   flex-wrap: wrap;
   word-break: break-all;
   :focus {
     outline: none;
-}
+  }
 }
 // html{overflow-y:scroll;}
-
 
 li {
   list-style-type: none;
   cursor: pointer;
 }
 
-
-
-
 //布局
 .container {
   margin-right: auto;
   margin-left: auto;
-
   @media (min-width: 768px) {
     width: 750px;
-   
-    
   }
   @media (min-width: 992px) {
     width: 970px;
@@ -56,42 +53,44 @@ code {
   font-size: 13.3px;
 }
 
-
+.el-avatar > img {
+  object-fit: cover;
+  width: 100%;
+}
 
 // 透明度
 .opacity25 {
   opacity: 0.25;
 }
 
-@each $opacitykey,$opacity in $opacitys {
-  .opacity#{$opacitykey}{
-    opacity:$opacity ;
+@each $opacitykey, $opacity in $opacitys {
+  .opacity#{$opacitykey} {
+    opacity: $opacity;
   }
-  
 }
-.relative{
+.relative {
   position: relative;
 }
 
-.border-radius{
+.border-radius {
   border-radius: 3px;
 }
 
-.border-dash{
+.border-dash {
   border: 1px dashed #dddddd;
 }
 
-.border-solid{
+.border-solid {
   border: 1px solid #dddddd;
 }
 
 // 阴影
-.shadow-1{
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+.shadow-1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 
-.shadow-2{
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+.shadow-2 {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 //第一个参数为键值及键名 第二个为对象
@@ -105,85 +104,71 @@ code {
 }
 
 // text overflow
-.text-ellipsis{
-  display:inline-block;
+.text-ellipsis {
+  display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-
 //鼠标样式
-.point{
+.point {
   cursor: pointer;
 }
 // shadow
 // box-shadow:
-@each $var in (left,right,bottom,right) {
-
-  
+@each $var in (left, right, bottom, right) {
 }
 
 //字体样式
-@each $fontkey,$font in $fonts {
-  .font-#{$fontkey}{
+@each $fontkey, $font in $fonts {
+  .font-#{$fontkey} {
     font-family: $font;
   }
-  
 }
 // 悬浮
-.hoverlink{
-  &:hover{
+.hoverlink {
+  &:hover {
     text-decoration: underline;
-
   }
- 
 }
-.hoverbg{
-  &:hover{
+.hoverbg {
+  &:hover {
     background-color: #f0f0f0;
     border-radius: 4px;
   }
 }
 
-.bg-1{
-
-    background-color: #009a61;
-    border-radius: 4px;
-    color: white;
-
+.bg-1 {
+  background-color: #009a61;
+  border-radius: 4px;
+  color: white;
 }
 
 .bg-2 {
-  background-color: #FCF8E3;
-  color: #8A6D3B;
+  background-color: #fcf8e3;
+  color: #8a6d3b;
 }
 //去阴影
 
-
-.hover-1{
-  &:hover{
-    opacity: 0.8!important;
-    
+.hover-1 {
+  &:hover {
+    opacity: 0.8 !important;
   }
 }
 
-
-.hover-2{
-  &:hover{
-    background: rgba(0,154,97,0.08);
+.hover-2 {
+  &:hover {
+    background: rgba(0, 154, 97, 0.08);
     border-radius: 4px;
-    
   }
 }
 
-
-.hover-3{
-  &:hover{
-  background-color: #009a61;
-  color: white;
+.hover-3 {
+  &:hover {
+    background-color: #009a61;
+    color: white;
   }
-
 }
 
 .hover-4 {
@@ -199,7 +184,7 @@ code {
   }
   &::after {
     position: absolute;
-    content: "";
+    content: '';
     width: 100%;
     height: 2px;
     top: 100%;
@@ -211,34 +196,27 @@ code {
   }
 }
 
-.hover-5{
-
-  &:hover{
-  
+.hover-5 {
+  &:hover {
   }
 }
-    
+
 //遮罩
 .hover-mask {
-  &::content{
-    content: "";
+  &::content {
+    content: '';
     width: 20px;
     height: 200px;
-    
+
     background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
   }
-  
 }
 
-.visitlink{
-  &:visited{
-    color: #969696
+.visitlink {
+  &:visited {
+    color: #969696;
   }
- 
 }
-
-
-
 
 // text align
 //第一个参数为变量 第二个为集合
@@ -272,11 +250,11 @@ code {
   height: 100%;
 }
 
-.scroll-hide{
+.scroll-hide {
   ::-webkit-scrollbar {
     width: 0;
     height: 0;
-}
+  }
 }
 
 // flex 布局
@@ -291,14 +269,13 @@ code {
   flex-wrap: wrap;
 }
 
-.showoff{
+.showoff {
   display: none;
 }
 
-.margin{
+.margin {
   margin: 0 auto;
 }
-
 
 @each $key, $value in $flex-jc {
   .jc-#{$key} {
@@ -359,24 +336,20 @@ code {
 
 .btn {
   border: none;
-  
+
   // font-size: map-get($font-sizes, "xll") * $base-font-size;
   background-color: transparent;
-  &:hover,&:focus{
-    color:#409EFF;
+  &:hover,
+  &:focus {
+    color: #409eff;
     border-color: none;
     background-color: transparent;
   }
-
-  
 }
-
-
 
 //borders
-@each $dir in (top,right,bottom,left) {
-  .border-#{$dir}{
-    border-#{$dir}:1px solid $border-color;
+@each $dir in (top, right, bottom, left) {
+  .border-#{$dir} {
+    border-#{$dir}: 1px solid $border-color;
   }
 }
-

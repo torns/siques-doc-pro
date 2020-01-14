@@ -1,7 +1,7 @@
 <template>
   <div class="h-100 d-flex">
     <div class="profile flex-1">
-      <header class="profile__heading pt-5" style="background-color: #f6f6f6;">
+      <div class="profile__heading pt-5" style="background-color: #f6f6f6;">
         <div class="container">
           <el-row :gutter="15" type="flex">
             <el-col :xs="6" :sm="4" :md="4" :lg="4" :xl="4" class="mr-6">
@@ -9,8 +9,8 @@
                 <div class="point">
                   <el-avatar :size="157.5" style="width:auto" class="shadow-1">
                     <img
-                      v-if="id ? avatorUrl : this.$store.state.userAvator"
-                      :src="id ? avatorUrl : this.$store.state.userAvator"
+                      v-if="id ? avatorUrl : this.$store.state.user.userAvator"
+                      :src="id ? avatorUrl : this.$store.state.user.userAvator"
                       style="background-color:white;"
                       class="avatar"
                     />
@@ -52,7 +52,7 @@
             <el-col :xs="12" :sm="9" :md="9" :lg="9" :xl="10">
               <div class="d-flex pb-1">
                 <h2 class="pr-4 text-ellipsis">
-                  {{ id ? user.name : this.$store.state.userName }}
+                  {{ id ? user.name : this.$store.state.user.username }}
                 </h2>
                 <el-button type="text">查看完整档案</el-button>
               </div>
@@ -63,16 +63,16 @@
                 />10
                 <span class="opacity60">声望</span>
               </div>
-              <ul class="opacity60">
+              <ul class="opacity60 ">
                 <li
                   v-for="(link, index) in messageLinks"
                   :key="index"
-                  class="pb-2 fs-xm hoverlink"
+                  class="pb-2 fs-xm hoverlink "
                 >
                   <div
-                    v-if="show && showname == link.alias"
+                    v-if="show && showname == link.alias && !id"
                     style="height:30px"
-                    class="d-flex ai-center"
+                    class="d-flex ai-center "
                   >
                     <el-input
                       v-model="messageBox"
@@ -88,14 +88,17 @@
                     >
                   </div>
 
-                  <div v-else class="d-flex">
+                  <div v-else class="d-flex ai-baseline">
                     <font-awesome-icon
                       :icon="[link.tag, link.icon]"
                       class="pr-2"
                     />
                     <div @click=";(show = true), (showname = link.alias)">
                       <!-- 没有解决 -->
-                      <div v-if="user.showname != null">{{ user }}</div>
+
+                      <div v-if="$store.state.personalData[link.alias] != null">
+                        {{ $store.state.personalData[link.alias] }}
+                      </div>
                       <div v-else>{{ link.name }}</div>
                     </div>
                   </div>
@@ -119,8 +122,8 @@
             </el-col>
           </el-row>
         </div>
-      </header>
-      <body class="container">
+      </div>
+      <div class="container">
         <el-row
           :gutter="20"
           type="flex"
@@ -139,14 +142,14 @@
               <div @click="handleComponent({ 0: 'Followers' })" class="point">
                 <div>关注了</div>
                 <span v-if="user.follows">{{ user.follows.length }}人</span>
-                <span v-else>{{ $store.state.myFollowers }}人</span>
+                <span v-else>{{ $store.state.user.myFollowers }}人</span>
               </div>
               <el-divider direction="vertical"></el-divider>
 
               <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
                 <div>粉丝</div>
                 <span v-if="user.user">{{ user.user.length }}人</span>
-                <span v-else>{{ this.$store.state.myFans }}人</span>
+                <span v-else>{{ this.$store.state.user.myFans }}人</span>
               </div>
             </div>
             <div>
@@ -186,27 +189,30 @@
             />
           </el-col>
         </el-row>
-      </body>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import Homepage from '../components/Page/Homepage.vue'
-import PostList from '../components/Page/PostList.vue'
-import Fans from '../components/Page/Fans.vue'
-import Followers from '../components/Page/Followers.vue'
+import { Vue, Component } from 'vue-property-decorator'
+import Homepage from '~/components/Page/Homepage.vue'
+import PostList from '~/components/Page/PostList.vue'
+import Fans from '~/components/Page/Fans.vue'
+import Followers from '~/components/Page/Followers.vue'
 
-import SideBar from '../components/Page/SideBar.vue'
-import Collection from '../components/Page/Collection.vue'
+import SideBar from '~/components/Page/SideBar.vue'
+import Bookmark from '~/components/Page/Bookmark.vue'
 
 @Component({
-  components: { Homepage, PostList, SideBar, Fans, Followers, Collection }
+  components: { Homepage, PostList, SideBar, Fans, Followers, Bookmark }
 })
 export default class Page extends Vue {
-  @Prop()
-  id: string
+  asyncData({ params }) {
+    const id = params.id // When calling /abc the slug will be "abc"
+    console.log(123, id)
+  }
+
   introduction: string = ''
   collections: string = ''
   defaultLink: string = 'Homepage'
@@ -217,6 +223,7 @@ export default class Page extends Vue {
   avatorUrl = ''
   showname: string = ''
   user: any = ''
+  pageLinks: any = []
   messageLinks = [
     {
       name: '填写现居城市',
@@ -247,35 +254,17 @@ export default class Page extends Vue {
       icon: 'js-square'
     }
   ]
-  pageLinks = [
-    {
-      name: `${this.id ? '他' : '我'}的主页`,
-      alias: 'Homepage'
-    },
-    {
-      name: `${this.id ? '他' : '我'}的文章`,
-      alias: 'PostList',
-      count: ''
-    },
-    {
-      name: `${this.id ? '他' : '我'}的回答`,
-      alias: 'Que'
-    },
-    {
-      name: `${this.id ? '他' : '我'}的提问`,
-      alias: 'Website'
-    },
-    {
-      name: `${this.id ? '他' : '我'}的关注`,
-      alias: 'follow'
-    },
-    {
-      name: `${this.id ? '他' : '我'}的收藏夹`,
-      alias: 'collection'
-    }
-  ]
 
-  created() {
+  // TS中的计算属性
+  get id(): any {
+    try {
+      return this.$route.params.id
+    } catch {
+      return null
+    }
+  }
+
+  mounted() {
     this.fetchUser()
   }
 
@@ -306,18 +295,48 @@ export default class Page extends Vue {
     this.show = false
     const data = { [alias]: this.messageBox }
     if (this.messageBox) {
-      await this.$http.put(`/users/${this.id}`, data)
+      await this.$http.put(`/users/${this.$store.state.user.userId}`, data)
+      this.$notify({
+        type: 'success',
+        message: '保存成功',
+        title: '成功'
+      })
+      this.$store.state.personalData[alias] = this.messageBox
     }
-    this.$notify({
-      type: 'success',
-      message: '保存成功',
-      title: '成功'
-    })
+
     this.messageBox = ''
   }
 
   // 如果有id把这个用户的信息都查出来
   async fetchUser() {
+    const pageLinks = [
+      {
+        name: `${this.id ? '他' : '我'}的主页`,
+        alias: 'Homepage'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的文章`,
+        alias: 'PostList'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的回答`,
+        alias: 'Que'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的提问`,
+        alias: 'Website'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的关注`,
+        alias: 'Followers'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的收藏夹`,
+        alias: 'bookmark'
+      }
+    ]
+    this.pageLinks = pageLinks
+
     if (this.id) {
       const res = await this.$http.get(`/users/${this.id}`)
       this.user = res.data
@@ -329,6 +348,10 @@ export default class Page extends Vue {
       } catch {
         this.avatorUrl = ''
       }
+    } else {
+      const count = this.$store.state.user.postLength
+
+      this.$set(this.pageLinks[1], 'count', count)
     }
   }
 
@@ -343,7 +366,7 @@ export default class Page extends Vue {
 
     const res = await this.$http.post('/avators', params, config)
 
-    this.$store.state.userAvator = res.data.url
+    this.$store.state.user.userAvator = res.data.url
     this.$notify({
       title: '成功',
       type: 'success',

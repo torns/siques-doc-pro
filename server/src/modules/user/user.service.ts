@@ -16,8 +16,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
-
-  ) { }
+  ) {}
   async store(data: UserDto) {
     const { phonenumber } = data;
     const user = await this.userRepository.findOne({ phonenumber });
@@ -30,60 +29,55 @@ export class UserService {
   }
 
   async show(id: number) {
-
     const entity = await this.userRepository.findOne(id);
     if (!entity) {
       throw new NotFoundException('未找到用户');
     }
-    const querryBuilder = this.userRepository.createQueryBuilder("user")
-    const result = await querryBuilder.where("user.id =:id", { id })
-      .leftJoinAndSelect("user.avator", "avator")
-      .select(["user.id", 'avator.id', 'avator.url'])
-      .orderBy("avator.id", "DESC")
+    const querryBuilder = this.userRepository.createQueryBuilder('user');
+    const result = await querryBuilder
+      .where('user.id =:id', { id })
+      .leftJoinAndSelect('user.avator', 'avator')
+      .select(['user.id', 'avator.id', 'avator.url'])
+      .orderBy('avator.id', 'DESC')
       // .limit(1)
       .getOne();
 
     const user = {
       ...entity,
-      avator: result.avator ? result.avator : null
-    }
-
+      avator: result.avator ? result.avator : null,
+    };
 
     return user;
   }
 
-
-
   async showMessage(id: number) {
-
-    const res1 = await this.userRepository.createQueryBuilder("user")
-      .where("user.id=:id", { id })
-      .leftJoinAndSelect("user.follows", "follows")
-      .leftJoinAndSelect("user.avator", "avator")
-      .leftJoin("user.posts", "posts")
-      .addSelect(["posts.id"])
-      .addOrderBy("avator.id", "DESC")
-      .getOne()
+    const res1 = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id=:id', { id })
+      .leftJoinAndSelect('user.follows', 'follows')
+      .leftJoinAndSelect('user.avator', 'avator')
+      .leftJoin('user.posts', 'posts')
+      .addSelect(['posts.id'])
+      .addOrderBy('avator.id', 'DESC')
+      .getOne();
 
     //粉丝
-    const res2 = await this.userRepository
-      .findOne(id, { relations: ["follows", "user", "user.avator"] })
+    const res2 = await this.userRepository.findOne(id, {
+      relations: ['follows', 'user', 'user.avator'],
+    });
 
-    return { ...res1, ...res2 }
+    return { ...res1, ...res2 };
   }
 
   //传入的用户id,用户点过赞的文章
   async userliked(id: number) {
-
     const res = await this.postRepository
       .createQueryBuilder()
       .relation(Post, 'user')
       .of(id)
-      .loadMany()
-    return res
-
+      .loadMany();
+    return res;
   }
-
 
   async updataPassword(id: string, data: UpdatePasswordDto) {
     const { password, newpassword } = data;
@@ -114,12 +108,9 @@ export class UserService {
     return entity;
   }
 
-
   //更新用户
   async update(id: number, data: UserDto) {
-
     const entity = await this.userRepository.update(id, data);
-
   }
 
   //检查用户是否有资源权限
@@ -137,20 +128,17 @@ export class UserService {
 
   //改变编辑器
   async changeEditor(id: number, body) {
-    const { editor } = body
+    const { editor } = body;
 
-    const entity = await this.userRepository.findOne(id)
+    const entity = await this.userRepository.findOne(id);
 
-    entity.editor = editor
+    entity.editor = editor;
     // 这里用更新才行？
     return await this.userRepository.update(id, entity);
   }
 
-
-
   //点赞和消除 id是文章id
   async like(id: number, user: User) {
-
     try {
       await this.userRepository
         .createQueryBuilder()
@@ -162,10 +150,9 @@ export class UserService {
         .createQueryBuilder()
         .update(Post)
         .where('post.id =:id', { id })
-        .set({ liked: () => "liked + 1" })
+        .set({ liked: () => 'liked + 1' })
         .execute();
-
-    } catch{
+    } catch {
       await this.userRepository
         .createQueryBuilder()
         .relation(User, 'likes')
@@ -176,10 +163,9 @@ export class UserService {
         .createQueryBuilder()
         .update(Post)
         .where('post.id =:id', { id })
-        .set({ liked: () => "liked - 1" })
+        .set({ liked: () => 'liked - 1' })
         .execute();
     }
-
   }
   // 被谁点过数量 给的是postid
   // leftjoin就是把符合的数据返回
@@ -188,57 +174,54 @@ export class UserService {
     // 这里要给postid
 
     const res = await this.userRepository
-      .createQueryBuilder("user")
-      .leftJoin("user.likes", "likes")
-      .where("postId=:id", { id })
-      .getMany()
-    return res.length
+      .createQueryBuilder('user')
+      .leftJoin('user.likes', 'likes')
+      .where('postId=:id', { id })
+      .getMany();
+    return res.length;
   }
-
-
 
   // 给哪些文章点过赞 id:用户
   async liked(id: number) {
+    const res = await this.userRepository.findOne(id, {
+      relations: ['likes', 'likes.user'],
+    });
 
-    const res = await this.userRepository
-      .findOne(id, { relations: ['likes', "likes.user"] })
-
-    return res
+    return res;
   }
 
   // 用户之间关注
   async follow(userid1: number, userid2: number) {
-
-    const res = await this.userRepository
-      .createQueryBuilder("user")
-      .relation(User, "follows")
-      .of(userid1)
-      .add(userid2)
+    if (userid1 != userid2) {
+      const res = await this.userRepository
+        .createQueryBuilder('user')
+        .relation(User, 'follows')
+        .of(userid1)
+        .add(userid2);
+    } else {
+      return;
+    }
   }
 
   //关注了谁
   async getfollows(id) {
-
     const res = await this.userRepository
-      .createQueryBuilder("user")
-      .leftJoinAndSelect("user.follows", "follows")
-      .leftJoin("follows.avator", "avator")
-      .addSelect("avator.url")
-      .where("user.id=:id", { id })
-      .getMany()
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.follows', 'follows')
+      .leftJoin('follows.avator', 'avator')
+      .addSelect('avator.url')
+      .where('user.id=:id', { id })
+      .getMany();
 
-    return res
+    return res;
   }
   // 用户的粉丝,以及他们的头像
   async whofollows(id) {
     // console.log(id)
-    const res = await this.userRepository
-      .findOne(id, { relations: ["follows", "user", "user.avator"] })
+    const res = await this.userRepository.findOne(id, {
+      relations: ['follows', 'user', 'user.avator'],
+    });
 
-    return res
+    return res;
   }
-
-
-
-
 }

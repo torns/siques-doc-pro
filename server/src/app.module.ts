@@ -15,11 +15,10 @@ import { AvatorModule } from './modules/avator/avator.module';
 import { ImageProcessModule } from './modules/image-process/image-process.module';
 import { SmsModule } from './modules/sms/sms.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { BookmarkModule } from './modules/bookmark/bookmark.module';
 
-
-
-import dotenv from "dotenv";
-dotenv.config()
+import dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
@@ -46,10 +45,9 @@ dotenv.config()
     ImageProcessModule,
     SmsModule,
     NotificationModule,
-
-
+    BookmarkModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

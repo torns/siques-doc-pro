@@ -19,8 +19,12 @@
               class="px-2 py-2"
             >
               <div class="avator d-flex flex-column ai-center">
-                <el-avatar class="shadow-1">
-                  <img v-if="fans.avator[0]" :src="fans.avator[0].url" />
+                <el-avatar class="shadow-1 ">
+                  <img
+                    v-if="fans.avator[0]"
+                    :src="fans.avator[0].url"
+                    class="bg-white"
+                  />
                   <img v-else src="~/static/avator.jpg" />
                 </el-avatar>
                 {{ fans.name }}
@@ -51,7 +55,7 @@ export default class Fans extends Vue {
       this.fans = res.data
     } else {
       const res = await this.$http.get(
-        `users/${this.$store.state.userId}/whofollows`
+        `users/${this.$store.state.user.userId}/whofollows`
       )
 
       this.fans = res.data

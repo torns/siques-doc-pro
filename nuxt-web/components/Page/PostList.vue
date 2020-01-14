@@ -42,7 +42,7 @@ export default class PageComponent extends Vue {
       this.posts = res.data[0]
     } else {
       const res = await this.$http.get(
-        `/posts/${this.$store.state.userId}/user`
+        `/posts/${this.$store.state.user.userId}/user`
       )
       this.posts = res.data[0]
     }

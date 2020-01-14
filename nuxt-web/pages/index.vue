@@ -170,8 +170,8 @@
             <template slot="title">
               <el-avatar :size="35" class="shadow-1">
                 <img
-                  v-if="this.$store.state.userAvator"
-                  :src="this.$store.state.userAvator"
+                  v-if="this.$store.state.user.userAvator"
+                  :src="this.$store.state.user.userAvator"
                   style="background-color:white;"
                 />
                 <img v-else src="~/static/avator.jpg" />
@@ -330,6 +330,8 @@ export default class Home extends Vue {
 
   mounted() {
     this.fetchNotify()
+    this.fetchuser()
+    window.addEventListener('unload', this.saveState)
   }
 
   closeLoginForm() {
@@ -338,6 +340,7 @@ export default class Home extends Vue {
 
   async login() {
     const res = await this.$http.post('/auth/login', this.LoginDto)
+    this.$cookies.set('token', 'GH1.1.1689020474.1484362313', '12h')
     localStorage.token = res.data.token
     this.$notify({
       title: '',
@@ -348,6 +351,7 @@ export default class Home extends Vue {
     this.$store.state.loginFormVisible = false
     this.$store.state.UserNotExist = false
     this.$router.go(0) // 刷新页面
+    this.fetchuser()
   }
 
   async register() {
@@ -376,6 +380,37 @@ export default class Home extends Vue {
       const res = await this.$http.get('/notification')
       this.notifies = res.data
     }
+  }
+
+  async fetchuser() {
+    if (this.$store.state.UserNotExist === false) {
+      const res = await this.$http.get('users')
+      const user = {
+        username: res.data.name,
+        userId: res.data.id,
+        myFollowers: res.data.follows.length,
+        userCreated: res.data.created,
+        postLength: res.data.posts.length,
+        myFans: res.data.user.length,
+        userAvator: res.data.avator[0].url || ''
+      }
+
+      const personal = {
+        city: res.data.city,
+        school: res.data.school,
+        organization: res.data.organization,
+        website: res.data.website
+      }
+
+      this.$store.state.personalData = personal
+      this.$store.state.user = user
+    }
+  }
+
+  // 刷新保存状态
+
+  saveState() {
+    localStorage.setItem('state', JSON.stringify(this.$store.state))
   }
 
   async change(e) {}
@@ -425,5 +460,42 @@ export default class Home extends Vue {
 
 .el-popover {
   padding: 0 !important;
+}
+
+.el-menu-item * {
+  vertical-align: unset !important;
+}
+.article img {
+  justify-content: center;
+  display: flex;
+  max-width: -webkit-fill-available;
+  margin: 0.667em 0;
+}
+
+.el-popover {
+  height: 440px !important;
+  width: 337px;
+  .el-radio-button__inner {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.write {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+//首页标签
+.el-badge__content.is-fixed {
+  top: 15px !important;
+  right: 1px !important;
+}
+
+.el-menu.el-menu--horizontal {
+  border-bottom: none !important;
 }
 </style>

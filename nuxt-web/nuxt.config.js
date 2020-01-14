@@ -25,15 +25,22 @@ export default {
       },
       {
         src:
-          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css'
-      },
-      {
-        src:
           'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
       }
     ],
-
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Cinzel+Decorative:700|EB+Garamond&display=swap'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -56,7 +63,9 @@ export default {
     '@/plugins/directive',
     '@/plugins/http',
     '@/plugins/filter',
-    '@/plugins/axios'
+    // '@/plugins/axios',
+    { src: '@plugins/router', ssr: false },
+    { src: '@plugins/localStorage', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

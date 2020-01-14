@@ -3,7 +3,9 @@
     <ul v-if="posts" class="pt-3">
       <li v-for="post in posts" :key="post.id" class="text-gray">
         <div class="d-flex fs-xm">
-          <div style="padding: 0 10px;" class="bg-2 mr-2">xx票</div>
+          <div style="padding: 0 10px;" class="bg-2 mr-2">
+            {{ post.liked }} 票
+          </div>
           <router-link
             :to="`/p/${post.id}`"
             tag="div"

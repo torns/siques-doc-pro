@@ -196,6 +196,11 @@ import markdown from '~/components/markdown/MarkDown.vue'
   components: { tinymce, markdown }
 })
 export default class Post extends Vue {
+  head() {
+    return {
+      meta: [{ hid: 'description', name: 'description', content: 'hi-Sen' }]
+    }
+  }
   collections: any = []
   newCollection: any = ''
   show: boolean = false
