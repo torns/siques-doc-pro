@@ -192,15 +192,11 @@ import { Vue, Component } from 'vue-property-decorator'
 import dayjs from 'dayjs'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
 import markdown from '~/components/markdown/MarkDown.vue'
+
 @Component({
   components: { tinymce, markdown }
 })
-export default class Post extends Vue {
-  head() {
-    return {
-      meta: [{ hid: 'description', name: 'description', content: 'hi-Sen' }]
-    }
-  }
+export default class index extends Vue {
   collections: any = []
   newCollection: any = ''
   show: boolean = false

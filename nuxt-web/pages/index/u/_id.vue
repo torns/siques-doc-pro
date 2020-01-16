@@ -127,49 +127,52 @@
         <el-row
           :gutter="20"
           type="flex"
-          style="margin-left: -5px;margin-right: -5px;"
+          style="margin-left: -5px;margin-right: -5px;flex-wrap:wrap"
           class="h-100 pt-4"
         >
           <el-col
-            :xs="0"
-            :sm="4"
+            :xs="24"
+            :sm="24"
             :md="5"
             :lg="4"
             :xl="4"
-            class="hidden-sm-and-down"
+            class="hidden-xs-and-down pb-3"
           >
-            <div class="d-flex jc-around">
-              <div @click="handleComponent({ 0: 'Followers' })" class="point">
-                <div>关注了</div>
-                <span v-if="user.follows">{{ user.follows.length }}人</span>
-                <span v-else>{{ $store.state.user.myFollowers }}人</span>
-              </div>
-              <el-divider direction="vertical"></el-divider>
-
-              <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
-                <div>粉丝</div>
-                <span v-if="user.user">{{ user.user.length }}人</span>
-                <span v-else>{{ this.$store.state.user.myFans }}人</span>
-              </div>
-            </div>
             <div>
-              <el-divider></el-divider>
-            </div>
-            <ul>
-              <li
-                :class="
-                  (defaultLink == link.alias ? 'bg-1' : '') + ' py-1 pl-2 fs-xm'
-                "
-                v-for="(link, index) in pageLinks"
-                :key="index"
-                @click="changeComponent(link.alias)"
-              >
-                <div class="d-flex jc-between">
-                  <div>{{ link.name }}</div>
-                  <div class="pr-3 text-gray">{{ link.count }}</div>
+              <div class="d-flex jc-around">
+                <div @click="handleComponent({ 0: 'Followers' })" class="point">
+                  <div>关注了</div>
+                  <span v-if="user.follows">{{ user.follows.length }}人</span>
+                  <span v-else>{{ $store.state.user.myFollowers }}人</span>
                 </div>
-              </li>
-            </ul>
+                <el-divider direction="vertical"></el-divider>
+
+                <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
+                  <div>粉丝</div>
+                  <span v-if="user.user">{{ user.user.length }}人</span>
+                  <span v-else>{{ this.$store.state.user.myFans }}人</span>
+                </div>
+              </div>
+              <div>
+                <el-divider></el-divider>
+              </div>
+              <ul>
+                <li
+                  :class="
+                    (defaultLink == link.alias ? 'bg-1 ' : '') +
+                      ' py-1 pl-2 fs-xm'
+                  "
+                  v-for="(link, index) in pageLinks"
+                  :key="index"
+                  @click="changeComponent(link.alias)"
+                >
+                  <div class="d-flex jc-between">
+                    <div>{{ link.name }}</div>
+                    <div class="pr-3">{{ link.count }}</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </el-col>
           <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
             <!-- eslint-disable-next-line vue/require-component-is -->

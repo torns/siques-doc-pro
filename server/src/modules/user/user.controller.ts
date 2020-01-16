@@ -27,42 +27,31 @@ import { transcode } from 'buffer';
 @ApiTags('用户')
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-
-
-  ) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   async create(@Body() data: UserDto) {
-
     return await this.userService.store(data);
   }
 
   @Get(':id')
   // 排除用户密码
-
-  async show(@Param("id", ParseIntPipe) id: number) {
+  async show(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.showMessage(id);
   }
 
   // 获取个人信息
   @Get()
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard('jwt'))
   async showMessage(@User() user: userEntity) {
     return await this.userService.showMessage(user.id);
   }
 
-
-  @Put("editor")
-  @UseGuards(AuthGuard("jwt"))
-
+  @Put('editor')
+  @UseGuards(AuthGuard('jwt'))
   async changeEditor(@User() user: userEntity, @Body() body) {
-
     return await this.userService.changeEditor(user.id, body);
   }
-
-
 
   @Put(':id/password')
   @UseInterceptors(ClassSerializerInterceptor)
@@ -73,7 +62,6 @@ export class UserController {
     return await this.userService.updataPassword(id, data);
   }
 
-
   // //修改密码
   // @Put(':id')
   // @UseGuards(AuthGuard('jwt'), AccessGuard)
@@ -82,7 +70,6 @@ export class UserController {
   // async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserDto) {
   //   return await this.userService.update(id, data);
   // }
-
 
   // 更新用户信息
   @Put(':id')
@@ -122,7 +109,6 @@ export class UserController {
 
   // 文章受赞数量
   @Get(':id/liked/count')
-
   async countliked(@Param('id', ParseIntPipe) postId: number) {
     return this.userService.countliked(postId);
   }
@@ -137,23 +123,27 @@ export class UserController {
   }
 
   // 关注 id是要关注的用户的id
-  @Get(":id/follow")
+  @Get(':id/follow')
   @UseGuards(AuthGuard())
-  async follow(@User() user: userEntity, @Param("id", ParseIntPipe) id: number) {
-    return this.userService.follow(id, user.id)
+  async follow(
+    @User() user: userEntity,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.userService.follow(id, user.id);
   }
 
   //查询关注的所有人
-  @Get(":id/follows")
-  async getfollows(@Param("id", ParseIntPipe) id: number) {
-    return await this.userService.getfollows(id)
+  @Get(':id/follows')
+  async getfollows(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.getfollows(id);
   }
 
   //查询谁关注了自己
-  @Get(":id/whofollows")
-  @UseGuards(AuthGuard())
-  async whofollows(@User() user: userEntity, @Param("id", ParseIntPipe) id: number) {
-    return await this.userService.whofollows(id)
+  @Get(':id/whofollows')
+  async whofollows(
+    @User() user: userEntity,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userService.whofollows(id);
   }
-
 }

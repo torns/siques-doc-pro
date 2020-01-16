@@ -14,10 +14,10 @@
       <el-col
         :xs="24"
         :sm="24"
-        :md="24"
+        :md="6"
         :lg="6"
         :xl="6"
-        class="hidden-md-and-down pl-2"
+        class="hidden-sm-and-down pl-2"
         >123</el-col
       >
     </el-row>

@@ -14,7 +14,7 @@
 //界面防抖
 html,
 body {
-  height: 100%;
+  // height: 100%;
 
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
@@ -27,7 +27,6 @@ body {
     outline: none;
   }
 }
-// html{overflow-y:scroll;}
 
 li {
   list-style-type: none;

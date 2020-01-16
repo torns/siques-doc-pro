@@ -1,19 +1,15 @@
 <template>
   <div>
-    <ul class="pt-3">
-      <li v-for="post in posts" :key="post.id" class="text-gray">
+    <ul>
+      <li v-for="bookmark in bookmarks" :key="bookmark.id" class="text-dark">
         <div class="d-flex fs-xm">
-          <div style="padding: 0 10px;" class="bg-2 mr-2">
-            {{ post.liked }} 票
-          </div>
           <router-link
-            :to="`/p/${post.id}`"
+            :to="`/bookmark/${bookmark.id}`"
             tag="div"
-            class="flex-1 text-primary text-ellipsis"
-            >{{ post.title }}</router-link
-          >
-
-          <div>{{ $dayjs(post.created).format('YYYY-MM-DD') }}</div>
+            class="flex-1 hoverlink"
+            >{{ bookmark.title }}
+          </router-link>
+          <div>{{ bookmark.posts.length }}条目</div>
         </div>
         <div class="py-3">
           <el-divider></el-divider>
@@ -28,11 +24,11 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
-export default class ListPanel extends Vue {
+export default class ListBookmark extends Vue {
   @Prop()
-  posts: any
+  bookmarks: any
   show: boolean = false
-  @Watch('posts')
+  @Watch('bookmarks')
   isShow(newVal: any) {
     if (newVal.length === 0) {
       this.show = true

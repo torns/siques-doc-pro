@@ -13,6 +13,7 @@ export default ({ app, store, redirect }) => {
   //     store.commit('setWechatSignUrl', window.location.href)
   // }
   app.router.beforeEach((to, from, next) => {
+    console.log(to)
     if (to.meta.requireAuth) {
       if (store.state.UserNotExist === false) {
         next()

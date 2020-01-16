@@ -6,6 +6,8 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Delete,
+  Query,
 } from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,17 +16,36 @@ import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
 
 @Controller('bookmarks')
-@UseGuards(AuthGuard())
 export class BookmarkController {
   constructor(private readonly BookmarkService: BookmarkService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   async createBookmark(@Body() data: BookmarkDto, @User() user: UserEntity) {
-    return await this.BookmarkService.createBookmark(data, user);
+    await this.BookmarkService.createBookmark(data, user);
   }
 
+  //查询用户收藏夹信息
+  @Get(':id/user')
+  async showUserBookmark(@Param('id', ParseIntPipe) id: number) {
+    return await this.BookmarkService.showUserBookmark(id);
+  }
+
+  //查询单个收藏夹的信息
   @Get(':id')
   async showBookmark(@Param('id', ParseIntPipe) id: number) {
     return await this.BookmarkService.showBookmark(id);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async deleteBookmark(@Param('id', ParseIntPipe) id: number) {
+    return await this.BookmarkService.deleteBookmark(id);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard())
+  async bookmarkPost(@Query() query: any) {
+    await this.BookmarkService.bookmarkPost(query);
   }
 }

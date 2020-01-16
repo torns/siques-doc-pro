@@ -12,6 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
 
       secretOrKey: 'sadjyunbng-0=hrnasdasdlghzxhc',
+      UnauthorizedException: '过期',
     });
   }
 

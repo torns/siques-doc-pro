@@ -1,19 +1,47 @@
 <template>
   <div>
-    <div
-      style="height:190px"
-      class="bg-primary d-flex jc-around text-white hidden-xs-and-down"
-    >
-      <div class="d-flex flex-column jc-center" style="width:500px">
-        <div class="fs-xll pb-3">在 抒写，学习技能、解决问题</div>
-        <div>
-          每个月，我们帮助 1000
-          万的开发者解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
-        </div>
+    <div v-if="$store.state.showBanner" class="bg-primary">
+      <div class="container ">
+        <el-row :gutter="0" class="d-flex">
+          <el-col
+            :xs="0"
+            :sm="4"
+            :md="5"
+            :lg="4"
+            :xl="4"
+            class="hidden-sm-and-down "
+          >
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+            <div
+              style="height:190px"
+              class="bg-primary d-flex jc-around text-white "
+            >
+              <div class="d-flex flex-column jc-center">
+                <div class="fs-xll pb-3">在 抒写，学习技能、解决问题</div>
+                <div>
+                  每个月，我们帮助 1000
+                  万的开发者解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
+                </div>
+              </div>
+              <div class="d-flex"></div>
+            </div>
+          </el-col>
+          <el-col
+            :xs="0"
+            :sm="6"
+            :md="6"
+            :lg="6"
+            :xl="6"
+            class="hidden-sm-and-down"
+          >
+            <div class="fs-xm hover-1 text-right text-white pt-2">
+              <div class="point" @click="toggleBanner">关闭</div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
-      <div class="d-flex"></div>
     </div>
-
     <div class="container">
       <el-row :gutter="0" class="d-flex pt-4">
         <el-col
@@ -80,14 +108,19 @@
                     <!-- 过滤 -->
                     <span>{{ post.alias | capitalize }}...</span>
                     <div class="d-flex mb-3">
-                      <div class="d-flex point">
+                      <div class="d-flex point ai-baseline">
                         <i class="el-icon-success hover-1 lh-2"></i>
 
                         <div class="pl-1 pr-3 text-primary hoverlink">
                           ×{{ post.liked }} · 赞
                         </div>
                       </div>
-                      <div class="pr-2">{{ post.user.name }} ·</div>
+                      <router-link tag="div" :to="`u/${post.user.id}`"
+                        ><div class="pr-2">
+                          {{ post.user.name }} ·
+                        </div></router-link
+                      >
+
                       <div>{{ $dayjs(post.created).format('MM月DD日') }}</div>
                       <div>{{ post.category }}</div>
                     </div>
@@ -144,6 +177,7 @@ export default class MyPage extends Vue {
   count = 1
   loading = false
   noMore = false
+  showBanner = true
   posts = []
   category: string = 'suggest'
   links = [
@@ -211,7 +245,7 @@ export default class MyPage extends Vue {
     this.count += 1
 
     setTimeout(async () => {
-      const res = await this.$http.get(`/posts/all?limit=4&page=${this.count}`)
+      const res = await this.$http.get(`/posts/all?limit=10&page=${this.count}`)
       this.posts = this.posts.concat(res.data)
 
       this.loading = false
@@ -222,9 +256,13 @@ export default class MyPage extends Vue {
     this.category = alias
     this.count = 1
     const res = await this.$http.get(
-      `/posts/all?limit=15&page=${this.count}&sort=${sort}`
+      `/posts/all?limit=10&page=${this.count}&sort=${sort}`
     )
     this.posts = res.data
+  }
+
+  toggleBanner() {
+    this.$store.commit('toggleBanner')
   }
 }
 </script>

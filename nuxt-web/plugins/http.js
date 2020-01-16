@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Vue from 'vue'
 
-import { mutations } from '../store'
+// import Cookies from 'js-cookie'
 
 const http = axios.create({
   baseURL: 'http://localhost:3001'
@@ -19,26 +19,28 @@ http.interceptors.request.use(
   }
 )
 // 添加一个反应拦截器
-http.interceptors.response.use(
-  (res) => {
-    return res
-  },
-  (err) => {
-    if (err.response) {
-      Vue.prototype.$notify({
-        type: 'error',
-        message: err.response.message
-      })
+export default ({ store }) => {
+  http.interceptors.response.use(
+    (res) => {
+      return res
+    },
+    (err) => {
+      if (err.response) {
+        Vue.prototype.$notify({
+          type: 'error',
+          message: err.response.message
+        })
 
-      if (err.response.status === 401) {
-        // 赋值store.states
-        mutations.commit('toggleLoginForm')
-        mutations.commit('toggleUser')
+        if (err.response.status === 401) {
+          // 赋值store.states
+          store.commit('toggleLoginForm')
+          store.commit('toggleUser')
+        }
       }
-    }
 
-    return Promise.reject(err)
-  }
-)
+      return Promise.reject(err)
+    }
+  )
+}
 
 Vue.prototype.$http = http

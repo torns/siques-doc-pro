@@ -21,15 +21,18 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/style-resources": "^1.0.0",
+    "cookieparser": "^0.1.0",
     "dayjs": "^1.8.19",
     "element-ui": "^2.4.11",
     "highlight.js": "^9.17.1",
     "hljs": "^6.2.3",
+    "js-cookie": "^2.2.1",
     "markdown-it": "^10.0.0",
     "nuxt": "^2.0.0",
     "tui-editor": "^1.4.10",
     "vue-cookies": "^1.6.1",
     "vue-property-decorator": "^8.3.0",
+    "vue-social-sharing": "^2.4.7",
     "vuex-persistedstate": "^2.7.0"
   },
   "devDependencies": {

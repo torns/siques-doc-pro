@@ -1,6 +1,39 @@
 <template>
   <div class="bg-light">
     <div class="container pt-4 pb-3">
+      <el-dialog
+        :visible.sync="dialogFormVisible"
+        width="500px"
+        title="收藏"
+        class="border-radius"
+      >
+        <div>
+          <div>添加到收藏夹:</div>
+          <div>
+            <el-checkbox-group v-model="checkList">
+              <el-checkbox
+                v-for="(bookmark, index) in bookmarks"
+                :key="index"
+                :label="bookmark.id"
+                >{{ bookmark.title }}</el-checkbox
+              >
+            </el-checkbox-group>
+            <el-button type="text" @click="showCreatDialog"
+              >创建收藏夹</el-button
+            >
+          </div>
+          <div class="text-right pt-5">
+            <el-button @click="dialogFormVisible = false" size="mini"
+              >取 消</el-button
+            >
+            <el-button @click="bookmarkPost" size="mini" type="primary"
+              >确 定</el-button
+            >
+          </div>
+        </div>
+      </el-dialog>
+
+      <bookmark-dialog @refetch="refetch" ref="dialog"></bookmark-dialog>
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-1 border-radius">
@@ -18,9 +51,10 @@
                     <font-awesome-icon :icon="['fas', 'thumbs-up']" />
                   </el-button>
                   <i></i>
-                  <el-button type="text" circle>
+                  <el-button @click="showBookmarkDialog" type="text" circle>
                     <font-awesome-icon :icon="['fas', 'bookmark']" />
                   </el-button>
+
                   <i></i>
 
                   <el-button style="margin-top:-15px" type="text" circle>
@@ -94,19 +128,25 @@
                     {{ liked }} 赞
                   </el-button>
 
-                  <el-button class="hover-3" type="plain">
+                  <el-button
+                    @click="showBookmarkDialog"
+                    class="hover-3"
+                    type="plain"
+                  >
                     <font-awesome-icon
                       :icon="['far', 'bookmark']"
                       class="pr-2"
                     />收藏
                   </el-button>
 
-                  <el-button class="hover-3" type="plain">
-                    <font-awesome-icon
-                      :icon="['far', 'share-square']"
-                      class="pr-2"
-                    />分享
-                  </el-button>
+                  <share-dialog :description="post" class="pl-2">
+                    <el-button class="hover-3" type="plain">
+                      <font-awesome-icon
+                        :icon="['far', 'share-square']"
+                        class="pr-2"
+                      />分享
+                    </el-button></share-dialog
+                  >
                 </div>
                 <div class="text-center text-gray">
                   本作品系 原创 ， 采用《署名-非商业性使用-禁止演绎 4.0
@@ -327,7 +367,8 @@ import hljs from 'highlight.js'
 import footer from '~/components/footer/Footer.vue'
 import sidebar from '~/components/SideBar/SideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
-
+import bookmark from '~/components/dialog/bookmark.vue'
+import share from '~/components/dialog/share.vue'
 const highlightCode = () => {
   const preEl = document.querySelectorAll('pre code')
 
@@ -342,7 +383,9 @@ const md = new MarkdownIt()
   components: {
     'el-footer': footer,
     'side-bar': sidebar,
-    'back-top': BackToTop
+    'back-top': BackToTop,
+    'bookmark-dialog': bookmark,
+    'share-dialog': share
   }
 })
 export default class Post extends Vue {
@@ -358,6 +401,9 @@ export default class Post extends Vue {
   fetchedComment = ''
   showReply = ''
   showComment = ''
+  bookmarks = ''
+  dialogFormVisible = false
+  checkList = []
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
@@ -402,6 +448,12 @@ export default class Post extends Vue {
     } else {
       this.$store.commit('toggleLoginForm')
     }
+
+    const scrollTop =
+      document.documentElement.scrollTop ||
+      window.pageYOffset ||
+      document.body.scrollTop
+    console.log(scrollTop, window.pageYOffset)
   }
 
   async commentLike(id) {
@@ -464,6 +516,32 @@ export default class Post extends Vue {
     this.showReply = ''
     this.showComment = ''
     this.fetchpost(this.id)
+  }
+
+  showCreatDialog() {
+    this.$refs.dialog.dialogFormVisible = true
+  }
+  showBookmarkDialog() {
+    this.dialogFormVisible = true
+    this.fetchBookmark()
+  }
+
+  async fetchBookmark() {
+    const res = await this.$http.get(
+      `/bookmarks/${this.$store.state.user.userId}/user`
+    )
+    this.bookmarks = res.data
+  }
+
+  // 刷新数据
+  refetch() {
+    this.fetchBookmark()
+  }
+
+  async bookmarkPost() {
+    await this.$http.get(
+      `/bookmarks?postId=${this.id}&bookmarkId=${this.checkList}`
+    )
   }
 }
 </script>

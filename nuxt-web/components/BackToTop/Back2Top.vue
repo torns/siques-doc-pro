@@ -10,7 +10,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class Back2Top extends Vue {
   btnTop() {
     console.log(123)
-    this.$emit('bck2Top')
+    window.scrollTo(0, 0)
   }
 }
 </script>

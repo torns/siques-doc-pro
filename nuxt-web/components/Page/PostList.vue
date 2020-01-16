@@ -13,7 +13,7 @@
       </div>
     </div>
     <el-divider></el-divider>
-    <div v-if="posts.length == 0">(ﾟ∀ﾟ ) 暂时没有任何数据</div>
+
     <list-panel :posts="posts"></list-panel>
   </div>
 </template>
@@ -27,7 +27,7 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 export default class PageComponent extends Vue {
   @Prop()
   id: string
-  posts: string = ''
+  posts: string = null
   activeName: string = ''
   radio4: string = '时间'
   mypageActiveName: string = 'mypost'

@@ -30,11 +30,7 @@
             :show-timeout="0"
             :hide-timeout="0"
           >
-            <el-popover
-              style="height:400px!important;"
-              placement="bottom"
-              trigger="click"
-            >
+            <el-popover placement="bottom" trigger="click">
               <div class="d-flex flex-column h-100">
                 <el-radio-group
                   @change="change"
@@ -114,7 +110,7 @@
           <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
             <el-badge value="new" type="primary" class="item pl-2">
               <el-popover
-                style="height:400px!important;"
+                :popper-class="`message`"
                 placement="bottom"
                 trigger="click"
               >
@@ -316,6 +312,7 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator'
+const Cookie = process.client ? require('js-cookie') : undefined
 
 @Component({})
 export default class Home extends Vue {
@@ -340,7 +337,14 @@ export default class Home extends Vue {
 
   async login() {
     const res = await this.$http.post('/auth/login', this.LoginDto)
-    this.$cookies.set('token', 'GH1.1.1689020474.1484362313', '12h')
+
+    const auth = {
+      accessToken: res.data.token
+    }
+    this.$store.commit('setAuth', auth) // mutating to store for client rendering
+    const in1Minutes = 1 / 1440
+    Cookie.set('auth', auth, { expires: in1Minutes })
+
     localStorage.token = res.data.token
     this.$notify({
       title: '',
@@ -366,6 +370,7 @@ export default class Home extends Vue {
 
   logout() {
     localStorage.token = ''
+    this.$store.commit('toggleBanner')
     this.$store.state.UserNotExist = true
     this.$notify({
       title: '成功',
@@ -473,13 +478,15 @@ export default class Home extends Vue {
 }
 
 .el-popover {
-  height: 440px !important;
-  width: 337px;
-  .el-radio-button__inner {
-    padding-left: 50px !important;
-    padding-right: 50px !important;
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+  &.message {
+    height: 440px !important;
+    width: 337px;
+    .el-radio-button__inner {
+      padding-left: 50px !important;
+      padding-right: 50px !important;
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
+    }
   }
 }
 
