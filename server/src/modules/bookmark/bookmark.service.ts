@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bookmark } from './bookmark.entity';
 import { Repository } from 'typeorm';
 import { BookmarkDto } from './bookmark.dto';
 import { User } from '../user/user.entity';
+import { Post } from '../post/post.entity';
 
 @Injectable()
 export class BookmarkService {
   constructor(
     @InjectRepository(Bookmark)
     private readonly BookmarkRepository: Repository<Bookmark>,
+    @InjectRepository(Post)
+    private readonly PostRepository: Repository<Post>,
   ) {}
 
   async createBookmark(data: BookmarkDto, user: User) {
@@ -53,16 +56,40 @@ export class BookmarkService {
 
     if (id.length > 1) {
       id.map(async el => {
-        await this.BookmarkRepository.createQueryBuilder()
-          .relation(Bookmark, 'posts')
-          .of(el)
-          .add(postId);
+        try {
+          await this.BookmarkRepository.createQueryBuilder()
+            .relation(Bookmark, 'posts')
+            .of(el)
+            .add(postId);
+          await this.PostRepository.createQueryBuilder()
+            .update(Post)
+            .where('post.id=:postId', { postId })
+            .set({ bookmarked: () => 'bookmarked+1' })
+            .execute();
+        } catch {
+          throw Error;
+        }
       });
     } else {
-      await this.BookmarkRepository.createQueryBuilder()
-        .relation(Bookmark, 'posts')
-        .of(bookmarkId)
-        .add(postId);
+      try {
+        await this.BookmarkRepository.createQueryBuilder()
+          .relation(Bookmark, 'posts')
+          .of(bookmarkId)
+          .add(postId);
+        await this.PostRepository.createQueryBuilder()
+          .update(Post)
+          .where('post.id=:postId', { postId })
+          .set({ bookmarked: () => 'bookmarked+1' })
+          .execute();
+      } catch {
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            message: '该文章已经被收藏',
+          },
+          403,
+        );
+      }
     }
   }
 
@@ -71,5 +98,11 @@ export class BookmarkService {
       .relation(Bookmark, 'posts')
       .of(bookmarkId)
       .remove(postId);
+
+    await this.PostRepository.createQueryBuilder()
+      .update(Post)
+      .where('post.id=:id', { postId })
+      .set({ bookmarked: () => 'bookmarked-1' })
+      .execute();
   }
 }

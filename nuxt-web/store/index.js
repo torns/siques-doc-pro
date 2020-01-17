@@ -5,7 +5,7 @@ export const state = () => ({
   loginFormVisible: false,
   user: '',
   isValid: '',
-  personalData: '',
+  personalData: [],
   showBanner: true,
   auth: null
 })
@@ -14,9 +14,26 @@ export const mutations = {
   toggleLoginForm(state) {
     state.loginFormVisible = !state.loginFormVisible
   },
+  closeLoginForm(state) {
+    state.loginFormVisible = false
+  },
   toggleUser(state) {
     state.UserNotExist = true
   },
+  UserExist(state) {
+    state.UserNotExist = false
+  },
+  setUser(state, data) {
+    state.user = data
+  },
+  setPersonData(state, data) {
+    state.personalData = data
+  },
+  updataPersonData(state, data) {
+    const key = Object.keys(data)[0]
+    state.personalData[key] = data[key]
+  },
+
   toggleBanner(state) {
     state.showBanner = !state.showBanner
   },
@@ -25,6 +42,12 @@ export const mutations = {
   },
   setAuth(state, auth) {
     state.auth = auth
+  },
+  increPostLen(state) {
+    state.user.postLength = state.user.postLength + 1
+  },
+  decrePostLen(state) {
+    state.user.postLength = state.user.postLength - 1
   }
 }
 

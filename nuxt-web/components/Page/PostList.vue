@@ -1,6 +1,25 @@
 <template>
   <div style="margin-top:-10px">
-    <div class="fs-lg pb-4">{{ id ? '他' : '我' }}的专栏</div>
+    <div class="fs-lg ">{{ id ? '他' : '我' }}的专栏</div>
+    <div class="py-3">
+      <el-divider></el-divider>
+    </div>
+    <div>
+      <ul class="pb-3">
+        <li v-for="(collection, index) in collections" :key="index">
+          <nuxt-link tag="div" :to="`collection/${collection.id}`">
+            <div class="text-primary point pb-2 hoverlink">
+              {{ collection.name }}
+            </div></nuxt-link
+          >
+
+          <div class="d-flex fs-xm ">
+            <div class="pr-2">0 人关注</div>
+            <div>{{ collection.posts.length }}篇文章</div>
+          </div>
+        </li>
+      </ul>
+    </div>
     <div class="d-flex jc-between pb-3">
       <div class="fs-lg">{{ id ? '他' : '我' }}的文章</div>
 
@@ -27,13 +46,15 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 export default class PageComponent extends Vue {
   @Prop()
   id: string
-  posts: string = null
+  posts: any = null
+  collections: any = null
   activeName: string = ''
   radio4: string = '时间'
   mypageActiveName: string = 'mypost'
 
   mounted() {
     this.fetch()
+    this.fetchCollect()
   }
 
   async fetch() {
@@ -45,6 +66,18 @@ export default class PageComponent extends Vue {
         `/posts/${this.$store.state.user.userId}/user`
       )
       this.posts = res.data[0]
+    }
+  }
+
+  async fetchCollect() {
+    if (this.id) {
+      const res = await this.$http.get(`/collections/${this.id}/user`)
+      this.collections = res.data
+    } else {
+      const res = await this.$http.get(
+        `/collections/${this.$store.state.user.userId}/user`
+      )
+      this.collections = res.data
     }
   }
 }

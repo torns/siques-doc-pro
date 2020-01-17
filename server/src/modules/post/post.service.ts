@@ -16,7 +16,7 @@ export class PostService {
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async beforeTag(tags: Partial<Tag>[]) {
     const _tags = tags.map(async item => {
@@ -56,7 +56,6 @@ export class PostService {
 
   // 根据集合id查文章
   async showPost(id: number) {
-
     return await this.postRepository
       .createQueryBuilder('post')
       .where('collectionId=:id', { id })
@@ -69,7 +68,9 @@ export class PostService {
     // 添加两个关系relation
     // queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.leftJoinAndSelect('post.collection', 'collection');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
+
     // where筛选
     if (categories) {
       queryBuilder.where('category.alias IN(:...categories)', { categories });
@@ -78,7 +79,7 @@ export class PostService {
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
-    queryBuilder.where('userId=:id', { id })
+    queryBuilder.where('post.userId=:id', { id });
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
     //获取结果以及数量
@@ -102,8 +103,7 @@ export class PostService {
 
     queryBuilder.leftJoinAndSelect('post.category', 'category');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
-    queryBuilder.innerJoinAndSelect("post.user", "user")
-
+    queryBuilder.innerJoinAndSelect('post.user', 'user');
 
     // where筛选
     if (categories) {
@@ -113,9 +113,6 @@ export class PostService {
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
-
-
-
 
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
@@ -128,36 +125,36 @@ export class PostService {
       [`post.${sort}`]: order,
     });
 
-
-    const entities = queryBuilder.getMany();
+    const entities = queryBuilder.getManyAndCount();
 
     return entities;
   }
 
   async show(id: string) {
+    const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
-    const queryBuilder = await this.postRepository.createQueryBuilder("post")
-
-    queryBuilder.addSelect("post.body")
-    queryBuilder.innerJoinAndSelect("post.user", "user")
+    queryBuilder.addSelect('post.body');
+    queryBuilder.innerJoinAndSelect('post.user', 'user');
     // queryBuilder.leftJoinAndSelect("post.comments", "comments")
     // queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
 
     // queryBuilder.leftJoinAndSelect("commentUser.avator", "commentUserAvator")
     //   .orderBy("comments.created", "DESC")
-    queryBuilder.leftJoinAndSelect("user.avator", "avator")
-      .addOrderBy("avator.created", "DESC")
-      .limit(1)
+    queryBuilder
+      .leftJoinAndSelect('user.avator', 'avator')
+      .addOrderBy('avator.created', 'DESC')
+      .limit(1);
 
-    queryBuilder.where('post.id =:id', { id })
+    queryBuilder.where('post.id =:id', { id });
 
     const entities = await queryBuilder.getOne();
     // 文章不属于自己才增加浏览量
 
-    await this.postRepository.createQueryBuilder()
+    await this.postRepository
+      .createQueryBuilder()
       .update(Post)
       .where('post.id =:id', { id })
-      .set({ views: () => "views + 1" })
+      .set({ views: () => 'views + 1' })
       .execute();
 
     return entities;
@@ -170,15 +167,15 @@ export class PostService {
     await this.postRepository.update(id, data);
     //如果修改的是body才执行
     if (data.body) {
-      await this.postRepository.createQueryBuilder()
+      await this.postRepository
+        .createQueryBuilder()
         // .addSelect('post.body')
         .update(Post)
-        .where("post.id=:id", { id })
+        .where('post.id=:id', { id })
         //截取一部分的数据
         .set({ alias: data.body.substring(0, 100) })
         .execute();
     }
-
   }
 
   async delete(id: string) {
@@ -204,48 +201,40 @@ export class PostService {
 
   //点赞和消除
   async like(id: number, user: User) {
-
     try {
       await this.postRepository
         .createQueryBuilder()
         .relation(Post, 'likes')
         .of(id)
         .add(user);
-    } catch{
+    } catch {
       await this.postRepository
         .createQueryBuilder()
         .relation(Post, 'likes')
         .of(id)
         .remove(user);
     }
-
   }
-
 
   // 被谁点过数量
   async countliked(id: number) {
-
     const res = await this.postRepository
       .createQueryBuilder()
       .relation(Post, 'likes')
       .of(id)
-      .loadMany()
+      .loadMany();
 
-
-    return res.length
+    return res.length;
   }
   // 被谁点过赞
   async liked(id: number) {
-
     const res = await this.postRepository
       .createQueryBuilder()
       .relation(Post, 'likes')
       .of(id)
-      .loadMany()
-    return res
+      .loadMany();
+    return res;
   }
-
-
 
   // async liked_posts(id: number) {
 
@@ -256,8 +245,6 @@ export class PostService {
   //     .innerJoinAndSelect("post.user", "user")
   //     .getMany()
 
-
-
   // }
   async getbody() {
     const querryBuilder = await this.postRepository.createQueryBuilder('post');
@@ -267,8 +254,4 @@ export class PostService {
     const entity = querryBuilder.getOne();
     return entity;
   }
-
-
-
-
 }

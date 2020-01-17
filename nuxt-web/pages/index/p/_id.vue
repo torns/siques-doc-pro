@@ -119,7 +119,7 @@
                     ).format('发布于DD天 HH小时 MM分钟前')
                   }}
                 </div>
-                <div class="d-flex jc-center my-4 ">
+                <div class="d-flex jc-center my-4">
                   <el-button @click="like" class="hover-3" type="plain">
                     <font-awesome-icon
                       :icon="['far', 'thumbs-up']"
@@ -145,8 +145,8 @@
                         :icon="['far', 'share-square']"
                         class="pr-2"
                       />分享
-                    </el-button></share-dialog
-                  >
+                    </el-button>
+                  </share-dialog>
                 </div>
                 <div class="text-center text-gray">
                   本作品系 原创 ， 采用《署名-非商业性使用-禁止演绎 4.0
@@ -356,7 +356,7 @@
 
     <el-footer class="mt-2"></el-footer>
     <el-backtop></el-backtop>
-    <back-top @bck2Top="bck2Top"></back-top>
+    <!-- <back-top @bck2Top="bck2Top"></back-top> -->
   </div>
 </template>
 
@@ -448,12 +448,6 @@ export default class Post extends Vue {
     } else {
       this.$store.commit('toggleLoginForm')
     }
-
-    const scrollTop =
-      document.documentElement.scrollTop ||
-      window.pageYOffset ||
-      document.body.scrollTop
-    console.log(scrollTop, window.pageYOffset)
   }
 
   async commentLike(id) {
@@ -542,6 +536,12 @@ export default class Post extends Vue {
     await this.$http.get(
       `/bookmarks?postId=${this.id}&bookmarkId=${this.checkList}`
     )
+    this.$notify({
+      type: 'success',
+      message: '收藏成功',
+      title: '成功'
+    })
+    this.dialogFormVisible = false
   }
 }
 </script>
@@ -564,27 +564,5 @@ export default class Post extends Vue {
   height: 60px !important;
   border-radius: 50%;
   object-fit: contain;
-}
-
-h1 {
-  font-size: 30px;
-  font-weight: 700;
-  word-break: break-word;
-}
-
-.hljs {
-  padding: 0.5rem;
-  max-height: 35rem;
-  line-height: 1.5;
-  background-color: #e9ecef !important;
-  overflow: auto;
-}
-
-.article h2,
-h3,
-h4,
-h5,
-h6 {
-  padding: 2em 0;
 }
 </style>

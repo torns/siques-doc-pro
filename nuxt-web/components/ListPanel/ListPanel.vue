@@ -9,10 +9,12 @@
           <router-link
             :to="`/p/${post.id}`"
             tag="div"
-            class="flex-1 text-primary text-ellipsis"
+            class="flex-1 text-dark text-ellipsis"
             >{{ post.title }}</router-link
           >
-
+          <div class="mr-4 hover-4 text-primary">
+            {{ post.collection.name }}
+          </div>
           <div>{{ $dayjs(post.created).format('YYYY-MM-DD') }}</div>
         </div>
         <div class="py-3">

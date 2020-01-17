@@ -93,7 +93,14 @@
                       :icon="[link.tag, link.icon]"
                       class="pr-2"
                     />
-                    <div @click=";(show = true), (showname = link.alias)">
+                    <div
+                      @click="
+                        ;(show = true),
+                          (messageBox =
+                            $store.state.personalData[link.alias] || ''),
+                          (showname = link.alias)
+                      "
+                    >
                       <!-- 没有解决 -->
 
                       <div v-if="$store.state.personalData[link.alias] != null">
@@ -127,13 +134,13 @@
         <el-row
           :gutter="20"
           type="flex"
-          style="margin-left: -5px;margin-right: -5px;flex-wrap:wrap"
+          style="flex-wrap:wrap"
           class="h-100 pt-4"
         >
           <el-col
             :xs="24"
             :sm="24"
-            :md="5"
+            :md="4"
             :lg="4"
             :xl="4"
             class="hidden-xs-and-down pb-3"
@@ -187,9 +194,7 @@
             class="hidden-sm-and-down"
           >
             <!-- eslint-disable-next-line vue/require-component-is -->
-            <component
-              :is="currentComponent == 'MyHomepage' ? 'MySideBar' : ''"
-            />
+            <component :is="currentComponent === 'Homepage' ? 'SideBar' : ''" />
           </el-col>
         </el-row>
       </div>
@@ -297,14 +302,17 @@ export default class Page extends Vue {
   async save(alias) {
     this.show = false
     const data = { [alias]: this.messageBox }
-    if (this.messageBox) {
+    if (
+      this.messageBox &&
+      this.messageBox !== this.$store.state.personalData[alias]
+    ) {
       await this.$http.put(`/users/${this.$store.state.user.userId}`, data)
       this.$notify({
         type: 'success',
         message: '保存成功',
         title: '成功'
       })
-      this.$store.state.personalData[alias] = this.messageBox
+      this.$store.commit('updataPersonData', data)
     }
 
     this.messageBox = ''

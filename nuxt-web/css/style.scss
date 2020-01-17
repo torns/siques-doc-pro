@@ -15,9 +15,8 @@
 html,
 body {
   // height: 100%;
-
   -webkit-text-size-adjust: none;
-  scroll-behavior: smooth;
+  // scroll-behavior: smooth;
 
   overflow-x: hidden;
   box-sizing: border-box;
@@ -26,6 +25,10 @@ body {
   :focus {
     outline: none;
   }
+}
+
+#app {
+  // margin-right: calc(100% - 100vw);
 }
 
 li {
@@ -37,6 +40,7 @@ li {
 .container {
   margin-right: auto;
   margin-left: auto;
+
   @media (min-width: 768px) {
     width: 750px;
   }
@@ -351,4 +355,73 @@ code {
   .border-#{$dir} {
     border-#{$dir}: 1px solid $border-color;
   }
+}
+
+// 文章详情页样式
+blockquote {
+  margin: 1em 0;
+  padding: 0 1em;
+  color: #6c6a6a;
+  border-left: 3px solid #cccccc;
+  line-height: 25px;
+  p {
+    padding-left: 5px;
+    @media (max-width: 36em) {
+      padding-left: 15px;
+    }
+  }
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.hljs {
+  padding: 0.5rem;
+  max-height: 35rem;
+  line-height: 1.5;
+  background-color: #e9ecef !important;
+  overflow: auto;
+}
+
+.article {
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: 2em 0;
+  }
+}
+
+.article {
+  a {
+    text-decoration: none;
+    color: #009a61;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+.article h2 {
+  padding-top: 2em;
+  padding-bottom: 0.618em;
+  margin-bottom: 0.3em;
+  border-bottom: 1px solid #e9ecef;
+}
+
+p code {
+  font-family: 'EB Garamond';
+
+  // background-color: #eeeeee;
+
+  border-radius: 5px;
+
+  padding: 0 0 3px 3px;
+
+  margin: 0 3px;
+
+  color: #e83e8c;
+  font-size: 16px;
 }

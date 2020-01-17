@@ -1,7 +1,7 @@
 <template>
-  <div class="home" style="overflow:auto;height:100vh">
+  <div :id="$route.path == '/' ? 'home' : ''">
     <!-- 父元素设置高度以及overflow，实现页面滚动的重要条件 -->
-    <el-container style>
+    <el-container id="app">
       <div style="height:3px;" class="bg-primary"></div>
       <el-header style="position:sticky;top:0;z-index: 10;">
         <el-menu
@@ -327,12 +327,15 @@ export default class Home extends Vue {
 
   mounted() {
     this.fetchNotify()
-    this.fetchuser()
-    window.addEventListener('unload', this.saveState)
+    // window.addEventListener('unload', this.saveState)
+  }
+
+  get store() {
+    return this.$store.state.UserNotExist
   }
 
   closeLoginForm() {
-    this.$store.commit('toggleLoginForm')
+    this.$store.commit('closeLoginForm')
   }
 
   async login() {
@@ -352,10 +355,13 @@ export default class Home extends Vue {
       message: '登录成功'
     })
 
-    this.$store.state.loginFormVisible = false
-    this.$store.state.UserNotExist = false
-    this.$router.go(0) // 刷新页面
+    this.$store.commit('UserExist')
+    this.$store.commit('closeLoginForm')
+    this.fetchNotify()
     this.fetchuser()
+    // this.$router.go(0) // 刷新页面
+    // this.fetchuser()
+    // this.fetchNotify()
   }
 
   async register() {
@@ -370,8 +376,9 @@ export default class Home extends Vue {
 
   logout() {
     localStorage.token = ''
+    localStorage.state = ''
     this.$store.commit('toggleBanner')
-    this.$store.state.UserNotExist = true
+    this.$store.commit('toggleUser')
     this.$notify({
       title: '成功',
       type: 'success',
@@ -381,14 +388,14 @@ export default class Home extends Vue {
   }
 
   async fetchNotify() {
-    if (this.$store.state.UserNotExist === false) {
+    if (!this.store) {
       const res = await this.$http.get('/notification')
       this.notifies = res.data
     }
   }
 
   async fetchuser() {
-    if (this.$store.state.UserNotExist === false) {
+    if (!this.store) {
       const res = await this.$http.get('users')
       const user = {
         username: res.data.name,
@@ -397,9 +404,8 @@ export default class Home extends Vue {
         userCreated: res.data.created,
         postLength: res.data.posts.length,
         myFans: res.data.user.length,
-        userAvator: res.data.avator[0].url || ''
+        userAvator: res.data.avator[0] ? res.data.avator[0].url : ''
       }
-
       const personal = {
         city: res.data.city,
         school: res.data.school,
@@ -407,16 +413,16 @@ export default class Home extends Vue {
         website: res.data.website
       }
 
-      this.$store.state.personalData = personal
-      this.$store.state.user = user
+      this.$store.commit('setUser', user)
+      this.$store.commit('setPersonData', personal)
     }
   }
 
   // 刷新保存状态
 
-  saveState() {
-    localStorage.setItem('state', JSON.stringify(this.$store.state))
-  }
+  // saveState() {
+  //   localStorage.setItem('state', JSON.stringify(this.$store.state))
+  // }
 
   async change(e) {}
 }
@@ -430,9 +436,7 @@ export default class Home extends Vue {
   padding: 0 !important;
   position: relative;
 }
-.el-main {
-  padding: 0 !important;
-}
+
 .item {
   right: 17px;
 }
@@ -441,6 +445,7 @@ export default class Home extends Vue {
   justify-content: center;
   border-radius: 20px;
 }
+//登录相关
 .el-form {
   width: 320px;
   margin: 0 auto;
@@ -504,5 +509,10 @@ export default class Home extends Vue {
 
 .el-menu.el-menu--horizontal {
   border-bottom: none !important;
+}
+
+#home {
+  overflow: auto;
+  height: 100vh;
 }
 </style>

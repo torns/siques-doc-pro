@@ -26,9 +26,10 @@ export default ({ store }) => {
     },
     (err) => {
       if (err.response) {
+        console.log(err.response)
         Vue.prototype.$notify({
           type: 'error',
-          message: err.response.message
+          message: err.response.data.message
         })
 
         if (err.response.status === 401) {

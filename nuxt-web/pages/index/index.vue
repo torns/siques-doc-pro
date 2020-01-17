@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    v-infinite-scroll="load"
+    class="infinite-list home"
+    infinite-scroll-disabled="disabled"
+    infinite-scroll-distance="0"
+  >
     <div v-if="$store.state.showBanner" class="bg-primary">
       <div class="container ">
         <el-row :gutter="0" class="d-flex">
@@ -90,14 +95,12 @@
 
               <el-divider></el-divider>
 
-              <ul
-                v-infinite-scroll="load"
-                class="infinite-list"
-                infinite-scroll-disabled="loading"
-                infinite-scroll-distance="0"
-                style="heihgt:200px"
-              >
-                <li v-for="(post, $index) in posts" :key="$index">
+              <ul style="overflow: auto;">
+                <li
+                  class="infinite-list-item"
+                  v-for="(post, $index) in posts"
+                  :key="$index"
+                >
                   <router-link
                     :to="`/p/${post.id}`"
                     tag="div"
@@ -129,8 +132,8 @@
                 <div v-if="loading" class="my-3 text-primary fs-xl">
                   <i class="el-icon-loading"></i> Loading
                 </div>
-                <div v-if="noMore" class="my-3 text-primary fs-xl">
-                  <i class="el-icon-loading"></i> (ﾟ∀ﾟ )没有更多内容了
+                <div v-if="noMore" class="my-3 text-primary fs-sm">
+                  (ﾟ∀ﾟ )没有更多内容了
                 </div>
               </ul>
             </div>
@@ -174,12 +177,23 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {}
 })
 export default class MyPage extends Vue {
-  count = 1
+  page = 1
+  count = 10
+  maxcount = null
   loading = false
-  noMore = false
+  sort = 'liked'
   showBanner = true
   posts = []
   category: string = 'suggest'
+
+  get noMore(): any {
+    return this.count >= this.maxcount
+  }
+
+  get disabled(): any {
+    return this.loading || this.noMore
+  }
+
   links = [
     {
       name: '为你推荐',
@@ -229,36 +243,39 @@ export default class MyPage extends Vue {
   }
   async fetchPost() {
     const res = await this.$http.get('/posts/all?limit=10&page=1')
-
-    this.posts = res.data
+    this.posts = res.data[0]
+    this.maxcount = res.data[1]
   }
 
   async fetchHotPost() {
     const res = await this.$http.get('/posts/all?limit=10&page=1')
 
-    this.posts = res.data
+    this.posts = res.data[0]
   }
 
   // 还有问题
   load() {
     this.loading = true
-    this.count += 1
-
+    this.page += 1
     setTimeout(async () => {
-      const res = await this.$http.get(`/posts/all?limit=10&page=${this.count}`)
-      this.posts = this.posts.concat(res.data)
-
+      const res = await this.$http.get(
+        `/posts/all?limit=10&page=${this.page}&sort=${this.sort}`
+      )
+      this.posts = this.posts.concat(res.data[0])
+      this.count += res.data[0].length
       this.loading = false
-    }, 2500)
+    }, 500)
   }
 
   async handleCategory(alias: any, sort) {
     this.category = alias
-    this.count = 1
+    this.sort = sort
+    this.page = 1
+    this.count = 10
     const res = await this.$http.get(
-      `/posts/all?limit=10&page=${this.count}&sort=${sort}`
+      `/posts/all?limit=10&page=${this.page}&sort=${sort}`
     )
-    this.posts = res.data
+    this.posts = res.data[0]
   }
 
   toggleBanner() {

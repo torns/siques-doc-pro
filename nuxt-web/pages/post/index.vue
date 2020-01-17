@@ -9,7 +9,7 @@
 
           <div class="text-left lh-3 mt-2 fs-sm">
             <div @click="show = !show" type="plain" class="point">
-              <i class="el-icon-folder-add pl-3"></i> 新建文集
+              <i class="el-icon-folder-add pl-3"></i> 新建专栏
             </div>
             <transition
               enter-active-class="animated slideInLeft"
@@ -272,6 +272,7 @@ export default class index extends Vue {
       })
       setTimeout(async () => {
         await this.$http.post('/posts', data)
+        this.$store.commit('increPostLen')
         this.selectCollect(this.selectedCollection)
         loading.close()
         this.$notify({
@@ -364,6 +365,7 @@ export default class index extends Vue {
     }
     if (command.split('.')[0] === 'c') {
       await this.$http.delete(`/posts/${id}`)
+      this.$store.commit('decrePostLen')
       this.$notify({
         title: '成功',
         type: 'success',

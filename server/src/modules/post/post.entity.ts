@@ -12,7 +12,6 @@ import {
   Generated,
   AfterLoad,
   BeforeInsert,
-
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 import * as bcrypt from 'bcryptjs';
@@ -39,11 +38,8 @@ export class Post {
   @Exclude()
   body: string;
 
-
-
-  @Column({ default: "" })
+  @Column({ default: '' })
   alias: string;
-
 
   @CreateDateColumn()
   created: Date;
@@ -56,6 +52,9 @@ export class Post {
 
   @Column({ default: 0 })
   liked: number;
+
+  @Column({ default: 0 })
+  bookmarked: number;
 
   // 多个文章对应一个用户
   @ManyToOne(
@@ -79,13 +78,11 @@ export class Post {
   @JoinTable()
   tags: Tag[];
 
-
-  @ManyToMany(type => User, user => user.likes)
-
+  @ManyToMany(
+    type => User,
+    user => user.likes,
+  )
   users: User[];
-
-
-
 
   @OneToMany(
     type => Comment,
@@ -93,14 +90,17 @@ export class Post {
   )
   comments: Comment[];
 
-  @ManyToOne(type => Collection, collection => collection.posts, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    type => Collection,
+    collection => collection.posts,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   collection: Collection;
 
   @AfterLoad()
   async insertAlias() {
-
     // this.alias = await this.body.substring(0, 100)
   }
 }

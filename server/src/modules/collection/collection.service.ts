@@ -7,29 +7,41 @@ import { CollectionDto } from './collection.dto';
 
 @Injectable()
 export class CollectionService {
-    constructor(
-        @InjectRepository(Collection)
-        private readonly CollectionRepository: Repository<Collection>
-    ) { }
+  constructor(
+    @InjectRepository(Collection)
+    private readonly CollectionRepository: Repository<Collection>,
+  ) {}
 
-    async store(user: User, data: CollectionDto) {
+  async store(user: User, data: CollectionDto) {
+    return await this.CollectionRepository.save({
+      user,
+      ...data,
+    });
+  }
+  async showCollection(id: number) {
+    return await this.CollectionRepository.createQueryBuilder('collection')
+      .where('userId=:id', { id })
+      .getMany();
+  }
 
-        return await this.CollectionRepository.save({
-            user,
-            ...data,
-        });
-    }
-    async showCollection(id: number) {
+  async getUserCollection(id: number) {
+    return await this.CollectionRepository.createQueryBuilder('collection')
+      .where('collection.userId=:id', { id })
+      .leftJoinAndSelect('collection.posts', 'posts')
+      .getMany();
+  }
 
+  async getCollection(id: number) {
+    return await this.CollectionRepository.createQueryBuilder('collection')
+      .where('collection.id=:id', { id })
+      .leftJoinAndSelect('collection.posts', 'posts')
+      .leftJoin('collection.user', 'user')
+      .addSelect(['user.introduction', 'user.name', 'user.id'])
+      .leftJoinAndSelect('user.avator', 'avator')
+      .getOne();
+  }
 
-        return await this.CollectionRepository
-            .createQueryBuilder('collection')
-            .where('userId=:id', { id })
-            .getMany();
-    }
-
-    async removeCollection(id: number) {
-        return await this.CollectionRepository.delete(id)
-    }
-
+  async removeCollection(id: number) {
+    return await this.CollectionRepository.delete(id);
+  }
 }
