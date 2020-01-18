@@ -1,0 +1,7 @@
+// 标签页
+
+.tag-list__itemWraper {
+  @media (min-width: 768px) {
+    flex-basis: 25%;
+  }
+}

@@ -21,7 +21,6 @@ import { Comment } from '../comment/comment.entity';
 import { Collection } from '../collection/collection.entity';
 import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
 import { Exclude } from 'class-transformer';
-
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
@@ -55,6 +54,9 @@ export class Post {
 
   @Column({ default: 0 })
   bookmarked: number;
+
+  @Column({ default: 0 })
+  counts: number;
 
   // 多个文章对应一个用户
   @ManyToOne(

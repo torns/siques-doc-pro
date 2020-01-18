@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-popover placement="top" width="160" v-model="visible">
+    <el-popover v-model="visible" placement="top" width="160">
       <!-- // 连接需要修改 -->
       <social-sharing
         :url="`http://localhost:3000/p/${description.id}`"

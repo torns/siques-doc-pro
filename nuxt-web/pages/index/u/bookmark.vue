@@ -11,17 +11,17 @@
             <div>
               <ul>
                 <li
-                  class="text-primary  "
                   v-for="(book, index) in bookmarks"
                   :key="index"
+                  class="text-primary  "
                 >
                   <div class="d-flex jc-between">
                     <router-link
-                      class="hoverlink"
-                      tag="div"
                       :to="{
                         path: `/bookmark/${book.id}`
                       }"
+                      class="hoverlink"
+                      tag="div"
                     >
                       {{ book.title }}
                     </router-link>

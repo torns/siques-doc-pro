@@ -8,6 +8,7 @@ export class PostDto {
   readonly body: string;
   readonly editor: boolean;
   readonly category: Category;
+  readonly counts: number;
 
   tags: Tag[];
 }

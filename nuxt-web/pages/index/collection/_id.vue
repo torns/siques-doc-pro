@@ -29,9 +29,9 @@
               <div class="d-flex">
                 <div class="pr-3">
                   <el-button
+                    @click="like(post.id)"
                     style="padding-left:18px;padding-right:18px;width:10px;height:45px"
                     type="plain"
-                    @click="like(post.id)"
                   >
                     <div
                       class="d-flex flex-column ai-center"
@@ -45,9 +45,9 @@
                 <div>
                   <div class="fs-lg">
                     <router-link
+                      :to="`/p/${post.id}`"
                       tag="div"
                       class="hoverlink"
-                      :to="`/p/${post.id}`"
                     >
                       {{ post.title }}
                     </router-link>
@@ -55,9 +55,9 @@
                   <div class="d-flex ai-baseline py-2">
                     <div class="text-primary pr-2">
                       <router-link
+                        :to="`/u/${collections.user.id}`"
                         tag="div"
                         class="hoverlink"
-                        :to="`/u/${collections.user.id}`"
                         >{{ collections.user.name }}</router-link
                       >
                     </div>
@@ -67,8 +67,8 @@
                       class="text-gray hoverlink fs-xm "
                     >
                       <font-awesome-icon
-                        class="pr-1"
                         :icon="['fas', 'bookmark']"
+                        class="pr-1"
                       />
                       <span>{{ post.bookmarked }}</span>
                       收藏
@@ -97,7 +97,7 @@
         </div></el-col
       >
       <el-backtop></el-backtop>
-      <bookmark-dialog @refetch="refetch" ref="dialog"></bookmark-dialog>
+      <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
       <el-dialog
         :visible.sync="dialogFormVisible"
         width="500px"
@@ -122,7 +122,7 @@
                 >{{ bookmark.title }}{{}}</el-checkbox
               >
             </el-checkbox-group>
-            <el-button type="text" @click="showCreatDialog"
+            <el-button @click="showCreatDialog" type="text"
               >创建收藏夹</el-button
             >
           </div>

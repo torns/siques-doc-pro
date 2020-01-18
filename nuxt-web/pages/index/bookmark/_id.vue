@@ -12,7 +12,7 @@
             <div class="d-flex ai-baseline ">
               <div class="fs-xm pr-3">{{ bookmark.posts.length }}个条目</div>
               <el-button type="text">编辑</el-button>
-              <el-button type="text" @click="deleteBookmark">删除</el-button>
+              <el-button @click="deleteBookmark" type="text">删除</el-button>
             </div>
             <div>
               <ul>
@@ -21,15 +21,15 @@
                     <div>
                       <div class="hoverlink">{{ post.user.name }}</div>
                       <router-link
+                        :to="`/p/${post.id}`"
                         class="hover-2"
                         tag="div"
-                        :to="`/p/${post.id}`"
                       >
                         {{ post.title }}</router-link
                       >
                     </div>
                     <div class="pr-3">
-                      <el-button size="mini" type="primary" @click="del"
+                      <el-button @click="del" size="mini" type="primary"
                         >删除条目</el-button
                       >
                     </div>

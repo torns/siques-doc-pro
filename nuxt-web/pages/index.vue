@@ -25,6 +25,10 @@
             <span class="fs-md">问答</span>
           </el-menu-item>
 
+          <el-menu-item index="/tags">
+            <span class="fs-md">标签</span>
+          </el-menu-item>
+
           <el-menu-item
             v-if="this.$store.state.UserNotExist == false"
             :show-timeout="0"

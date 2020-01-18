@@ -15,10 +15,17 @@
                 v-for="(bookmark, index) in bookmarks"
                 :key="index"
                 :label="bookmark.id"
+                :disabled="
+                  list.find((value) => {
+                    return value === bookmark.id
+                  })
+                    ? true
+                    : false
+                "
                 >{{ bookmark.title }}</el-checkbox
               >
             </el-checkbox-group>
-            <el-button type="text" @click="showCreatDialog"
+            <el-button @click="showCreatDialog" type="text"
               >创建收藏夹</el-button
             >
           </div>
@@ -32,8 +39,7 @@
           </div>
         </div>
       </el-dialog>
-
-      <bookmark-dialog @refetch="refetch" ref="dialog"></bookmark-dialog>
+      <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-1 border-radius">
@@ -96,11 +102,8 @@
                       <div class="pr-2">
                         {{ $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss') }}
                       </div>
-                      <div class="pr-2">字数：{{ $route.params.id }}</div>
-                      <div>
-                        阅读：{{ post.views }}
-                        {{ this.$store.state.UserNotExist }}
-                      </div>
+                      <div class="pr-2">字数：{{ post.counts }}</div>
+                      <div>阅读：{{ post.views }}</div>
                     </div>
                   </div>
                 </div>
@@ -364,11 +367,13 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 import hljs from 'highlight.js'
+import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
 import sidebar from '~/components/SideBar/SideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
 import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
+
 const highlightCode = () => {
   const preEl = document.querySelectorAll('pre code')
 
@@ -377,8 +382,6 @@ const highlightCode = () => {
   })
 }
 
-const MarkdownIt = require('markdown-it')
-const md = new MarkdownIt()
 @Component({
   components: {
     'el-footer': footer,
@@ -401,7 +404,8 @@ export default class Post extends Vue {
   fetchedComment = ''
   showReply = ''
   showComment = ''
-  bookmarks = ''
+  bookmarks = []
+  list = []
   dialogFormVisible = false
   checkList = []
   mounted() {
@@ -425,9 +429,9 @@ export default class Post extends Vue {
       const res = await this.$http.get(`posts/${id}`)
       this.post = res.data
       this.liked = res.data.liked
-      if (!res.data.editor) {
-        res.data.body = md.render(res.data.body)
-      }
+      // if (!res.data.editor) {
+      res.data.body = md.render('[[toc]] \n' + res.data.body)
+      // }
     } else {
       // 如果文章已经载入就请求轻量级的方法
       const res = await this.$http.get(`/users/${this.id}/liked/count`)
@@ -525,6 +529,16 @@ export default class Post extends Vue {
       `/bookmarks/${this.$store.state.user.userId}/user`
     )
     this.bookmarks = res.data
+
+    const list = []
+    await this.bookmarks.map((el) => {
+      el.posts.map((e) => {
+        if (e.id === parseInt(this.id)) {
+          list.push(el.id)
+        }
+      })
+    })
+    this.list = list
   }
 
   // 刷新数据

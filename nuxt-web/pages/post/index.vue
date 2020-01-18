@@ -189,7 +189,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import dayjs from 'dayjs'
+
 import tinymce from '~/components/Tinymce/Tinymce.vue'
 import markdown from '~/components/markdown/MarkDown.vue'
 
@@ -254,7 +254,7 @@ export default class index extends Vue {
 
   creatPost() {
     if (this.selectedCollection != null) {
-      const now = dayjs(new Date()).format('YYYY-MM-DD')
+      const now = this.$dayjs(new Date()).format('YYYY-MM-DD')
 
       const data = {
         title: now,
@@ -299,8 +299,23 @@ export default class index extends Vue {
       body = this.$refs.markdown.body
     }
 
+    let strLength = 0
+    // let zhHan = 0
+    const strLen = body.length
+
+    for (let i = 0; i < strLen; i++) {
+      const a = body.charAt(i)
+      strLength++
+      if (escape(a).length > 4) {
+        // 中文字符的长度经编码之后大于4
+        // zhHan++
+        strLength++
+      }
+    }
+
     const data = {
       title: this.title,
+      counts: strLength / 2,
       body
     }
     await this.$http.put(`/posts/${this.selectedPost}`, data)

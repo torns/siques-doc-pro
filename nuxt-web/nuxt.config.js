@@ -52,7 +52,9 @@ export default {
   css: [
     'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
-    '~/css/style.scss'
+    '~/css/global.scss',
+    '~/css/post.scss',
+    '~/css/tag.scss'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -67,6 +69,7 @@ export default {
     // '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
     { src: '@plugins/localStorage', ssr: false }
+    // { src: '@plugins/markdown', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

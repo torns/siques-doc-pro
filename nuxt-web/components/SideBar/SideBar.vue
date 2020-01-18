@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <div class="shadow-1" style="height:174px;background-color:white;"></div>
+    <div class="shadow-1" style="height:204px;background-color:white;"></div>
   </div>
 </template>
 

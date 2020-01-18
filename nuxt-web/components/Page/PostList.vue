@@ -7,7 +7,7 @@
     <div>
       <ul class="pb-3">
         <li v-for="(collection, index) in collections" :key="index">
-          <nuxt-link tag="div" :to="`collection/${collection.id}`">
+          <nuxt-link :to="`collection/${collection.id}`" tag="div">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
             </div></nuxt-link

@@ -1,6 +1,7 @@
 <template>
   <div class="pt-5 bg-white">
-    <div class="container">
+    <el-divider v-if="show"></el-divider>
+    <div class="container pt-4">
       <el-row :gutter="20" type="flex" class="point">
         <el-col
           :xs="0"
@@ -8,7 +9,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">产品</div>
           <li>热门问答</li>
@@ -25,7 +26,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">课程</div>
           <li>Java 开发课程</li>
@@ -39,7 +40,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">资源</div>
           <li>每周精选</li>
@@ -54,7 +55,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">合作</div>
           <li>关于我们</li>
@@ -70,7 +71,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">关注</div>
           <li>产品技术日志</li>
@@ -85,7 +86,7 @@
           :md="4"
           :lg="4"
           :xl="4"
-          class="hidden-sm-and-down"
+          class="hidden-xs-and-down"
         >
           <div class="title">条款</div>
           <li>服务条款</li>
@@ -102,7 +103,7 @@
         :md="24"
         :lg="24"
         :xl="24"
-        class="hidden-sm-and-down text-gray fs-sm"
+        class="hidden-xs-and-down text-gray fs-sm"
       >
         <el-divider></el-divider>
         <div class="d-flex jc-between">
@@ -124,10 +125,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({})
-export default class Footer extends Vue {}
+export default class Footer extends Vue {
+  @Prop()
+  show: boolean
+}
 </script>
 
 <style lang="scss" scoped>
@@ -142,5 +146,8 @@ li {
   color: gray;
   padding-top: 3px;
   padding-bottom: 3px;
+}
+.title {
+  padding-bottom: 10px;
 }
 </style>

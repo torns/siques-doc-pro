@@ -40,7 +40,9 @@ export default class Tinymce extends Vue {
     return window.tinymce.get(this.tinymceId).getContent()
   }
   setContent(body) {
-    return window.tinymce.get(this.tinymceId).setContent(body)
+    setTimeout(() => {
+      return window.tinymce.get(this.tinymceId).setContent(body)
+    }, 300)
   }
   initTinymce() {
     // 上传问题

@@ -41,7 +41,7 @@
             class="hidden-sm-and-down"
           >
             <div class="fs-xm hover-1 text-right text-white pt-2">
-              <div class="point" @click="toggleBanner">关闭</div>
+              <div @click="toggleBanner" class="point">关闭</div>
             </div>
           </el-col>
         </el-row>
@@ -97,9 +97,9 @@
 
               <ul style="overflow: auto;">
                 <li
-                  class="infinite-list-item"
                   v-for="(post, $index) in posts"
                   :key="$index"
+                  class="infinite-list-item"
                 >
                   <router-link
                     :to="`/p/${post.id}`"
@@ -118,7 +118,7 @@
                           ×{{ post.liked }} · 赞
                         </div>
                       </div>
-                      <router-link tag="div" :to="`u/${post.user.id}`"
+                      <router-link :to="`u/${post.user.id}`" tag="div"
                         ><div class="pr-2">
                           {{ post.user.name }} ·
                         </div></router-link
