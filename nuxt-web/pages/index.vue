@@ -1,124 +1,106 @@
 <template>
   <div :id="$route.path == '/' ? 'home' : ''">
     <!-- 父元素设置高度以及overflow，实现页面滚动的重要条件 -->
-    <el-container id="app">
+    <div id="app ">
       <div style="height:3px;" class="bg-primary"></div>
-      <el-header style="position:sticky;top:0;z-index: 10;">
-        <el-menu
-          :default-active="$route.path"
-          class="el-menu-demo shadow-1"
-          mode="horizontal"
-          router
-        >
-          <el-menu-item>
-            <img
-              src="~/static/banner.png"
-              style="object-fit:cover;height:100%;"
-            />
-          </el-menu-item>
-
-          <el-menu-item index="/">
-            <span style="font-weight:600" class="text-primary fs-md">首页</span>
-          </el-menu-item>
-
-          <el-menu-item index="/follow">
-            <span class="fs-md">问答</span>
-          </el-menu-item>
-
-          <el-menu-item index="/tags">
-            <span class="fs-md">标签</span>
-          </el-menu-item>
-
-          <el-menu-item
-            v-if="this.$store.state.UserNotExist == false"
-            :show-timeout="0"
-            :hide-timeout="0"
+      <div>
+        <div class="shadow-1" style="position:sticky;top:0;z-index: 10;">
+          <el-menu
+            default-active="/"
+            class="el-menu-demo  container"
+            mode="horizontal"
+            style="margin:0 auto;"
+            router
           >
-            <el-popover placement="bottom" trigger="click">
-              <div class="d-flex flex-column h-100">
-                <el-radio-group
-                  @change="change"
-                  v-model="topRadio"
-                  size="small"
-                >
-                  <el-radio-button label="message">
-                    <font-awesome-icon
-                      :icon="['fas', 'lightbulb']"
-                      class="fs-xm"
-                    />
-                  </el-radio-button>
-                  <el-radio-button label="class">
-                    <font-awesome-icon
-                      :icon="['fab', 'cloudversify']"
-                      class="fs-xm"
-                    />
-                  </el-radio-button>
-                  <el-radio-button label="follow">
-                    <font-awesome-icon :icon="['fas', 'male']" class="fs-xm" />
-                  </el-radio-button>
-                </el-radio-group>
+            <el-menu-item class="favicon">
+              <img
+                @click="$router.push('/')"
+                src="~/static/banner.png"
+                style="object-fit:cover;height:100%;"
+              />
+            </el-menu-item>
 
-                <div v-if="topRadio == 'message'">
-                  <div
-                    v-for="(notify, index) in notifies.comment"
-                    :key="index"
-                    class="py-1 lh-2"
-                  >
-                    <router-link :to="`/u/${notify.user.id}`" tag="span">
-                      <span class="hover-4 point pr-1 text-primary">
-                        {{ notify.user.name }}
-                      </span> </router-link
-                    >评论了你的
-                    <router-link :to="`/p/${notify.post.id}`" tag="span">
-                      <span class="point text-primary">
-                        {{ notify.post.title }}
-                      </span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div v-if="topRadio == 'follow'">
-                  <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
-
-                  <div
-                    v-for="(notify, index) in notifies.follow.user"
-                    :key="index"
-                    class="py-1 lh-2 bg-2"
-                  >
-                    <router-link :to="`/u/${notify.id}`" tag="span">
-                      <span class="ml-2 hover-4 text-primary point pr-1">
-                        {{ notify.name }}
-                      </span> </router-link
-                    >关注了你
-                  </div>
-                </div>
-
-                <div class="flex-1 pt-3"></div>
-                <el-divider></el-divider>
-                <div class="d-flex jc-between">
-                  <div class="point">全部标记为已读</div>
-                  <router-link
-                    to="/notification"
-                    tag="div"
-                    class="point hover-4"
-                    >查看全部</router-link
-                  >
-                </div>
-              </div>
-              <el-button slot="reference" type="text">
-                <i class="el-icon-bell"></i>
-              </el-button>
-            </el-popover>
-          </el-menu-item>
-
-          <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
-            <el-badge value="new" type="primary" class="item pl-2">
-              <el-popover
-                :popper-class="`message`"
-                placement="bottom"
-                trigger="click"
+            <el-menu-item index="/">
+              <span style="font-weight:600" class="text-primary fs-md"
+                >首页</span
               >
+            </el-menu-item>
+
+            <el-menu-item index="/follow">
+              <span class="fs-md">问答</span>
+            </el-menu-item>
+
+            <el-menu-item index="/tags">
+              <span class="fs-md">标签</span>
+            </el-menu-item>
+
+            <el-menu-item
+              v-if="this.$store.state.UserNotExist == false"
+              :show-timeout="0"
+              :hide-timeout="0"
+            >
+              <el-popover placement="bottom" trigger="click">
                 <div class="d-flex flex-column h-100">
+                  <el-radio-group
+                    @change="change"
+                    v-model="topRadio"
+                    size="small"
+                  >
+                    <el-radio-button label="message">
+                      <font-awesome-icon
+                        :icon="['fas', 'lightbulb']"
+                        class="fs-xm"
+                      />
+                    </el-radio-button>
+                    <el-radio-button label="class">
+                      <font-awesome-icon
+                        :icon="['fab', 'cloudversify']"
+                        class="fs-xm"
+                      />
+                    </el-radio-button>
+                    <el-radio-button label="follow">
+                      <font-awesome-icon
+                        :icon="['fas', 'male']"
+                        class="fs-xm"
+                      />
+                    </el-radio-button>
+                  </el-radio-group>
+
+                  <div v-if="topRadio == 'message'">
+                    <div
+                      v-for="(notify, index) in notifies.comment"
+                      :key="index"
+                      class="py-1 lh-2"
+                    >
+                      <router-link :to="`/u/${notify.user.id}`" tag="span">
+                        <span class="hover-4 point pr-1 text-primary">{{
+                          notify.user.name
+                        }}</span> </router-link
+                      >评论了你的
+                      <router-link :to="`/p/${notify.post.id}`" tag="span">
+                        <span class="point text-primary">{{
+                          notify.post.title
+                        }}</span>
+                      </router-link>
+                    </div>
+                  </div>
+
+                  <div v-if="topRadio == 'follow'">
+                    <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
+
+                    <div
+                      v-for="(notify, index) in notifies.follow.user"
+                      :key="index"
+                      class="py-1 lh-2 bg-2"
+                    >
+                      <router-link :to="`/u/${notify.id}`" tag="span">
+                        <span class="ml-2 hover-4 text-primary point pr-1">{{
+                          notify.name
+                        }}</span> </router-link
+                      >关注了你
+                    </div>
+                  </div>
+
                   <div class="flex-1 pt-3"></div>
                   <el-divider></el-divider>
                   <div class="d-flex jc-between">
@@ -131,94 +113,124 @@
                     >
                   </div>
                 </div>
-
                 <el-button slot="reference" type="text">
-                  <font-awesome-icon
-                    :icon="['far', 'envelope']"
-                    class="fs-xm"
-                  />
+                  <i class="el-icon-bell"></i>
                 </el-button>
               </el-popover>
-            </el-badge>
-          </el-menu-item>
+            </el-menu-item>
 
-          <el-menu-item>
-            <el-popover v-model="visible" placement="top" width="160">
-              <div style="text-align: center; margin: 0">
-                <div>夜间模式</div>
-                <div class="d-flex jc-center pt-3">
-                  <el-button @click="visible = false" size="mini" type="primary"
-                    >开启</el-button
-                  >
+            <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
+              <el-badge value="new" type="primary" class="item pl-2">
+                <el-popover
+                  :popper-class="`message`"
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <div class="d-flex flex-column h-100">
+                    <div class="flex-1 pt-3"></div>
+                    <el-divider></el-divider>
+                    <div class="d-flex jc-between">
+                      <div class="point">全部标记为已读</div>
+                      <router-link
+                        to="/notification"
+                        tag="div"
+                        class="point hover-4"
+                        >查看全部</router-link
+                      >
+                    </div>
+                  </div>
 
-                  <el-button @click="visible = false" type="text" size="mini"
-                    >关闭</el-button
-                  >
+                  <el-button slot="reference" type="text">
+                    <font-awesome-icon
+                      :icon="['far', 'envelope']"
+                      class="fs-xm"
+                    />
+                  </el-button>
+                </el-popover>
+              </el-badge>
+            </el-menu-item>
+
+            <el-menu-item>
+              <el-popover v-model="visible" placement="top" width="160">
+                <div style="text-align: center; margin: 0">
+                  <div>夜间模式</div>
+                  <div class="d-flex jc-center pt-3">
+                    <el-button
+                      @click="visible = false"
+                      size="mini"
+                      type="primary"
+                      >开启</el-button
+                    >
+
+                    <el-button @click="visible = false" type="text" size="mini"
+                      >关闭</el-button
+                    >
+                  </div>
                 </div>
-              </div>
-              <el-button slot="reference" type="text">Aa</el-button>
-            </el-popover>
-          </el-menu-item>
-
-          <el-submenu
-            v-if="$store.state.UserNotExist == false"
-            :show-timeout="0"
-            :hide-timeout="0"
-            index="6"
-            style="right: 15%;position: absolute;"
-          >
-            <template slot="title">
-              <el-avatar :size="35" class="shadow-1">
-                <img
-                  v-if="this.$store.state.user.userAvator"
-                  :src="this.$store.state.user.userAvator"
-                  style="background-color:white;"
-                />
-                <img v-else src="~/static/avator.jpg" />
-              </el-avatar>
-            </template>
-            <el-menu-item :index="`/u`">
-              <i class="el-icon-user-solid"></i> 我的主页
+                <el-button slot="reference" type="text">Aa</el-button>
+              </el-popover>
             </el-menu-item>
 
-            <el-menu-item index="/u">
-              <i class="el-icon-star-on"></i> 我的收藏
-            </el-menu-item>
-
-            <el-menu-item index="/u/setting">个人设置</el-menu-item>
-            <el-menu-item index="/u/help">帮助与反馈</el-menu-item>
-            <el-menu-item @click="logout">退出</el-menu-item>
-          </el-submenu>
-
-          <el-menu-item
-            :span="4"
-            class="write"
-            index="/post"
-            style="right: 2%;position: absolute;"
-          >
-            <el-button type="primary" round>写文章</el-button>
-          </el-menu-item>
-
-          <el-menu-item
-            v-if="$store.state.UserNotExist"
-            @click="$store.commit('toggleLoginForm'), (isRegister = false)"
-            >立即登录</el-menu-item
-          >
-          <el-menu-item>
-            <el-button
-              @click="$store.commit('toggleLoginForm'), (isRegister = true)"
-              v-if="$store.state.UserNotExist"
-              type="primary"
-              >免费注册</el-button
+            <el-submenu
+              :index="`person`"
+              v-if="$store.state.UserNotExist == false"
+              :show-timeout="0"
+              :hide-timeout="0"
+              style="right: 15%;position: absolute;"
             >
-          </el-menu-item>
-        </el-menu>
-      </el-header>
+              <template slot="title">
+                <el-avatar :size="35" class="shadow-1">
+                  <img
+                    v-if="this.$store.state.user.userAvator"
+                    :src="this.$store.state.user.userAvator"
+                    style="background-color:white;"
+                  />
+                  <img v-else src="~/static/avator.jpg" />
+                </el-avatar>
+              </template>
+              <el-menu-item :index="`/u`">
+                <i class="el-icon-user-solid"></i> 我的主页
+              </el-menu-item>
+
+              <el-menu-item index="/u">
+                <i class="el-icon-star-on"></i> 我的收藏
+              </el-menu-item>
+
+              <el-menu-item index="/u/setting">个人设置</el-menu-item>
+              <el-menu-item index="/u/help">帮助与反馈</el-menu-item>
+              <el-menu-item @click="logout">退出</el-menu-item>
+            </el-submenu>
+
+            <el-menu-item
+              :span="4"
+              class="write"
+              index="/post"
+              style="right: 2%;position: absolute;"
+            >
+              <el-button type="primary" round>写文章</el-button>
+            </el-menu-item>
+
+            <el-menu-item
+              v-if="$store.state.UserNotExist"
+              @click="$store.commit('toggleLoginForm'), (isRegister = false)"
+              >立即登录</el-menu-item
+            >
+            <el-menu-item>
+              <el-button
+                @click="$store.commit('toggleLoginForm'), (isRegister = true)"
+                v-if="$store.state.UserNotExist"
+                type="primary"
+                >免费注册</el-button
+              >
+            </el-menu-item>
+          </el-menu>
+        </div>
+      </div>
 
       <div class="h-100">
         <router-view :key="$route.path"></router-view>
       </div>
-    </el-container>
+    </div>
     <el-dialog
       :title="isRegister ? '注册' : '登录'"
       :visible="$store.state.loginFormVisible"
@@ -441,6 +453,22 @@ export default class Home extends Vue {
   position: relative;
 }
 
+.favicon {
+  object-fit: contain;
+  &:hover {
+    &::before {
+      content: '';
+      background: url(../static/tip.png) no-repeat;
+      position: absolute;
+      top: 98%;
+      width: -webkit-fill-available;
+      z-index: 1;
+      height: inherit;
+      background-size: contain;
+    }
+  }
+}
+
 .item {
   right: 17px;
 }
@@ -478,6 +506,9 @@ export default class Home extends Vue {
 
 .el-menu-item * {
   vertical-align: unset !important;
+}
+.el-menu-item:nth-child(1) {
+  padding-left: 0 !important;
 }
 .article img {
   justify-content: center;

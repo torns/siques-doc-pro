@@ -3,36 +3,38 @@
     <div class="container h-100">
       <el-row type="flex" class="pt-4 px-2">
         <el-col
-          style="min-height:60vh"
           :xs="24"
           :sm="24"
           :md="24"
           :lg="24"
           :xl="24"
+          style="min-height:60vh"
         >
-          <div class="fs-xll pb-2">
-            标签
-          </div>
+          <div class="fs-xll pb-2">标签</div>
           <div>
             标签不仅能组织和归类你的内容，还能关联相似的内容。正确的使用标签将让你的问题被更多人发现和解决。
           </div>
           <div class="pt-4">
             <ul class="d-flex flex-wrap">
               <div
-                class="tag-list__itemWraper fs-sm pb-4 w-100 "
                 v-for="(title, index) in titles"
                 :key="index"
+                class="tag-list__itemWraper fs-sm pb-4 w-100"
               >
                 {{ title.name }}
-                <div><el-divider></el-divider></div>
+                <div>
+                  <el-divider></el-divider>
+                </div>
 
                 <ul class="d-flex flex-wrap" style="width:95%">
                   <li
-                    style="padding:2px 5px; "
-                    class="bg-3 mr-1 my-1 hover-3 fs-xm"
                     v-for="(tag, index) in title.tags"
                     :key="index"
+                    style="padding:2px 5px; "
+                    class="bg-3 mr-1 my-1 hover-3 fs-xm"
                   >
+                    <!-- 会报错暂时先不用 -->
+                    <!-- <font-awesome-icon   :icon="['fab', tag]" class="fs-xm" /> -->
                     {{ tag }}
                   </li>
                 </ul>

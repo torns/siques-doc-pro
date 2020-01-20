@@ -1,38 +1,37 @@
 // colors
 $colors: (
-  "primary": #009a61,
-  "white": #fff,
-  "light": #e9ecef,
-  "info": #fcf8e3,
-  "blue": #4394e4,
-  "darkblue":#275380,
-  "orange": #FF5F57,
-  "black": #333,
-  "dark": #222,
-  "gray": #999,
-  "dark-1": #343440,
-  "light-1": #F6F6F6,
-   "border":#eee,
+  'primary': #009a61,
+  'white': #fff,
+  'light': #e9ecef,
+  'info': #fcf8e3,
+  'blue': #4394e4,
+  'darkblue': #275380,
+  'orange': #ff5f57,
+  'black': #333,
+  'dark': #222,
+  'gray': #999,
+  'dark-1': #343440,
+  'gray-1': #6c757d,
+  'light-1': #f6f6f6,
+  'border': #eee
 );
 
-$fonts:(
-  songti:EB Garamond+","+Noto Serif SC ,
-  code:"Source Code Pro",
-
-
+$fonts: (
+  songti: EB Garamond + ',' + Noto Serif SC,
+  code: 'Source Code Pro'
 );
 
-$color-red:map-get($colors, "orange");
+$color-red: map-get($colors, 'orange');
 
-$border-color: map-get($colors, "border");
+$border-color: map-get($colors, 'border');
 // font size 的工具类
 $base-font-size: 1rem;
 $font-sizes: (
   xxs: 0.6154,
   xs: 0.7692,
   //10px  插件设置里将基础的字体改为上面html中设置的13px，这样就
-  xm:0.875,
-    sm: 0.9231,
+    xm: 0.875,
+  sm: 0.9231,
   //12px 保证了整个页面只有一个基础的px大小
     md: 1,
   //13px
@@ -44,7 +43,7 @@ $font-sizes: (
   ll: 2
 );
 
-$base-line-height:1rem;
+$base-line-height: 1rem;
 $line-height: (
   1: 1,
   2: 1.5,
@@ -52,7 +51,7 @@ $line-height: (
   4: 2.5,
   5: 3,
   6: 3.5,
-  7: 4,
+  7: 4
 );
 
 // justify-content
@@ -70,7 +69,7 @@ $flex-ai: (
   end: flex-end,
   center: center,
   stretch: stretch,
-  baseline:baseline
+  baseline: baseline
 );
 
 // 常用边距
@@ -98,10 +97,10 @@ $spacing-sizes: (
   7: 6
 );
 
-$opacitys:(
+$opacitys: (
   20: 0.2,
   40: 0.4,
   60: 0.6,
   80: 0.8,
-  100: 1,
-)
+  100: 1
+);

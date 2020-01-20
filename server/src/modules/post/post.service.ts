@@ -135,6 +135,7 @@ export class PostService {
 
     queryBuilder.addSelect('post.body');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
+
     // queryBuilder.leftJoinAndSelect("post.comments", "comments")
     // queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
 
@@ -142,8 +143,11 @@ export class PostService {
     //   .orderBy("comments.created", "DESC")
     queryBuilder
       .leftJoinAndSelect('user.avator', 'avator')
-      .addOrderBy('avator.created', 'DESC')
-      .limit(1);
+      .addOrderBy('avator.created', 'DESC');
+
+    queryBuilder
+      .leftJoin('post.tags', 'tags')
+      .addSelect(['tags.id', 'tags.name']);
 
     queryBuilder.where('post.id =:id', { id });
 

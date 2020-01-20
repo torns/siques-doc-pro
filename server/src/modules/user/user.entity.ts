@@ -21,6 +21,7 @@ import { Role } from '../role/role.entity';
 import { Collection } from '../collection/collection.entity';
 import { Avator } from '../avator/avator.entity';
 import { Bookmark } from '../bookmark/bookmark.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity()
 export class User {
@@ -84,6 +85,8 @@ export class User {
   )
   collections: Collection[];
 
+  //多个标签对应一个用户
+
   // 多个角色对应多个用户
   @ManyToMany(
     type => Role,
@@ -91,6 +94,13 @@ export class User {
   )
   @JoinTable()
   roles: Role[];
+
+  @ManyToMany(
+    type => Tag,
+    tag => tag.user,
+  )
+  @JoinTable()
+  tags: Tag;
 
   //一个用户关注另一个用户
   @ManyToMany(

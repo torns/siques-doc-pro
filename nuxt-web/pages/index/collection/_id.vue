@@ -119,7 +119,7 @@
                     ? true
                     : false
                 "
-                >{{ bookmark.title }}{{}}</el-checkbox
+                >{{ bookmark.title }}</el-checkbox
               >
             </el-checkbox-group>
             <el-button @click="showCreatDialog" type="text"

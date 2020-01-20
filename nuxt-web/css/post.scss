@@ -46,7 +46,7 @@ h1 {
   }
 }
 .article h2 {
-  padding-top: 1.618em;
+  margin-top: 1.618em;
   padding-bottom: 0.618em;
   margin-bottom: 0.3em;
   border-bottom: 1px solid #e9ecef;
@@ -78,7 +78,7 @@ p code {
 
   height: 210px;
   overflow: auto;
-
+  top: 23em;
   padding: 0.618rem;
 
   list-style-type: none;

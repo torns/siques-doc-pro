@@ -27,9 +27,11 @@ export default class Tinymce extends Vue {
   tinymceId =
     'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
   mounted() {
-    if (typeof window !== 'undefined') {
-      this.initTinymce()
-    }
+    // if (typeof window !== 'undefined') {
+
+    this.initTinymce()
+
+    // }
   }
   submit() {
     this.body = this.getContent()

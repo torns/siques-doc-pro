@@ -103,7 +103,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) { }
+    extend(config, ctx) {}
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3001'

@@ -84,11 +84,9 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-toilet-paper" command="a">
                     默认编辑器
-                    <span class="text-blue"
-                      >({{
-                        defaultEditor ? '富文本编辑器' : 'markdown编辑器'
-                      }})</span
-                    >
+                    <span class="text-blue">
+                      ({{ defaultEditor ? '富文本编辑器' : 'markdown编辑器' }})
+                    </span>
                   </el-dropdown-item>
 
                   <el-dropdown-item icon="el-icon-set-up"
@@ -169,6 +167,28 @@
           <div class="my-3">
             <el-input v-model="title" size="medium" placeholder></el-input>
           </div>
+          <div class="d-flex  tags text-left my-3">
+            <el-tag
+              :key="tag.name"
+              v-for="tag in dynamicTags"
+              :disable-transitions="false"
+              @close="handleClose(tag.name, tag.id)"
+              class="mr-2 "
+              effect="plain"
+              closable
+            >
+              {{ tag.name }}
+            </el-tag>
+
+            <sq-tag ref="tag" @add="addTag"
+              ><el-button
+                @click="showtagDialog"
+                class="button-new-tag"
+                size="small"
+                >+ 添加标签</el-button
+              ></sq-tag
+            >
+          </div>
           <tinymce
             ref="tinymce"
             v-show="selectEditor"
@@ -189,12 +209,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-
+import Tag from '@/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
 import markdown from '~/components/markdown/MarkDown.vue'
 
 @Component({
-  components: { tinymce, markdown }
+  components: { tinymce, markdown, 'sq-tag': Tag }
 })
 export default class index extends Vue {
   collections: any = []
@@ -206,6 +226,10 @@ export default class index extends Vue {
   defaultEditor: boolean = true
   selectEditor: boolean = true
   title: string = ''
+  // 标签
+  dynamicTags = []
+  inputVisible = false
+  inputValue = ''
   // true是tinymce
 
   mounted() {
@@ -238,6 +262,7 @@ export default class index extends Vue {
   async selectPost(id: any) {
     this.selectedPost = id
     const res = await this.$http.get(`/posts/${id}`)
+    this.dynamicTags = res.data.tags
     this.selectEditor = res.data.editor
 
     this.title = res.data.title
@@ -408,6 +433,35 @@ export default class index extends Vue {
   async fetchEditor() {
     const res = await this.$http.get('users')
     this.defaultEditor = res.data.editor === 1
+  }
+
+  async handleClose(tag, id) {
+    this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    await this.$http.get(`/tags/${this.selectedPost}?tagId=${id}`)
+  }
+
+  showtagDialog() {
+    this.visible = true
+  }
+
+  async addTag(tagname, tagid) {
+    let includes = false
+    this.dynamicTags.map((e) => {
+      if (e.name === tagname) {
+        includes = true
+      }
+    })
+
+    if (!includes) {
+      this.dynamicTags.push({ name: tagname, id: tagid })
+      await this.$http.get(`/tags/${this.selectedPost}?tagId=${tagid}`)
+    } else {
+      this.$notify({
+        type: 'error',
+        title: '错误',
+        message: '已添加该标签'
+      })
+    }
   }
 }
 </script>
