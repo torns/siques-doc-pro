@@ -1,0 +1,104 @@
+<template>
+  <div>
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      width="500px"
+      title="收藏"
+      class="border-radius"
+    >
+      <div>
+        <div>添加到收藏夹:</div>
+        <div>
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox
+              v-for="(bookmark, index) in bookmarks"
+              :key="index"
+              :label="bookmark.id"
+              :disabled="
+                list.find((value) => {
+                  return value === bookmark.id
+                })
+                  ? true
+                  : false
+              "
+              >{{ bookmark.title }}</el-checkbox
+            >
+          </el-checkbox-group>
+          <el-button @click="showCreatDialog" type="text">创建收藏夹</el-button>
+        </div>
+        <div class="text-right pt-5">
+          <el-button @click="dialogFormVisible = false" size="mini"
+            >取 消</el-button
+          >
+          <el-button @click="bookmarkPost" size="mini" type="primary"
+            >确 定</el-button
+          >
+        </div>
+      </div>
+    </el-dialog>
+    <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
+import bookmark from '~/components/dialog/bookmark.vue'
+
+@Component({
+  components: { 'bookmark-dialog': bookmark }
+})
+export default class createBookmark extends Vue {
+  checkList: any = []
+  dialogFormVisible = false
+  bookmarks = []
+  postId = ''
+  list = []
+
+  mounted() {
+    this.fetchBookmark()
+  }
+
+  showCreatDialog() {
+    this.$refs.dialog.dialogFormVisible = true
+  }
+  async fetchBookmark() {
+    // 依赖用户id
+    const res = await this.$http.get(
+      `/bookmarks/${this.$store.state.user.userId}/user`
+    )
+    this.bookmarks = res.data
+  }
+  async bookmarkPost() {
+    await this.$http.get(
+      `/bookmarks?postId=${this.postId}&bookmarkId=${this.checkList}`
+    )
+    this.$notify({
+      type: 'success',
+      message: '收藏成功',
+      title: '成功'
+    })
+    this.dialogFormVisible = false
+  }
+
+  async showBookmark(id) {
+    this.dialogFormVisible = true
+    this.postId = id
+
+    const list = []
+    await this.bookmarks.map((el) => {
+      el.posts.map((e) => {
+        if (e.id === id) {
+          list.push(el.id)
+        }
+      })
+    })
+    this.list = list
+  }
+  // 刷新数据
+  refetch() {
+    this.fetchBookmark()
+  }
+}
+</script>
+
+<style lang="scss"></style>

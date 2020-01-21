@@ -72,7 +72,7 @@ export class Post {
   )
   category: Category;
 
-  // 多个文章对应一个分类
+  // 多个文章对应一个标签
   @ManyToMany(
     type => Tag,
     tag => tag.posts,

@@ -413,6 +413,11 @@ export default class Home extends Vue {
   async fetchuser() {
     if (!this.store) {
       const res = await this.$http.get('users')
+      const usertag = []
+      res.data.tags.map((e) => {
+        usertag.push(e)
+      })
+
       const user = {
         username: res.data.name,
         userId: res.data.id,
@@ -420,6 +425,7 @@ export default class Home extends Vue {
         userCreated: res.data.created,
         postLength: res.data.posts.length,
         myFans: res.data.user.length,
+        userTag: usertag,
         userAvator: res.data.avator[0] ? res.data.avator[0].url : ''
       }
       const personal = {

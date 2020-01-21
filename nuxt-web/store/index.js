@@ -48,6 +48,12 @@ export const mutations = {
   },
   decrePostLen(state) {
     state.user.postLength = state.user.postLength - 1
+  },
+  storeUserTag(state, data) {
+    data.map((e) => {
+      const item = { id: e }
+      state.user.userTag.push(item)
+    })
   }
 }
 

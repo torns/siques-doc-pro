@@ -28,17 +28,23 @@ export class Tag {
   @CreateDateColumn()
   created: Date;
 
-  @OneToMany(
-    type => Post,
-    post => post.tags,
-  )
-  posts: Post[];
+  // @OneToMany(
+  //   type => Post,
+  //   post => post.tags,
+  // )
+  // posts: Post[];
 
   @ManyToOne(
     type => Taglist,
     taglist => taglist.tags,
   )
   taglist: Taglist;
+
+  @ManyToMany(
+    type => Post,
+    post => post.tags,
+  )
+  posts: Post[];
 
   @ManyToMany(
     type => User,

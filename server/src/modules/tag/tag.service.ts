@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tag } from './tag.entity';
-import { TagDto } from './tag.dto';
+import { TagDto, UserTagDto } from './tag.dto';
 import { Taglist } from './taglist.entity';
 import { throwError } from 'rxjs';
 import { Post } from '../post/post.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class TagService {
@@ -16,6 +17,8 @@ export class TagService {
     private readonly tagListRepository: Repository<Taglist>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async store(data: TagDto) {
@@ -36,6 +39,78 @@ export class TagService {
         .of(postId)
         .remove(tagId);
     }
+  }
+
+  async storeUserTag(userId: number, data: any) {
+    if (data.length == 0) {
+      try {
+        await this.tagRepository
+          .createQueryBuilder()
+          .relation(User, 'tags')
+          .of(userId)
+          .add(data[0]);
+      } catch {
+        return;
+      }
+    } else {
+      data.map(async e => {
+        try {
+          await this.tagRepository
+            .createQueryBuilder()
+            .relation(User, 'tags')
+            .of(userId)
+            .add(e);
+        } catch {
+          return;
+        }
+      });
+    }
+  }
+
+  async showUserTag(userId: number) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .relation(User, 'tags')
+      .of(userId)
+      .loadMany();
+  }
+
+  // 标签id
+  async showTagPost(id: number) {
+    // const res = await this.postRepository
+    //   .createQueryBuilder('posts')
+
+    //   .relation(Tag, 'posts')
+
+    //   .of(id)
+
+    //   .loadMany();
+
+    //
+    // 为什么 —_—
+    const res = await this.postRepository
+      .createQueryBuilder('post')
+
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('user.avator', 'avator')
+      .having('tags.Id=:id', { id })
+      .leftJoinAndSelect('post.tags', 'tags')
+      .orderBy('post.created', 'DESC')
+
+      .getMany();
+
+    return res;
+  }
+
+  async showTagInfo(id: number) {
+    const res1 = await this.userRepository
+      .createQueryBuilder('tag')
+      .relation(Tag, 'user')
+      .of(id)
+      .loadMany();
+
+    const res2 = await this.tagRepository.findOne(id);
+    return { info: res2, count: res1.length };
   }
 
   async updata(id: number, data: TagDto) {

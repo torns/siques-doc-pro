@@ -107,6 +107,20 @@
                     </div>
                   </div>
                 </div>
+                <div class="tag d-flex ai-baseline">
+                  <ul class="d-flex">
+                    <li v-for="tag in post.tags" :key="tag.id">
+                      <el-tag
+                        class="bg-2 hover-3 mr-2"
+                        effect="light"
+                        size="small"
+                      >
+                        <span class="fs-sm">{{ tag.name }}</span>
+                      </el-tag>
+                    </li>
+                  </ul>
+                  <div class="text-gray fs-xm">阅读约2分钟</div>
+                </div>
 
                 <div
                   v-if="post.body"

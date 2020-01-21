@@ -56,6 +56,8 @@ export class UserService {
       .where('user.id=:id', { id })
       .leftJoinAndSelect('user.follows', 'follows')
       .leftJoinAndSelect('user.avator', 'avator')
+      .leftJoin('user.tags', 'tags')
+      .addSelect(['tags.id'])
       .leftJoin('user.posts', 'posts')
       .addSelect(['posts.id'])
       .addOrderBy('avator.id', 'DESC')

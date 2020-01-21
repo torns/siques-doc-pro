@@ -14,10 +14,38 @@
           <div>
             标签不仅能组织和归类你的内容，还能关联相似的内容。正确的使用标签将让你的问题被更多人发现和解决。
           </div>
+
+          <div class="py-2">
+            <div class="bg-3 py-3 px-3" style="height:90px;">
+              <div class="d-flex  ">
+                <div><el-search ref="search" :data="tags"></el-search></div>
+                <el-button
+                  class="h-100"
+                  size="mini"
+                  type="plain"
+                  @click="storeUserTag"
+                  >加关注</el-button
+                >
+              </div>
+              <div v-if="userTags" class="pt-2 d-flex">
+                <div v-for="tag in userTags" :key="tag.id">
+                  <router-link tag="div" :to="`/t/${tag.id}`">
+                    <el-tag
+                      size="small"
+                      type="plain"
+                      class="mr-1 hover-3 point"
+                    >
+                      {{ tag.name }}
+                    </el-tag>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="pt-4">
             <ul class="d-flex flex-wrap">
               <div
-                v-for="(title, index) in titles"
+                v-for="(title, index) in taglist"
                 :key="index"
                 class="tag-list__itemWraper fs-sm pb-4 w-100"
               >
@@ -35,7 +63,50 @@
                   >
                     <!-- 会报错暂时先不用 -->
                     <!-- <font-awesome-icon   :icon="['fab', tag]" class="fs-xm" /> -->
-                    {{ tag }}
+                    <el-popover
+                      placement="top"
+                      width="300"
+                      :open-delay="500"
+                      trigger="hover"
+                      @show="show(tag.id)"
+                    >
+                      <div v-if="taginfo" class="px-2 py-1">
+                        <div>
+                          <div style="font-weight:700" class="fs-md">
+                            {{ taginfo.info.name }}
+                          </div>
+                          <div style="min-height:80px;">
+                            {{ taginfo.info.description }}
+                          </div>
+                        </div>
+                        <el-divider></el-divider>
+                        <div class="d-flex jc-between ai-baseline">
+                          <div>
+                            <el-button type="text">查看</el-button>
+                          </div>
+                          <div>
+                            {{ taginfo.count }}人
+                            <el-button
+                              size="mini"
+                              :type="isTagFollowed ? 'plain' : 'primary'"
+                              @click="
+                                !isTagFollowed
+                                  ? storeUserTag(taginfo.info.id)
+                                  : ''
+                              "
+                              >{{
+                                isTagFollowed ? '已关注' : '关注'
+                              }}</el-button
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <slot slot="reference"
+                        ><router-link :to="`/t/${tag.id}`" tag="div">{{
+                          tag.name
+                        }}</router-link></slot
+                      >
+                    </el-popover>
                   </li>
                 </ul>
               </div>
@@ -50,47 +121,80 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-
-@Component({})
+import search from '~/components/searchPanel/search.vue'
+@Component({
+  components: { 'el-search': search }
+})
 export default class Tags extends Vue {
-  titles = [
-    {
-      name: '开发语言',
-      tags: ['java', 'c', 'c++', 'php', 'python', 'javascript', 'typescript']
-    },
-    {
-      name: '前端开发',
-      tags: [
-        'html',
-        'nuxt.js',
-        'html5',
-        'css3',
-        'jquery',
-        'json',
-        'axios',
-        'vue.js'
-      ]
-    },
-    {
-      name: '数据库',
-      tags: ['mysql', 'mongodb']
-    },
+  taglist = null
+  taginfo = null
+  tags = null
+  userTags = null
+  isTagFollowed = false
 
-    { name: '开发工具', tags: ['visual-studio', 'docker', 'git', 'git-hub'] },
-    {
-      name: '云计算',
-      tags: ['阿里云', '腾讯云']
-    },
-    {
-      name: '服务器',
-      tags: ['linux', 'ubunto', 'centos', 'apache', 'nginx']
-    },
-    {
-      name: 'JavaScript开发',
-      tags: ['javascript', 'node.js', 'firefox', 'chrome']
-    },
-    { name: '小程序开发', tags: ['微信小程序'] }
-  ]
+  mounted() {
+    this.fetchAllTags()
+    setTimeout(() => {
+      this.fetchUserTag()
+    }, 300)
+  }
+  async fetchAllTags() {
+    const result = await this.$http.get('/tags')
+    this.taglist = result.data
+    let tags = []
+    this.taglist.map((e) => {
+      tags = tags.concat(e.tags)
+    })
+    this.tags = tags
+  }
+
+  async storeUserTag(tagId) {
+    let data = this.$refs.search.tagSearch
+    if (typeof tagId === 'number') {
+      data = [{ id: tagId }]
+    }
+
+    if (data.length !== 0) {
+      await this.$http.post(`/tags/user/${this.$store.state.user.userId}`, data)
+      this.$store.commit('storeUserTag', data)
+      this.fetchUserTag()
+      this.$refs.search.tagSearch = []
+      this.$notify({
+        type: 'success',
+        message: '关注成功',
+        title: '成功'
+      })
+    }
+  }
+
+  async fetchUserTag() {
+    const res = await this.$http.get(
+      `/tags/user/${this.$store.state.user.userId}`
+    )
+    this.userTags = res.data
+  }
+
+  show(id) {
+    this.fetchTagDescription(id)
+  }
+
+  async fetchTagDescription(id) {
+    const res = await this.$http.get(`/tags/info/${id}`)
+    this.taginfo = res.data
+
+    let isTagFollowed = false
+    this.$store.state.user.userTag.map((e) => {
+      if (e.id === res.data.info.id) {
+        isTagFollowed = true
+      }
+    })
+
+    if (isTagFollowed) {
+      this.isTagFollowed = true
+    } else {
+      this.isTagFollowed = false
+    }
+  }
 }
 </script>
 

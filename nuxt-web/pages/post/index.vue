@@ -84,9 +84,11 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-toilet-paper" command="a">
                     默认编辑器
-                    <span class="text-blue">
-                      ({{ defaultEditor ? '富文本编辑器' : 'markdown编辑器' }})
-                    </span>
+                    <span class="text-blue"
+                      >({{
+                        defaultEditor ? '富文本编辑器' : 'markdown编辑器'
+                      }})</span
+                    >
                   </el-dropdown-item>
 
                   <el-dropdown-item icon="el-icon-set-up"
@@ -167,27 +169,26 @@
           <div class="my-3">
             <el-input v-model="title" size="medium" placeholder></el-input>
           </div>
-          <div class="d-flex  tags text-left my-3">
+          <div class="d-flex tags text-left my-3">
             <el-tag
               :key="tag.name"
               v-for="tag in dynamicTags"
               :disable-transitions="false"
               @close="handleClose(tag.name, tag.id)"
-              class="mr-2 "
+              class="mr-2"
               effect="plain"
               closable
+              >{{ tag.name }}</el-tag
             >
-              {{ tag.name }}
-            </el-tag>
 
-            <sq-tag ref="tag" @add="addTag"
-              ><el-button
+            <sq-tag ref="tag" @add="addTag">
+              <el-button
                 @click="showtagDialog"
                 class="button-new-tag"
                 size="small"
                 >+ 添加标签</el-button
-              ></sq-tag
-            >
+              >
+            </sq-tag>
           </div>
           <tinymce
             ref="tinymce"
@@ -208,7 +209,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import Tag from '@/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
 import markdown from '~/components/markdown/MarkDown.vue'
@@ -226,8 +227,11 @@ export default class index extends Vue {
   defaultEditor: boolean = true
   selectEditor: boolean = true
   title: string = ''
+  len: number = null
+
   // 标签
   dynamicTags = []
+
   inputVisible = false
   inputValue = ''
   // true是tinymce
@@ -236,6 +240,17 @@ export default class index extends Vue {
     this.fetchCollect()
     this.fetchEditor()
   }
+
+  @Watch('dynamicTags')
+  dynamicTagsChanged(val, oldval) {
+    this.$refs.tag.taglen = 5 - val.length
+  }
+
+  // get tagLen() {
+  //   // this.$refs.tag.taglen = 5 - this.dynamicTags.length
+  //   return 5 - this.dynamicTags.length
+  // }
+
   async createCollect() {
     if (this.newCollection === '') {
       return this.$notify({
@@ -445,21 +460,29 @@ export default class index extends Vue {
   }
 
   async addTag(tagname, tagid) {
-    let includes = false
-    this.dynamicTags.map((e) => {
-      if (e.name === tagname) {
-        includes = true
-      }
-    })
+    if (this.tagLen > 0) {
+      let includes = false
+      this.dynamicTags.map((e) => {
+        if (e.name === tagname) {
+          includes = true
+        }
+      })
 
-    if (!includes) {
-      this.dynamicTags.push({ name: tagname, id: tagid })
-      await this.$http.get(`/tags/${this.selectedPost}?tagId=${tagid}`)
+      if (!includes) {
+        this.dynamicTags.push({ name: tagname, id: tagid })
+        await this.$http.get(`/tags/${this.selectedPost}?tagId=${tagid}`)
+      } else {
+        this.$notify({
+          type: 'error',
+          title: '错误',
+          message: '已添加该标签'
+        })
+      }
     } else {
       this.$notify({
         type: 'error',
         title: '错误',
-        message: '已添加该标签'
+        message: '已超出最大标签数量'
       })
     }
   }

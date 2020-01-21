@@ -3,7 +3,7 @@
     <el-popover @hide="hide" v-model="visible" placement="bottom" width="450">
       <div class="px-4 py-2" style="height:300px;">
         <div class="d-flex jc-between  gray-1 fs-sm " style="font-weight:600;">
-          <div>还可添加5个标签</div>
+          <div>还可添加{{ taglen }}个标签</div>
           <div>找不到标签?</div>
         </div>
         <el-input
@@ -61,6 +61,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 // import { taglist } from '../../data.js'
 @Component({})
 export default class Tag extends Vue {
+  taglen: number = null
   visible = false
   taglist: any = ''
   tags: any = []
@@ -69,6 +70,7 @@ export default class Tag extends Vue {
   state = ''
   results: any = ''
   timeout: any
+
   mounted() {
     this.fetchTags()
   }
