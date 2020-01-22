@@ -4,5 +4,6 @@ export interface ListOptionsInterface {
   limit: number;
   page: number;
   sort: string;
+  taglist: string;
   order: 'ASC' | 'DESC';
 }

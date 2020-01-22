@@ -41,6 +41,18 @@ li {
   margin-right: auto;
   margin-left: auto;
 
+  @media (max-width: 768px) {
+    .sq-leftside-link {
+      justify-content: space-around;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .tech-square-title {
+      display: none;
+    }
+  }
+
   @media (min-width: 768px) {
     width: 750px;
   }
@@ -364,4 +376,9 @@ code {
 
 .el-popup-parent--hidden {
   padding-right: 0px !important;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }

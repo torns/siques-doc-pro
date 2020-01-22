@@ -97,12 +97,14 @@ export class PostService {
 
   //获取主页文章列表
   async getAll(options: ListOptionsInterface) {
-    const { categories, tags, page, limit, sort, order } = options;
+    const { categories, tags, taglist, page, limit, sort, order } = options;
+    console.log(sort, tags, categories, taglist);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
 
     queryBuilder.leftJoinAndSelect('post.category', 'category');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
+    queryBuilder.leftJoinAndSelect('tag.taglist', 'taglist');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
 
     // where筛选
@@ -112,6 +114,10 @@ export class PostService {
 
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
+    }
+
+    if (taglist) {
+      queryBuilder.andWhere('taglist.alias IN(:...taglist)', { taglist });
     }
 
     // 限制查询数量

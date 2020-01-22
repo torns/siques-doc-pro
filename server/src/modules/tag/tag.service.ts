@@ -123,19 +123,31 @@ export class TagService {
 
   async listInit() {
     const list = [
-      '开发语言',
-      '前端开发',
-      '数据库',
-      '开发工具',
-      '云计算',
-      '服务器',
-      'JavaScript开发',
-      '小程序开发',
+      { name: '开发语言', alias: 'language' },
+      { name: '前端开发', alias: 'frontEnd' },
+      { name: '数据库', alias: 'database' },
+      { name: '开发工具', alias: 'tools' },
+      { name: '云计算', alias: 'cloudcomputing' },
+      { name: '服务器', alias: 'server' },
+      { name: 'Javascript开发', alias: 'javascript' },
+      { name: '小程序开发', alias: 'miniprogram' },
     ];
     list.map(async e => {
-      await this.tagListRepository.save({
-        name: e,
-      });
+      try {
+        await this.tagListRepository.save({
+          name: e.name,
+          alias: e.alias,
+        });
+      } catch {
+        const entity = await this.tagListRepository.find({
+          where: { name: e.name },
+        });
+
+        await this.tagListRepository.update(entity[0].id, {
+          name: e.name,
+          alias: e.alias,
+        });
+      }
     });
   }
 

@@ -9,6 +9,9 @@ export class Taglist {
   @Column({ unique: true })
   name: string;
 
+  @Column({ unique: true, nullable: true })
+  alias: string;
+
   @OneToMany(
     type => Tag,
     tag => tag.taglist,

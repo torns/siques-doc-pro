@@ -66,12 +66,12 @@ export class TagController {
     return await this.tagService.delete(id);
   }
 
-  @Get('listinit')
+  @Get(':id/listinit')
   async listInit() {
     await this.tagService.listInit();
   }
 
-  @Get('init')
+  @Get(':id/init')
   async tagsInit() {
     await this.tagService.tagsInit();
   }

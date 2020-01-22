@@ -3,11 +3,16 @@ import { ListOptionsInterface } from '../interface/list-options.interface';
 //导出一个参数装饰器@user()=req.user
 export const ListOptions = createParamDecorator(
   (data: Partial<ListOptionsInterface> = {}, req) => {
-    let { categories, tags, page, limit, sort, order } = req.query;
-    console.log(req.query)
-    console.log(data) //后台的默认值
+    let { categories, tags, taglist, page, limit, sort, order } = req.query;
+    console.log(req.query);
+    console.log(data); //后台的默认值
     if (categories) {
       categories = categories.split('-');
+    }
+
+    console.log(taglist, tags);
+    if (taglist) {
+      taglist = taglist.split('-');
     }
 
     if (tags) {
@@ -25,7 +30,7 @@ export const ListOptions = createParamDecorator(
     } else if (limit === undefined && data.limit) {
       limit = data.limit;
     } else {
-      limit = 3;  //默认限制
+      limit = 3; //默认限制
     }
 
     if (sort) {
@@ -47,6 +52,7 @@ export const ListOptions = createParamDecorator(
     return {
       categories,
       tags,
+      taglist,
       page,
       limit,
       sort,

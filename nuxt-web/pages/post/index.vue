@@ -227,8 +227,7 @@ export default class index extends Vue {
   defaultEditor: boolean = true
   selectEditor: boolean = true
   title: string = ''
-  len: number = null
-
+  tagLen = null
   // 标签
   dynamicTags = []
 
@@ -243,6 +242,7 @@ export default class index extends Vue {
 
   @Watch('dynamicTags')
   dynamicTagsChanged(val, oldval) {
+    this.tagLen = 5 - val.length
     this.$refs.tag.taglen = 5 - val.length
   }
 

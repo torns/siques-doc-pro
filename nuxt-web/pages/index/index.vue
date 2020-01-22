@@ -17,13 +17,13 @@
             class="hidden-sm-and-down "
           >
           </el-col>
-          <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+          <el-col :xs="0" :sm="24" :md="14" :lg="14" :xl="14">
             <div
               style="height:190px"
               class="bg-primary d-flex jc-around text-white "
             >
               <div class="d-flex flex-column jc-center">
-                <div class="fs-xll pb-3">在 抒写，学习技能、解决问题</div>
+                <div class="fs-xll pb-3">在思趣，学习技能、解决问题</div>
                 <div>
                   每个月，我们帮助 1000
                   万的开发者解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
@@ -48,27 +48,45 @@
       </div>
     </div>
     <div class="container">
-      <el-row :gutter="0" class="d-flex pt-4">
-        <el-col
-          :xs="0"
-          :sm="4"
-          :md="5"
-          :lg="4"
-          :xl="4"
-          class="hidden-sm-and-down"
-        >
-          <div class="d-flex" style="flex-direction: row-reverse;">
-            <ul class="text-left fs-xm">
+      <el-row :gutter="0" class="d-flex flex-wrap  pt-4">
+        <el-col :xs="24" :sm="24" :md="5" :lg="4" :xl="4">
+          <div class="d-flex " style="flex-direction: row-reverse;">
+            <ul
+              class="text-left fs-xm sq-leftside-link"
+              style="flex-wrap: wrap;
+    display: flex;"
+            >
               <li
                 @click="handleCategory(link.alias, link.sort)"
-                v-for="(link, index) in links"
-                :key="index"
+                v-for="link in links"
+                :key="link.alias"
                 :class="
                   (link.alias == category ? 'bg-1 ' : 'hover-2 ') +
                     `pr-6  pl-3 py-2`
                 "
               >
-                <font-awesome-icon :icon="[link.tag, link.icon]" class="pr-1" />
+                <font-awesome-icon
+                  :icon="[link.prefix, link.icon]"
+                  :class="` pr-1 text-${link.color}`"
+                />
+                {{ link.name }}
+              </li>
+              <div class="pl-3 py-2 tech-square-title">技术频道</div>
+              <li
+                @click="
+                  handleCategory(link.alias, link.sort, link.tag, link.taglist)
+                "
+                v-for="link in techChanel"
+                :key="link.alias"
+                :class="
+                  (link.alias == category ? `bg-1 ` : 'hover-2 ') +
+                    `pr-6  pl-3 py-2 `
+                "
+              >
+                <font-awesome-icon
+                  :icon="[link.prefix, link.icon]"
+                  :class="`fs-md pr-1 text-${link.color}`"
+                />
                 {{ link.name }}
               </li>
             </ul>
@@ -103,7 +121,7 @@
                 >
                   <router-link
                     :to="`/p/${post.id}`"
-                    tag="div"
+                    tag="a"
                     class="hoverlink point visitlink fs-lg"
                     >{{ post.title }}</router-link
                   >
@@ -118,10 +136,10 @@
                           ×{{ post.liked }} · 赞
                         </div>
                       </div>
-                      <router-link :to="`u/${post.user.id}`" tag="div"
+                      <nuxt-link :to="`u/${post.user.id}`" tag="div"
                         ><div class="pr-2">
                           {{ post.user.name }} ·
-                        </div></router-link
+                        </div></nuxt-link
                       >
 
                       <div>{{ $dayjs(post.created).format('MM月DD日') }}</div>
@@ -143,12 +161,12 @@
         <el-col
           :xs="0"
           :sm="6"
-          :md="6"
+          :md="5"
           :lg="6"
           :xl="6"
           class="hidden-sm-and-down"
         >
-          <div style="min-width:200px;max-width:240px;">
+          <div class="pl-3" style="min-width:200px;max-width:240px;">
             <div class="bg-info border-1">
               <div
                 style="height:50px;margin:0 auto;"
@@ -182,6 +200,8 @@ export default class MyPage extends Vue {
   maxcount = null
   loading = false
   sort = 'liked'
+  tag = null
+  taglist = null
   showBanner = true
   posts = []
   category: string = 'suggest'
@@ -199,45 +219,90 @@ export default class MyPage extends Vue {
       name: '为你推荐',
       alias: 'suggest',
       sort: 'liked',
-      tag: 'far',
+      prefix: 'far',
       icon: 'address-card'
     },
     {
       name: '近期热门',
       alias: 'hot',
       sort: 'liked',
-      tag: 'far',
+      prefix: 'far',
       icon: 'thumbs-up'
     },
     {
       name: '最新内容',
       alias: 'new',
       sort: 'created',
-      tag: 'far',
+      prefix: 'far',
       icon: 'compass'
-    },
+    }
+  ]
+  techChanel = [
     {
       name: '前端',
       alias: 'frontEnd',
-      sort: 'liked',
-      tag: 'fab',
-      icon: 'js-square'
+      taglist: ['frontEnd'],
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'js-square',
+      color: 'yellow'
     },
     {
       name: '后端',
       alias: 'backEnd',
-      sort: 'liked',
-      tag: 'fab',
-      icon: 'bitbucket'
+      taglist: ['cloudcomputing', 'database', 'server'],
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'bitbucket',
+      color: 'blue-1'
+    },
+    {
+      name: '工具',
+      alias: 'tools',
+      taglist: ['tools'],
+      sort: 'created',
+      prefix: 'fas',
+      icon: 'tools',
+      color: 'blue'
+    },
+    {
+      name: 'Node',
+      alias: 'node',
+      tag: 'node.js',
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'node-js',
+      color: 'blue'
+    },
+    {
+      name: 'Vue',
+      alias: 'vue',
+      tag: 'vue.js',
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'vuejs',
+      color: 'green'
     },
     {
       name: '小程序',
       alias: 'miniProgram',
-      sort: 'liked',
-      tag: 'fab',
-      icon: 'cloudsmith'
+      taglist: ['miniProgram'],
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'schlix',
+      color: 'green'
+    },
+    {
+      name: '行业',
+      alias: 'info',
+      tag: 'info',
+      sort: 'created',
+      prefix: 'fab',
+      icon: 'hubspot',
+      color: 'yellow-1'
     }
   ]
+
   mounted() {
     this.fetchPost()
   }
@@ -253,28 +318,70 @@ export default class MyPage extends Vue {
     this.posts = res.data[0]
   }
 
-  // 还有问题
   load() {
     this.loading = true
     this.page += 1
+    let list = ''
+    if (this.taglist) {
+      if (this.taglist.length === 1) {
+        this.taglist.map((e) => {
+          list = e.toLowerCase()
+        })
+      } else {
+        this.taglist.map((e, index) => {
+          if (index === this.taglist.length - 1) {
+            list = list + e.toLowerCase()
+          } else {
+            list = list + e.toLowerCase() + '-'
+          }
+        })
+      }
+    }
+    const link =
+      `/posts/all?limit=10&page=${this.page}&sort=${this.sort}` +
+      (this.tag ? `&tags=${this.tag}` : '') +
+      (this.taglist ? `&taglist=${list}` : '')
     setTimeout(async () => {
-      const res = await this.$http.get(
-        `/posts/all?limit=10&page=${this.page}&sort=${this.sort}`
-      )
+      const res = await this.$http.get(link)
       this.posts = this.posts.concat(res.data[0])
       this.count += res.data[0].length
       this.loading = false
     }, 500)
   }
 
-  async handleCategory(alias: any, sort) {
+  async handleCategory(alias: any, sort, tag, taglist) {
+    // console.log({ 别称: alias }, { 标签: tag }, { 分类: sort })
     this.category = alias
+    this.tag = tag
+    this.taglist = taglist
     this.sort = sort
     this.page = 1
     this.count = 10
-    const res = await this.$http.get(
-      `/posts/all?limit=10&page=${this.page}&sort=${sort}`
-    )
+    let list = ''
+    if (taglist) {
+      if (taglist.length === 1) {
+        taglist.map((e) => {
+          list = e.toLowerCase()
+        })
+      } else {
+        taglist.map((e, index) => {
+          if (index === taglist.length - 1) {
+            list = list + e.toLowerCase()
+          } else {
+            list = list + e.toLowerCase() + '-'
+          }
+        })
+      }
+    }
+
+    // console.log(list)
+    const link =
+      `/posts/all?limit=10&page=${this.page}` +
+      (sort ? `&sort=${sort}` : '') +
+      (tag ? `&tags=${tag}` : '') +
+      (taglist ? `&taglist=${list}` : '')
+    const res = await this.$http.get(link)
+
     this.posts = res.data[0]
   }
 
@@ -302,5 +409,13 @@ export default class MyPage extends Vue {
   left: 0;
   background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
   border-radius: 4px;
+}
+.tech-square-title::after {
+  position: absolute;
+  content: '';
+  border-bottom: 1px solid #eee;
+  width: 95px;
+  margin-left: 5px;
+  margin-top: 8px;
 }
 </style>

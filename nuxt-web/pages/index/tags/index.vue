@@ -17,8 +17,10 @@
 
           <div class="py-2">
             <div class="bg-3 py-3 px-3" style="height:90px;">
-              <div class="d-flex  ">
-                <div><el-search ref="search" :data="tags"></el-search></div>
+              <div class="d-flex">
+                <div>
+                  <el-search ref="search" :data="tags"></el-search>
+                </div>
                 <el-button
                   class="h-100"
                   size="mini"
@@ -29,15 +31,14 @@
               </div>
               <div v-if="userTags" class="pt-2 d-flex">
                 <div v-for="tag in userTags" :key="tag.id">
-                  <router-link tag="div" :to="`/t/${tag.id}`">
+                  <nuxt-link tag="div" :to="`/t/${tag.id}`">
                     <el-tag
                       size="small"
                       type="plain"
                       class="mr-1 hover-3 point"
+                      >{{ tag.name }}</el-tag
                     >
-                      {{ tag.name }}
-                    </el-tag>
-                  </router-link>
+                  </nuxt-link>
                 </div>
               </div>
             </div>
@@ -58,7 +59,6 @@
                   <li
                     v-for="(tag, index) in title.tags"
                     :key="index"
-                    style="padding:2px 5px; "
                     class="bg-3 mr-1 my-1 hover-3 fs-xm"
                   >
                     <!-- 会报错暂时先不用 -->
@@ -94,18 +94,17 @@
                                   ? storeUserTag(taginfo.info.id)
                                   : ''
                               "
-                              >{{
-                                isTagFollowed ? '已关注' : '关注'
-                              }}</el-button
                             >
+                              {{ isTagFollowed ? '已关注' : '关注' }}
+                            </el-button>
                           </div>
                         </div>
                       </div>
-                      <slot slot="reference"
-                        ><router-link :to="`/t/${tag.id}`" tag="div">{{
-                          tag.name
-                        }}</router-link></slot
-                      >
+                      <slot slot="reference">
+                        <router-link :to="`/t/${tag.id}`" tag="div">
+                          <div style="padding:2px 5px; ">{{ tag.name }}</div>
+                        </router-link>
+                      </slot>
                     </el-popover>
                   </li>
                 </ul>
@@ -150,10 +149,11 @@ export default class Tags extends Vue {
 
   async storeUserTag(tagId) {
     let data = this.$refs.search.tagSearch
-    if (typeof tagId === 'number') {
-      data = [{ id: tagId }]
-    }
 
+    if (typeof tagId === 'number') {
+      data = [tagId]
+    }
+    console.log(data)
     if (data.length !== 0) {
       await this.$http.post(`/tags/user/${this.$store.state.user.userId}`, data)
       this.$store.commit('storeUserTag', data)
