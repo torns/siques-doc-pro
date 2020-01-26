@@ -33,58 +33,49 @@ import { AutoincrementInterceptor } from 'src/core/interceptors/autoincrement.in
 @ApiTags('文章')
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) { }
+  constructor(private readonly postService: PostService) {}
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async store(@Body() data: PostDto, @User() user: UserEntity) {
-
     return await this.postService.store(data, user);
   }
 
-  @Get(":id/user")
+  @Get(':id/user')
   @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @ListOptions({ limit: 10, sort: 'updated', order: 'DESC' }) //updated降序 ASC DESC
-    Options: ListOptionsInterface, @Param("id", ParseIntPipe) id: number
+    Options: ListOptionsInterface,
+    @Param('id', ParseIntPipe) id: number,
   ) {
-
     return await this.postService.index(Options, id);
   }
 
-
-  @Get("all")
-
-  async getAll(@ListOptions({ limit: 10, sort: 'liked', order: 'DESC' }) //updated降序 ASC DESC
-  Options: ListOptionsInterface
+  @Get('all')
+  async getAll(
+    @ListOptions({ limit: 10, sort: 'liked', order: 'DESC' }) //updated降序 ASC DESC
+    Options: ListOptionsInterface,
   ) {
-
     return await this.postService.getAll(Options);
   }
 
-
-  @Get("collections/:id")
+  @Get('collections/:id')
   @UseGuards(AuthGuard('jwt'))
-  async showPost(@Param("id", ParseIntPipe) id: number) {
-    return await this.postService.showPost(id)
+  async showPost(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.showPost(id);
   }
 
   @Get(':id')
   // @UseGuards(AuthGuard())
-
   async show(@Param('id') id: string) {
     // console.log(id)
 
     return await this.postService.show(id);
-
   }
-
-
-
 
   @Put(':id')
   // @ApiQuery({ name: 'role', enum: UserRole })
-  @UseGuards(AuthGuard("jwt"), AccessGuard)
+  @UseGuards(AuthGuard('jwt'), AccessGuard)
 
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
@@ -93,13 +84,13 @@ export class PostController {
     // role: UserRole.USER,
   })
   async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
-
     return await this.postService.update(id, data);
   }
 
   @Delete(':id')
-  async delete(@Param() id: string) {
-    return await this.postService.delete(id);
+  async delete(@Param() id: string, @Query() data: any) {
+    const { collectionId } = data;
+    await this.postService.delete(id, parseInt(collectionId));
   }
 
   @Post(':id/vote')
@@ -123,7 +114,6 @@ export class PostController {
   //   return await this.postService.liked(id);
   // }
 
-
   // 点赞
   @Get(':id/like')
   @UseGuards(AuthGuard())
@@ -134,14 +124,12 @@ export class PostController {
 
   // 文章受赞数量
   @Get(':id/liked/count')
-
   async countliked(@Param('id', ParseIntPipe) id: number) {
     return this.postService.countliked(id);
   }
 
   // 文章被谁点过的具体信息
   @Get(':id/liked')
-
   async liked(@Param('id', ParseIntPipe) id: number) {
     return this.postService.liked(id);
   }
@@ -153,5 +141,4 @@ export class PostController {
 
   //   return await this.postService.liked_posts(user.id)
   // }
-
 }

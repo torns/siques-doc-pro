@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-popover @hide="hide" v-model="visible" placement="bottom" width="450">
+    <el-popover
+      @hide="hide"
+      v-model="visible"
+      :placement="position"
+      :popper-class="cunstom"
+      width="450"
+    >
       <div class="px-4 py-2" style="height:300px;">
         <div class="d-flex jc-between  gray-1 fs-sm " style="font-weight:600;">
           <div>还可添加{{ taglen }}个标签</div>
@@ -57,10 +63,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
 // import { taglist } from '../../data.js'
 @Component({})
 export default class Tag extends Vue {
+  @Prop()
+  position: string
+  @Prop()
+  cunstom: string
   taglen: number = null
   visible = false
   taglist: any = ''

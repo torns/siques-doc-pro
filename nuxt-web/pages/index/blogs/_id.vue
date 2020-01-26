@@ -29,7 +29,7 @@
               <div class="d-flex">
                 <div class="pr-3">
                   <el-button
-                    @click="like(post.id)"
+                    @click="like(post.id, index)"
                     style="padding-left:18px;padding-right:18px;width:10px;height:45px"
                     type="plain"
                   >
@@ -57,7 +57,6 @@
                       <router-link
                         :to="`/u/${collections.user.id}`"
                         tag="div"
-                        class="hoverlink"
                         >{{ collections.user.name }}</router-link
                       >
                     </div>
@@ -148,7 +147,7 @@ import bookmark from '~/components/dialog/bookmark.vue'
   components: { 'bookmark-dialog': bookmark }
 })
 export default class collection extends Vue {
-  collections = []
+  collections: any = []
   bookmarks: any = null
   dialogFormVisible = false
   checkList = []
@@ -175,14 +174,18 @@ export default class collection extends Vue {
     this.collections = res.data
   }
 
-  async like(id) {
-    await this.$http.get(`/users/${id}/like`)
-    this.fetchCollect()
+  async like(id, index) {
+    const res = await this.$http.get(`/users/${id}/like`)
+    if (res.data) {
+      this.collections.posts[index].liked += 1
+    } else {
+      this.collections.posts[index].liked -= 1
+    }
   }
 
   async fetchBookmark() {
     const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.user.userId}/user`
+      `/bookmarks/${this.$store.state.auth.user.id}/user`
     )
     this.bookmarks = res.data
   }

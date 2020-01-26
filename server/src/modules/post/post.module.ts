@@ -7,11 +7,15 @@ import { Tag } from '../tag/tag.entity';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { User } from '../user/user.entity';
+import { Collection } from '../collection/collection.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Tag, User]), UserModule, AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Post, Tag, User, Collection]),
+    UserModule,
+    AuthModule,
+  ],
   controllers: [PostController],
   providers: [PostService],
-
 })
-export class PostModule { }
+export class PostModule {}

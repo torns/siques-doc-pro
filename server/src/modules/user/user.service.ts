@@ -8,6 +8,10 @@ import { User } from './user.entity';
 import { Repository, Entity, createQueryBuilder, QueryBuilder } from 'typeorm';
 import { UserDto, UpdatePasswordDto } from './user.dto';
 import { Post } from '../post/post.entity';
+import { UserTagDto } from '../tag/tag.dto';
+import { throwError } from 'rxjs';
+import { Avator } from '../avator/avator.entity';
+import { Collection } from '../collection/collection.entity';
 
 @Injectable()
 export class UserService {
@@ -16,6 +20,10 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    @InjectRepository(Avator)
+    private readonly avatorRepository: Repository<Avator>,
+    @InjectRepository(Collection)
+    private readonly collectionRepository: Repository<Collection>,
   ) {}
   async store(data: UserDto) {
     const { phonenumber } = data;
@@ -25,6 +33,12 @@ export class UserService {
     }
     const res = await this.userRepository.create(data);
     await this.userRepository.save(res);
+
+    const avatorData = {
+      user: res,
+    };
+    const res2 = await this.avatorRepository.create(avatorData);
+    await this.avatorRepository.save(res2);
     return res;
   }
 
@@ -54,7 +68,10 @@ export class UserService {
     const res1 = await this.userRepository
       .createQueryBuilder('user')
       .where('user.id=:id', { id })
-      .leftJoinAndSelect('user.follows', 'follows')
+      .leftJoin('user.follows', 'follows')
+      .addSelect(['follows.name', 'follows.id'])
+      .leftJoin('user.interest', 'interest')
+      .addSelect('interest.id')
       .leftJoinAndSelect('user.avator', 'avator')
       .leftJoin('user.tags', 'tags')
       .addSelect(['tags.id'])
@@ -139,6 +156,37 @@ export class UserService {
     return await this.userRepository.update(id, entity);
   }
 
+  //用户关注专栏和消除 id是文章id
+  async interest(id: number, user: User) {
+    try {
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'interest')
+        .of(user)
+        .add(id);
+
+      await this.collectionRepository
+        .createQueryBuilder()
+        .update(Collection)
+        .where('collection.id =:id', { id })
+        .set({ interest: () => 'interest + 1' })
+        .execute();
+    } catch {
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'interest')
+        .of(user)
+        .remove(id);
+
+      await this.collectionRepository
+        .createQueryBuilder()
+        .update(Collection)
+        .where('collection.id =:id', { id })
+        .set({ interest: () => 'interest - 1' })
+        .execute();
+    }
+  }
+
   //点赞和消除 id是文章id
   async like(id: number, user: User) {
     try {
@@ -154,6 +202,7 @@ export class UserService {
         .where('post.id =:id', { id })
         .set({ liked: () => 'liked + 1' })
         .execute();
+      return true;
     } catch {
       await this.userRepository
         .createQueryBuilder()
@@ -167,6 +216,7 @@ export class UserService {
         .where('post.id =:id', { id })
         .set({ liked: () => 'liked - 1' })
         .execute();
+      return false;
     }
   }
   // 被谁点过数量 给的是postid
@@ -203,6 +253,40 @@ export class UserService {
     } else {
       return;
     }
+  }
+
+  //用户擅长技能
+
+  async skill(userId: number, tag: UserTagDto) {
+    await this.userRepository
+      .createQueryBuilder('user')
+      .relation(User, 'skill')
+      .of(userId)
+      .remove(tag);
+
+    await this.userRepository
+      .createQueryBuilder('user')
+      .relation(User, 'skill')
+      .of(userId)
+      .add(tag);
+  }
+
+  async deleteSkill(userId: number, id: number) {
+    await this.userRepository
+      .createQueryBuilder('user')
+      .relation(User, 'skill')
+      .of(userId)
+      .remove(id);
+  }
+
+  async fetchSkill(userId: number) {
+    return (
+      await this.userRepository,
+      createQueryBuilder('user')
+        .relation(User, 'skill')
+        .of(userId)
+        .loadMany()
+    );
   }
 
   //关注了谁

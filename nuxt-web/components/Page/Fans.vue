@@ -55,7 +55,7 @@ export default class Fans extends Vue {
       this.fans = res.data
     } else {
       const res = await this.$http.get(
-        `users/${this.$store.state.user.userId}/whofollows`
+        `users/${this.$store.state.auth.user.id}/whofollows`
       )
 
       this.fans = res.data

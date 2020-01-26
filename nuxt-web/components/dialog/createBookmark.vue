@@ -64,7 +64,7 @@ export default class createBookmark extends Vue {
   async fetchBookmark() {
     // 依赖用户id
     const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.user.userId}/user`
+      `/bookmarks/${this.$store.state.auth.user.id}/user`
     )
     this.bookmarks = res.data
   }

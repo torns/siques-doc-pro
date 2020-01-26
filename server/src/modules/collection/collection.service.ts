@@ -41,6 +41,10 @@ export class CollectionService {
       .getOne();
   }
 
+  async getPostCollection(id: number) {
+    return await this.CollectionRepository.findOne(id);
+  }
+
   async removeCollection(id: number) {
     return await this.CollectionRepository.delete(id);
   }

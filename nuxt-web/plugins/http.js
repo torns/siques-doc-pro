@@ -9,8 +9,8 @@ const http = axios.create({
 
 http.interceptors.request.use(
   (config) => {
-    if (localStorage.token) {
-      config.headers.Authorization = 'Bearer ' + (localStorage.token || '')
+    if (localStorage['auth._token.local']) {
+      config.headers.Authorization = localStorage['auth._token.local'] || ''
     }
     return config
   },

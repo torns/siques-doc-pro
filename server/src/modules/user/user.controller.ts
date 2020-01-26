@@ -9,6 +9,7 @@ import {
   Put,
   ParseIntPipe,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto, UpdatePasswordDto } from './user.dto';
@@ -23,6 +24,7 @@ import { User as userEntity } from './user.entity';
 import { PostService } from '../post/post.service';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 import { transcode } from 'buffer';
+import { UserTagDto } from '../tag/tag.dto';
 
 @ApiTags('用户')
 @Controller('users')
@@ -97,12 +99,45 @@ export class UserController {
   //   return await this.userService.userliked(user.id)
 
   // }
+  // 用户技能
+  @Post(':id/skill')
+  @UseGuards(AuthGuard())
+  async skill(
+    @User() user: userEntity,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UserTagDto,
+  ) {
+    return await this.userService.skill(user.id, data);
+  }
+
+  @Delete(':id/skill')
+  @UseGuards(AuthGuard())
+  async deleteSkill(
+    @User() user: userEntity,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UserTagDto,
+  ) {
+    return await this.userService.deleteSkill(user.id, id);
+  }
+
+  @Get(':id/skill')
+  async showUserSkill(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.fetchSkill(id);
+  }
+
+  //集合id
+  @Get(':id/interest')
+  @UseGuards(AuthGuard())
+  async interest(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: userEntity,
+  ) {
+    return await this.userService.interest(id, user);
+  }
 
   // 用户点赞
-
   @Get(':id/like')
   @UseGuards(AuthGuard())
-  @UseInterceptors(ClassSerializerInterceptor)
   async like(@Param('id', ParseIntPipe) id: number, @User() user: userEntity) {
     return await this.userService.like(id, user);
   }

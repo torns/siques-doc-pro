@@ -46,6 +46,11 @@ export class CollectionController {
     return await this.CollectionService.getCollection(id);
   }
 
+  @Get(':id/post')
+  async getPostCollection(@Param('id', ParseIntPipe) id: number) {
+    return await this.CollectionService.getPostCollection(id);
+  }
+
   @Delete(':id')
   async removeCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.removeCollection(id);

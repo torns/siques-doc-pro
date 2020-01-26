@@ -54,7 +54,7 @@ export default class Follows extends Vue {
       this.follows = res.data[0]
     } else {
       const res = await this.$http.get(
-        `users/${this.$store.state.user.userId}/follows`
+        `users/${this.$store.state.auth.user.id}/follows`
       )
       this.follows = res.data[0]
     }

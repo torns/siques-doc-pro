@@ -31,11 +31,11 @@
                 </router-link>
                 <div>
                   <el-tag
+                    v-for="tag in post.tags"
+                    :key="tag.id"
                     size="mini"
                     class="hover-3 "
                     type="primary"
-                    v-for="tag in post.tags"
-                    :key="tag.id"
                   >
                     {{ tag.name }}
                   </el-tag>
@@ -55,9 +55,9 @@
               </div>
               <div class="pr-2">
                 <router-link
+                  :to="`/u/${post.user.id}`"
                   class="text-primary hoverlink"
                   tag="div"
-                  :to="`/u/${post.user.id}`"
                 >
                   {{ post.user.name }}</router-link
                 >

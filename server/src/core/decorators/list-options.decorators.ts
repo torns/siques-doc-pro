@@ -3,7 +3,17 @@ import { ListOptionsInterface } from '../interface/list-options.interface';
 //导出一个参数装饰器@user()=req.user
 export const ListOptions = createParamDecorator(
   (data: Partial<ListOptionsInterface> = {}, req) => {
-    let { categories, tags, taglist, page, limit, sort, order } = req.query;
+    let {
+      categories,
+      tags,
+      taglist,
+      listId,
+      collection,
+      page,
+      limit,
+      sort,
+      order,
+    } = req.query;
     console.log(req.query);
     console.log(data); //后台的默认值
     if (categories) {
@@ -53,6 +63,8 @@ export const ListOptions = createParamDecorator(
       categories,
       tags,
       taglist,
+      listId,
+      collection,
       page,
       limit,
       sort,

@@ -84,11 +84,9 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-toilet-paper" command="a">
                     默认编辑器
-                    <span class="text-blue"
-                      >({{
-                        defaultEditor ? '富文本编辑器' : 'markdown编辑器'
-                      }})</span
-                    >
+                    <span class="text-blue">
+                      ({{ defaultEditor ? '富文本编辑器' : 'markdown编辑器' }})
+                    </span>
                   </el-dropdown-item>
 
                   <el-dropdown-item icon="el-icon-set-up"
@@ -181,7 +179,7 @@
               >{{ tag.name }}</el-tag
             >
 
-            <sq-tag ref="tag" @add="addTag">
+            <sq-tag ref="tag" :position="`bottom`" @add="addTag">
               <el-button
                 @click="showtagDialog"
                 class="button-new-tag"
@@ -339,23 +337,45 @@ export default class index extends Vue {
       body = this.$refs.markdown.body
     }
 
-    let strLength = 0
-    // let zhHan = 0
-    const strLen = body.length
+    const W = []
+    let iNumwords = 0
+    let sNumwords = 0
+    let sTotal = 0 // 双字节字符;
+    let iTotal = 0 // 中文字符；
+    let eTotal = 0 // Ｅ文字符
 
-    for (let i = 0; i < strLen; i++) {
-      const a = body.charAt(i)
-      strLength++
-      if (escape(a).length > 4) {
-        // 中文字符的长度经编码之后大于4
-        // zhHan++
-        strLength++
+    let inum = 0
+
+    for (let i = 0; i < body.length; i++) {
+      const c = body.charAt(i)
+      if (c.match(/[\u4E00-\u9FA5]/)) {
+        if (isNaN(W[c])) {
+          iNumwords++
+          W[c] = 1
+        }
+        iTotal++
       }
     }
 
+    for (let i = 0; i < body.length; i++) {
+      const c = body.charAt(i)
+      if (c.match('/[^\x00-\xFF]/')) {
+        if (isNaN(W[c])) {
+          sNumwords++
+        }
+        sTotal++
+      } else {
+        eTotal++
+      }
+      if (c.match(/[0-9]/)) {
+        inum++
+      }
+    }
+    console.log(iNumwords, sNumwords, sTotal, iTotal, eTotal, inum)
+
     const data = {
       title: this.title,
-      counts: strLength / 2,
+      counts: iTotal + inum,
       body
     }
     await this.$http.put(`/posts/${this.selectedPost}`, data)
@@ -419,8 +439,10 @@ export default class index extends Vue {
         })
     }
     if (command.split('.')[0] === 'c') {
-      await this.$http.delete(`/posts/${id}`)
-      this.$store.commit('decrePostLen')
+      await this.$http.delete(
+        `/posts/${id}?collectionId=${this.selectedCollection}`
+      )
+      // this.$store.commit('decrePostLen')
       this.$notify({
         title: '成功',
         type: 'success',

@@ -8,11 +8,15 @@ import {
   Delete,
   Get,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { TagDto, UserTagDto } from './tag.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { async } from 'rxjs/internal/scheduler/async';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/core/decorators/user.decorators';
+import { User as UserEntity } from '../user/user.entity';
 
 @ApiTags('标签')
 @Controller('tags')
@@ -30,6 +34,15 @@ export class TagController {
     @Body() data: UserTagDto,
   ) {
     await this.tagService.storeUserTag(id, data);
+  }
+
+  @Delete('user/:id')
+  @UseGuards(AuthGuard())
+  async deleteUserTags(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    await this.tagService.deleteUserTag(id, user.id);
   }
 
   @Get(':id')

@@ -174,10 +174,10 @@
             </div>
           </div>
           <div class="pt-4">
-            <div v-if="fetchedComment" class="fs-xl py-1">
+            <div v-if="fetchedComment" class="font-bold fs-xl py-1">
               {{ fetchedComment.length }}条评论
             </div>
-            <div v-else class="fs-xl py-1">0条评论</div>
+            <div v-else class="font-bold fs-xl py-1">0条评论</div>
             <div
               class="py-4 bg-white border-radius shadow-1"
               style="min-height:100px"
@@ -349,11 +349,22 @@
           </div>
 
           <div>
-            <div class="fs-xl py-1 pt-4">推荐阅读</div>
+            <div class=" font-bold fs-xl py-1 pt-4">推荐阅读</div>
             <div
-              class="py-4 px-3 bg-white border-radius shadow-1"
+              class="point hover-1 py-4 px-3 bg-white border-radius shadow-1"
               style="min-height:100px"
-            ></div>
+              v-for="post in recommendPost"
+              :key="post.id"
+            >
+              <router-link tag="div" :to="`/p/${post.id}`">
+                <h3>{{ post.title }}</h3>
+                <div class="text-gray py-2">{{ post.alias }}</div>
+                <div class="d-flex fs-xm">
+                  <div class=" text-primary pr-3">{{ post.user.name }}</div>
+                  <div class="text-gray">阅读{{ post.views }}</div>
+                </div>
+              </router-link>
+            </div>
           </div>
         </el-col>
         <el-col
@@ -364,14 +375,14 @@
           :xl="6"
           class="hidden-md-and-down pl-2"
         >
-          <div>
-            <side-bar></side-bar>
+          <div class="pl-3">
+            <sq-postbar :data="post"></sq-postbar>
           </div>
         </el-col>
       </el-row>
     </div>
 
-    <el-footer class="mt-2"></el-footer>
+    <sq-footer class="mt-2"></sq-footer>
     <el-backtop></el-backtop>
     <!-- <back-top @bck2Top="bck2Top"></back-top> -->
   </div>
@@ -383,7 +394,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
-import sidebar from '~/components/SideBar/SideBar.vue'
+import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
 import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
@@ -399,7 +410,7 @@ const highlightCode = () => {
 @Component({
   components: {
     'el-footer': footer,
-    'side-bar': sidebar,
+    'sq-postbar': PostSideBar,
     'back-top': BackToTop,
     'bookmark-dialog': bookmark,
     'share-dialog': share
@@ -412,6 +423,7 @@ export default class Post extends Vue {
   }
 
   post: any = ''
+  recommendPost = []
   liked: number = 0
   comment = ''
   replyData: string = ''
@@ -425,6 +437,7 @@ export default class Post extends Vue {
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
+    this.fetchRecommendPost()
   }
   updated() {
     highlightCode()
@@ -451,6 +464,13 @@ export default class Post extends Vue {
       const res = await this.$http.get(`/users/${this.id}/liked/count`)
       this.liked = res.data
     }
+  }
+
+  async fetchRecommendPost() {
+    const link = `/posts/all?limit=8&sort=liked`
+    const res = await this.$http.get(link)
+
+    this.recommendPost = res.data[0]
   }
 
   // 获取文章评论
@@ -509,12 +529,12 @@ export default class Post extends Vue {
   // 被回复用户id:from_uid
   async sendReply(commentId, fromUid) {
     // console.log(commentId);
-    // console.log(this.$store.state.userId);
+    // console.log(this.$store.state.auth.user.id);
     // console.log(from_uid);
     const data = {
       parent_id: commentId,
       body: this.replyData,
-      from_uid: this.$store.state.userId,
+      from_uid: this.$store.state.auth.user.id,
       to_uid: fromUid
     }
 
@@ -540,7 +560,7 @@ export default class Post extends Vue {
 
   async fetchBookmark() {
     const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.user.userId}/user`
+      `/bookmarks/${this.$store.state.auth.user.id}/user`
     )
     this.bookmarks = res.data
 

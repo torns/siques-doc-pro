@@ -30,6 +30,10 @@
               <span class="fs-md">问答</span>
             </el-menu-item>
 
+            <el-menu-item index="/blogs">
+              <span class="fs-md">专栏</span>
+            </el-menu-item>
+
             <el-menu-item index="/tags">
               <span class="fs-md">标签</span>
             </el-menu-item>
@@ -39,7 +43,11 @@
               :show-timeout="0"
               :hide-timeout="0"
             >
-              <el-popover placement="bottom" trigger="click">
+              <el-popover
+                :popper-class="`message`"
+                placement="bottom"
+                trigger="click"
+              >
                 <div class="d-flex flex-column h-100">
                   <el-radio-group
                     @change="change"
@@ -103,7 +111,7 @@
 
                   <div class="flex-1 pt-3"></div>
                   <el-divider></el-divider>
-                  <div class="d-flex jc-between">
+                  <div class="d-flex jc-between pb-3 px-3">
                     <div class="point">全部标记为已读</div>
                     <router-link
                       to="/notification"
@@ -119,7 +127,7 @@
               </el-popover>
             </el-menu-item>
 
-            <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
+            <!-- <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
               <el-badge value="new" type="primary" class="item pl-2">
                 <el-popover
                   :popper-class="`message`"
@@ -148,7 +156,7 @@
                   </el-button>
                 </el-popover>
               </el-badge>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item>
               <el-popover v-model="visible" placement="top" width="160">
@@ -171,6 +179,16 @@
               </el-popover>
             </el-menu-item>
 
+            <el-menu-item
+              ><el-input
+                v-model="search"
+                size="small"
+                placeholder="请输入内容"
+                suffix-icon="el-icon-search"
+              >
+              </el-input
+            ></el-menu-item>
+
             <el-submenu
               :index="`person`"
               v-if="$store.state.UserNotExist == false"
@@ -181,10 +199,11 @@
               <template slot="title">
                 <el-avatar :size="35" class="shadow-1">
                   <img
-                    v-if="this.$store.state.user.userAvator"
-                    :src="this.$store.state.user.userAvator"
+                    v-if="this.$store.state.auth.user.avator.length !== 0"
+                    :src="this.$store.state.auth.user.avator[0].url"
                     style="background-color:white;"
                   />
+
                   <img v-else src="~/static/avator.jpg" />
                 </el-avatar>
               </template>
@@ -328,7 +347,7 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator'
-const Cookie = process.client ? require('js-cookie') : undefined
+// const Cookie = process.client ? require('js-cookie') : undefined
 
 @Component({})
 export default class Home extends Vue {
@@ -337,6 +356,7 @@ export default class Home extends Vue {
   RegisterDto: any = {}
   topRadio = 'message'
   notifies = ''
+  search = ''
   formLabelWidth: string = '120'
 
   visible: boolean = false
@@ -355,29 +375,11 @@ export default class Home extends Vue {
   }
 
   async login() {
-    const res = await this.$http.post('/auth/login', this.LoginDto)
-
-    const auth = {
-      accessToken: res.data.token
-    }
-    this.$store.commit('setAuth', auth) // mutating to store for client rendering
-    const in1Minutes = 1 / 1440
-    Cookie.set('auth', auth, { expires: in1Minutes })
-
-    localStorage.token = res.data.token
-    this.$notify({
-      title: '',
-      type: 'success',
-      message: '登录成功'
-    })
+    await this.$auth.loginWith('local', { data: this.LoginDto })
 
     this.$store.commit('UserExist')
     this.$store.commit('closeLoginForm')
     this.fetchNotify()
-    this.fetchuser()
-    // this.$router.go(0) // 刷新页面
-    // this.fetchuser()
-    // this.fetchNotify()
   }
 
   async register() {
@@ -391,7 +393,7 @@ export default class Home extends Vue {
   }
 
   logout() {
-    localStorage.token = ''
+    localStorage['auth._token.local'] = ''
     localStorage.state = ''
     this.$store.commit('toggleBanner')
     this.$store.commit('toggleUser')
@@ -404,10 +406,8 @@ export default class Home extends Vue {
   }
 
   async fetchNotify() {
-    if (!this.store) {
-      const res = await this.$http.get('/notification')
-      this.notifies = res.data
-    }
+    const res = await this.$http.get('/notification')
+    this.notifies = res.data
   }
 
   async fetchuser() {
@@ -417,26 +417,7 @@ export default class Home extends Vue {
       res.data.tags.map((e) => {
         usertag.push(e)
       })
-
-      const user = {
-        username: res.data.name,
-        userId: res.data.id,
-        myFollowers: res.data.follows.length,
-        userCreated: res.data.created,
-        postLength: res.data.posts.length,
-        myFans: res.data.user.length,
-        userTag: usertag,
-        userAvator: res.data.avator[0] ? res.data.avator[0].url : ''
-      }
-      const personal = {
-        city: res.data.city,
-        school: res.data.school,
-        organization: res.data.organization,
-        website: res.data.website
-      }
-
-      this.$store.commit('setUser', user)
-      this.$store.commit('setPersonData', personal)
+      console.log(usertag)
     }
   }
 
@@ -526,7 +507,6 @@ export default class Home extends Vue {
 .el-popover {
   &.message {
     height: 440px !important;
-    width: 337px;
     .el-radio-button__inner {
       padding-left: 50px !important;
       padding-right: 50px !important;

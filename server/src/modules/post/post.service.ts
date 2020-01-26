@@ -6,6 +6,7 @@ import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
 import { Tag } from '../tag/tag.entity';
+import { Collection } from '../collection/collection.entity';
 
 @Injectable()
 export class PostService {
@@ -16,6 +17,8 @@ export class PostService {
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Collection)
+    private readonly collectionRepository: Repository<Collection>,
   ) {}
 
   async beforeTag(tags: Partial<Tag>[]) {
@@ -42,7 +45,8 @@ export class PostService {
   }
 
   async store(data: PostDto, user: User) {
-    const { tags } = data;
+    const { tags, collection } = data;
+    console.log(collection);
     if (tags) {
       data.tags = await this.beforeTag(tags);
     }
@@ -51,6 +55,21 @@ export class PostService {
       ...entity,
       user,
     });
+
+    // await this.postRepository
+    //   .createQueryBuilder()
+    //   .update(Post)
+    //   .where('post.id =:id', { id })
+    //   .set({ views: () => 'views + 1' })
+    //   .execute();
+
+    await this.collectionRepository
+      .createQueryBuilder()
+      .update(collection)
+      .where('collection.id=:collection', { collection })
+      .set({ amount: () => 'amount + 1' })
+      .execute();
+
     return entity;
   }
 
@@ -97,7 +116,17 @@ export class PostService {
 
   //获取主页文章列表
   async getAll(options: ListOptionsInterface) {
-    const { categories, tags, taglist, page, limit, sort, order } = options;
+    const {
+      categories,
+      tags,
+      taglist,
+      listId,
+      collection,
+      page,
+      limit,
+      sort,
+      order,
+    } = options;
     console.log(sort, tags, categories, taglist);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
@@ -116,8 +145,16 @@ export class PostService {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
 
-    if (taglist) {
+    if (taglist && !listId) {
       queryBuilder.andWhere('taglist.alias IN(:...taglist)', { taglist });
+    }
+
+    if (taglist && listId) {
+      queryBuilder.andWhere('tag.id IN(:...taglist)', { taglist });
+    }
+
+    if (collection) {
+      queryBuilder.innerJoinAndSelect('post.collection', 'collection');
     }
 
     // 限制查询数量
@@ -141,7 +178,10 @@ export class PostService {
 
     queryBuilder.addSelect('post.body');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
-
+    queryBuilder.leftJoinAndSelect('user.interest', 'interest');
+    queryBuilder
+      .innerJoin('post.collection', 'collection')
+      .addSelect(['collection.id']);
     // queryBuilder.leftJoinAndSelect("post.comments", "comments")
     // queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
 
@@ -160,12 +200,12 @@ export class PostService {
     const entities = await queryBuilder.getOne();
     // 文章不属于自己才增加浏览量
 
-    await this.postRepository
-      .createQueryBuilder()
-      .update(Post)
-      .where('post.id =:id', { id })
-      .set({ views: () => 'views + 1' })
-      .execute();
+    // await this.postRepository
+    //   .createQueryBuilder()
+    //   .update(Post)
+    //   .where('post.id =:id', { id })
+    //   .set({ views: () => 'views + 1' })
+    //   .execute();
 
     return entities;
   }
@@ -188,9 +228,15 @@ export class PostService {
     }
   }
 
-  async delete(id: string) {
-    const res = await this.postRepository.delete(id);
-    return res;
+  async delete(id: string, collectionId: number) {
+    await this.postRepository.delete(id);
+
+    await this.collectionRepository
+      .createQueryBuilder()
+      .update(Collection)
+      .where('collection.id=:collectionId', { collectionId })
+      .set({ amount: () => 'amount - 1' })
+      .execute();
   }
 
   async vote(id: number, user: User) {

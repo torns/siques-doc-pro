@@ -2,15 +2,15 @@
   <div class="d-flex flex-column pr-2">
     <div>
       <el-select
-        size="mini"
         v-model="tagSearch"
+        :remote-method="remoteMethod"
+        :loading="loading"
+        size="mini"
         multiple
         filterable
         remote
         reserve-keyword
         placeholder="添加关注的标签"
-        :remote-method="remoteMethod"
-        :loading="loading"
       >
         <el-option
           v-for="item in options"

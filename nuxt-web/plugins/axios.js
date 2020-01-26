@@ -16,13 +16,4 @@ export default function({ $axios, redirect }, inject) {
     }
   })
   const api = $axios.create({})
-
-  // Set baseURL to something different
-  api.setBaseURL('http://localhost:3001')
-  if (process.browser) {
-    api.setToken(localStorage.token || '', 'Bearer')
-  }
-
-  // Inject to context as $api
-  inject('api', api)
 }

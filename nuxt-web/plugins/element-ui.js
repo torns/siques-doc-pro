@@ -9,5 +9,5 @@ import '~/assets/scss/element-variables.scss'
 
 Vue.prototype.$dayjs = dayjs
 Vue.use(Element, { locale })
-Vue.component('el-footer', footer)
+Vue.component('sq-footer', footer)
 Vue.use(SocialSharing)

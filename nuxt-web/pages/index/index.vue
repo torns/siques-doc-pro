@@ -47,7 +47,7 @@
         </el-row>
       </div>
     </div>
-    <div class="container">
+    <div class="container" style="min-height: 100vh;">
       <el-row :gutter="0" class="d-flex flex-wrap  pt-4">
         <el-col :xs="24" :sm="24" :md="5" :lg="4" :xl="4">
           <div class="d-flex " style="flex-direction: row-reverse;">
@@ -57,7 +57,15 @@
     display: flex;"
             >
               <li
-                @click="handleCategory(link.alias, link.sort)"
+                @click="
+                  handleCategory(
+                    link.alias,
+                    link.sort,
+                    link.tag,
+                    link.taglist,
+                    link.listId
+                  )
+                "
                 v-for="link in links"
                 :key="link.alias"
                 :class="
@@ -185,6 +193,7 @@
         </el-col>
       </el-row>
     </div>
+    <sq-footer :topBorder="true"></sq-footer>
   </div>
 </template>
 
@@ -195,6 +204,8 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {}
 })
 export default class MyPage extends Vue {
+  // async asyncData(){}
+
   page = 1
   count = 10
   maxcount = null
@@ -204,7 +215,7 @@ export default class MyPage extends Vue {
   taglist = null
   showBanner = true
   posts = []
-  category: string = 'suggest'
+  category: string = 'hot'
 
   get noMore(): any {
     return this.count >= this.maxcount
@@ -216,18 +227,21 @@ export default class MyPage extends Vue {
 
   links = [
     {
-      name: '为你推荐',
-      alias: 'suggest',
-      sort: 'liked',
-      prefix: 'far',
-      icon: 'address-card'
-    },
-    {
       name: '近期热门',
       alias: 'hot',
       sort: 'liked',
       prefix: 'far',
       icon: 'thumbs-up'
+    },
+    {
+      name: '我的订阅',
+      taglist: this.$store.state.auth
+        ? this.$store.state.auth.user.tags || ''
+        : '',
+      listId: true,
+      sort: 'liked',
+      prefix: 'far',
+      icon: 'address-card'
     },
     {
       name: '最新内容',
@@ -349,8 +363,13 @@ export default class MyPage extends Vue {
     }, 500)
   }
 
-  async handleCategory(alias: any, sort, tag, taglist) {
-    // console.log({ 别称: alias }, { 标签: tag }, { 分类: sort })
+  async handleCategory(alias: any, sort, tag, taglist, listId) {
+    console.log(
+      { 别称: alias },
+      { 标签: tag },
+      { 分类: sort },
+      { 标签列: taglist }
+    )
     this.category = alias
     this.tag = tag
     this.taglist = taglist
@@ -366,9 +385,17 @@ export default class MyPage extends Vue {
       } else {
         taglist.map((e, index) => {
           if (index === taglist.length - 1) {
-            list = list + e.toLowerCase()
+            try {
+              list = list + e.toLowerCase()
+            } catch {
+              list = list + e.id
+            }
           } else {
-            list = list + e.toLowerCase() + '-'
+            try {
+              list = list + e.toLowerCase() + '-'
+            } catch {
+              list = list + e.id + '-'
+            }
           }
         })
       }
@@ -379,7 +406,8 @@ export default class MyPage extends Vue {
       `/posts/all?limit=10&page=${this.page}` +
       (sort ? `&sort=${sort}` : '') +
       (tag ? `&tags=${tag}` : '') +
-      (taglist ? `&taglist=${list}` : '')
+      (taglist ? `&taglist=${list}` : '') +
+      (listId ? `&listId=${listId}` : '')
     const res = await this.$http.get(link)
 
     this.posts = res.data[0]

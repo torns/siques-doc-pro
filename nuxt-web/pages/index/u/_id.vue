@@ -9,8 +9,18 @@
                 <div class="point">
                   <el-avatar :size="157.5" style="width:auto" class="shadow-1">
                     <img
-                      v-if="id ? avatorUrl : this.$store.state.user.userAvator"
-                      :src="id ? avatorUrl : this.$store.state.user.userAvator"
+                      v-if="
+                        id
+                          ? avatorUrl
+                          : this.$store.state.auth.user.avator.length !== 0
+                          ? this.$store.state.auth.user.avator[0].url
+                          : false
+                      "
+                      :src="
+                        id
+                          ? avatorUrl
+                          : this.$store.state.auth.user.avator[0].url
+                      "
                       style="background-color:white;"
                       class="avatar"
                     />
@@ -52,7 +62,7 @@
             <el-col :xs="12" :sm="9" :md="9" :lg="9" :xl="10">
               <div class="d-flex pb-1">
                 <h2 class="pr-4 text-ellipsis">
-                  {{ id ? user.name : this.$store.state.user.username }}
+                  {{ id ? user.name : this.$store.state.auth.user.name }}
                 </h2>
                 <el-button type="text">查看完整档案</el-button>
               </div>
@@ -97,14 +107,14 @@
                       @click="
                         ;(show = true),
                           (messageBox =
-                            $store.state.personalData[link.alias] || ''),
+                            $store.state.auth.user[link.alias] || ''),
                           (showname = link.alias)
                       "
                     >
                       <!-- 没有解决 -->
 
-                      <div v-if="$store.state.personalData[link.alias] != null">
-                        {{ $store.state.personalData[link.alias] }}
+                      <div v-if="$store.state.auth.user[link.alias] != null">
+                        {{ $store.state.auth.user[link.alias] }}
                       </div>
                       <div v-else>{{ link.name }}</div>
                     </div>
@@ -130,7 +140,7 @@
           </el-row>
         </div>
       </div>
-      <div class="container">
+      <div class="container" style="min-height:100vh">
         <el-row
           :gutter="20"
           type="flex"
@@ -150,14 +160,16 @@
                 <div @click="handleComponent({ 0: 'Followers' })" class="point">
                   <div>关注了</div>
                   <span v-if="user.follows">{{ user.follows.length }}人</span>
-                  <span v-else>{{ $store.state.user.myFollowers }}人</span>
+                  <span v-else
+                    >{{ $store.state.auth.user.follows.length }}人</span
+                  >
                 </div>
                 <el-divider direction="vertical"></el-divider>
 
                 <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
                   <div>粉丝</div>
                   <span v-if="user.user">{{ user.user.length }}人</span>
-                  <span v-else>{{ this.$store.state.user.myFans }}人</span>
+                  <span v-else>{{ $store.state.auth.user.user.length }}人</span>
                 </div>
               </div>
               <div>
@@ -304,9 +316,9 @@ export default class Page extends Vue {
     const data = { [alias]: this.messageBox }
     if (
       this.messageBox &&
-      this.messageBox !== this.$store.state.personalData[alias]
+      this.messageBox !== this.$store.state.auth.user[alias]
     ) {
-      await this.$http.put(`/users/${this.$store.state.user.userId}`, data)
+      await this.$http.put(`/users/${this.$store.state.auth.user.id}`, data)
       this.$notify({
         type: 'success',
         message: '保存成功',
@@ -360,7 +372,7 @@ export default class Page extends Vue {
         this.avatorUrl = ''
       }
     } else {
-      const count = this.$store.state.user.postLength
+      const count = this.$store.state.auth.user.posts.length
 
       this.$set(this.pageLinks[1], 'count', count)
     }
@@ -376,8 +388,8 @@ export default class Page extends Vue {
     }
 
     const res = await this.$http.post('/avators', params, config)
+    this.$store.commit('uploadUserAvator', res.data.url)
 
-    this.$store.state.user.userAvator = res.data.url
     this.$notify({
       title: '成功',
       type: 'success',

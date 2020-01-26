@@ -3,11 +3,9 @@ const cookieparser = process.server ? require('cookieparser') : undefined
 export const state = () => ({
   UserNotExist: true,
   loginFormVisible: false,
-  user: '',
   isValid: '',
-  personalData: [],
-  showBanner: true,
-  auth: null
+  tags: [],
+  showBanner: true
 })
 
 export const mutations = {
@@ -23,15 +21,10 @@ export const mutations = {
   UserExist(state) {
     state.UserNotExist = false
   },
-  setUser(state, data) {
-    state.user = data
-  },
-  setPersonData(state, data) {
-    state.personalData = data
-  },
+
   updataPersonData(state, data) {
     const key = Object.keys(data)[0]
-    state.personalData[key] = data[key]
+    state.auth.user[key] = data[key]
   },
 
   toggleBanner(state) {
@@ -44,7 +37,7 @@ export const mutations = {
     state.auth = auth
   },
   increPostLen(state) {
-    state.user.postLength = state.user.postLength + 1
+    state.auth.user.postLength = state.user.postLength + 1
   },
   decrePostLen(state) {
     state.user.postLength = state.user.postLength - 1
@@ -52,8 +45,21 @@ export const mutations = {
   storeUserTag(state, data) {
     data.map((e) => {
       const item = { id: e }
-      state.user.userTag.push(item)
+      state.auth.user.tags.push(item)
     })
+  },
+  deleteUserTag(state, data) {
+    let index
+    state.auth.user.tags.map((e, i) => {
+      console.log(e.id, i, data)
+      if (e.id === data) {
+        index = i
+      }
+    })
+    state.auth.user.tags.splice(index, 1)
+  },
+  uploadUserAvator(state, data) {
+    state.auth.user.avator[0].url = data
   }
 }
 

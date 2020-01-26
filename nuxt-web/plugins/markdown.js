@@ -1,6 +1,7 @@
 // const MarkdownIt = require('markdown-it')
 import markdownItTocDoneRight from 'markdown-it-toc-done-right'
 import markdownItAnchor from 'markdown-it-anchor'
+import markdownItFootnote from 'markdown-it-footnote'
 // const Config = require('markdown-it-chain')
 const Slugify = require('transliteration').slugify
 
@@ -27,6 +28,7 @@ const md = require('markdown-it')({
     linkClass: 'link-a',
     slugify: Slugify
   })
+  .use(markdownItFootnote)
 
 // const config = new Config()
 // config.options // Ref: https://markdown-it.github.io/markdown-it/#MarkdownIt.new // Interact with 'options' in new MarkdownIt

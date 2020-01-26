@@ -1,6 +1,7 @@
 import { Category } from '../category/category.entity';
 import { Tag } from '../tag/tag.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Collection } from '../collection/collection.entity';
 
 export class PostDto {
   readonly title: string;
@@ -9,6 +10,6 @@ export class PostDto {
   readonly editor: boolean;
   readonly category: Category;
   readonly counts: number;
-
+  readonly collection: Collection;
   tags: Tag[];
 }

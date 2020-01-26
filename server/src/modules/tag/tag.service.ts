@@ -67,6 +67,14 @@ export class TagService {
     }
   }
 
+  async deleteUserTag(tagId: number, userId: number) {
+    await this.tagRepository
+      .createQueryBuilder()
+      .relation(User, 'tags')
+      .of(userId)
+      .remove(tagId);
+  }
+
   async showUserTag(userId: number) {
     return await this.userRepository
       .createQueryBuilder()

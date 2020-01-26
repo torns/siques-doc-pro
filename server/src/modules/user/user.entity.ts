@@ -87,6 +87,19 @@ export class User {
 
   //多个标签对应一个用户
 
+  //一个用户擅长多个技能
+  @ManyToMany(
+    type => Tag,
+    tag => tag.user,
+  )
+  @JoinTable()
+  skill: Tag[];
+
+  // 用户关注专栏
+  @ManyToMany(type => Collection)
+  @JoinTable()
+  interest: Collection[];
+
   // 多个角色对应多个用户
   @ManyToMany(
     type => Role,

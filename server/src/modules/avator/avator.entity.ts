@@ -1,30 +1,41 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, AfterLoad, CreateDateColumn } from "typeorm";
-import { User } from "../user/user.entity";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  AfterLoad,
+  CreateDateColumn,
+} from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Avator {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    filename: string
+  @Column({ nullable: true })
+  filename: string;
 
-    @Column({ nullable: true })
-    mimetype: string
+  @Column({ nullable: true })
+  mimetype: string;
 
-    @Column({ nullable: true })
-    url: string
+  @Column({ nullable: true })
+  url: string;
 
-    @ManyToOne(type => User, user => user.avator, { nullable: false })
-    user: User
+  @ManyToOne(
+    type => User,
+    user => user.avator,
+    { nullable: false },
+  )
+  user: User;
 
-    @CreateDateColumn()
-    created: Date
+  @CreateDateColumn()
+  created: Date;
 
-    // @AfterLoad()
-    // getUrl() {
+  // @AfterLoad()
+  // getUrl() {
 
-    //     const appUrl = process.env.APP_URL;
-    //     this.url = `${appUrl}/static/${this.filename}`
-    // }
+  //     const appUrl = process.env.APP_URL;
+  //     this.url = `${appUrl}/static/${this.filename}`
+  // }
 }

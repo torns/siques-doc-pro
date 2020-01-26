@@ -7,7 +7,7 @@
     <div>
       <ul class="pb-3">
         <li v-for="(collection, index) in collections" :key="index">
-          <nuxt-link :to="`collection/${collection.id}`" tag="div">
+          <nuxt-link :to="`blogs/${collection.id}`" tag="div">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
             </div></nuxt-link
@@ -63,7 +63,7 @@ export default class PageComponent extends Vue {
       this.posts = res.data[0]
     } else {
       const res = await this.$http.get(
-        `/posts/${this.$store.state.user.userId}/user`
+        `/posts/${this.$store.state.auth.user.id}/user`
       )
       this.posts = res.data[0]
     }
@@ -75,7 +75,7 @@ export default class PageComponent extends Vue {
       this.collections = res.data
     } else {
       const res = await this.$http.get(
-        `/collections/${this.$store.state.user.userId}/user`
+        `/collections/${this.$store.state.auth.user.id}/user`
       )
       this.collections = res.data
     }

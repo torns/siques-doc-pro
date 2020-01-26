@@ -1,6 +1,6 @@
 <template>
-  <div class="pt-5 bg-white">
-    <el-divider v-if="show"></el-divider>
+  <div class="bg-white">
+    <el-divider v-if="topBorder"></el-divider>
     <div class="container pt-4">
       <el-row :gutter="20" type="flex" class="point">
         <el-col
@@ -28,10 +28,18 @@
           :xl="4"
           class="hidden-xs-and-down"
         >
-          <div class="title">课程</div>
-          <li>Java 开发课程</li>
-          <li>Python 开发课程</li>
-          <li>前端开发课程</li>
+          <div class="title">常用</div>
+          <li><a target="_blank" href="https://www.bootcdn.cn/">BootCDN</a></li>
+          <li>
+            <a target="_blank" href="https://www.jq22.com/">Jquery 插件库</a>
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="http://fa5.dashgame.com/#/%E5%9B%BE%E6%A0%87"
+              >Font Awesome</a
+            >
+          </li>
           <li>移动开发课程</li>
         </el-col>
         <el-col
@@ -130,7 +138,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 @Component({})
 export default class Footer extends Vue {
   @Prop()
-  show: boolean
+  topBorder: boolean
 }
 </script>
 

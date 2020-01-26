@@ -50,7 +50,9 @@
       >
         <div v-if="bookmark != null">
           <div class="d-flex jc-left ai-baseline mb-6">
-            <el-button size="mini" type="primary">关注</el-button>
+            <el-button @click="followBookmark" size="mini" type="primary"
+              >关注</el-button
+            >
             <div class="fs-xm pl-3 text-gray">0关注</div>
           </div>
           <div class="border-solid borde-radius">
@@ -128,6 +130,8 @@ export default class Bookmark extends Vue {
       })
       .catch(() => {})
   }
+
+  followBookmark() {}
 }
 </script>
 

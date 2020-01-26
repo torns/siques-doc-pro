@@ -141,6 +141,10 @@ code {
     font-family: $font;
   }
 }
+
+.font-bold {
+  font-weight: 800;
+}
 // 悬浮
 .hoverlink {
   &:hover {

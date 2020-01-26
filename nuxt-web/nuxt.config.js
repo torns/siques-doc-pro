@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 export default {
   mode: 'universal',
   /*
@@ -26,6 +28,9 @@ export default {
       {
         src:
           'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
+      },
+      {
+        src: 'https://cdn.bootcss.com/jquery/3.4.1/core.js'
       }
     ],
     link: [
@@ -87,6 +92,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
@@ -95,6 +101,20 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+
+          user: { url: '/users', method: 'get', propertyName: false }
+        }
+        // tokenRequired: true,
+        // tokenType: 'bearer'
+      }
+    }
+  },
   /*
    ** Build configuration
    */

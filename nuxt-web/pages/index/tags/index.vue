@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container h-100">
+    <div class="container h-100 pb-5">
       <el-row type="flex" class="pt-4 px-2">
         <el-col
           :xs="24"
@@ -22,16 +22,16 @@
                   <el-search ref="search" :data="tags"></el-search>
                 </div>
                 <el-button
+                  @click="storeUserTag"
                   class="h-100"
                   size="mini"
                   type="plain"
-                  @click="storeUserTag"
                   >加关注</el-button
                 >
               </div>
               <div v-if="userTags" class="pt-2 d-flex">
                 <div v-for="tag in userTags" :key="tag.id">
-                  <nuxt-link tag="div" :to="`/t/${tag.id}`">
+                  <nuxt-link :to="`/t/${tag.id}`" tag="div">
                     <el-tag
                       size="small"
                       type="plain"
@@ -54,7 +54,6 @@
                 <div>
                   <el-divider></el-divider>
                 </div>
-
                 <ul class="d-flex flex-wrap" style="width:95%">
                   <li
                     v-for="(tag, index) in title.tags"
@@ -62,13 +61,14 @@
                     class="bg-3 mr-1 my-1 hover-3 fs-xm"
                   >
                     <!-- 会报错暂时先不用 -->
-                    <!-- <font-awesome-icon   :icon="['fab', tag]" class="fs-xm" /> -->
+
                     <el-popover
+                      :open-delay="500"
+                      :close-delay="1000"
+                      @show="show(tag.id)"
                       placement="top"
                       width="300"
-                      :open-delay="500"
                       trigger="hover"
-                      @show="show(tag.id)"
                     >
                       <div v-if="taginfo" class="px-2 py-1">
                         <div>
@@ -87,21 +87,31 @@
                           <div>
                             {{ taginfo.count }}人
                             <el-button
-                              size="mini"
                               :type="isTagFollowed ? 'plain' : 'primary'"
                               @click="
                                 !isTagFollowed
                                   ? storeUserTag(taginfo.info.id)
-                                  : ''
+                                  : deleteUserTag(taginfo.info.id)
                               "
+                              size="mini"
+                              >{{
+                                isTagFollowed ? '已关注' : '关注'
+                              }}</el-button
                             >
-                              {{ isTagFollowed ? '已关注' : '关注' }}
-                            </el-button>
                           </div>
                         </div>
                       </div>
+
                       <slot slot="reference">
-                        <router-link :to="`/t/${tag.id}`" tag="div">
+                        <router-link
+                          :to="`/t/${tag.id}`"
+                          style="display: -webkit-inline-box;-webkit-box-align: baseline;"
+                          tag="div"
+                        >
+                          <!-- <font-awesome-icon
+                            :icon="['fab', tag.name]"
+                            class="fs-xm px-1"
+                          /> -->
                           <div style="padding:2px 5px; ">{{ tag.name }}</div>
                         </router-link>
                       </slot>
@@ -114,7 +124,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-footer :show="true"></el-footer>
+    <sq-footer :topBorder="true"></sq-footer>
   </div>
 </template>
 
@@ -155,9 +165,13 @@ export default class Tags extends Vue {
     }
     console.log(data)
     if (data.length !== 0) {
-      await this.$http.post(`/tags/user/${this.$store.state.user.userId}`, data)
+      await this.$http.post(
+        `/tags/user/${this.$store.state.auth.user.id}`,
+        data
+      )
       this.$store.commit('storeUserTag', data)
       this.fetchUserTag()
+      this.isTagFollowed = true
       this.$refs.search.tagSearch = []
       this.$notify({
         type: 'success',
@@ -167,9 +181,17 @@ export default class Tags extends Vue {
     }
   }
 
+  async deleteUserTag(tagId) {
+    this.$store.commit('deleteUserTag', tagId)
+    await this.$http.delete(`/tags/user/${tagId}`)
+    this.fetchUserTag()
+
+    this.isTagFollowed = false
+  }
+
   async fetchUserTag() {
     const res = await this.$http.get(
-      `/tags/user/${this.$store.state.user.userId}`
+      `/tags/user/${this.$store.state.auth.user.id}`
     )
     this.userTags = res.data
   }
@@ -183,7 +205,7 @@ export default class Tags extends Vue {
     this.taginfo = res.data
 
     let isTagFollowed = false
-    this.$store.state.user.userTag.map((e) => {
+    this.$store.state.auth.user.tags.map((e) => {
       if (e.id === res.data.info.id) {
         isTagFollowed = true
       }
