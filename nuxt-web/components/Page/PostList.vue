@@ -33,7 +33,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel :posts="posts"></list-panel>
+    <list-panel post collection="true" :posts="posts"></list-panel>
   </div>
 </template>
 
@@ -59,11 +59,11 @@ export default class PageComponent extends Vue {
 
   async fetch() {
     if (this.id) {
-      const res = await this.$http.get(`/posts/${this.id}/user`)
+      const res = await this.$http.get(`/posts/${this.id}/user?type=post`)
       this.posts = res.data[0]
     } else {
       const res = await this.$http.get(
-        `/posts/${this.$store.state.auth.user.id}/user`
+        `/posts/${this.$store.state.auth.user.id}/user?type=post`
       )
       this.posts = res.data[0]
     }

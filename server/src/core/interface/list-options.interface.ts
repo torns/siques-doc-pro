@@ -6,6 +6,7 @@ export interface ListOptionsInterface {
   sort: string;
   taglist: string;
   listId: boolean;
+  type: string;
   collection: boolean;
   order: 'ASC' | 'DESC';
 }

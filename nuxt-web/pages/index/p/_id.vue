@@ -351,12 +351,12 @@
           <div>
             <div class=" font-bold fs-xl py-1 pt-4">推荐阅读</div>
             <div
-              class="point hover-1 py-4 px-3 bg-white border-radius shadow-1"
-              style="min-height:100px"
               v-for="post in recommendPost"
               :key="post.id"
+              class="point hover-1 py-4 px-3 bg-white border-radius shadow-1"
+              style="min-height:100px"
             >
-              <router-link tag="div" :to="`/p/${post.id}`">
+              <router-link :to="`/p/${post.id}`" tag="div">
                 <h3>{{ post.title }}</h3>
                 <div class="text-gray py-2">{{ post.alias }}</div>
                 <div class="d-flex fs-xm">

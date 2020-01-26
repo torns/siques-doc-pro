@@ -8,14 +8,14 @@
       type="file"
       accept="image/*"
     />
-    <div class="pt-2">
+    <div class="mt-1">
       <el-button @click="submit" type="primary">发布文章</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import Editor from 'tui-editor'
 import defalutConfig from './defalut-config'
 import 'codemirror/lib/codemirror.css'
@@ -25,6 +25,8 @@ import 'highlight.js/styles/github.css'
 
 @Component({})
 export default class MarkDown extends Vue {
+  @Prop()
+  height: any
   body: any = ''
   mounted() {
     this.initEditor()
@@ -34,7 +36,7 @@ export default class MarkDown extends Vue {
       el: document.getElementById('editorSection'),
       initialEditType: 'markdown',
       language: 'zh_CN',
-      height: '80vh',
+      height: this.height ? this.height : '700px',
       ...defalutConfig
     })
     // window.editor = this.editor
@@ -67,7 +69,7 @@ export default class MarkDown extends Vue {
   submit() {
     this.body = this.getContent()
 
-    this.$emit('submit')
+    this.$emit('submit', this.body)
   }
 
   async uploadFile(e) {

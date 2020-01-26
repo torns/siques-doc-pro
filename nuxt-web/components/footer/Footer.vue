@@ -11,8 +11,13 @@
           :xl="4"
           class="hidden-xs-and-down"
         >
-          <div class="title">产品</div>
-          <li>热门问答</li>
+          <div class="title">工具</div>
+          <li>
+            <a target="_blank" href="https://typeorm.io/#/connection"
+              >TypeOrm</a
+            >
+          </li>
+
           <li>热门专栏</li>
           <li>热门课程</li>
           <li>最新活动</li>

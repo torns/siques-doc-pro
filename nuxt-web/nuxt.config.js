@@ -71,6 +71,7 @@ export default {
     '@/plugins/http',
     '@/plugins/filter',
     '@/plugins/nuxt-client-init.client.js',
+    { src: '@/plugins/markdownEditor', ssr: false },
     // '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
     { src: '@plugins/localStorage', ssr: false }

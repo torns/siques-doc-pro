@@ -26,7 +26,7 @@
               >
             </el-menu-item>
 
-            <el-menu-item index="/follow">
+            <el-menu-item index="/q">
               <span class="fs-md">问答</span>
             </el-menu-item>
 
@@ -220,14 +220,35 @@
               <el-menu-item @click="logout">退出</el-menu-item>
             </el-submenu>
 
-            <el-menu-item
-              :span="4"
-              class="write"
-              index="/post"
+            <el-submenu
+              :index="`store`"
+              :show-timeout="0"
+              :hide-timeout="0"
               style="right: 2%;position: absolute;"
             >
-              <el-button type="primary" round>写文章</el-button>
-            </el-menu-item>
+              <template slot="title">
+                <el-button type="plain">创建</el-button>
+              </template>
+
+              <el-menu-item :span="4" class="write ml-4" index="/post">
+                <font-awesome-icon :icon="['fas', 'pen']" class="fs-xm" />
+                写文章
+              </el-menu-item>
+              <el-menu-item :span="4" class="write ml-3" index="/ask">
+                <font-awesome-icon
+                  :icon="['fas', 'question-circle']"
+                  class="fs-xm"
+                />
+                提问题
+              </el-menu-item>
+              <el-menu-item :span="4" class="write ml-3" index="/record">
+                <font-awesome-icon
+                  :icon="['fas', 'sticky-note']"
+                  class="fs-xm"
+                />
+                记笔记
+              </el-menu-item>
+            </el-submenu>
 
             <el-menu-item
               v-if="$store.state.UserNotExist"

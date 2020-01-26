@@ -11,5 +11,6 @@ export class PostDto {
   readonly category: Category;
   readonly counts: number;
   readonly collection: Collection;
+  readonly type: string;
   tags: Tag[];
 }

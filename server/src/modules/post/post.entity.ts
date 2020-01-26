@@ -29,7 +29,7 @@ export class Post {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ default: 0 })
   editor: boolean;
 
   // nullable可为空
@@ -45,6 +45,9 @@ export class Post {
 
   @UpdateDateColumn()
   updated: Date;
+
+  @Column({ default: 'post' })
+  type: string;
 
   @Column({ default: 0 })
   views: number;
@@ -97,6 +100,7 @@ export class Post {
     collection => collection.posts,
     {
       onDelete: 'CASCADE',
+      nullable: true,
     },
   )
   collection: Collection;

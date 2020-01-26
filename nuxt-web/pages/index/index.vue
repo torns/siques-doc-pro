@@ -321,15 +321,9 @@ export default class MyPage extends Vue {
     this.fetchPost()
   }
   async fetchPost() {
-    const res = await this.$http.get('/posts/all?limit=10&page=1')
+    const res = await this.$http.get('/posts/all?limit=10&page=1&type=post')
     this.posts = res.data[0]
     this.maxcount = res.data[1]
-  }
-
-  async fetchHotPost() {
-    const res = await this.$http.get('/posts/all?limit=10&page=1')
-
-    this.posts = res.data[0]
   }
 
   load() {
@@ -354,7 +348,8 @@ export default class MyPage extends Vue {
     const link =
       `/posts/all?limit=10&page=${this.page}&sort=${this.sort}` +
       (this.tag ? `&tags=${this.tag}` : '') +
-      (this.taglist ? `&taglist=${list}` : '')
+      (this.taglist ? `&taglist=${list}` : '') +
+      `&type=post`
     setTimeout(async () => {
       const res = await this.$http.get(link)
       this.posts = this.posts.concat(res.data[0])
@@ -407,7 +402,8 @@ export default class MyPage extends Vue {
       (sort ? `&sort=${sort}` : '') +
       (tag ? `&tags=${tag}` : '') +
       (taglist ? `&taglist=${list}` : '') +
-      (listId ? `&listId=${listId}` : '')
+      (listId ? `&listId=${listId}` : '') +
+      `&type=post`
     const res = await this.$http.get(link)
 
     this.posts = res.data[0]

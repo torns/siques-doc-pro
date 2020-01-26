@@ -7,12 +7,12 @@
             {{ post.liked }} 票
           </div>
           <router-link
-            :to="`/p/${post.id}`"
+            :to="`${link}${post.id}`"
             tag="div"
             class="flex-1 text-dark text-ellipsis"
             >{{ post.title }}</router-link
           >
-          <div class="mr-4 hover-4 text-primary">
+          <div v-if="collection" class="mr-4 hover-4 text-primary">
             {{ post.collection.name }}
           </div>
           <div>{{ $dayjs(post.created).format('YYYY-MM-DD') }}</div>
@@ -33,7 +33,22 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 export default class ListPanel extends Vue {
   @Prop()
   posts: any
+  @Prop()
+  collection: boolean
+  link = ''
   show: boolean = false
+  mounted() {
+    if (this.$attrs.question !== undefined) {
+      this.link = '/q/'
+    }
+
+    if (this.$attrs.note !== undefined) {
+      this.link = '/n/'
+    }
+    if (this.$attrs.post !== undefined) {
+      this.link = '/p/'
+    }
+  }
   @Watch('posts')
   isShow(newVal: any) {
     if (newVal.length === 0) {

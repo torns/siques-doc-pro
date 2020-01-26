@@ -82,7 +82,7 @@ export class PostService {
   }
 
   async index(options: ListOptionsInterface, id: number) {
-    const { categories, tags, page, limit, sort, order } = options;
+    const { categories, tags, type, page, limit, sort, order } = options;
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
     // queryBuilder.leftJoinAndSelect('post.user', 'user');
@@ -99,6 +99,8 @@ export class PostService {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
     queryBuilder.where('post.userId=:id', { id });
+
+    queryBuilder.andWhere('post.type=:type', { type });
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
     //获取结果以及数量
@@ -123,11 +125,12 @@ export class PostService {
       listId,
       collection,
       page,
+      type,
       limit,
       sort,
       order,
     } = options;
-    console.log(sort, tags, categories, taglist);
+    console.log(sort, tags, categories, taglist, type);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
 
@@ -151,6 +154,9 @@ export class PostService {
 
     if (taglist && listId) {
       queryBuilder.andWhere('tag.id IN(:...taglist)', { taglist });
+    }
+    if (type) {
+      queryBuilder.andWhere('post.type = :type', { type });
     }
 
     if (collection) {

@@ -210,10 +210,9 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import Tag from '@/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
-import markdown from '~/components/markdown/MarkDown.vue'
-
+import wordCount from '~/plugins/utils.js'
 @Component({
-  components: { tinymce, markdown, 'sq-tag': Tag }
+  components: { tinymce, 'sq-tag': Tag }
 })
 export default class index extends Vue {
   collections: any = []
@@ -337,53 +336,27 @@ export default class index extends Vue {
       body = this.$refs.markdown.body
     }
 
-    const W = []
-    let iNumwords = 0
-    let sNumwords = 0
-    let sTotal = 0 // 双字节字符;
-    let iTotal = 0 // 中文字符；
-    let eTotal = 0 // Ｅ文字符
-
-    let inum = 0
-
-    for (let i = 0; i < body.length; i++) {
-      const c = body.charAt(i)
-      if (c.match(/[\u4E00-\u9FA5]/)) {
-        if (isNaN(W[c])) {
-          iNumwords++
-          W[c] = 1
-        }
-        iTotal++
-      }
-    }
-
-    for (let i = 0; i < body.length; i++) {
-      const c = body.charAt(i)
-      if (c.match('/[^\x00-\xFF]/')) {
-        if (isNaN(W[c])) {
-          sNumwords++
-        }
-        sTotal++
-      } else {
-        eTotal++
-      }
-      if (c.match(/[0-9]/)) {
-        inum++
-      }
-    }
-    console.log(iNumwords, sNumwords, sTotal, iTotal, eTotal, inum)
+    const words = wordCount(body)
 
     const data = {
       title: this.title,
-      counts: iTotal + inum,
+      counts: words,
       body
     }
-    await this.$http.put(`/posts/${this.selectedPost}`, data)
-    this.$notify({
-      title: '成功',
-      type: 'success',
-      message: '更新成功'
-    })
+    if (data.counts > 50) {
+      await this.$http.put(`/posts/${this.selectedPost}`, data)
+      this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '更新成功'
+      })
+    } else {
+      this.$notify({
+        type: 'info',
+        title: '消息',
+        message: '字数太少了，要不要再写点'
+      })
+    }
   }
 
   async fetchCollect() {

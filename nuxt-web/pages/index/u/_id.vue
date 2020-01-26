@@ -24,7 +24,7 @@
                       style="background-color:white;"
                       class="avatar"
                     />
-                    <img v-else src="~/static/avator.jpg" />
+                    <img src="~/static/avator.jpg" />
                   </el-avatar>
                   <el-upload
                     :http-request="uploadAvator"
@@ -210,6 +210,7 @@
           </el-col>
         </el-row>
       </div>
+      <sq-footer topBorder="true"></sq-footer>
     </div>
   </div>
 </template>
@@ -223,9 +224,20 @@ import Followers from '~/components/Page/Followers.vue'
 
 import SideBar from '~/components/Page/SideBar.vue'
 import Bookmark from '~/components/Page/Bookmark.vue'
+import questionList from '~/components/Page/questionList.vue'
+import noteList from '~/components/Page/noteList.vue'
 
 @Component({
-  components: { Homepage, PostList, SideBar, Fans, Followers, Bookmark }
+  components: {
+    Homepage,
+    PostList,
+    questionList,
+    SideBar,
+    noteList,
+    Fans,
+    Followers,
+    Bookmark
+  }
 })
 export default class Page extends Vue {
   asyncData({ params }) {
@@ -347,11 +359,15 @@ export default class Page extends Vue {
       },
       {
         name: `${this.id ? '他' : '我'}的提问`,
-        alias: 'Website'
+        alias: 'questionList'
       },
       {
         name: `${this.id ? '他' : '我'}的关注`,
-        alias: 'Followers'
+        alias: 'followers'
+      },
+      {
+        name: `${this.id ? '他' : '我'}的笔记`,
+        alias: 'noteList'
       },
       {
         name: `${this.id ? '他' : '我'}的收藏夹`,

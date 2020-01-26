@@ -16,6 +16,7 @@ import { ImageProcessModule } from './modules/image-process/image-process.module
 import { SmsModule } from './modules/sms/sms.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { BookmarkModule } from './modules/bookmark/bookmark.module';
+import { ContentModule } from './modules/content/content.module';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -46,6 +47,7 @@ dotenv.config();
     SmsModule,
     NotificationModule,
     BookmarkModule,
+    ContentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

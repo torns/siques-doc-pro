@@ -13,8 +13,8 @@
               style="height:65px;width:65px;"
             >
               <font-awesome-icon
-                class="fs-ll text-dark"
                 :icon="['fab', 'audible']"
+                class="fs-ll text-dark"
               />
             </div>
           </div>
@@ -37,13 +37,13 @@
           </div>
         </div>
         <div class="pt-4">
-          <el-button size="small" type="primary" @click="followCollection">{{
+          <el-button @click="followCollection" size="small" type="primary">{{
             isInterest ? '已关注' : '关注专栏'
           }}</el-button>
           <el-button
+            @click="$router.push(`/blogs/${collection.id}`)"
             size="small"
             type="plain"
-            @click="$router.push(`/blogs/${collection.id}`)"
             >专栏主页</el-button
           >
         </div>

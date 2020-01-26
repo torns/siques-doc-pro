@@ -27,8 +27,8 @@
             <div class="d-flex ai-baseline py-2 fs-xm">
               <div class="text-primary pr-2">
                 <router-link
-                  class="hoverlink"
                   :to="`/u/${post.user.id}`"
+                  class="hoverlink"
                   tag="div"
                   >{{ post.user.name }}</router-link
                 >
@@ -36,8 +36,8 @@
               <div class="pr-2 text-gray">发布于</div>
               <div class="pr-2">
                 <router-link
-                  class="text-primary hoverlink"
                   :to="`/blogs/${post.collection.id}`"
+                  class="text-primary hoverlink"
                 >
                   {{ post.collection.name }}</router-link
                 >
