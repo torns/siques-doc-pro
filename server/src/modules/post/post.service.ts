@@ -21,40 +21,33 @@ export class PostService {
     private readonly collectionRepository: Repository<Collection>,
   ) {}
 
-  async beforeTag(tags: Partial<Tag>[]) {
-    const _tags = tags.map(async item => {
-      const { id, name } = item;
-      if (id) {
-        const _tag = await this.tagRepository.findOne(id);
-        if (_tag) {
-          return _tag;
-        }
+  async beforeTag(tags: Partial<Tag>[], postId: any) {
+    tags.map(async e => {
+      try {
+        await this.tagRepository
+          .createQueryBuilder()
+          .relation(Post, 'tags')
+          .of(postId)
+          .add(e.id);
+      } catch {
         return;
       }
-
-      if (name) {
-        const _tag = await this.tagRepository.findOne({ name });
-
-        if (_tag) {
-          return _tag;
-        }
-        return await this.tagRepository.save(item);
-      }
     });
-    return Promise.all(_tags);
   }
 
   async store(data: PostDto, user: User) {
-    const { tags, collection } = data;
-    console.log(collection);
-    if (tags) {
-      data.tags = await this.beforeTag(tags);
-    }
+    const { tags, collection, type } = data;
+
     const entity = await this.postRepository.create(data);
     await this.postRepository.save({
       ...entity,
       user,
+      type,
     });
+
+    if (tags) {
+      await this.beforeTag(tags, entity.id);
+    }
 
     // await this.postRepository
     //   .createQueryBuilder()
@@ -62,14 +55,14 @@ export class PostService {
     //   .where('post.id =:id', { id })
     //   .set({ views: () => 'views + 1' })
     //   .execute();
-
-    await this.collectionRepository
-      .createQueryBuilder()
-      .update(collection)
-      .where('collection.id=:collection', { collection })
-      .set({ amount: () => 'amount + 1' })
-      .execute();
-
+    if (type === 'post') {
+      await this.collectionRepository
+        .createQueryBuilder()
+        .update(collection)
+        .where('collection.id=:collection', { collection })
+        .set({ amount: () => 'amount + 1' })
+        .execute();
+    }
     return entity;
   }
 
@@ -178,16 +171,33 @@ export class PostService {
 
     return entities;
   }
+  // 计算关注数
+  async calcuConcern(postId: string) {
+    const res = await this.postRepository
+      .createQueryBuilder('post')
+      .relation(Post, 'concern')
+      .of(postId)
+      .loadMany();
+    return res.length;
+  }
 
-  async show(id: string) {
+  async show(id: string, query: any) {
+    const concern = await this.calcuConcern(id);
+    console.log(concern);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.addSelect('post.body');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('user.interest', 'interest');
-    queryBuilder
-      .innerJoin('post.collection', 'collection')
-      .addSelect(['collection.id']);
+
+    const { collection } = query;
+
+    if (collection) {
+      queryBuilder
+        .innerJoin('post.collection', 'collection')
+        .addSelect(['collection.id']);
+    }
+
     // queryBuilder.leftJoinAndSelect("post.comments", "comments")
     // queryBuilder.leftJoinAndSelect("comments.user", "commentUser")
 
@@ -212,6 +222,9 @@ export class PostService {
     //   .where('post.id =:id', { id })
     //   .set({ views: () => 'views + 1' })
     //   .execute();
+    // 还有问题
+    console.log(entities);
+    entities.concerned = concern;
 
     return entities;
   }

@@ -18,24 +18,25 @@ import { User as UserEntity } from '../user/user.entity';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 @Controller('collections')
-@UseGuards(AuthGuard('jwt'))
 @ApiTags('集合')
 export class CollectionController {
   constructor(private readonly CollectionService: CollectionService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async storeCollection(@Body() data: CollectionDto, @User() user: UserEntity) {
     return await this.CollectionService.store(user, data);
   }
 
   @Get()
-  @UseInterceptors()
+  @UseGuards(AuthGuard('jwt'))
   async showCollection(@User() user: UserEntity) {
     return await this.CollectionService.showCollection(user.id);
   }
 
   //这里传入的是用户id
   @Get(':id/user')
+  @UseGuards(AuthGuard('jwt'))
   async getUserCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.getUserCollection(id);
   }
@@ -52,6 +53,7 @@ export class CollectionController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async removeCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.removeCollection(id);
   }

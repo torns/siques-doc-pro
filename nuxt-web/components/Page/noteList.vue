@@ -13,7 +13,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel note :posts="notes"></list-panel>
+    <list-panel :posts="notes" note></list-panel>
   </div>
 </template>
 

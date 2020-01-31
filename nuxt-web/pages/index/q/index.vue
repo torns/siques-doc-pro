@@ -6,11 +6,35 @@
           <el-tab-pane label="最新问答" name="first">
             <div>
               <ul>
-                <li v-for="(question, index) in questions" :key="index">
-                  <div>{{ question.liked }}</div>
-                  <div>{{ question.views }}</div>
-                  <div>{{ question.user.name }}</div>
-                  {{ question.title }}
+                <li
+                  v-for="(question, index) in questions"
+                  :key="index"
+                  class="d-flex ai-center bg-light-1 "
+                  style="height:70px"
+                >
+                  <div class="d-flex ai-center px-2 ">
+                    <div class="pr-3 text-gray">
+                      <div class="px-2 fs-xs">{{ question.liked }}</div>
+                      得票
+                    </div>
+                    <div class="pr-3">
+                      <div class="px-2 fs-xs">{{ question.views }}</div>
+                      浏览
+                    </div>
+                    <div>
+                      <div class="fs-xm text-gray hoverlink">
+                        {{ question.user.name }}
+                      </div>
+                      <div>
+                        <div class="pt-1 hoverlink">
+                          <router-link :to="`/q/${question.id}`">{{
+                            question.title
+                          }}</router-link>
+                          <div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>

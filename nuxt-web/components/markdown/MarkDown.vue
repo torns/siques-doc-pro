@@ -9,7 +9,7 @@
       accept="image/*"
     />
     <div class="mt-1">
-      <el-button @click="submit" type="primary">发布文章</el-button>
+      <el-button @click="submit" type="primary">{{ $attrs.name }}</el-button>
     </div>
   </div>
 </template>

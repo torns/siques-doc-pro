@@ -1,3 +1,5 @@
+import { Posttype } from '../enums/posttype.enum';
+
 export interface ListOptionsInterface {
   categories: string;
   tags: string;
@@ -6,7 +8,7 @@ export interface ListOptionsInterface {
   sort: string;
   taglist: string;
   listId: boolean;
-  type: string;
+  type: Posttype;
   collection: boolean;
   order: 'ASC' | 'DESC';
 }

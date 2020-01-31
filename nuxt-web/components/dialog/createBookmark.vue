@@ -63,10 +63,12 @@ export default class createBookmark extends Vue {
   }
   async fetchBookmark() {
     // 依赖用户id
-    const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.auth.user.id}/user`
-    )
-    this.bookmarks = res.data
+    if (this.$store.state.UserNotExist === false) {
+      const res = await this.$http.get(
+        `/bookmarks/${this.$store.state.auth.user.id}/user`
+      )
+      this.bookmarks = res.data
+    }
   }
   async bookmarkPost() {
     await this.$http.get(
@@ -81,18 +83,22 @@ export default class createBookmark extends Vue {
   }
 
   async showBookmark(id) {
-    this.dialogFormVisible = true
-    this.postId = id
+    if (this.$store.state.UserNotExist === false) {
+      this.dialogFormVisible = true
+      this.postId = id
 
-    const list = []
-    await this.bookmarks.map((el) => {
-      el.posts.map((e) => {
-        if (e.id === id) {
-          list.push(el.id)
-        }
+      const list = []
+      await this.bookmarks.map((el) => {
+        el.posts.map((e) => {
+          if (e.id === id) {
+            list.push(el.id)
+          }
+        })
       })
-    })
-    this.list = list
+      this.list = list
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
   // 刷新数据
   refetch() {

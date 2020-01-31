@@ -28,15 +28,15 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { unique: true })
+  @Column('varchar', { unique: true, nullable: false })
   name: string;
 
   //密码去除，除非指定
-  @Column({ select: false })
+  @Column({ select: false, nullable: false })
   @Exclude()
   password: string;
 
-  @Column({ select: false, unique: true })
+  @Column({ select: false, unique: true, nullable: false })
   @Exclude()
   phonenumber: string;
 
@@ -134,6 +134,14 @@ export class User {
   @JoinTable()
   bookmarks: Bookmark[];
 
+  // 一个用户关注问题
+  @ManyToMany(
+    type => Post,
+    post => post.concern,
+  )
+  @JoinTable()
+  concern: Post[];
+
   //多个角色
   @ManyToMany(
     type => Post,
@@ -145,6 +153,7 @@ export class User {
   @OneToMany(
     type => Avator,
     avator => avator.user,
+    { cascade: true },
   )
   avator: Avator[];
 

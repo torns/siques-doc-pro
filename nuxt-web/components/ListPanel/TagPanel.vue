@@ -23,7 +23,7 @@
             <div class="fs-lg">
               <div class="d-flex ">
                 <router-link
-                  :to="`/p/${post.id}`"
+                  :to="post.type === 'post' ? `/p/${post.id}` : `/q/${post.id}`"
                   tag="div"
                   class="hoverlink mr-3"
                 >
@@ -46,7 +46,7 @@
               <div class="pr-1">
                 <el-avatar :size="17">
                   <img
-                    v-if="post.user.avator[0]"
+                    v-if="post.user.avator[0].url !== null"
                     :src="post.user.avator[0].url"
                     style="background-color:white;"
                   />

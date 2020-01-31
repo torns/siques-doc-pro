@@ -130,7 +130,7 @@
                   <router-link
                     :to="`/p/${post.id}`"
                     tag="a"
-                    class="hoverlink point visitlink fs-lg"
+                    class="text-dark-1 hoverlink point  fs-lg"
                     >{{ post.title }}</router-link
                   >
                   <div class="text-gray fs-xm lh-2">
@@ -204,7 +204,7 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {}
 })
 export default class MyPage extends Vue {
-  // async asyncData(){}
+  async asyncData({ $store }) {}
 
   page = 1
   count = 10
@@ -225,6 +225,14 @@ export default class MyPage extends Vue {
     return this.loading || this.noMore
   }
 
+  get taglists() {
+    try {
+      return this.$store.state.auth.user.tags || ''
+    } catch {
+      return null
+    }
+  }
+
   links = [
     {
       name: '近期热门',
@@ -235,9 +243,7 @@ export default class MyPage extends Vue {
     },
     {
       name: '我的订阅',
-      taglist: this.$store.state.auth
-        ? this.$store.state.auth.user.tags || ''
-        : '',
+      taglist: this.taglists,
       listId: true,
       sort: 'liked',
       prefix: 'far',
@@ -251,6 +257,7 @@ export default class MyPage extends Vue {
       icon: 'compass'
     }
   ]
+
   techChanel = [
     {
       name: '前端',
@@ -333,14 +340,26 @@ export default class MyPage extends Vue {
     if (this.taglist) {
       if (this.taglist.length === 1) {
         this.taglist.map((e) => {
-          list = e.toLowerCase()
+          try {
+            list = list + e.toLowerCase()
+          } catch {
+            list = list + e.id
+          }
         })
       } else {
         this.taglist.map((e, index) => {
           if (index === this.taglist.length - 1) {
-            list = list + e.toLowerCase()
+            try {
+              list = list + e.toLowerCase()
+            } catch {
+              list = list + e.id
+            }
           } else {
-            list = list + e.toLowerCase() + '-'
+            try {
+              list = list + e.toLowerCase() + '-'
+            } catch {
+              list = list + e.id + '-'
+            }
           }
         })
       }
@@ -373,9 +392,14 @@ export default class MyPage extends Vue {
     this.count = 10
     let list = ''
     if (taglist) {
+      console.log(taglist)
       if (taglist.length === 1) {
         taglist.map((e) => {
-          list = e.toLowerCase()
+          try {
+            list = list + e.toLowerCase()
+          } catch {
+            list = list + e.id
+          }
         })
       } else {
         taglist.map((e, index) => {

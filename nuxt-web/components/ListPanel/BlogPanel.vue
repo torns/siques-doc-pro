@@ -66,21 +66,22 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import createBookmark from '~/components/dialog/createBookmark.vue'
-@Component({
-  components: { 'sq-bookmark': createBookmark }
-})
+@Component({})
 export default class HomepageList extends Vue {
   @Prop()
   data: any
 
   async like(id, index) {
-    const res = await this.$http.get(`/users/${id}/like`)
+    if (this.$store.state.UserNotExist === false) {
+      const res = await this.$http.get(`/users/${id}/like`)
 
-    if (res.data) {
-      this.data[index].liked = this.data[index].liked + 1
+      if (res.data) {
+        this.data[index].liked = this.data[index].liked + 1
+      } else {
+        this.data[index].liked = this.data[index].liked - 1
+      }
     } else {
-      this.data[index].liked = this.data[index].liked - 1
+      this.$store.commit('toggleLoginForm')
     }
   }
 

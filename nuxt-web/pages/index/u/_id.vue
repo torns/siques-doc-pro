@@ -210,7 +210,7 @@
           </el-col>
         </el-row>
       </div>
-      <sq-footer topBorder="true"></sq-footer>
+      <sq-footer top-border="true"></sq-footer>
     </div>
   </div>
 </template>
@@ -255,6 +255,7 @@ export default class Page extends Vue {
   avatorUrl = ''
   showname: string = ''
   user: any = ''
+
   pageLinks: any = []
   messageLinks = [
     {

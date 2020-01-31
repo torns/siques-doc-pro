@@ -28,12 +28,15 @@ import { Possession } from 'src/core/enums/possession.enum';
 import { UserService } from '../user/user.service';
 import { UserRole } from 'src/core/enums/user-role.enum';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { AutoincrementInterceptor } from 'src/core/interceptors/autoincrement.interceptor';
+import { ActionService } from '../action/action.service';
 
 @ApiTags('文章')
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly actionService: ActionService,
+  ) {}
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
@@ -67,10 +70,8 @@ export class PostController {
 
   @Get(':id')
   // @UseGuards(AuthGuard())
-  async show(@Param('id') id: string) {
-    // console.log(id)
-
-    return await this.postService.show(id);
+  async show(@Param('id') id: string, @Query() query: any) {
+    return await this.postService.show(id, query);
   }
 
   @Put(':id')

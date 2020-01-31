@@ -31,29 +31,29 @@ export class Comment {
   updated: Date;
 
   @Column({ default: 0 })
-  liked: number
+  liked: number;
 
   @Column('tinyint', { default: 0 })
-  is_read: boolean
+  is_read: boolean;
 
   //多个评论对应一篇文章
   @ManyToOne(
     type => Post,
     post => post.comments,
-    { nullable: false },
+    { nullable: false, onDelete: 'CASCADE' },
   )
   post: Post;
 
-  @ManyToOne(
-    type => User
-  )
-  owner_uid: string
-
+  @ManyToOne(type => User)
+  owner_uid: string;
 
   //一个评论对应多个回复
-  @OneToMany(type => Reply, reply => reply.parent_id,
-    { cascade: true })
-  reply: Reply[]
+  @OneToMany(
+    type => Reply,
+    reply => reply.parent_id,
+    { cascade: true },
+  )
+  reply: Reply[];
 
   // 多个评论对应多个评论
   // @ManyToMany(
@@ -68,8 +68,6 @@ export class Comment {
   //   children => children.parent,
   // )
   // children: Comment[];
-
-
 
   @ManyToOne(
     type => User,

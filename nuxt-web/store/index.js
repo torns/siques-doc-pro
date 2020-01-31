@@ -17,6 +17,7 @@ export const mutations = {
   },
   toggleUser(state) {
     state.UserNotExist = true
+    state.auth = {}
   },
   UserExist(state) {
     state.UserNotExist = false
@@ -82,7 +83,8 @@ export const actions = {
         // No valid cookie found
       }
     }
-    commit('setAuth', auth)
+    console.log(auth)
+    // commit('setAuth', auth)
   },
   nuxtClientInit({ commit }, { req }) {
     const autho = localStorage.getItem('auth._token.local') // or whatever yours is called

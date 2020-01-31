@@ -12,11 +12,10 @@
               :total="50"
               background
               layout="prev, pager, next"
-            >
-            </el-pagination>
+            ></el-pagination>
           </el-tab-pane>
-          <el-tab-pane label="热门文章" name="second"
-            ><div v-if="posts !== null" style="min-height:70vh">
+          <el-tab-pane label="热门文章" name="second">
+            <div v-if="posts !== null" style="min-height:70vh">
               <sq-panel :data="posts"></sq-panel>
             </div>
             <el-pagination
@@ -24,11 +23,10 @@
               :total="50"
               background
               layout="prev, pager, next"
-            >
-            </el-pagination
-          ></el-tab-pane>
-          <el-tab-pane label="最新文章" name="third"
-            ><div v-if="posts !== null" style="min-height:70vh">
+            ></el-pagination>
+          </el-tab-pane>
+          <el-tab-pane label="最新文章" name="third">
+            <div v-if="posts !== null" style="min-height:70vh">
               <sq-panel :data="posts"></sq-panel>
             </div>
             <el-pagination
@@ -36,9 +34,8 @@
               :total="50"
               background
               layout="prev, pager, next"
-            >
-            </el-pagination
-          ></el-tab-pane>
+            ></el-pagination>
+          </el-tab-pane>
         </el-tabs>
       </el-col>
       <el-col
@@ -71,7 +68,11 @@ export default class index extends Vue {
   posts = null
   list: string
 
-  taglist = this.$store.state.auth ? this.$store.state.auth.user.tags || '' : ''
+  taglist = this.$store.state.auth
+    ? this.$store.state.auth.user
+      ? this.$store.state.auth.user.tags
+      : ''
+    : ''
 
   mounted() {
     setTimeout(() => {
@@ -82,13 +83,15 @@ export default class index extends Vue {
   }
 
   listInit() {
-    this.taglist.map((e, index) => {
-      if (index === this.taglist.length - 1) {
-        this.list = this.list + e.id
-      } else {
-        this.list = this.list + e.id + '-'
-      }
-    })
+    if (this.taglist !== '') {
+      this.taglist.map((e, index) => {
+        if (index === this.taglist.length - 1) {
+          this.list = this.list + e.id
+        } else {
+          this.list = this.list + e.id + '-'
+        }
+      })
+    }
   }
 
   handleCurrentChange(val) {

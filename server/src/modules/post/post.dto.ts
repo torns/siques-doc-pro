@@ -2,6 +2,7 @@ import { Category } from '../category/category.entity';
 import { Tag } from '../tag/tag.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Collection } from '../collection/collection.entity';
+import { Posttype } from 'src/core/enums/posttype.enum';
 
 export class PostDto {
   readonly title: string;
@@ -11,6 +12,6 @@ export class PostDto {
   readonly category: Category;
   readonly counts: number;
   readonly collection: Collection;
-  readonly type: string;
+  type: Posttype;
   tags: Tag[];
 }

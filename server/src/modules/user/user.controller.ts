@@ -25,11 +25,15 @@ import { PostService } from '../post/post.service';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 import { transcode } from 'buffer';
 import { UserTagDto } from '../tag/tag.dto';
+import { ActionService } from '../action/action.service';
 
 @ApiTags('用户')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly actionService: ActionService,
+  ) {}
 
   @Post()
   async create(@Body() data: UserDto) {
@@ -140,6 +144,22 @@ export class UserController {
   @UseGuards(AuthGuard())
   async like(@Param('id', ParseIntPipe) id: number, @User() user: userEntity) {
     return await this.userService.like(id, user);
+  }
+
+  // 用户关注问题
+  @Get(':id/concern')
+  @UseGuards(AuthGuard())
+  async concern(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: userEntity,
+  ) {
+    const type = 'followque';
+    const data = {
+      from_uid: user,
+      to_Post: id,
+    };
+    await this.actionService.storeAction(type, data);
+    return await this.userService.userFollowQue(user.id, id);
   }
 
   // 文章受赞数量

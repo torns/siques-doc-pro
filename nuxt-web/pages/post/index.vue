@@ -21,12 +21,15 @@
                   v-model="newCollection"
                   placeholder="请输入文集名..."
                 ></el-input>
-                <div class="d-flex jc-around">
+                <div
+                  style="height:30px;"
+                  class="d-flex my-1 ai-center jc-around"
+                >
                   <el-button
                     @click="createCollect"
-                    class="btn my-2"
-                    style="border:1px solid #009a61;color:#009a61;line-height:6px;border-radius:16px"
-                    type="info"
+                    style="padding:5px 25px!important;border:1px solid #009a61;border-radius:16px"
+                    type="plain"
+                    size="mini"
                     >提交</el-button
                   >
                   <el-button
@@ -198,6 +201,8 @@
             ref="markdown"
             v-show="!selectEditor"
             @submit="updatePost"
+            height="600px"
+            name="发布文章"
           ></markdown>
         </div>
         <div v-else class="bg" style="flex:1">抒写</div>
@@ -224,7 +229,7 @@ export default class index extends Vue {
   defaultEditor: boolean = true
   selectEditor: boolean = true
   title: string = ''
-  tagLen = null
+  tagLen: number = 0
   // 标签
   dynamicTags = []
 
@@ -297,7 +302,8 @@ export default class index extends Vue {
         title: now,
         body: '',
         collection: this.selectedCollection,
-        editor: this.defaultEditor
+        editor: this.defaultEditor,
+        type: 'post'
       }
 
       const loading = this.$loading({
@@ -309,7 +315,7 @@ export default class index extends Vue {
       })
       setTimeout(async () => {
         await this.$http.post('/posts', data)
-        this.$store.commit('increPostLen')
+        // this.$store.commit('increPostLen')
         this.selectCollect(this.selectedCollection)
         loading.close()
         this.$notify({

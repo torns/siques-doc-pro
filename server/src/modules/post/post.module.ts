@@ -9,11 +9,14 @@ import { AuthModule } from '../auth/auth.module';
 import { User } from '../user/user.entity';
 import { Collection } from '../collection/collection.entity';
 
+import { ActionModule } from '../action/action.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post, Tag, User, Collection]),
     UserModule,
     AuthModule,
+    ActionModule,
   ],
   controllers: [PostController],
   providers: [PostService],

@@ -18,9 +18,17 @@
             >
           </li>
 
-          <li>热门专栏</li>
-          <li>热门课程</li>
-          <li>最新活动</li>
+          <li>
+            <a target="_blank" href="https://www.nuxtjs.cn/">Nuxt</a>
+          </li>
+          <li>
+            <a target="_blank" href="https://element.eleme.cn/#/zh-CN"
+              >Element</a
+            >
+          </li>
+          <li>
+            <a target="_blank" href="www.nestjs.com/">Nest.js</a>
+          </li>
           <li>技术圈子</li>
           <li>库工作</li>
           <li>移动客户端</li>

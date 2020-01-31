@@ -28,17 +28,59 @@
       <div style="line-height:28px">个人动态</div>
     </div>
     <div class="body border-solid">
-      <div style="height:200px" class="d-flex ai-center"></div>
+      <div style="min-height:200px" class="d-flex">
+        <div
+          v-for="act in action"
+          :key="act.id"
+          style="height:80px;width: -webkit-fill-available;"
+          class="d-flex flex-column border-bottom mx-3 my-2"
+        >
+          <div v-if="act.type === 'followque'" class="text-gray fs-xm ">
+            <span class="">{{ act.from_uid.name }}</span> 关注了问题·
+            {{ $dayjs(act.created).format('M月D日') }}
+          </div>
+          <div class="text-primary py-1 hoverlink point">
+            <router-link :to="`/q/${act.to_Post.id}`" tag="div">
+              {{ act.to_Post.title }}</router-link
+            >
+          </div>
+          <div class="d-flex ">
+            <div class="fs-xm text-gray pr-3">
+              关注 {{ act.to_Post.concerned }}
+            </div>
+            <div class="fs-xm text-gray">收藏 {{ act.to_Post.bookmarked }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({})
 export default class MyHomepage extends Vue {
-  radio = ''
+  @Prop()
+  id: any
+  radio = []
+  action: any = ''
+
+  mounted() {
+    this.fetchUserAction()
+  }
+
+  async fetchUserAction() {
+    if (this.id) {
+      const res = await this.$http.get(`/actions/${this.id}`)
+      this.action = res.data
+    } else {
+      const res = await this.$http.get(
+        `/actions/${this.$store.state.auth.user.id}`
+      )
+      this.action = res.data
+    }
+  }
 }
 </script>
 

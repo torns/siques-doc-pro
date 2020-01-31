@@ -25,7 +25,7 @@ export class Avator {
   @ManyToOne(
     type => User,
     user => user.avator,
-    { nullable: false },
+    { nullable: false, onDelete: 'CASCADE' },
   )
   user: User;
 

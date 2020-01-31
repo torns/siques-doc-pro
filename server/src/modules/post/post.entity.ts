@@ -8,19 +8,17 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
-  BeforeUpdate,
-  Generated,
   AfterLoad,
-  BeforeInsert,
 } from 'typeorm';
-import { Category } from '../category/category.entity';
-import * as bcrypt from 'bcryptjs';
+
 import { User } from '../user/user.entity';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
 import { Collection } from '../collection/collection.entity';
-import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
+
 import { Exclude } from 'class-transformer';
+import { Posttype } from 'src/core/enums/posttype.enum';
+import { Category } from '../category/category.entity';
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
@@ -46,9 +44,6 @@ export class Post {
   @UpdateDateColumn()
   updated: Date;
 
-  @Column({ default: 'post' })
-  type: string;
-
   @Column({ default: 0 })
   views: number;
 
@@ -60,6 +55,12 @@ export class Post {
 
   @Column({ default: 0 })
   counts: number;
+
+  @Column({ default: 0 })
+  concerned: number;
+
+  @Column({ type: 'enum', enum: Posttype })
+  type: Posttype;
 
   // 多个文章对应一个用户
   @ManyToOne(
@@ -92,8 +93,18 @@ export class Post {
   @OneToMany(
     type => Comment,
     comment => comment.post,
+    {
+      cascade: true,
+    },
   )
   comments: Comment[];
+
+  // 一个用户关注问题
+  @ManyToMany(
+    type => User,
+    user => user.concern,
+  )
+  concern: User[];
 
   @ManyToOne(
     type => Collection,
@@ -104,9 +115,4 @@ export class Post {
     },
   )
   collection: Collection;
-
-  @AfterLoad()
-  async insertAlias() {
-    // this.alias = await this.body.substring(0, 100)
-  }
 }

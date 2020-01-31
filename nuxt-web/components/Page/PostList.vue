@@ -33,7 +33,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel post collection="true" :posts="posts"></list-panel>
+    <list-panel :posts="posts" post collection="true"></list-panel>
   </div>
 </template>
 

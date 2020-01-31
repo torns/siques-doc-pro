@@ -17,6 +17,7 @@ import { SmsModule } from './modules/sms/sms.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { BookmarkModule } from './modules/bookmark/bookmark.module';
 import { ContentModule } from './modules/content/content.module';
+import { ActionModule } from './modules/action/action.module';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -30,6 +31,7 @@ dotenv.config();
       username: 'nest',
       password: 'password',
       database: 'nest',
+      // logging: 'all',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
@@ -48,6 +50,7 @@ dotenv.config();
     NotificationModule,
     BookmarkModule,
     ContentModule,
+    ActionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

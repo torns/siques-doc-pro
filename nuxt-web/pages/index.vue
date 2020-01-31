@@ -7,12 +7,12 @@
         <div class="shadow-1" style="position:sticky;top:0;z-index: 10;">
           <el-menu
             default-active="/"
-            class="el-menu-demo  container"
+            class="d-flex jc-between ai-center el-menu-demo container"
             mode="horizontal"
             style="margin:0 auto;"
             router
           >
-            <el-menu-item class="favicon">
+            <el-menu-item class="favicon flex-1">
               <img
                 @click="$router.push('/')"
                 src="~/static/banner.png"
@@ -20,21 +20,21 @@
               />
             </el-menu-item>
 
-            <el-menu-item index="/">
+            <el-menu-item class="menu-item" index="/">
               <span style="font-weight:600" class="text-primary fs-md"
                 >首页</span
               >
             </el-menu-item>
 
-            <el-menu-item index="/q">
+            <el-menu-item class="menu-item" index="/q">
               <span class="fs-md">问答</span>
             </el-menu-item>
 
-            <el-menu-item index="/blogs">
+            <el-menu-item class="menu-item" index="/blogs">
               <span class="fs-md">专栏</span>
             </el-menu-item>
 
-            <el-menu-item index="/tags">
+            <el-menu-item class="menu-item" index="/tags">
               <span class="fs-md">标签</span>
             </el-menu-item>
 
@@ -42,6 +42,7 @@
               v-if="this.$store.state.UserNotExist == false"
               :show-timeout="0"
               :hide-timeout="0"
+              class="menu-item"
             >
               <el-popover
                 :popper-class="`message`"
@@ -156,9 +157,9 @@
                   </el-button>
                 </el-popover>
               </el-badge>
-            </el-menu-item> -->
+            </el-menu-item>-->
 
-            <el-menu-item>
+            <el-menu-item class="menu-item">
               <el-popover v-model="visible" placement="top" width="160">
                 <div style="text-align: center; margin: 0">
                   <div>夜间模式</div>
@@ -179,27 +180,31 @@
               </el-popover>
             </el-menu-item>
 
-            <el-menu-item
-              ><el-input
+            <el-menu-item>
+              <el-input
                 v-model="search"
+                class="search"
                 size="small"
                 placeholder="请输入内容"
                 suffix-icon="el-icon-search"
-              >
-              </el-input
-            ></el-menu-item>
+              ></el-input>
+              <font-awesome-icon :icon="['fas', 'search']" />
+            </el-menu-item>
 
             <el-submenu
               :index="`person`"
               v-if="$store.state.UserNotExist == false"
               :show-timeout="0"
               :hide-timeout="0"
-              style="right: 15%;position: absolute;"
             >
               <template slot="title">
-                <el-avatar :size="35" class="shadow-1">
+                <el-avatar
+                  v-if="this.$store.state.auth.user !== undefined"
+                  :size="35"
+                  class="shadow-1"
+                >
                   <img
-                    v-if="this.$store.state.auth.user.avator.length !== 0"
+                    v-if="this.$store.state.auth.user.avator[0].url !== null"
                     :src="this.$store.state.auth.user.avator[0].url"
                     style="background-color:white;"
                   />
@@ -211,12 +216,12 @@
                 <i class="el-icon-user-solid"></i> 我的主页
               </el-menu-item>
 
-              <el-menu-item index="/u">
+              <!-- <el-menu-item index="/u">
                 <i class="el-icon-star-on"></i> 我的收藏
-              </el-menu-item>
+              </el-menu-item> -->
 
-              <el-menu-item index="/u/setting">个人设置</el-menu-item>
-              <el-menu-item index="/u/help">帮助与反馈</el-menu-item>
+              <!-- <el-menu-item index="/u/setting">个人设置</el-menu-item>
+              <el-menu-item index="/u/help">帮助与反馈</el-menu-item> -->
               <el-menu-item @click="logout">退出</el-menu-item>
             </el-submenu>
 
@@ -224,38 +229,36 @@
               :index="`store`"
               :show-timeout="0"
               :hide-timeout="0"
-              style="right: 2%;position: absolute;"
+              class="menu-item"
             >
               <template slot="title">
                 <el-button type="plain">创建</el-button>
               </template>
 
               <el-menu-item :span="4" class="write ml-4" index="/post">
-                <font-awesome-icon :icon="['fas', 'pen']" class="fs-xm" />
-                写文章
+                <font-awesome-icon :icon="['fas', 'pen']" class="fs-xm" />写文章
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/ask">
                 <font-awesome-icon
                   :icon="['fas', 'question-circle']"
                   class="fs-xm"
-                />
-                提问题
+                />提问题
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/record">
                 <font-awesome-icon
                   :icon="['fas', 'sticky-note']"
                   class="fs-xm"
-                />
-                记笔记
+                />记笔记
               </el-menu-item>
             </el-submenu>
 
             <el-menu-item
               v-if="$store.state.UserNotExist"
               @click="$store.commit('toggleLoginForm'), (isRegister = false)"
+              class="menu-item"
               >立即登录</el-menu-item
             >
-            <el-menu-item>
+            <el-menu-item class="menu-item">
               <el-button
                 @click="$store.commit('toggleLoginForm'), (isRegister = true)"
                 v-if="$store.state.UserNotExist"
@@ -277,20 +280,38 @@
       @close="closeLoginForm"
       width="500px"
     >
-      <el-form v-if="isRegister" :model="RegisterDto">
-        <el-form-item :label-width="formLabelWidth" label="你的名字">
+      <el-form
+        ref="RegisterDto"
+        v-show="isRegister"
+        :model="RegisterDto"
+        :rules="rules"
+        status-icon
+      >
+        <el-form-item
+          class="pb-2"
+          :label-width="formLabelWidth"
+          label="你的名字"
+          prop="name"
+        >
           <el-input
             v-model="RegisterDto.name"
             height="10"
             placeholder="常用昵称"
             autocomplete="off"
+            clearable
           >
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="手机号">
+        <el-form-item
+          class="pb-2"
+          :label-width="formLabelWidth"
+          label="手机号"
+          prop="phonenumber"
+        >
           <el-input
-            v-model="RegisterDto.phonenumber"
+            v-model.number="RegisterDto.phonenumber"
+            :maxlength="11"
             height="10"
             placeholder="11位手机号"
             autocomplete="off"
@@ -298,11 +319,16 @@
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="密码">
+        <el-form-item
+          class="pb-2"
+          :label-width="formLabelWidth"
+          label="密码"
+          prop="password"
+        >
           <el-input
             v-model="RegisterDto.password"
             show-password
-            placeholder="不少于6位的密码"
+            placeholder="不少于7位"
             autocomplete="off"
           >
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
@@ -310,12 +336,13 @@
         </el-form-item>
       </el-form>
 
-      <el-form :model="LoginDto" v-else>
-        <el-form-item :label-width="formLabelWidth" label="手机号或Email">
+      <el-form v-show="!isRegister" status-icon>
+        <el-form-item :label-width="formLabelWidth" label="手机号">
           <el-input
             v-model="LoginDto.phonenumber"
+            :maxlength="11"
             height="10"
-            placeholder="11位手机号或Email"
+            placeholder="11位手机号"
             autocomplete="off"
           >
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
@@ -367,20 +394,119 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 // const Cookie = process.client ? require('js-cookie') : undefined
 
 @Component({})
 export default class Home extends Vue {
   isRegister: boolean = false
   LoginDto: any = {}
-  RegisterDto: any = {}
+
   topRadio = 'message'
   notifies = ''
   search = ''
   formLabelWidth: string = '120'
 
   visible: boolean = false
+
+  @Watch('isRegister')
+  isVisible(newval, oldval) {
+    if (!newval) {
+      this.resetForm()
+    }
+  }
+
+  phoneLength(value) {
+    const regex = /^[1][3,4,5,7,8][0-9]{9}$/
+    if (regex.test(value)) {
+      return true
+    }
+  }
+
+  charLength(value) {
+    if (value.length >= 7) {
+      return true
+    }
+  }
+
+  lowercase(value) {
+    const regex = /^(?=.*[a-z]).+$/
+
+    if (regex.test(value)) {
+      return true
+    }
+  }
+  // 大写暂时不需要
+  // uppercase(value) {
+  //   const regex = /^(?=.*[A-Z]).+$/
+
+  //   if (regex.test(value)) {
+  //     return true
+  //   }
+  // }
+  number(value) {
+    const regex = /^(?=.*[0-9]).+$/
+
+    if (regex.test(value)) {
+      return true
+    }
+  }
+  validatePhone(rule, value, callback) {
+    if (value === '') {
+      callback(new Error('请输入手机号'))
+    }
+
+    if (this.phoneLength(value)) {
+      callback()
+    } else {
+      callback(new Error('不合格的手机号'))
+    }
+  }
+
+  validatePass(rule, value, callback) {
+    console.log(value)
+    if (value === '') {
+      callback(new Error('请输入密码'))
+    }
+
+    if (this.charLength(value) && this.lowercase(value) && this.number(value)) {
+      callback()
+    } else {
+      callback(new Error('密码强度不足'))
+    }
+  }
+
+  validateName(rule, value, callback) {
+    console.log(value)
+    if (value === '') {
+      callback(new Error('请输入昵称'))
+    }
+  }
+
+  RegisterDto = {
+    name: '',
+    phonenumber: '',
+    password: ''
+  }
+
+  rules = {
+    name: [
+      { required: true, message: '请输入姓名', trigger: 'blur' },
+      { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+      {
+        required: true,
+        pattern: /^[\u4E00-\u9FA5_a-zA-Z0-9.·-]+$/,
+        message: '姓名不支持特殊字符',
+        trigger: 'blur'
+      }
+    ],
+    phonenumber: [
+      { required: true, validator: this.validatePhone, trigger: 'blur' }
+    ],
+    password: [
+      { required: true, validator: this.validatePass, trigger: 'blur' }
+    ]
+  }
 
   mounted() {
     this.fetchNotify()
@@ -403,14 +529,25 @@ export default class Home extends Vue {
     this.fetchNotify()
   }
 
-  async register() {
-    await this.$http.post('/users', this.RegisterDto)
-    this.$notify({
-      title: '',
-      type: 'success',
-      message: '注册成功'
+  register() {
+    this.$refs.RegisterDto.validate(async (valid) => {
+      if (valid) {
+        await this.$http.post('/users', this.RegisterDto)
+        this.$notify({
+          title: '',
+          type: 'success',
+          message: '注册成功'
+        })
+        this.isRegister = false
+      } else {
+        console.log('error submit!!')
+        return false
+      }
     })
-    this.isRegister = false
+  }
+
+  resetForm() {
+    this.$refs.RegisterDto.resetFields()
   }
 
   logout() {
@@ -427,8 +564,10 @@ export default class Home extends Vue {
   }
 
   async fetchNotify() {
-    const res = await this.$http.get('/notification')
-    this.notifies = res.data
+    if (!this.store) {
+      const res = await this.$http.get('/notification')
+      this.notifies = res.data
+    }
   }
 
   async fetchuser() {
@@ -438,7 +577,7 @@ export default class Home extends Vue {
       res.data.tags.map((e) => {
         usertag.push(e)
       })
-      console.log(usertag)
+      // console.log(usertag)
     }
   }
 
@@ -469,7 +608,7 @@ export default class Home extends Vue {
       background: url(../static/tip.png) no-repeat;
       position: absolute;
       top: 98%;
-      width: -webkit-fill-available;
+      width: 160px;
       z-index: 1;
       height: inherit;
       background-size: contain;

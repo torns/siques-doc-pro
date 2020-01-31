@@ -47,7 +47,4 @@ export class Collection {
     },
   )
   posts: Post[];
-
-  @AfterLoad()
-  async getAmount() {}
 }

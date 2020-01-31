@@ -75,18 +75,17 @@
                 <h1 class="py-4">{{ post.title }}</h1>
                 <div class="d-flex py-3">
                   <router-link :to="`/u/${post.user.id}`">
-                    <img
-                      v-if="!post.user.avator[0]"
-                      src="~/static/avator.jpg"
-                      class="avator shadow-1 contain"
-                    />
-
-                    <div v-else>
+                    <div v-if="post.user.avator[0].url !== null">
                       <img
                         :src="post.user.avator[0].url"
                         class="avator shadow-1 contain"
                       />
                     </div>
+                    <img
+                      v-else
+                      src="~/static/avator.jpg"
+                      class="avator shadow-1 contain"
+                    />
                   </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
@@ -110,13 +109,15 @@
                 <div class="tag d-flex ai-baseline">
                   <ul class="d-flex">
                     <li v-for="tag in post.tags" :key="tag.id">
-                      <el-tag
-                        class="bg-2 hover-3 mr-2"
-                        effect="light"
-                        size="small"
-                      >
-                        <span class="fs-sm">{{ tag.name }}</span>
-                      </el-tag>
+                      <router-link :to="`/t/${tag.id}`"
+                        ><el-tag
+                          class="bg-2 hover-3 mr-2"
+                          effect="light"
+                          size="small"
+                        >
+                          <span class="fs-sm">{{ tag.name }}</span>
+                        </el-tag>
+                      </router-link>
                     </li>
                   </ul>
                   <div class="text-gray fs-xm">阅读约2分钟</div>
@@ -453,7 +454,7 @@ export default class Post extends Vue {
 
   async fetchpost(id) {
     if (!this.post) {
-      const res = await this.$http.get(`posts/${id}`)
+      const res = await this.$http.get(`posts/${id}?collection=true`)
       this.post = res.data
       this.liked = res.data.liked
       // if (!res.data.editor) {
@@ -467,7 +468,7 @@ export default class Post extends Vue {
   }
 
   async fetchRecommendPost() {
-    const link = `/posts/all?limit=8&sort=liked`
+    const link = `/posts/all?limit=8&sort=liked&type=post`
     const res = await this.$http.get(link)
 
     this.recommendPost = res.data[0]

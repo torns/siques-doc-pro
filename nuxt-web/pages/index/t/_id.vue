@@ -2,14 +2,16 @@
   <div>
     <div class="container pt-5">
       <el-row :gutter="0" type="flex">
-        <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
+        <el-col v-if="tagInfo" :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div>
             <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/tags' }"
                 >标签</el-breadcrumb-item
               >
               <el-breadcrumb-item
-                ><a :href="`/t/${id}`">{{ id }}</a></el-breadcrumb-item
+                ><a :href="`/t/${id}`">{{
+                  tagInfo.info.name
+                }}</a></el-breadcrumb-item
               >
               <el-breadcrumb-item>标签动态</el-breadcrumb-item>
             </el-breadcrumb>
@@ -25,11 +27,11 @@
                   style="font-weight:800"
                   type="primary"
                 >
-                  <span class="fs-sm">{{ id }}</span></el-tag
+                  <span class="fs-sm">{{ tagInfo.info.name }}</span></el-tag
                 >
                 <div style="margin-top:2px">
                   <el-button size="mini" type="primary"
-                    >已关注 | 52730</el-button
+                    >已关注 | {{ tagInfo.count }}</el-button
                   >
                 </div>
               </div>
@@ -78,17 +80,24 @@ import TagPannel from '~/components/ListPanel/TagPanel.vue'
 export default class T extends Vue {
   activeName = 'first'
   posts = null
+  tagInfo = null
   get id(): any {
     return this.$route.params.id
   }
 
   mounted() {
     this.fetchPost()
+    this.fetchTag()
   }
 
   async fetchPost() {
     const res = await this.$http.get(`/tags/post/${this.id}`)
     this.posts = res.data
+  }
+
+  async fetchTag() {
+    const res = await this.$http.get(`/tags/info/${this.id}`)
+    this.tagInfo = res.data
   }
 
   handleClick(tab, event) {

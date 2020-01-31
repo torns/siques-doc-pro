@@ -13,7 +13,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel question :collection="false" :posts="questions"></list-panel>
+    <list-panel :collection="false" :posts="questions" question></list-panel>
   </div>
 </template>
 

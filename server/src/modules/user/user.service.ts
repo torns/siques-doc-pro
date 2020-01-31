@@ -254,6 +254,19 @@ export class UserService {
       return;
     }
   }
+  // 用户关注问题
+  async userFollowQue(userId: number, postId: number) {
+    try {
+      await this.userRepository
+        .createQueryBuilder('user')
+        .relation(User, 'concern')
+        .of(userId)
+        .add(postId);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   //用户擅长技能
 

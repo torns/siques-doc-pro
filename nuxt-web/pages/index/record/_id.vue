@@ -9,7 +9,7 @@
               placeholder="请输入标题，用号码结尾"
             ></el-input>
             <div class="d-flex jc-between tags text-left my-3">
-              <div>
+              <div class="d-flex">
                 <el-tag
                   :key="tag.name"
                   v-for="tag in dynamicTags"
@@ -31,8 +31,8 @@
                 </sq-tag>
               </div>
               <el-select
-                size="mini"
                 v-model="model"
+                size="mini"
                 placeholder="提问模板(可选)"
               >
                 <el-option-group
@@ -51,9 +51,10 @@
               </el-select>
             </div>
             <markdown
-              height="600px"
               ref="markdown"
               @submit="submitQues"
+              name="发布笔记"
+              height="600px"
             ></markdown>
           </div>
         </el-col>
@@ -65,7 +66,6 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import Tag from '@/components/dialog/tag.vue'
-import wordCount from '~/plugins/utils.js'
 
 @Component({
   components: { 'sq-tag': Tag }
@@ -76,6 +76,7 @@ export default class Index extends Vue {
   content = [{ development: '' }]
   model = ''
   tagLen: number = 0
+  questions
 
   @Watch('model')
   doModelChanged() {
@@ -83,7 +84,13 @@ export default class Index extends Vue {
       this.$refs.markdown.setContent()
     }
   }
-  mounted() {}
+
+  get id() {
+    return this.$route.params.id
+  }
+  mounted() {
+    this.fetchQue()
+  }
 
   options = [
     {
@@ -105,35 +112,54 @@ export default class Index extends Vue {
     }
   ]
 
+  async fetchQue() {
+    if (this.id) {
+      const res = await this.$http.get(`posts/${this.id}`)
+      this.questions = res.data
+      this.$refs.markdown.setContent(res.data.body)
+      this.title = res.data.title
+      this.dynamicTags = res.data.tags
+    }
+  }
+
   @Watch('dynamicTags')
   dynamicTagsChanged(val, oldval) {
-    console.log(123)
     this.tagLen = 5 - val.length
     this.$refs.tag.taglen = 5 - val.length
   }
 
-  handleClose(tag, id) {
+  async handleClose(tag, id) {
     this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    await this.$http.get(`/tags/${this.id}?tagId=${id}`)
   }
   showtagDialog() {
     this.visible = true
   }
 
-  addTag(tagname, tagid) {
-    let includes = false
-    this.dynamicTags.map((e) => {
-      if (e.name === tagname) {
-        includes = true
-      }
-    })
+  async addTag(tagname, tagid) {
+    if (this.tagLen > 0) {
+      let includes = false
+      this.dynamicTags.map((e) => {
+        if (e.name === tagname) {
+          includes = true
+        }
+      })
 
-    if (!includes) {
-      this.dynamicTags.push({ name: tagname, id: tagid })
+      if (!includes) {
+        this.dynamicTags.push({ name: tagname, id: tagid })
+        await this.$http.get(`/tags/${this.id}?tagId=${tagid}`)
+      } else {
+        this.$notify({
+          type: 'error',
+          title: '错误',
+          message: '已添加该标签'
+        })
+      }
     } else {
       this.$notify({
         type: 'error',
         title: '错误',
-        message: '已添加该标签'
+        message: '已超出最大标签数'
       })
     }
   }
@@ -141,30 +167,27 @@ export default class Index extends Vue {
   async submitQues(data) {
     console.log(this.dynamicTags)
     if (this.title) {
-      const word = wordCount(data)
-
-      if (word < 30) {
-        this.$notify({
-          title: '失败',
-          type: 'error',
-          message: '字数太少？再写点'
-        })
-        return
-      }
-
       const body = {
         title: this.title,
         body: data,
-        counts: word,
-        type: 'question'
-      }
 
-      await this.$http.post(`/posts`, body)
-      this.$notify({
-        title: '成功',
-        type: 'success',
-        message: '发布成功'
-      })
+        type: 'note'
+      }
+      if (this.id) {
+        await this.$http.put(`/posts/${this.id}`, body)
+        this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '更新成功'
+        })
+      } else {
+        await this.$http.post(`/posts`, body)
+        this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '发布成功'
+        })
+      }
     } else {
       this.$notify({
         title: '失败',
