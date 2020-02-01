@@ -7,19 +7,22 @@ const http = axios.create({
   baseURL: 'http://localhost:3001'
 })
 
-http.interceptors.request.use(
-  (config) => {
-    if (localStorage['auth._token.local']) {
-      config.headers.Authorization = localStorage['auth._token.local'] || ''
-    }
-    return config
-  },
-  (err) => {
-    return Promise.reject(err)
-  }
-)
-// 添加一个反应拦截器
 export default ({ store }) => {
+  http.interceptors.request.use(
+    (config) => {
+      if (store.state.auth['auth._token.local']) {
+        config.headers.Authorization =
+          store.state.auth['auth._token.local'] || ''
+      }
+      return config
+    },
+    (err) => {
+      return Promise.reject(err)
+    }
+  )
+
+  // 添加一个反应拦截器
+
   http.interceptors.response.use(
     (res) => {
       return res

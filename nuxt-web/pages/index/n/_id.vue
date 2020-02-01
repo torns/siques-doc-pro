@@ -2,8 +2,15 @@
   <div>
     <div class="container h-100 pb-4">
       <el-row type="flex" class="pt-4">
-        <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
-          <div v-if="notes != null">
+        <el-col
+          v-if="notes != null"
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="18"
+          :xl="18"
+        >
+          <div>
             <div class="fs-xll d-flex ai-baseline mb-2">
               <div class="text-primary note-title mr-2">记</div>
               <div>{{ notes.title }}</div>
@@ -20,7 +27,7 @@
               <div class="text-gray pr-2">
                 {{ $dayjs(notes.created).format('M月D日') }}发布
               </div>
-              <div class="d-flex ai-baseline ">
+              <div v-if="hasAccess" class="d-flex ai-baseline ">
                 <el-button
                   @click="$router.push(`/record/${notes.id}`)"
                   type="text"
@@ -29,11 +36,27 @@
                 <el-button @click="delNote" type="text">删除</el-button>
               </div>
             </div>
+            <div>
+              <el-tag
+                class="mr-2 mb-2 point hover-2"
+                type="plain"
+                size="mini"
+                v-for="tag in notes.tags"
+                :key="tag.id"
+              >
+                <router-link tag="div" :to="`/t/${tag.id}`">{{
+                  tag.name
+                }}</router-link>
+              </el-tag>
+            </div>
             <div v-html="notes.body" style="min-height:300px;"></div>
           </div>
           <div>
             <el-button type="text">链接</el-button>
-            <el-button @click="$router.push(`/record/${notes.id}`)" type="text"
+            <el-button
+              v-if="hasAccess"
+              @click="$router.push(`/record/${notes.id}`)"
+              type="text"
               >编辑</el-button
             >
           </div>
@@ -61,6 +84,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import md from '../../../plugins/markdown'
 @Component({
   components: {}
 })
@@ -74,6 +98,16 @@ export default class Notes extends Vue {
     this.fetchNote()
   }
 
+  get hasAccess(): any {
+    return this.$store.state.auth
+      ? this.$store.state.auth.user
+        ? this.$store.state.auth.user.id
+          ? this.notes.user.id === this.$store.state.auth.user.id
+          : false
+        : false
+      : false
+  }
+
   get id(): any {
     try {
       return this.$route.params.id
@@ -84,6 +118,7 @@ export default class Notes extends Vue {
 
   async fetchNote() {
     const res = await this.$http.get(`/posts/${this.id}`)
+    res.data.body = md.render(res.data.body)
     this.notes = res.data
   }
 

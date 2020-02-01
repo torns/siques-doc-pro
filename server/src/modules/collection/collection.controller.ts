@@ -36,7 +36,6 @@ export class CollectionController {
 
   //这里传入的是用户id
   @Get(':id/user')
-  @UseGuards(AuthGuard('jwt'))
   async getUserCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.getUserCollection(id);
   }

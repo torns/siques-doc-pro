@@ -20,22 +20,22 @@ export const mutations = {
     state.auth = {}
   },
   UserExist(state) {
+    const autho = localStorage.getItem('auth._token.local')
+    state.auth['auth._token.local'] = autho
     state.UserNotExist = false
   },
-
   updataPersonData(state, data) {
     const key = Object.keys(data)[0]
     state.auth.user[key] = data[key]
   },
-
   toggleBanner(state) {
     state.showBanner = !state.showBanner
   },
   setUserInfo(state, data) {
     state.user = data
   },
-  setAuth(state, auth) {
-    state.auth = auth
+  SET_AUTHO(state, auth) {
+    state.auth.token = auth
   },
   increPostLen(state) {
     state.auth.user.postLength = state.user.postLength + 1

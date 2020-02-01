@@ -75,7 +75,7 @@ export default class Index extends Vue {
   dynamicTags = []
   content = [{ development: '' }]
   model = ''
-  tagLen: number = 0
+  tagLen: number = 5
   questions
 
   @Watch('model')
@@ -130,7 +130,9 @@ export default class Index extends Vue {
 
   async handleClose(tag, id) {
     this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-    await this.$http.get(`/tags/${this.id}?tagId=${id}`)
+    if (this.id) {
+      await this.$http.get(`/tags/${this.id}?tagId=${id}`)
+    }
   }
   showtagDialog() {
     this.visible = true
@@ -147,7 +149,9 @@ export default class Index extends Vue {
 
       if (!includes) {
         this.dynamicTags.push({ name: tagname, id: tagid })
-        await this.$http.get(`/tags/${this.id}?tagId=${tagid}`)
+        if (this.id) {
+          await this.$http.get(`/tags/${this.id}?tagId=${tagid}`)
+        }
       } else {
         this.$notify({
           type: 'error',
@@ -167,26 +171,37 @@ export default class Index extends Vue {
   async submitQues(data) {
     console.log(this.dynamicTags)
     if (this.title) {
-      const body = {
-        title: this.title,
-        body: data,
+      // const word = wordcounts(data)
 
-        type: 'note'
-      }
       if (this.id) {
+        const body = {
+          title: this.title,
+          body: data,
+
+          type: 'question'
+        }
         await this.$http.put(`/posts/${this.id}`, body)
         this.$notify({
           title: '成功',
           type: 'success',
           message: '更新成功'
         })
+        this.$router.push(`/q`)
       } else {
-        await this.$http.post(`/posts`, body)
+        const body = {
+          title: this.title,
+          body: data,
+
+          type: 'question',
+          tags: this.dynamicTags
+        }
+        await this.$http.post(`/posts/`, body)
         this.$notify({
           title: '成功',
           type: 'success',
           message: '发布成功'
         })
+        this.$router.push(`/n`)
       }
     } else {
       this.$notify({

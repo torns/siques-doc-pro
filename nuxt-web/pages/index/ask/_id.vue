@@ -68,7 +68,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import Tag from '@/components/dialog/tag.vue'
-import wordCount from '~/plugins/utils.js'
+import { wordcounts } from '~/plugins/utils.js'
 
 @Component({
   components: { 'sq-tag': Tag }
@@ -167,7 +167,7 @@ export default class Index extends Vue {
   async submitQues(data) {
     console.log(this.dynamicTags)
     if (this.title) {
-      const word = wordCount(data)
+      const word = wordcounts(data)
 
       if (word < 30) {
         this.$notify({

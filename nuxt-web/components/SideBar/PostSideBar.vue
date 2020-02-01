@@ -49,18 +49,24 @@
         </div>
       </div>
     </div>
+    <sq-leaderboard
+      v-if="relaPost != null"
+      :postId="this.data.id"
+      :data="relaPost"
+    ></sq-leaderboard>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-
+import { listIntercep } from '../../plugins/utils.js'
 @Component({})
 export default class SideBar extends Vue {
   @Prop()
-  data: ''
+  data: any
   collection = []
   isInterest = false
+  relaPost = null
 
   @Watch('data')
   idDataChanged() {
@@ -86,13 +92,19 @@ export default class SideBar extends Vue {
     })
   }
 
+  async fetchRelaPost() {
+    const tags = await listIntercep(this.data.tags)
+
+    const link =
+      `/posts/all?limit=5&page=1&sort=liked` +
+      `&taglist=${tags}` +
+      `&type=post&listId=true`
+    const res = await this.$http.get(link)
+    this.relaPost = res.data
+  }
+
   async followCollection() {
     await this.$http.get(`/users/${this.data.collection.id}/interest`)
-    // this.$notify({
-    //   type: 'success',
-    //   message: '关注成功',
-    //   title: '成功'
-    // })
     this.fetchCollection()
     this.isInterest = !this.isInterest
   }
@@ -101,6 +113,7 @@ export default class SideBar extends Vue {
     const res = await this.$http.get(
       `/collections/${this.data.collection.id}/post`
     )
+
     this.collection = res.data
   }
 
@@ -108,7 +121,7 @@ export default class SideBar extends Vue {
     const res = await this.$http.get(
       `/collections/${this.data.collection.id}/post`
     )
-
+    this.fetchRelaPost()
     this.collection = res.data
     this.changeStatu()
   }
@@ -119,6 +132,5 @@ export default class SideBar extends Vue {
 .sidebar {
   width: 300px;
   height: auto;
-  background-color: white;
 }
 </style>

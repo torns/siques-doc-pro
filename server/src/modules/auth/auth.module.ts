@@ -15,7 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.register({
       secret: 'sadjyunbng-0=hrnasdasdlghzxhc',
       signOptions: {
-        expiresIn: '12h', //12h 7d
+        expiresIn: '14d', //12h 7d
       },
     }),
   ],

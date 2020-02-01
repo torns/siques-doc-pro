@@ -29,7 +29,9 @@
           <li>
             <a target="_blank" href="www.nestjs.com/">Nest.js</a>
           </li>
-          <li>技术圈子</li>
+          <li>
+            <a href="https://www.nuxtjs.cn/guide">Nuxt.js</a>
+          </li>
           <li>库工作</li>
           <li>移动客户端</li>
         </el-col>
@@ -167,6 +169,9 @@ li {
   color: gray;
   padding-top: 3px;
   padding-bottom: 3px;
+  a {
+    color: gray;
+  }
 }
 .title {
   padding-bottom: 10px;

@@ -109,8 +109,8 @@
                 <div class="tag d-flex ai-baseline">
                   <ul class="d-flex">
                     <li v-for="tag in post.tags" :key="tag.id">
-                      <router-link :to="`/t/${tag.id}`"
-                        ><el-tag
+                      <router-link :to="`/t/${tag.id}`">
+                        <el-tag
                           class="bg-2 hover-3 mr-2"
                           effect="light"
                           size="small"
@@ -350,7 +350,7 @@
           </div>
 
           <div>
-            <div class=" font-bold fs-xl py-1 pt-4">推荐阅读</div>
+            <div class="font-bold fs-xl py-1 pt-4">推荐阅读</div>
             <div
               v-for="post in recommendPost"
               :key="post.id"
@@ -361,7 +361,7 @@
                 <h3>{{ post.title }}</h3>
                 <div class="text-gray py-2">{{ post.alias }}</div>
                 <div class="d-flex fs-xm">
-                  <div class=" text-primary pr-3">{{ post.user.name }}</div>
+                  <div class="text-primary pr-3">{{ post.user.name }}</div>
                   <div class="text-gray">阅读{{ post.views }}</div>
                 </div>
               </router-link>
@@ -383,7 +383,7 @@
       </el-row>
     </div>
 
-    <sq-footer class="mt-2"></sq-footer>
+    <sq-footer style="z-index:10" class="mt-2"></sq-footer>
     <el-backtop></el-backtop>
     <!-- <back-top @bck2Top="bck2Top"></back-top> -->
   </div>
@@ -394,7 +394,6 @@ import { Vue, Component } from 'vue-property-decorator'
 
 import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
-import footer from '~/components/footer/Footer.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
 import bookmark from '~/components/dialog/bookmark.vue'
@@ -410,7 +409,6 @@ const highlightCode = () => {
 
 @Component({
   components: {
-    'el-footer': footer,
     'sq-postbar': PostSideBar,
     'back-top': BackToTop,
     'bookmark-dialog': bookmark,

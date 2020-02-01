@@ -2,9 +2,14 @@
   <div class="container h-100">
     <el-row type="flex" class="pt-4">
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
-        <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
+        <el-tabs
+          v-if="posts !== null"
+          v-model="activeName"
+          @tab-click="handleClick"
+          type="card"
+        >
           <el-tab-pane label="推荐文章" name="first">
-            <div v-if="posts !== null" style="min-height:70vh">
+            <div style="min-height:70vh">
               <sq-panel :data="posts"></sq-panel>
             </div>
             <el-pagination
@@ -15,7 +20,7 @@
             ></el-pagination>
           </el-tab-pane>
           <el-tab-pane label="热门文章" name="second">
-            <div v-if="posts !== null" style="min-height:70vh">
+            <div style="min-height:70vh">
               <sq-panel :data="posts"></sq-panel>
             </div>
             <el-pagination
@@ -26,7 +31,7 @@
             ></el-pagination>
           </el-tab-pane>
           <el-tab-pane label="最新文章" name="third">
-            <div v-if="posts !== null" style="min-height:70vh">
+            <div style="min-height:70vh">
               <sq-panel :data="posts"></sq-panel>
             </div>
             <el-pagination
@@ -53,6 +58,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { listIntercep } from '../../../plugins/utils.js'
 import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 
 @Component({
@@ -84,13 +90,9 @@ export default class index extends Vue {
 
   listInit() {
     if (this.taglist !== '') {
-      this.taglist.map((e, index) => {
-        if (index === this.taglist.length - 1) {
-          this.list = this.list + e.id
-        } else {
-          this.list = this.list + e.id + '-'
-        }
-      })
+      const list = listIntercep(this.taglist)
+
+      this.list = list
     }
   }
 

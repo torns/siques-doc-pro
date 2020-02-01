@@ -1,4 +1,5 @@
-function wordcounts(body) {
+// 数字统计
+export function wordcounts(body) {
   const W = []
   let iNumwords = 0
   let sNumwords = 0
@@ -38,4 +39,34 @@ function wordcounts(body) {
   return word
 }
 
-export default wordcounts
+export function listIntercep(taglist) {
+  let list = ''
+  if (taglist) {
+    if (taglist.length === 1) {
+      taglist.map((e) => {
+        try {
+          list = list + e.toLowerCase()
+        } catch {
+          list = list + e.id
+        }
+      })
+    } else {
+      taglist.map((e, index) => {
+        if (index === taglist.length - 1) {
+          try {
+            list = list + e.toLowerCase()
+          } catch {
+            list = list + e.id
+          }
+        } else {
+          try {
+            list = list + e.toLowerCase() + '-'
+          } catch {
+            list = list + e.id + '-'
+          }
+        }
+      })
+    }
+  }
+  return list
+}

@@ -46,6 +46,7 @@ export class TagController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard())
   async storePostTags(
     @Param('id', ParseIntPipe) id: number,
     @Query() query: any,

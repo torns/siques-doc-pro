@@ -37,6 +37,9 @@
             <el-menu-item class="menu-item" index="/tags">
               <span class="fs-md">标签</span>
             </el-menu-item>
+            <el-menu-item class="menu-item" index="/n">
+              <span class="fs-md">笔记</span>
+            </el-menu-item>
 
             <el-menu-item
               v-if="this.$store.state.UserNotExist == false"
@@ -159,7 +162,7 @@
               </el-badge>
             </el-menu-item>-->
 
-            <el-menu-item class="menu-item">
+            <!-- <el-menu-item class="menu-item">
               <el-popover v-model="visible" placement="top" width="160">
                 <div style="text-align: center; margin: 0">
                   <div>夜间模式</div>
@@ -178,16 +181,19 @@
                 </div>
                 <el-button slot="reference" type="text">Aa</el-button>
               </el-popover>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item>
               <el-input
                 v-model="search"
+                @change="dataSearch"
+                clearable
                 class="search"
                 size="small"
                 placeholder="请输入内容"
                 suffix-icon="el-icon-search"
               ></el-input>
+
               <font-awesome-icon :icon="['fas', 'search']" />
             </el-menu-item>
 
@@ -288,8 +294,8 @@
         status-icon
       >
         <el-form-item
-          class="pb-2"
           :label-width="formLabelWidth"
+          class="pb-2"
           label="你的名字"
           prop="name"
         >
@@ -304,8 +310,8 @@
           </el-input>
         </el-form-item>
         <el-form-item
-          class="pb-2"
           :label-width="formLabelWidth"
+          class="pb-2"
           label="手机号"
           prop="phonenumber"
         >
@@ -320,8 +326,8 @@
           </el-input>
         </el-form-item>
         <el-form-item
-          class="pb-2"
           :label-width="formLabelWidth"
+          class="pb-2"
           label="密码"
           prop="password"
         >
@@ -336,7 +342,13 @@
         </el-form-item>
       </el-form>
 
-      <el-form v-show="!isRegister" status-icon>
+      <el-form
+        ref="LoginDto"
+        :model="LoginDto"
+        :rules="rules"
+        v-show="!isRegister"
+        status-icon
+      >
         <el-form-item :label-width="formLabelWidth" label="手机号">
           <el-input
             v-model="LoginDto.phonenumber"
@@ -348,7 +360,7 @@
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="密码">
+        <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
           <el-input
             v-model="LoginDto.password"
             show-password
@@ -400,7 +412,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 @Component({})
 export default class Home extends Vue {
   isRegister: boolean = false
-  LoginDto: any = {}
 
   topRadio = 'message'
   notifies = ''
@@ -489,6 +500,11 @@ export default class Home extends Vue {
     password: ''
   }
 
+  LoginDto = {
+    phonenumber: '',
+    password: ''
+  }
+
   rules = {
     name: [
       { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -521,12 +537,19 @@ export default class Home extends Vue {
     this.$store.commit('closeLoginForm')
   }
 
-  async login() {
-    await this.$auth.loginWith('local', { data: this.LoginDto })
+  login() {
+    this.$refs.LoginDto.validate(async (valid) => {
+      if (valid) {
+        await this.$auth.loginWith('local', { data: this.LoginDto })
 
-    this.$store.commit('UserExist')
-    this.$store.commit('closeLoginForm')
-    this.fetchNotify()
+        this.$store.commit('UserExist')
+        this.$store.commit('closeLoginForm')
+        // this.fetchNotify()
+      } else {
+        console.log('error submit!!')
+        return false
+      }
+    })
   }
 
   register() {
@@ -551,8 +574,6 @@ export default class Home extends Vue {
   }
 
   logout() {
-    localStorage['auth._token.local'] = ''
-    localStorage.state = ''
     this.$store.commit('toggleBanner')
     this.$store.commit('toggleUser')
     this.$notify({
@@ -581,13 +602,18 @@ export default class Home extends Vue {
     }
   }
 
+  dataSearch() {
+    console.log(1)
+  }
   // 刷新保存状态
 
   // saveState() {
   //   localStorage.setItem('state', JSON.stringify(this.$store.state))
   // }
 
-  async change(e) {}
+  change(e) {
+    console.log(2)
+  }
 }
 </script>
 

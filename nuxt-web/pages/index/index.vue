@@ -199,7 +199,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-
+import { listIntercep } from '../../plugins/utils.js'
 @Component({
   components: {}
 })
@@ -337,33 +337,8 @@ export default class MyPage extends Vue {
     this.loading = true
     this.page += 1
     let list = ''
-    if (this.taglist) {
-      if (this.taglist.length === 1) {
-        this.taglist.map((e) => {
-          try {
-            list = list + e.toLowerCase()
-          } catch {
-            list = list + e.id
-          }
-        })
-      } else {
-        this.taglist.map((e, index) => {
-          if (index === this.taglist.length - 1) {
-            try {
-              list = list + e.toLowerCase()
-            } catch {
-              list = list + e.id
-            }
-          } else {
-            try {
-              list = list + e.toLowerCase() + '-'
-            } catch {
-              list = list + e.id + '-'
-            }
-          }
-        })
-      }
-    }
+    list = listIntercep(this.taglist)
+
     const link =
       `/posts/all?limit=10&page=${this.page}&sort=${this.sort}` +
       (this.tag ? `&tags=${this.tag}` : '') +
@@ -391,34 +366,7 @@ export default class MyPage extends Vue {
     this.page = 1
     this.count = 10
     let list = ''
-    if (taglist) {
-      console.log(taglist)
-      if (taglist.length === 1) {
-        taglist.map((e) => {
-          try {
-            list = list + e.toLowerCase()
-          } catch {
-            list = list + e.id
-          }
-        })
-      } else {
-        taglist.map((e, index) => {
-          if (index === taglist.length - 1) {
-            try {
-              list = list + e.toLowerCase()
-            } catch {
-              list = list + e.id
-            }
-          } else {
-            try {
-              list = list + e.toLowerCase() + '-'
-            } catch {
-              list = list + e.id + '-'
-            }
-          }
-        })
-      }
-    }
+    list = listIntercep(this.taglist)
 
     // console.log(list)
     const link =

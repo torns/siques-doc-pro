@@ -20,7 +20,11 @@
             </div>
             <div class="fs-xll pl-2">{{ collections.name }}</div>
           </div>
-          <div><el-button type="primary" size="mini">关注 | 0</el-button></div>
+          <div>
+            <el-button type="primary" size="mini"
+              >关注 | {{ collections.interest }}</el-button
+            >
+          </div>
         </div>
         <el-divider></el-divider>
         <div>

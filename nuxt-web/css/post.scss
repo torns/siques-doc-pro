@@ -14,8 +14,8 @@ blockquote {
 }
 
 h1 {
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 30px !important;
+  font-weight: 700 !important;
   word-break: break-word;
 }
 
@@ -78,11 +78,11 @@ p code {
 
   height: 210px;
   overflow: auto;
-  top: 24em;
+  top: 49em;
   padding: 0.618rem;
 
   list-style-type: none;
-  z-index: 0;
+  z-index: 1;
 
   &::before {
     content: '目录';

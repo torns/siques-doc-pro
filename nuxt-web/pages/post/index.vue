@@ -213,9 +213,10 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import Tag from '@/components/dialog/tag.vue'
+import { wordcounts } from '../../plugins/utils.js'
+import Tag from '~/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
-import wordCount from '~/plugins/utils.js'
+
 @Component({
   components: { tinymce, 'sq-tag': Tag }
 })
@@ -342,7 +343,7 @@ export default class index extends Vue {
       body = this.$refs.markdown.body
     }
 
-    const words = wordCount(body)
+    const words = wordcounts(body)
 
     const data = {
       title: this.title,

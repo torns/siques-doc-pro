@@ -89,6 +89,7 @@ export class PostController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard())
   async delete(@Param() id: string, @Query() data: any) {
     const { collectionId } = data;
     await this.postService.delete(id, parseInt(collectionId));
