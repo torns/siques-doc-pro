@@ -719,7 +719,7 @@ export default class Home extends Vue {
 }
 
 #home {
-  overflow: auto;
+  overflow-y: auto;
   height: 100vh;
 }
 </style>

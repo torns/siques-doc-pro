@@ -28,7 +28,7 @@
       <div style="line-height:28px">个人动态</div>
     </div>
     <div class="body border-solid">
-      <div style="min-height:200px" class="d-flex">
+      <div style="min-height:200px">
         <div
           v-for="act in action"
           :key="act.id"

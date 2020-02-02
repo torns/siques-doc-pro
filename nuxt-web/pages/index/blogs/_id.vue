@@ -64,7 +64,9 @@
                         >{{ collections.user.name }}</router-link
                       >
                     </div>
-                    <div class="pr-2">{{ post.created }}</div>
+                    <div class="pr-2">
+                      {{ $dayjs(post.created).fromNow() }}
+                    </div>
                     <div
                       @click="showBookmark(post.id)"
                       class="text-gray hoverlink fs-xm "

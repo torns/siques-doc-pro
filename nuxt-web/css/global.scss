@@ -15,9 +15,10 @@
 html,
 body {
   // height: 100%;
+
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
-
+  margin-right: calc(100% - 100vw);
   overflow-x: hidden;
   box-sizing: border-box;
   flex-wrap: wrap;
@@ -27,9 +28,9 @@ body {
   }
 }
 
-#app {
-  // margin-right: calc(100% - 100vw);
-}
+// #app {
+//   margin-right: calc(100% - 100vw);
+// }
 
 li {
   list-style-type: none;

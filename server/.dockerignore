@@ -1,5 +1,5 @@
 # compiled output
-production.env
+.git
 /dist
 /node_modules
 uploads
