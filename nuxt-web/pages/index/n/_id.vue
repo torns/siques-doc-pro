@@ -89,7 +89,7 @@ import md from '../../../plugins/markdown'
   components: {}
 })
 export default class Notes extends Vue {
-  name: string
+  name: string = ''
   activeName = 'first'
   dialogFormVisible = false
   notes: any = null
@@ -122,8 +122,9 @@ export default class Notes extends Vue {
     this.notes = res.data
   }
 
-  showBookmark(id) {
-    this.$refs.reference.showBookmark(id)
+  showBookmark(id: any) {
+    const ref: any = this.$refs.reference
+    ref.showBookmark(id)
   }
 
   delNote() {

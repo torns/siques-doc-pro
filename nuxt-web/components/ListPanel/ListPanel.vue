@@ -34,7 +34,7 @@ export default class ListPanel extends Vue {
   @Prop()
   posts: any
   @Prop()
-  collection: boolean
+  collection: any
   link = ''
   show: boolean = false
   mounted() {

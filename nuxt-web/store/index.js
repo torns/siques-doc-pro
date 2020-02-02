@@ -1,4 +1,4 @@
-const cookieparser = process.server ? require('cookieparser') : undefined
+// const cookieparser = process.server ? require('cookieparser') : undefined
 
 export const state = () => ({
   UserNotExist: true,
@@ -52,7 +52,7 @@ export const mutations = {
   deleteUserTag(state, data) {
     let index
     state.auth.user.tags.map((e, i) => {
-      console.log(e.id, i, data)
+      // console.log(e.id, i, data)
       if (e.id === data) {
         index = i
       }
@@ -74,21 +74,21 @@ export const getters = {
 
 export const actions = {
   nuxtServerInit({ commit }, { req }) {
-    let auth = null
-    if (req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie)
-      try {
-        auth = JSON.parse(parsed.auth)
-      } catch (err) {
-        // No valid cookie found
-      }
-    }
-    console.log(auth)
+    // let auth = null
+    // if (req.headers.cookie) {
+    //   const parsed = cookieparser.parse(req.headers.cookie)
+    //   try {
+    //     auth = JSON.parse(parsed.auth)
+    //   } catch (err) {
+    //     // No valid cookie found
+    //   }
+    // }
+    // console.log(auth)
     // commit('setAuth', auth)
   },
   nuxtClientInit({ commit }, { req }) {
     const autho = localStorage.getItem('auth._token.local') // or whatever yours is called
     commit('SET_AUTHO', autho)
-    console.log('From nuxtClientInit - ' + autho)
+    // console.log('From nuxtClientInit - ' + autho)
   }
 }

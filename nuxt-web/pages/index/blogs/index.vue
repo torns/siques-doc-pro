@@ -66,13 +66,13 @@ import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 })
 export default class index extends Vue {
   @Prop()
-  name: string
+  name: any
   activeName = 'first'
   sort = 'views'
   listId = true
   page = 1
   posts = null
-  list: string
+  list: any
 
   taglist = this.$store.state.auth
     ? this.$store.state.auth.user
@@ -96,7 +96,7 @@ export default class index extends Vue {
     }
   }
 
-  handleCurrentChange(val) {
+  handleCurrentChange(val: any) {
     this.page = val
     this.fetchPost()
   }
@@ -113,7 +113,7 @@ export default class index extends Vue {
     this.posts = res.data[0]
   }
 
-  handleClick(tab, event) {
+  handleClick(tab: any, event: any) {
     if (tab.name === 'second') {
       this.sort = 'liked'
       this.fetchPost()

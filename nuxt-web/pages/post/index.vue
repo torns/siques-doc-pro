@@ -182,9 +182,14 @@
               >{{ tag.name }}</el-tag
             >
 
-            <sq-tag ref="tag" :position="`bottom`" @add="addTag">
+            <sq-tag
+              :ishow="showtag"
+              ref="tag"
+              :position="`bottom`"
+              @add="addTag"
+            >
               <el-button
-                @click="showtagDialog"
+                @click="showtag = true"
                 class="button-new-tag"
                 size="small"
                 >+ 添加标签</el-button
@@ -231,8 +236,11 @@ export default class index extends Vue {
   selectEditor: boolean = true
   title: string = ''
   tagLen: number = 0
+  showtag: boolean = false
+  visible: any
+
   // 标签
-  dynamicTags = []
+  dynamicTags: Array<any> = []
 
   inputVisible = false
   inputValue = ''
@@ -244,9 +252,10 @@ export default class index extends Vue {
   }
 
   @Watch('dynamicTags')
-  dynamicTagsChanged(val, oldval) {
+  dynamicTagsChanged(val: any, oldval: any) {
     this.tagLen = 5 - val.length
-    this.$refs.tag.taglen = 5 - val.length
+    const ref: any = this.$refs.tag
+    ref.taglen = 5 - val.length
   }
 
   // get tagLen() {
@@ -286,11 +295,13 @@ export default class index extends Vue {
     this.title = res.data.title
     if (res.data.editor) {
       this.$nextTick(() => {
-        this.$refs.tinymce.setContent(res.data.body)
+        const ref: any = this.$refs.tinymce
+        ref.setContent(res.data.body)
       })
     } else {
       this.$nextTick(() => {
-        this.$refs.markdown.setContent(res.data.body)
+        const ref: any = this.$refs.markdown
+        ref.setContent(res.data.body)
       })
     }
   }
@@ -338,9 +349,11 @@ export default class index extends Vue {
     // 不同的编辑器方式不同
     let body
     if (this.selectEditor) {
-      body = this.$refs.tinymce.body
+      const ref: any = this.$refs.tinymce
+      body = ref.body
     } else {
-      body = this.$refs.markdown.body
+      const ref: any = this.$refs.markdown
+      body = ref.body
     }
 
     const words = wordcounts(body)
@@ -402,7 +415,7 @@ export default class index extends Vue {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       })
-        .then(async ({ value }) => {
+        .then(async ({ value }: any) => {
           await this.$http.put(`/posts/${id}`, { title: value })
           this.fetchPost(this.selectedCollection)
           this.$notify({
@@ -452,26 +465,33 @@ export default class index extends Vue {
     this.defaultEditor = res.data.editor === 1
   }
 
-  async handleClose(tag, id) {
+  async handleClose(tag: any, id: any) {
     this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     await this.$http.get(`/tags/${this.selectedPost}?tagId=${id}`)
   }
 
   showtagDialog() {
-    this.visible = true
+    // tslint:disable-next-line
+    const ref: any = this.$refs.tag
+    ref.setVisible()
   }
 
-  async addTag(tagname, tagid) {
+  async addTag(tagname: any, tagid: any) {
     if (this.tagLen > 0) {
       let includes = false
-      this.dynamicTags.map((e) => {
+      this.dynamicTags.map((e: any) => {
         if (e.name === tagname) {
           includes = true
         }
       })
 
+      const o: any = {
+        name: tagname,
+        id: tagid
+      }
+
       if (!includes) {
-        this.dynamicTags.push({ name: tagname, id: tagid })
+        this.dynamicTags.push(o)
         await this.$http.get(`/tags/${this.selectedPost}?tagId=${tagid}`)
       } else {
         this.$notify({

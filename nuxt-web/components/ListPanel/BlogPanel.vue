@@ -71,7 +71,7 @@ export default class HomepageList extends Vue {
   @Prop()
   data: any
 
-  async like(id, index) {
+  async like(id: any, index: any) {
     if (this.$store.state.UserNotExist === false) {
       const res = await this.$http.get(`/users/${id}/like`)
 
@@ -85,8 +85,9 @@ export default class HomepageList extends Vue {
     }
   }
 
-  showBookmark(id) {
-    this.$refs.reference.showBookmark(id)
+  showBookmark(id: any) {
+    const ref: any = this.$refs.reference
+    ref.showBookmark(id)
   }
 }
 </script>

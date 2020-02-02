@@ -28,11 +28,13 @@ export default class MarkDown extends Vue {
   @Prop()
   height: any
   body: any = ''
+  editor: any
   mounted() {
     this.initEditor()
   }
   initEditor() {
     this.editor = new Editor({
+      /* eslint-disable */
       el: document.getElementById('editorSection'),
       initialEditType: 'markdown',
       language: 'zh_CN',
@@ -43,12 +45,12 @@ export default class MarkDown extends Vue {
 
     // 获取编辑器上的功能条
     const toolbar = this.editor.getUI().getToolbar()
-    const fileDom = this.$refs.files
+    const fileDom: any = this.$refs.files
     // 添加事件
     this.editor.eventManager.addEventType('uploadEvent')
     this.editor.eventManager.listen('uploadEvent', () => {
       fileDom.click()
-      console.log('按下按钮')
+      // console.log('按下按钮')
       // Do some other thing...
     })
     // 添加自定义按钮 第二个参数代表位置，不传默认放在最后
@@ -72,7 +74,7 @@ export default class MarkDown extends Vue {
     this.$emit('submit', this.body)
   }
 
-  async uploadFile(e) {
+  async uploadFile(e: any) {
     const target = e.target
     const file = target.files[0]
     const params = new FormData()
@@ -91,7 +93,7 @@ export default class MarkDown extends Vue {
     target.value = '' // 这个地方清除一下不然会有问题
   }
 
-  addImgToMd(url) {
+  addImgToMd(url: any) {
     const editor = this.editor.getCodeMirror()
     const editorHtml = this.editor.getCurrentModeEditor()
     const isMarkdownMode = this.editor.isMarkdownMode()
@@ -106,7 +108,7 @@ export default class MarkDown extends Vue {
     }
   }
 
-  setContent(value) {
+  setContent(value: any) {
     this.editor.setValue(value)
   }
   getContent() {

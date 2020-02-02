@@ -59,7 +59,7 @@ import bookmark from '~/components/dialog/bookmark.vue'
   components: { 'bookmark-dialog': bookmark }
 })
 export default class Bookmark extends Vue {
-  name: string
+  name: any
   activeName = 'first'
 
   bookmarks = ''
@@ -77,7 +77,8 @@ export default class Bookmark extends Vue {
     this.bookmarks = res.data
   }
   showDialog() {
-    this.$refs.dialog.dialogFormVisible = true
+    const ref: any = this.$refs.dialog
+    ref.dialogFormVisible = true
   }
 
   handleClick(e: any) {}

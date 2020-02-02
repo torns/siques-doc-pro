@@ -180,7 +180,7 @@ export default class collection extends Vue {
     this.collections = res.data
   }
 
-  async like(id, index) {
+  async like(id: any, index: any) {
     const res = await this.$http.get(`/users/${id}/like`)
     if (res.data) {
       this.collections.posts[index].liked += 1
@@ -209,16 +209,17 @@ export default class collection extends Vue {
   }
 
   showCreatDialog() {
-    this.$refs.dialog.dialogFormVisible = true
+    const ref: any = this.$refs.dialog
+    ref.dialogFormVisible = true
   }
 
-  async showBookmark(id) {
+  async showBookmark(id: any) {
     this.dialogFormVisible = true
     this.postId = id
 
-    const list = []
-    await this.bookmarks.map((el) => {
-      el.posts.map((e) => {
+    const list: any = []
+    await this.bookmarks.map((el: any) => {
+      el.posts.map((e: any) => {
         if (e.id === id) {
           list.push(el.id)
         }

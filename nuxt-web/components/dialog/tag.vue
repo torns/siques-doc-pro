@@ -8,7 +8,7 @@
       width="450"
     >
       <div class="px-4 py-2" style="height:300px;">
-        <div class="d-flex jc-between  gray-1 fs-sm " style="font-weight:600;">
+        <div class="d-flex jc-between gray-1 fs-sm" style="font-weight:600;">
           <div>还可添加{{ taglen }}个标签</div>
           <div>找不到标签?</div>
         </div>
@@ -16,8 +16,7 @@
           v-model="state"
           :fetch-suggestions="querySearchAsync"
           placeholder="请输入内容"
-        >
-        </el-input>
+        ></el-input>
 
         <div v-if="state !== ''">
           <li
@@ -28,9 +27,7 @@
             class="py-2 my-1 text-dark fs-md hover-2"
             style="margin-left: -24px;margin-right: -24px;"
           >
-            <div class="px-4">
-              {{ item.name }}
-            </div>
+            <div class="px-4">{{ item.name }}</div>
           </li>
         </div>
 
@@ -47,7 +44,7 @@
                 <ul>
                   <li
                     @click="addTag(tag.name, tag.id)"
-                    class="bg-3  px-2 mx-1 py-1 my-2 hover-3"
+                    class="bg-3 px-2 mx-1 py-1 my-2 hover-3"
                   >
                     {{ tag.name }}
                   </li>
@@ -64,14 +61,13 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
-// import { taglist } from '../../data.js'
 @Component({})
 export default class Tag extends Vue {
   @Prop()
-  position: string
+  position: any
   @Prop()
-  cunstom: string
-  taglen: number = null
+  cunstom: any
+  taglen: number = 0
   visible = false
   taglist: any = ''
   tags: any = []
@@ -88,8 +84,8 @@ export default class Tag extends Vue {
     const result = await this.$http.get('/tags')
     this.taglist = result.data
 
-    let tags = []
-    this.taglist.map((e) => {
+    let tags: any = []
+    this.taglist.map((e: any) => {
       tags = tags.concat(e.tags)
     })
     this.tags = tags
@@ -101,7 +97,7 @@ export default class Tag extends Vue {
   //   }
 
   @Watch('state')
-  onStateChanged(newvalue, oldvalue) {
+  onStateChanged(newvalue: any, oldvalue: any) {
     const taglist = this.tags
     const results = newvalue
       ? taglist.filter(this.createStateFilter(newvalue))
@@ -109,7 +105,7 @@ export default class Tag extends Vue {
 
     this.results = results
   }
-  querySearchAsync(queryString) {
+  querySearchAsync(queryString: any) {
     const taglist = this.tags
     const results = queryString
       ? taglist.filter(this.createStateFilter(queryString))
@@ -117,23 +113,23 @@ export default class Tag extends Vue {
 
     this.results = results
   }
-  createStateFilter(queryString) {
-    return (state) => {
+  createStateFilter(queryString: any) {
+    return (state: any) => {
       return state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0
     }
   }
-  handleSelect(name, id) {
+  handleSelect(name: any, id: any) {
     this.$emit('add', name, id)
   }
 
-  handleClick(tab, event) {
+  handleClick(tab: any, event: any) {
     console.log(tab, event)
   }
   hide() {
     this.state = ''
   }
 
-  addTag(name, id) {
+  addTag(name: any, id: any) {
     this.$emit('add', name, id)
   }
 }

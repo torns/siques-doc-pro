@@ -23,6 +23,7 @@ export default class Tinymce extends Vue {
   height: number = 60
   model: any = []
   body: any = ''
+  win: any = window
 
   tinymceId =
     'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
@@ -39,17 +40,17 @@ export default class Tinymce extends Vue {
     this.$emit('submit')
   }
   getContent() {
-    return window.tinymce.get(this.tinymceId).getContent()
+    return this.win.tinymce.get(this.tinymceId).getContent()
   }
-  setContent(body) {
+  setContent(body: any) {
     setTimeout(() => {
-      return window.tinymce.get(this.tinymceId).setContent(body)
+      return this.win.tinymce.get(this.tinymceId).setContent(body)
     }, 300)
   }
   initTinymce() {
     // 上传问题
-    window.http = this.$http
-    window.tinymce.init({
+    this.win.http = this.$http
+    this.win.tinymce.init({
       selector: `#${this.tinymceId}`,
       language: this.languageTypeList.zh,
       height: this.height + 'vh',
@@ -60,7 +61,11 @@ export default class Tinymce extends Vue {
       advlist_bullet_styles: 'square',
       advlist_number_styles: 'default',
 
-      images_upload_handler: async (blobInfo, success, failure) => {
+      images_upload_handler: async (
+        blobInfo: any,
+        success: any,
+        failure: any
+      ) => {
         const params = new FormData()
         const filename = blobInfo.blob().name
 
@@ -70,7 +75,7 @@ export default class Tinymce extends Vue {
           headers: { 'Content-Type': 'multipart/form-data' }
         }
 
-        const res = await window.http.post('/files/ali', params, config)
+        const res = await this.win.http.post('/files/ali', params, config)
         const url = res.data.url + '?x-oss-process=style/' + 'nest-picture'
 
         success(url)

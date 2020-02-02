@@ -19,7 +19,7 @@ import ListBookmark from '../ListPanel/ListBookmark.vue'
 })
 export default class Bookmark extends Vue {
   @Prop()
-  id: string
+  id: any
   bookmarks: any = null
   activeName: string = ''
   mypageActiveName: string = 'mypost'

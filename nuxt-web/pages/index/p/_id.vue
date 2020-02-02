@@ -416,11 +416,6 @@ const highlightCode = () => {
   }
 })
 export default class Post extends Vue {
-  async asyncData({ params, $api }) {
-    const id = await params.id // When calling /abc the slug will be "abc"
-    console.log(id)
-  }
-
   post: any = ''
   recommendPost = []
   liked: number = 0
@@ -450,7 +445,7 @@ export default class Post extends Vue {
     window.scrollTo(0, 0)
   }
 
-  async fetchpost(id) {
+  async fetchpost(id: any) {
     if (!this.post) {
       const res = await this.$http.get(`posts/${id}?collection=true`)
       this.post = res.data
@@ -487,7 +482,7 @@ export default class Post extends Vue {
     }
   }
 
-  async commentLike(id) {
+  async commentLike(id: any) {
     await this.$http.get(`posts/${id}/comments/like`)
     this.fetchComment()
   }
@@ -495,7 +490,7 @@ export default class Post extends Vue {
   async replyLike() {}
 
   // 关注
-  async follow(id) {
+  async follow(id: any) {
     // 提供用户id
     await this.$http.get(`/users/${id}/follow`)
   }
@@ -526,7 +521,7 @@ export default class Post extends Vue {
   // 这里commentId就是父级的评论
   // 当前用户id
   // 被回复用户id:from_uid
-  async sendReply(commentId, fromUid) {
+  async sendReply(commentId: any, fromUid: any) {
     // console.log(commentId);
     // console.log(this.$store.state.auth.user.id);
     // console.log(from_uid);
@@ -550,7 +545,8 @@ export default class Post extends Vue {
   }
 
   showCreatDialog() {
-    this.$refs.dialog.dialogFormVisible = true
+    const ref: any = this.$refs.dialog
+    ref.dialogFormVisible = true
   }
   showBookmarkDialog() {
     this.dialogFormVisible = true
@@ -563,9 +559,9 @@ export default class Post extends Vue {
     )
     this.bookmarks = res.data
 
-    const list = []
-    await this.bookmarks.map((el) => {
-      el.posts.map((e) => {
+    const list: any = []
+    await this.bookmarks.map((el: any) => {
+      el.posts.map((e: any) => {
         if (e.id === parseInt(this.id)) {
           list.push(el.id)
         }

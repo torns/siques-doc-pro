@@ -100,9 +100,7 @@ export default class T extends Vue {
     this.tagInfo = res.data
   }
 
-  handleClick(tab, event) {
-    console.log(tab, event)
-  }
+  handleClick(tab: any, event: any) {}
 }
 </script>
 <style lang="scss"></style>

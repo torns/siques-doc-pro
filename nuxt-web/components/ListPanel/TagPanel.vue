@@ -95,13 +95,14 @@ export default class TagPanel extends Vue {
   @Prop()
   data: any
 
-  async like(id) {
+  async like(id: any) {
     await this.$http.get(`/users/${id}/like`)
     this.$emit('refetch')
   }
 
-  showBookmark(id) {
-    this.$refs.bookmark.showBookmark(id)
+  showBookmark(id: any) {
+    const ref: any = this.$refs.bookmark
+    ref.showBookmark(id)
   }
 }
 </script>

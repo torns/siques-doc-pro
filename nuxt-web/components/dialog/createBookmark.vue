@@ -59,7 +59,8 @@ export default class createBookmark extends Vue {
   }
 
   showCreatDialog() {
-    this.$refs.dialog.dialogFormVisible = true
+    const ref: any = this.$refs.dialog
+    ref.dialogFormVisible = true
   }
   async fetchBookmark() {
     // 依赖用户id
@@ -82,14 +83,14 @@ export default class createBookmark extends Vue {
     this.dialogFormVisible = false
   }
 
-  async showBookmark(id) {
+  async showBookmark(id: any) {
     if (this.$store.state.UserNotExist === false) {
       this.dialogFormVisible = true
       this.postId = id
 
-      const list = []
-      await this.bookmarks.map((el) => {
-        el.posts.map((e) => {
+      const list: any = []
+      await this.bookmarks.map((el: any) => {
+        el.posts.map((e: any) => {
           if (e.id === id) {
             list.push(el.id)
           }

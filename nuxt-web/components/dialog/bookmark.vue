@@ -63,7 +63,7 @@ export default class BookmarkDialog extends Vue {
         message: '创建收藏夹成功'
       })
       this.dialogFormVisible = false
-      this.bookmark = {}
+      this.bookmark = { title: '' }
       // 创建成功后去刷新父组件的数据
       this.$emit('refetch')
     } else {

@@ -429,10 +429,10 @@ const highlightCode = () => {
   }
 })
 export default class Question extends Vue {
-  async asyncData({ params, $api }) {
-    const id = await params.id // When calling /abc the slug will be "abc"
-    console.log(id)
-  }
+  // async asyncData({ params, $api }) {
+  //   const id = await params.id // When calling /abc the slug will be "abc"
+  //   console.log(id)
+  // }
   showCommentPanel = false
   question: any = ''
   recommendPost = []
@@ -459,7 +459,7 @@ export default class Question extends Vue {
     return this.$route.params.id
   }
 
-  async fetchQuestion(id) {
+  async fetchQuestion(id: any) {
     if (!this.question) {
       const res = await this.$http.get(`posts/${id}`)
       this.question = res.data
@@ -489,7 +489,7 @@ export default class Question extends Vue {
     }
   }
 
-  async commentLike(id) {
+  async commentLike(id: any) {
     await this.$http.get(`posts/${id}/comments/like`)
     this.fetchComment()
   }
@@ -497,7 +497,7 @@ export default class Question extends Vue {
   async replyLike() {}
 
   // 关注
-  async follow(id) {
+  async follow(id: any) {
     // 提供用户id
     await this.$http.get(`/users/${id}/follow`)
   }
@@ -525,7 +525,7 @@ export default class Question extends Vue {
     if (this.comment) {
       const data = {
         body: this.comment,
-        owner_uid: this.post.user.id // 这个资源的用户id
+        owner_uid: this.question.user.id // 这个资源的用户id
       }
       await this.$http.post(`/posts/${this.id}/comments`, data)
       this.$notify({
@@ -547,7 +547,7 @@ export default class Question extends Vue {
   // 这里commentId就是父级的评论
   // 当前用户id
   // 被回复用户id:from_uid
-  async sendReply(commentId, fromUid) {
+  async sendReply(commentId: any, fromUid: any) {
     // console.log(commentId);
     // console.log(this.$store.state.auth.user.id);
     // console.log(from_uid);
@@ -567,11 +567,11 @@ export default class Question extends Vue {
     this.replyData = ''
     this.showReply = ''
     this.showComment = ''
-    this.fetchpost(this.id)
   }
 
   showCreatDialog() {
-    this.$refs.dialog.dialogFormVisible = true
+    const ref: any = this.$refs.dialog
+    ref.dialogFormVisible = true
   }
   showBookmarkDialog() {
     this.dialogFormVisible = true
@@ -584,9 +584,9 @@ export default class Question extends Vue {
     )
     this.bookmarks = res.data
 
-    const list = []
-    await this.bookmarks.map((el) => {
-      el.posts.map((e) => {
+    const list: any = []
+    await this.bookmarks.map((el: any) => {
+      el.posts.map((e: any) => {
         if (e.id === parseInt(this.id)) {
           list.push(el.id)
         }

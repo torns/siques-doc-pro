@@ -56,8 +56,8 @@
                 </div>
                 <ul class="d-flex flex-wrap" style="width:95%">
                   <li
-                    v-for="(tag, index) in title.tags"
-                    :key="index"
+                    v-for="tag in title.tags"
+                    :key="tag.id"
                     class="bg-3 mr-1 my-1 hover-3 fs-xm"
                   >
                     <!-- 会报错暂时先不用 -->
@@ -130,15 +130,15 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import search from '~/components/searchPanel/search.vue'
+import mysearch from '~/components/searchPanel/search.vue'
 @Component({
-  components: { 'el-search': search }
+  components: { 'el-search': mysearch }
 })
-export default class Tags extends Vue {
-  taglist = null
-  taginfo = null
-  tags = null
-  userTags = null
+export default class TagsIndex extends Vue {
+  taglist = []
+  taginfo = ''
+  tags = ''
+  userTags = ''
   isTagFollowed = false
 
   mounted() {
@@ -150,20 +150,20 @@ export default class Tags extends Vue {
   async fetchAllTags() {
     const result = await this.$http.get('/tags')
     this.taglist = result.data
-    let tags = []
-    this.taglist.map((e) => {
+    let tags: any = []
+    this.taglist.map((e: any) => {
       tags = tags.concat(e.tags)
     })
     this.tags = tags
   }
 
-  async storeUserTag(tagId) {
-    let data = this.$refs.search.tagSearch
-
+  async storeUserTag(tagId: any) {
+    const ref: any = this.$refs.search
+    let data = ref.tagSearch
     if (typeof tagId === 'number') {
       data = [tagId]
     }
-    console.log(data)
+
     if (data.length !== 0) {
       await this.$http.post(
         `/tags/user/${this.$store.state.auth.user.id}`,
@@ -172,7 +172,8 @@ export default class Tags extends Vue {
       this.$store.commit('storeUserTag', data)
       this.fetchUserTag()
       this.isTagFollowed = true
-      this.$refs.search.tagSearch = []
+      const ref: any = this.$refs.search
+      ref.tagSearch = []
       this.$notify({
         type: 'success',
         message: '关注成功',
@@ -181,7 +182,7 @@ export default class Tags extends Vue {
     }
   }
 
-  async deleteUserTag(tagId) {
+  async deleteUserTag(tagId: any) {
     this.$store.commit('deleteUserTag', tagId)
     await this.$http.delete(`/tags/user/${tagId}`)
     this.fetchUserTag()
@@ -196,16 +197,16 @@ export default class Tags extends Vue {
     this.userTags = res.data
   }
 
-  show(id) {
+  show(id: any) {
     this.fetchTagDescription(id)
   }
 
-  async fetchTagDescription(id) {
+  async fetchTagDescription(id: any) {
     const res = await this.$http.get(`/tags/info/${id}`)
     this.taginfo = res.data
 
     let isTagFollowed = false
-    this.$store.state.auth.user.tags.map((e) => {
+    this.$store.state.auth.user.tags.map((e: any) => {
       if (e.id === res.data.info.id) {
         isTagFollowed = true
       }

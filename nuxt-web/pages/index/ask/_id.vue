@@ -1,6 +1,6 @@
 <template>
   <div class="bg-light">
-    <div class="container ">
+    <div class="container">
       <el-row type="flex" class="pt-4">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div>
@@ -10,13 +10,13 @@
             ></el-input>
             <div class="d-flex jc-between tags text-left my-3">
               <div>
-                <div class=" d-flex">
+                <div class="d-flex">
                   <el-tag
                     :key="tag.name"
                     v-for="tag in dynamicTags"
                     :disable-transitions="false"
                     @close="handleClose(tag.name, tag.id)"
-                    class="mr-2 "
+                    class="mr-2"
                     effect="plain"
                     closable
                     >{{ tag.name }}</el-tag
@@ -47,8 +47,7 @@
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
-                  >
-                  </el-option>
+                  ></el-option>
                 </el-option-group>
               </el-select>
             </div>
@@ -67,19 +66,20 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
+import { wordcounts } from '../../../plugins/utils.js'
 import Tag from '@/components/dialog/tag.vue'
-import { wordcounts } from '~/plugins/utils.js'
 
 @Component({
   components: { 'sq-tag': Tag }
 })
 export default class Index extends Vue {
   title = ''
-  dynamicTags = []
+  dynamicTags: Array<any> = []
   content = [{ development: '' }]
   model = ''
   question = ''
   tagLen: number = 0
+  visible: any
 
   get id() {
     return this.$route.params.id
@@ -88,7 +88,8 @@ export default class Index extends Vue {
   @Watch('model')
   doModelChanged() {
     if (this.model === 'development') {
-      this.$refs.markdown.setContent()
+      const ref: any = this.$refs.markdown
+      ref.setContent()
     }
   }
   mounted() {
@@ -119,20 +120,22 @@ export default class Index extends Vue {
     if (this.id) {
       const res = await this.$http.get(`/posts/${this.id}`)
       this.question = res.data
-      this.$refs.markdown.setContent(res.data.body)
+      const ref: any = this.$refs.markdown
+      ref.setContent(res.data.body)
       this.title = res.data.title
       this.dynamicTags = res.data.tags
     }
   }
 
   @Watch('dynamicTags')
-  dynamicTagsChanged(val, oldval) {
+  dynamicTagsChanged(val: any, oldval: any) {
     console.log(123)
     this.tagLen = 5 - val.length
-    this.$refs.tag.taglen = 5 - val.length
+    const ref: any = this.$refs.tag
+    ref.taglen = 5 - val.length
   }
 
-  async handleClose(tag, id) {
+  async handleClose(tag: any, id: any) {
     this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     if (this.id) {
       await this.$http.get(`/tags/${this.id}?tagId=${id}`)
@@ -142,7 +145,7 @@ export default class Index extends Vue {
     this.visible = true
   }
 
-  async addTag(tagname, tagid) {
+  async addTag(tagname: any, tagid: any) {
     let includes = false
     this.dynamicTags.map((e) => {
       if (e.name === tagname) {
@@ -164,7 +167,7 @@ export default class Index extends Vue {
     }
   }
 
-  async submitQues(data) {
+  async submitQues(data: any) {
     console.log(this.dynamicTags)
     if (this.title) {
       const word = wordcounts(data)

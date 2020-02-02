@@ -84,7 +84,7 @@ export default class SideBar extends Vue {
   // }
 
   changeStatu() {
-    this.$store.state.auth.user.interest.map((e) => {
+    this.$store.state.auth.user.interest.map((e: any) => {
       console.log(this.data.collection.id, e.id)
       if (this.data.collection.id === e.id) {
         this.isInterest = true

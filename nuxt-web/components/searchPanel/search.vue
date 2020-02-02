@@ -30,7 +30,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 @Component({})
 export default class Search extends Vue {
   @Prop()
-  data = null
+  data: any
   results = null
   loading = false
   options = []
@@ -38,12 +38,12 @@ export default class Search extends Vue {
 
   tagSearch = []
 
-  remoteMethod(query) {
+  remoteMethod(query: any) {
     if (query !== '') {
       this.loading = true
       setTimeout(() => {
         this.loading = false
-        this.options = this.data.filter((item) => {
+        this.options = this.data.filter((item: any) => {
           return item.name.toLowerCase().includes(query.toLowerCase()) === true
         })
       }, 200)

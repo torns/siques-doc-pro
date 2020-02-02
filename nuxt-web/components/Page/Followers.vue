@@ -43,7 +43,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 @Component({})
 export default class Follows extends Vue {
   @Prop()
-  id: String
+  id: any
   follows = ''
   mounted() {
     this.fetchfollows()

@@ -240,11 +240,6 @@ import noteList from '~/components/Page/noteList.vue'
   }
 })
 export default class Page extends Vue {
-  asyncData({ params }) {
-    const id = params.id // When calling /abc the slug will be "abc"
-    console.log(123, id)
-  }
-
   introduction: string = ''
   collections: string = ''
   defaultLink: string = 'Homepage'
@@ -324,7 +319,7 @@ export default class Page extends Vue {
     this.currentComponent = `${e[0]}`
   }
 
-  async save(alias) {
+  async save(alias: any) {
     this.show = false
     const data = { [alias]: this.messageBox }
     if (
@@ -395,7 +390,7 @@ export default class Page extends Vue {
     }
   }
 
-  async uploadAvator(param) {
+  async uploadAvator(param: any) {
     const params = new FormData()
 
     params.append('avator', param.file, param.file.name)
@@ -416,10 +411,10 @@ export default class Page extends Vue {
 
   // 头像上传相关
 
-  handleAvatarSuccess(res, file: any) {
+  handleAvatarSuccess(res: any, file: any) {
     this.avatorUrl = URL.createObjectURL(file.raw)
   }
-  beforeAvatarUpload(file) {
+  beforeAvatarUpload(file: any) {
     const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
 
     const isLt2M = file.size / 1024 / 1024 < 0.5

@@ -25,7 +25,7 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 })
 export default class QuestionList extends Vue {
   @Prop()
-  id: string
+  id: any
   questions = ''
   radio4 = []
   mounted() {

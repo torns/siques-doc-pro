@@ -128,7 +128,7 @@ export default class MySideBar extends Vue {
       `/users/${this.$store.state.auth.user.id}/skill`
     )
     this.originTag = res.data
-    this.skillTag = res.data.map((e) => {
+    this.skillTag = res.data.map((e: any) => {
       return e.id
     })
   }
@@ -148,7 +148,7 @@ export default class MySideBar extends Vue {
     this.fetchUserTag()
   }
 
-  async handleClose(tag) {
+  async handleClose(tag: any) {
     await this.$http.delete(`/users/${tag.id}/skill`)
     this.$notify({
       type: 'success',
@@ -158,7 +158,7 @@ export default class MySideBar extends Vue {
     this.fetchUserTag()
   }
 
-  addTag(name, id) {}
+  addTag(name: any, id: any) {}
 }
 </script>
 

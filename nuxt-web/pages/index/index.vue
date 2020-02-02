@@ -204,11 +204,9 @@ import { listIntercep } from '../../plugins/utils.js'
   components: {}
 })
 export default class MyPage extends Vue {
-  async asyncData({ $store }) {}
-
   page = 1
   count = 10
-  maxcount = null
+  maxcount: number = 0
   loading = false
   sort = 'liked'
   tag = null
@@ -225,7 +223,7 @@ export default class MyPage extends Vue {
     return this.loading || this.noMore
   }
 
-  get taglists() {
+  get taglists(): any {
     try {
       return this.$store.state.auth.user.tags || ''
     } catch {
@@ -352,7 +350,13 @@ export default class MyPage extends Vue {
     }, 500)
   }
 
-  async handleCategory(alias: any, sort, tag, taglist, listId) {
+  async handleCategory(
+    alias: any,
+    sort: any,
+    tag: any,
+    taglist: any,
+    listId: any
+  ) {
     console.log(
       { 别称: alias },
       { 标签: tag },

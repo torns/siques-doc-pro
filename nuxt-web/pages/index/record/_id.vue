@@ -72,20 +72,22 @@ import Tag from '@/components/dialog/tag.vue'
 })
 export default class Index extends Vue {
   title = ''
-  dynamicTags = []
+  dynamicTags: Array<any> = []
   content = [{ development: '' }]
   model = ''
   tagLen: number = 5
-  questions
+  questions: any
+  visible: any
 
   @Watch('model')
   doModelChanged() {
     if (this.model === 'development') {
-      this.$refs.markdown.setContent()
+      const ref: any = this.$refs.markdown
+      ref.setContent()
     }
   }
 
-  get id() {
+  get id(): any {
     return this.$route.params.id
   }
   mounted() {
@@ -116,19 +118,21 @@ export default class Index extends Vue {
     if (this.id) {
       const res = await this.$http.get(`posts/${this.id}`)
       this.questions = res.data
-      this.$refs.markdown.setContent(res.data.body)
+      const ref: any = this.$refs.markdown
+      ref.setContent(res.data.body)
       this.title = res.data.title
       this.dynamicTags = res.data.tags
     }
   }
 
   @Watch('dynamicTags')
-  dynamicTagsChanged(val, oldval) {
+  dynamicTagsChanged(val: any, oldval: any) {
     this.tagLen = 5 - val.length
-    this.$refs.tag.taglen = 5 - val.length
+    const ref: any = this.$refs.tag
+    ref.taglen = 5 - val.length
   }
 
-  async handleClose(tag, id) {
+  async handleClose(tag: any, id: any) {
     this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     if (this.id) {
       await this.$http.get(`/tags/${this.id}?tagId=${id}`)
@@ -138,7 +142,7 @@ export default class Index extends Vue {
     this.visible = true
   }
 
-  async addTag(tagname, tagid) {
+  async addTag(tagname: any, tagid: any) {
     if (this.tagLen > 0) {
       let includes = false
       this.dynamicTags.map((e) => {
@@ -168,8 +172,7 @@ export default class Index extends Vue {
     }
   }
 
-  async submitQues(data) {
-    console.log(this.dynamicTags)
+  async submitQues(data: any) {
     if (this.title) {
       // const word = wordcounts(data)
 

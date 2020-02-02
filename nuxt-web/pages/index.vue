@@ -421,26 +421,26 @@ export default class Home extends Vue {
   visible: boolean = false
 
   @Watch('isRegister')
-  isVisible(newval, oldval) {
+  isVisible(newval: any, oldval: any) {
     if (!newval) {
       this.resetForm()
     }
   }
 
-  phoneLength(value) {
+  phoneLength(value: any) {
     const regex = /^[1][3,4,5,7,8][0-9]{9}$/
     if (regex.test(value)) {
       return true
     }
   }
 
-  charLength(value) {
+  charLength(value: any) {
     if (value.length >= 7) {
       return true
     }
   }
 
-  lowercase(value) {
+  lowercase(value: any) {
     const regex = /^(?=.*[a-z]).+$/
 
     if (regex.test(value)) {
@@ -455,14 +455,14 @@ export default class Home extends Vue {
   //     return true
   //   }
   // }
-  number(value) {
+  number(value: any) {
     const regex = /^(?=.*[0-9]).+$/
 
     if (regex.test(value)) {
       return true
     }
   }
-  validatePhone(rule, value, callback) {
+  validatePhone(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入手机号'))
     }
@@ -474,7 +474,7 @@ export default class Home extends Vue {
     }
   }
 
-  validatePass(rule, value, callback) {
+  validatePass(rule: any, value: any, callback: any) {
     console.log(value)
     if (value === '') {
       callback(new Error('请输入密码'))
@@ -487,7 +487,7 @@ export default class Home extends Vue {
     }
   }
 
-  validateName(rule, value, callback) {
+  validateName(rule: any, value: any, callback: any) {
     console.log(value)
     if (value === '') {
       callback(new Error('请输入昵称'))
@@ -538,7 +538,8 @@ export default class Home extends Vue {
   }
 
   login() {
-    this.$refs.LoginDto.validate(async (valid) => {
+    const ref: any = this.$refs.LoginDto
+    ref.validate(async (valid: any) => {
       if (valid) {
         await this.$auth.loginWith('local', { data: this.LoginDto })
 
@@ -553,7 +554,8 @@ export default class Home extends Vue {
   }
 
   register() {
-    this.$refs.RegisterDto.validate(async (valid) => {
+    const ref: any = this.$refs.RegisterDto
+    ref.validate(async (valid: any) => {
       if (valid) {
         await this.$http.post('/users', this.RegisterDto)
         this.$notify({
@@ -570,7 +572,8 @@ export default class Home extends Vue {
   }
 
   resetForm() {
-    this.$refs.RegisterDto.resetFields()
+    const ref: any = this.$refs.RegisterDto
+    ref.resetFields()
   }
 
   logout() {
@@ -595,25 +598,21 @@ export default class Home extends Vue {
     if (!this.store) {
       const res = await this.$http.get('users')
       const usertag = []
-      res.data.tags.map((e) => {
+      res.data.tags.map((e: any) => {
         usertag.push(e)
       })
       // console.log(usertag)
     }
   }
 
-  dataSearch() {
-    console.log(1)
-  }
+  dataSearch() {}
   // 刷新保存状态
 
   // saveState() {
   //   localStorage.setItem('state', JSON.stringify(this.$store.state))
   // }
 
-  change(e) {
-    console.log(2)
-  }
+  change(e: any) {}
 }
 </script>
 

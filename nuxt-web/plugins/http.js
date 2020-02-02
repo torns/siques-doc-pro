@@ -29,7 +29,6 @@ export default ({ store }) => {
     },
     (err) => {
       if (err.response) {
-        console.log(err.response)
         Vue.prototype.$notify({
           type: 'error',
           message: err.response.data.message

@@ -91,7 +91,7 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {}
 })
 export default class Bookmark extends Vue {
-  name: string
+  name: string = ''
   activeName = 'first'
   dialogFormVisible = false
   bookmark: any = null

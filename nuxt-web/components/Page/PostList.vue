@@ -45,7 +45,7 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 })
 export default class PageComponent extends Vue {
   @Prop()
-  id: string
+  id: any
   posts: any = null
   collections: any = null
   activeName: string = ''
