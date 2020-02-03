@@ -136,10 +136,10 @@
             <div class="mb-4">CDN 存储服务由 又拍云 赞助提供</div>
           </div>
           <div class="text-dark-1">
-            <font-awesome-icon :icon="['fab', 'weixin']" class="pr-2" />
-            <font-awesome-icon :icon="['fab', 'weibo']" class="pr-2" />
-            <font-awesome-icon :icon="['fab', 'github']" class="pr-2" />
-            <font-awesome-icon :icon="['fab', 'twitter']" class="pr-2" />
+            <i class="iconfont icon-xiangmulan-weixinhao pr-2"></i>
+            <i class="iconfont icon-weibo pr-2"></i>
+            <i class="iconfont icon-github pr-2"></i>
+            <i class="iconfont icon-twitter pr-2"></i>
           </div>
         </div>
       </el-col>

@@ -14,13 +14,14 @@
         <div class="fs-lg d-flex flex-column">
           <div class="hover-2  w-100 text-center point py-2">
             <network network="twitter">
-              <font-awesome-icon :icon="['fab', 'twitter']" />
+              <i class="iconfont icon-twitter"></i>
+
               Twitter
             </network>
           </div>
           <div class="hover-2  w-100 text-center point py-2">
             <network network="weibo">
-              <font-awesome-icon :icon="['fab', 'weibo']" /> 新浪微博
+              <i class="iconfont icon-weibo"></i> 新浪微博
             </network>
           </div>
         </div>

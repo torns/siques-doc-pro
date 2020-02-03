@@ -1,7 +1,5 @@
 <template>
-  <button id="backbt" @click="btnTop" class="backtop">
-    <font-awesome-icon :icon="['fas', 'angle-double-up']" class="text-gray" />
-  </button>
+  <button id="backbt" @click="btnTop" class="backtop"></button>
 </template>
 
 <script lang="ts">
@@ -9,7 +7,6 @@ import { Vue, Component } from 'vue-property-decorator'
 @Component({})
 export default class Back2Top extends Vue {
   btnTop() {
-    console.log(123)
     window.scrollTo(0, 0)
   }
 }

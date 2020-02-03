@@ -183,8 +183,8 @@
             >
 
             <sq-tag
-              :ishow="showtag"
               ref="tag"
+              :ishow="showtag"
               :position="`bottom`"
               @add="addTag"
             >
@@ -206,7 +206,7 @@
             ref="markdown"
             v-show="!selectEditor"
             @submit="updatePost"
-            height="600px"
+            height="70vh"
             name="发布文章"
           ></markdown>
         </div>
@@ -248,6 +248,7 @@ export default class index extends Vue {
 
   mounted() {
     this.fetchCollect()
+
     this.fetchEditor()
   }
 
@@ -257,11 +258,6 @@ export default class index extends Vue {
     const ref: any = this.$refs.tag
     ref.taglen = 5 - val.length
   }
-
-  // get tagLen() {
-  //   // this.$refs.tag.taglen = 5 - this.dynamicTags.length
-  //   return 5 - this.dynamicTags.length
-  // }
 
   async createCollect() {
     if (this.newCollection === '') {
@@ -378,9 +374,9 @@ export default class index extends Vue {
       })
     }
   }
-
+  // 刷新问题
   async fetchCollect() {
-    const res = await this.$http.get('/collections')
+    const res = await this.$http.get('/collections/')
     if (res.data.length !== 0) {
       this.collections = res.data
       this.selectedCollection = res.data[0].id

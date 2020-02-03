@@ -46,7 +46,8 @@
                     @click="addTag(tag.name, tag.id)"
                     class="bg-3 px-2 mx-1 py-1 my-2 hover-3"
                   >
-                    {{ tag.name }}
+                    <i :class="` fs-xm fa fa-${tag.name} pr-1`"></i>
+                    <span class="pr-2">{{ tag.name }}</span>
                   </li>
                 </ul>
               </div>
@@ -122,9 +123,7 @@ export default class Tag extends Vue {
     this.$emit('add', name, id)
   }
 
-  handleClick(tab: any, event: any) {
-    console.log(tab, event)
-  }
+  handleClick(tab: any, event: any) {}
   hide() {
     this.state = ''
   }

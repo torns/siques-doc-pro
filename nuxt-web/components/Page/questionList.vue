@@ -35,7 +35,7 @@ export default class QuestionList extends Vue {
   async fetchUserQue() {
     if (this.id) {
       const res = await this.$http.get(`/posts/${this.id}/user?type=question`)
-      this.questions = res.data
+      this.questions = res.data[0]
     } else {
       const res = await this.$http.get(
         `/posts/${this.$store.state.auth.user.id}/user?type=question`

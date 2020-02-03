@@ -54,23 +54,23 @@
                     circle
                     style="width:fit-content;"
                   >
-                    <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+                    <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
                   <el-button @click="showBookmarkDialog" type="text" circle>
-                    <font-awesome-icon :icon="['fas', 'bookmark']" />
+                    <i class="iconfont icon-book-mark"></i>
                   </el-button>
 
                   <i></i>
 
                   <el-button style="margin-top:-15px" type="text" circle>
-                    <font-awesome-icon :icon="['fab', 'rocketchat']" />
+                    <i class="iconfont fs-xs icon-comments"></i>
                   </el-button>
 
                   <i></i>
                   <share-dialog :description="question" class>
                     <el-button style="margin-top:-25px" type="text" circle>
-                      <font-awesome-icon :icon="['fas', 'share-alt']" />
+                      <i class="iconfont icon-share1"></i>
                     </el-button>
                   </share-dialog>
                 </div>
@@ -145,15 +145,13 @@
                 <div
                   v-if="question.body"
                   v-html="question.body"
+                  v-highlight
                   class="article lh-3 pt-3"
                 ></div>
                 <div class="text-primary mt-3">阅读：{{ question.views }}</div>
                 <div class="d-flex ai-baseline jc-left my-4">
                   <el-button @click="like" class="hover-3" type="plain">
-                    <font-awesome-icon
-                      :icon="['far', 'thumbs-up']"
-                      class="pr-2"
-                    />
+                    <i class="pr-2 iconfont icon-Thumbsup"></i>
                     {{ liked }} 赞
                   </el-button>
 
@@ -162,17 +160,12 @@
                     class="hover-3"
                     type="plain"
                   >
-                    <font-awesome-icon
-                      :icon="['far', 'bookmark']"
-                      class="pr-2"
-                    />收藏
+                    <i class="pr-2 iconfont icon-bookmark"></i>收藏
                   </el-button>
 
                   <el-button @click="followQue" class="hover-3" type="plain">
-                    <font-awesome-icon
-                      :icon="['far', 'share-square']"
-                      class="pr-2"
-                    />{{ question.concerned }}关注
+                    <i class="pr-2  iconfont icon-note"></i
+                    >{{ question.concerned }}关注
                   </el-button>
                   <el-button
                     @click="showCommentPanel = !showCommentPanel"
@@ -253,10 +246,7 @@
                             @click="commentLike(comment.id)"
                             type="text"
                           >
-                            <font-awesome-icon
-                              :icon="['far', 'thumbs-up']"
-                              class="text-gray"
-                            />
+                            <i class="iconfont icon-thumbs-up"></i>
                             {{ comment.liked }}
                           </el-button>
 
@@ -323,10 +313,7 @@
                         </div>
                         <div class="d-flex ai-baseline fs-sm">
                           <el-button @click="replyLike" type="text">
-                            <font-awesome-icon
-                              :icon="['far', 'thumbs-up']"
-                              class="text-gray"
-                            />
+                            <i class="iconfont icon-thumbs-up"></i>
                           </el-button>
                           <div
                             @click="
@@ -404,7 +391,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 
-import hljs from 'highlight.js'
+// import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
@@ -412,13 +399,13 @@ import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
 
-const highlightCode = () => {
-  const preEl = document.querySelectorAll('pre code')
+// const highlightCode = () => {
+//   const preEl = document.querySelectorAll('pre code')
 
-  preEl.forEach((el) => {
-    hljs.highlightBlock(el)
-  })
-}
+//   preEl.forEach((el) => {
+//     hljs.highlightBlock(el)
+//   })
+// }
 
 @Component({
   components: {
@@ -452,7 +439,7 @@ export default class Question extends Vue {
     this.fetchComment()
   }
   updated() {
-    highlightCode()
+    // highlightCode()
   }
   // TS中的计算属性
   get id(): any {

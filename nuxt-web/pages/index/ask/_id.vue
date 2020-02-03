@@ -129,7 +129,6 @@ export default class Index extends Vue {
 
   @Watch('dynamicTags')
   dynamicTagsChanged(val: any, oldval: any) {
-    console.log(123)
     this.tagLen = 5 - val.length
     const ref: any = this.$refs.tag
     ref.taglen = 5 - val.length
@@ -168,7 +167,6 @@ export default class Index extends Vue {
   }
 
   async submitQues(data: any) {
-    console.log(this.dynamicTags)
     if (this.title) {
       const word = wordcounts(data)
 

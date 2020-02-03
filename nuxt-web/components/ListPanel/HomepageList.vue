@@ -10,7 +10,6 @@
             (link.alias == category ? 'bg-1 ' : 'hover-2 ') + `pr-6  pl-3 py-2`
           "
         >
-          <font-awesome-icon :icon="[link.tag, link.icon]" class="pr-1" />
           {{ link.name }}
         </li>
       </ul>

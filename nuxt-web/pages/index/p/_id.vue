@@ -54,22 +54,22 @@
                     circle
                     style="width:fit-content;"
                   >
-                    <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+                    <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
                   <el-button @click="showBookmarkDialog" type="text" circle>
-                    <font-awesome-icon :icon="['fas', 'bookmark']" />
+                    <i class="iconfont icon-book-mark"></i>
                   </el-button>
 
                   <i></i>
 
                   <el-button style="margin-top:-15px" type="text" circle>
-                    <font-awesome-icon :icon="['fab', 'rocketchat']" />
+                    <i class="iconfont fs-xs icon-comments"></i>
                   </el-button>
 
                   <i></i>
                   <el-button style="margin-top:-15px" type="text" circle>
-                    <font-awesome-icon :icon="['fas', 'share-alt']" />
+                    <i class="iconfont icon-share1"></i>
                   </el-button>
                 </div>
                 <h1 class="py-4">{{ post.title }}</h1>
@@ -126,6 +126,7 @@
                 <div
                   v-if="post.body"
                   v-html="post.body"
+                  v-highlight
                   class="article lh-3"
                 ></div>
                 <div class="text-primary mt-3">
@@ -139,10 +140,7 @@
                 </div>
                 <div class="d-flex jc-center my-4">
                   <el-button @click="like" class="hover-3" type="plain">
-                    <font-awesome-icon
-                      :icon="['far', 'thumbs-up']"
-                      class="pr-2"
-                    />
+                    <i class="pr-2 iconfont icon-Thumbsup"></i>
                     {{ liked }} 赞
                   </el-button>
 
@@ -151,18 +149,12 @@
                     class="hover-3"
                     type="plain"
                   >
-                    <font-awesome-icon
-                      :icon="['far', 'bookmark']"
-                      class="pr-2"
-                    />收藏
+                    <i class="pr-2 iconfont icon-bookmark"></i>收藏
                   </el-button>
 
                   <share-dialog :description="post" class="pl-2">
                     <el-button class="hover-3" type="plain">
-                      <font-awesome-icon
-                        :icon="['far', 'share-square']"
-                        class="pr-2"
-                      />分享
+                      <i class="pr-2  iconfont icon-share"></i>分享
                     </el-button>
                   </share-dialog>
                 </div>
@@ -233,10 +225,7 @@
                             @click="commentLike(comment.id)"
                             type="text"
                           >
-                            <font-awesome-icon
-                              :icon="['far', 'thumbs-up']"
-                              class="text-gray"
-                            />
+                            <i class="iconfont icon-thumbs-up"></i>
                             {{ comment.liked }}
                           </el-button>
 
@@ -303,10 +292,7 @@
                         </div>
                         <div class="d-flex ai-baseline fs-sm">
                           <el-button @click="replyLike" type="text">
-                            <font-awesome-icon
-                              :icon="['far', 'thumbs-up']"
-                              class="text-gray"
-                            />
+                            <i class="text-gray iconfont icon-Thumbsup"></i>
                           </el-button>
                           <div
                             @click="
@@ -392,20 +378,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 
-import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import BackToTop from '~/components/BackToTop/Back2Top.vue'
 import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
-
-const highlightCode = () => {
-  const preEl = document.querySelectorAll('pre code')
-
-  preEl.forEach((el) => {
-    hljs.highlightBlock(el)
-  })
-}
 
 @Component({
   components: {
@@ -434,13 +411,16 @@ export default class Post extends Vue {
     this.fetchRecommendPost()
   }
   updated() {
-    highlightCode()
+    // highlightCode()
   }
   // TS中的计算属性
   get id(): any {
     return this.$route.params.id
   }
 
+  get isUser(): any {
+    return !this.$store.state.UserNotExist
+  }
   bck2Top() {
     window.scrollTo(0, 0)
   }
@@ -474,7 +454,7 @@ export default class Post extends Vue {
   }
 
   async like() {
-    if (this.$store.state.UserNotExist === false) {
+    if (this.isUser) {
       await this.$http.get(`/users/${this.id}/like`)
       this.fetchpost(this.id)
     } else {
@@ -496,25 +476,29 @@ export default class Post extends Vue {
   }
 
   async sendComment() {
-    if (this.comment) {
-      const data = {
-        body: this.comment,
-        owner_uid: this.post.user.id // 这个资源的用户id
+    if (this.isUser) {
+      if (this.comment) {
+        const data = {
+          body: this.comment,
+          owner_uid: this.post.user.id // 这个资源的用户id
+        }
+        await this.$http.post(`/posts/${this.id}/comments`, data)
+        this.$notify({
+          type: 'success',
+          message: '评论成功',
+          title: '成功'
+        })
+        this.comment = ''
+        this.fetchpost(this.id)
+      } else {
+        this.$notify({
+          type: 'error',
+          message: '内容不能为空',
+          title: '评论失败'
+        })
       }
-      await this.$http.post(`/posts/${this.id}/comments`, data)
-      this.$notify({
-        type: 'success',
-        message: '评论成功',
-        title: '成功'
-      })
-      this.comment = ''
-      this.fetchpost(this.id)
     } else {
-      this.$notify({
-        type: 'error',
-        message: '内容不能为空',
-        title: '评论失败'
-      })
+      this.$store.commit('toggleLoginForm')
     }
   }
 
@@ -525,23 +509,27 @@ export default class Post extends Vue {
     // console.log(commentId);
     // console.log(this.$store.state.auth.user.id);
     // console.log(from_uid);
-    const data = {
-      parent_id: commentId,
-      body: this.replyData,
-      from_uid: this.$store.state.auth.user.id,
-      to_uid: fromUid
-    }
+    if (this.isUser) {
+      const data = {
+        parent_id: commentId,
+        body: this.replyData,
+        from_uid: this.$store.state.auth.user.id,
+        to_uid: fromUid
+      }
 
-    await this.$http.post('posts/1/reply', data)
-    this.$notify({
-      type: 'success',
-      message: '回复成功',
-      title: '成功'
-    })
-    this.replyData = ''
-    this.showReply = ''
-    this.showComment = ''
-    this.fetchpost(this.id)
+      await this.$http.post('posts/1/reply', data)
+      this.$notify({
+        type: 'success',
+        message: '回复成功',
+        title: '成功'
+      })
+      this.replyData = ''
+      this.showReply = ''
+      this.showComment = ''
+      this.fetchpost(this.id)
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   showCreatDialog() {
@@ -549,8 +537,12 @@ export default class Post extends Vue {
     ref.dialogFormVisible = true
   }
   showBookmarkDialog() {
-    this.dialogFormVisible = true
-    this.fetchBookmark()
+    if (this.isUser) {
+      this.dialogFormVisible = true
+      this.fetchBookmark()
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   async fetchBookmark() {

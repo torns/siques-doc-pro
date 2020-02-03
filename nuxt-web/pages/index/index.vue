@@ -73,10 +73,12 @@
                     `pr-6  pl-3 py-2`
                 "
               >
-                <font-awesome-icon
+                <!-- <font-awesome-icon
                   :icon="[link.prefix, link.icon]"
                   :class="` pr-1 text-${link.color}`"
-                />
+                /> -->
+                <i :class="`fa pr-1 text-${link.color} fa-${link.icon}`"></i>
+
                 {{ link.name }}
               </li>
               <div class="pl-3 py-2 tech-square-title">技术频道</div>
@@ -88,13 +90,22 @@
                 :key="link.alias"
                 :class="
                   (link.alias == category ? `bg-1 ` : 'hover-2 ') +
-                    `pr-6  pl-3 py-2 `
+                    `pr-7  pl-3 py-2 `
                 "
               >
-                <font-awesome-icon
+                <!-- <font-awesome-icon
                   :icon="[link.prefix, link.icon]"
                   :class="`fs-md pr-1 text-${link.color}`"
-                />
+                /> -->
+
+                <i
+                  :class="
+                    (link.alias == category
+                      ? `text-white `
+                      : `text-${link.color} `) +
+                      `fs-md iconfont  pr-1  icon-${link.icon}`
+                  "
+                ></i>
                 {{ link.name }}
               </li>
             </ul>
@@ -263,8 +274,8 @@ export default class MyPage extends Vue {
       taglist: ['frontEnd'],
       sort: 'created',
       prefix: 'fab',
-      icon: 'js-square',
-      color: 'yellow'
+      icon: 'js',
+      color: 'yellow-1'
     },
     {
       name: '后端',
@@ -272,7 +283,7 @@ export default class MyPage extends Vue {
       taglist: ['cloudcomputing', 'database', 'server'],
       sort: 'created',
       prefix: 'fab',
-      icon: 'bitbucket',
+      icon: 'storage',
       color: 'blue-1'
     },
     {
@@ -308,7 +319,7 @@ export default class MyPage extends Vue {
       taglist: ['miniProgram'],
       sort: 'created',
       prefix: 'fab',
-      icon: 'schlix',
+      icon: 'xiaochengxu',
       color: 'green'
     },
     {
@@ -317,8 +328,8 @@ export default class MyPage extends Vue {
       tag: 'info',
       sort: 'created',
       prefix: 'fab',
-      icon: 'hubspot',
-      color: 'yellow-1'
+      icon: 'hangye',
+      color: 'yellow'
     }
   ]
 
@@ -357,12 +368,12 @@ export default class MyPage extends Vue {
     taglist: any,
     listId: any
   ) {
-    console.log(
-      { 别称: alias },
-      { 标签: tag },
-      { 分类: sort },
-      { 标签列: taglist }
-    )
+    // console.log(
+    //   { 别称: alias },
+    //   { 标签: tag },
+    //   { 分类: sort },
+    //   { 标签列: taglist }
+    // )
     this.category = alias
     this.tag = tag
     this.taglist = taglist

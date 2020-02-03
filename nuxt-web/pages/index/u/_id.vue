@@ -24,7 +24,7 @@
                       style="background-color:white;"
                       class="avatar"
                     />
-                    <img src="~/static/avator.jpg" />
+                    <img v-else src="~/static/avator.jpg" />
                   </el-avatar>
                   <el-upload
                     :http-request="uploadAvator"
@@ -40,21 +40,21 @@
                   </el-upload>
                 </div>
 
-                <ul class="icon-list d-flex jc-between fs-xl pt-2">
-                  <li class="hover-1 opacity25 text-dark-1">
-                    <font-awesome-icon :icon="['fab', 'github']" />
+                <ul class="icon-list d-flex jc-between   pt-2">
+                  <li class="hover-1 opacity25 text-dark-1 ">
+                    <i class="iconfont icon-github fs-xl"></i>
                   </li>
                   <li class="hover-1 opacity25 text-orange">
-                    <font-awesome-icon :icon="['fab', 'weibo']" />
+                    <i class="iconfont icon-weibo fs-xl"></i>
                   </li>
                   <li class="hover-1 opacity25 text-blue">
-                    <font-awesome-icon :icon="['fab', 'invision']" />
+                    <i class="iconfont icon-ins fs-xl"></i>
                   </li>
                   <li class="hover-1 opacity25 text-blue">
-                    <font-awesome-icon :icon="['fab', 'twitter']" />
+                    <i class="iconfont icon-twitter fs-xl"></i>
                   </li>
                   <li class="hover-1 opacity25 text-darkblue">
-                    <font-awesome-icon :icon="['fab', 'facebook']" />
+                    <i class="iconfont icon-tian7_facebook fs-xl"></i>
                   </li>
                 </ul>
               </div>
@@ -66,11 +66,8 @@
                 </h2>
                 <el-button type="text">查看完整档案</el-button>
               </div>
-              <div class="fs-xl pb-3">
-                <font-awesome-icon
-                  :icon="['fas', 'american-sign-language-interpreting']"
-                  class="pr-2"
-                />10
+              <div class=" pb-3">
+                <i class="iconfont icon-famous fs-lg"></i> 10
                 <span class="opacity60">声望</span>
               </div>
               <ul class="opacity60 ">
@@ -99,10 +96,8 @@
                   </div>
 
                   <div v-else class="d-flex ai-baseline">
-                    <font-awesome-icon
-                      :icon="[link.tag, link.icon]"
-                      class="pr-2"
-                    />
+                    <i :class="`pr-2 iconfont icon-${link.icon}`"> </i>
+
                     <div
                       @click="
                         ;(show = true),
@@ -112,11 +107,18 @@
                       "
                     >
                       <!-- 没有解决 -->
-
-                      <div v-if="$store.state.auth.user[link.alias] != null">
-                        {{ $store.state.auth.user[link.alias] }}
+                      <div v-if="user != ''">
+                        <div v-if="user[link.alias] !== null">
+                          {{ user[link.alias] }}
+                        </div>
+                        <div v-else>暂无(ﾟ∀ﾟ )</div>
                       </div>
-                      <div v-else>{{ link.name }}</div>
+                      <div v-if="!id">
+                        <div v-if="$store.state.auth.user[link.alias] != null">
+                          {{ $store.state.auth.user[link.alias] }}
+                        </div>
+                        <div v-else>{{ link.name }}</div>
+                      </div>
                     </div>
                   </div>
                 </li>
@@ -159,17 +161,28 @@
               <div class="d-flex jc-around">
                 <div @click="handleComponent({ 0: 'Followers' })" class="point">
                   <div>关注了</div>
-                  <span v-if="user.follows">{{ user.follows.length }}人</span>
-                  <span v-else
-                    >{{ $store.state.auth.user.follows.length }}人</span
-                  >
+                  <div v-if="user !== ''">
+                    <span v-if="user.follows">{{ user.follows.length }}人</span>
+                  </div>
+
+                  <div v-else>
+                    <span v-if="!$store.state.UserNotExist"
+                      >{{ $store.state.auth.user.follows.length }}人</span
+                    >
+                  </div>
                 </div>
                 <el-divider direction="vertical"></el-divider>
 
                 <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
                   <div>粉丝</div>
-                  <span v-if="user.user">{{ user.user.length }}人</span>
-                  <span v-else>{{ $store.state.auth.user.user.length }}人</span>
+                  <div v-if="user !== ''">
+                    <span v-if="user.user">{{ user.user.length }}人</span>
+                  </div>
+                  <div v-else>
+                    <span v-if="!$store.state.UserNotExist"
+                      >{{ $store.state.auth.user.user.length }}人</span
+                    >
+                  </div>
                 </div>
               </div>
               <div>
@@ -206,7 +219,10 @@
             class="hidden-sm-and-down"
           >
             <!-- eslint-disable-next-line vue/require-component-is -->
-            <component :is="currentComponent === 'Homepage' ? 'SideBar' : ''" />
+            <component
+              :id="id"
+              :is="currentComponent === 'Homepage' ? 'SideBar' : ''"
+            />
           </el-col>
         </el-row>
       </div>
@@ -258,28 +274,28 @@ export default class Page extends Vue {
       alias: 'city',
       placeholder: '请填写城市',
       tag: 'far',
-      icon: 'address-card'
+      icon: 'daqiashise'
     },
     {
       name: '填写毕业院校',
       alias: 'school',
       placeholder: '请填写院校',
       tag: 'far',
-      icon: 'thumbs-up'
+      icon: 'school'
     },
     {
       name: '填写所在公司/组织',
       alias: 'organization',
       placeholder: '请填写公司&组织',
       tag: 'far',
-      icon: 'compass'
+      icon: 'organization'
     },
     {
       name: '填写个人网站',
       alias: 'website',
       placeholder: '请填写网站地址',
       tag: 'fab',
-      icon: 'js-square'
+      icon: 'weblist'
     }
   ]
 

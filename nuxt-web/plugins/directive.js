@@ -5,3 +5,10 @@ Vue.directive('focus', {
     el.getElementsByTagName('input')[0].focus()
   }
 })
+Vue.directive('highlight', function(el) {
+  const blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+    // eslint-disable-next-line
+    hljs.highlightBlock(block)
+  })
+})

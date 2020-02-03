@@ -12,10 +12,7 @@
               class="d-flex bg-light border-radius jc-center ai-center"
               style="height:65px;width:65px;"
             >
-              <font-awesome-icon
-                :icon="['fab', 'audible']"
-                class="fs-ll text-dark"
-              />
+              <i class="opacity80 fs-ll iconfont icon-zhuanlan"></i>
             </div>
           </div>
           <div class="d-flex flex-column jc-between">
@@ -51,7 +48,7 @@
     </div>
     <sq-leaderboard
       v-if="relaPost != null"
-      :postId="this.data.id"
+      :postId="data.id"
       :data="relaPost"
     ></sq-leaderboard>
   </div>
@@ -73,6 +70,10 @@ export default class SideBar extends Vue {
     this.initfetchCollection()
   }
 
+  get isUser() {
+    return this.$store.state.UserNotExist
+  }
+
   // get isInterest() {
   //   return this.data.user.interest.map((e) => {
   //     let valid = false
@@ -84,12 +85,13 @@ export default class SideBar extends Vue {
   // }
 
   changeStatu() {
-    this.$store.state.auth.user.interest.map((e: any) => {
-      console.log(this.data.collection.id, e.id)
-      if (this.data.collection.id === e.id) {
-        this.isInterest = true
-      }
-    })
+    if (!this.isUser) {
+      this.$store.state.auth.user.interest.map((e: any) => {
+        if (this.data.collection.id === e.id) {
+          this.isInterest = true
+        }
+      })
+    }
   }
 
   async fetchRelaPost() {
@@ -104,9 +106,13 @@ export default class SideBar extends Vue {
   }
 
   async followCollection() {
-    await this.$http.get(`/users/${this.data.collection.id}/interest`)
-    this.fetchCollection()
-    this.isInterest = !this.isInterest
+    if (!this.isUser) {
+      await this.$http.get(`/users/${this.data.collection.id}/interest`)
+      this.fetchCollection()
+      this.isInterest = !this.isInterest
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   async fetchCollection() {

@@ -108,11 +108,10 @@
                           style="display: -webkit-inline-box;-webkit-box-align: baseline;"
                           tag="div"
                         >
-                          <!-- <font-awesome-icon
-                            :icon="['fab', tag.name]"
-                            class="fs-xm px-1"
-                          /> -->
-                          <div style="padding:2px 5px; ">{{ tag.name }}</div>
+                          <i :class="` fs-xm fa fa-${tag.name} px-1`"></i>
+                          <div style="padding:2px 8px 2px 0;">
+                            {{ tag.name }}
+                          </div>
                         </router-link>
                       </slot>
                     </el-popover>
@@ -147,6 +146,11 @@ export default class TagsIndex extends Vue {
       this.fetchUserTag()
     }, 300)
   }
+
+  get isUser() {
+    return !this.$store.state.UserNotExist
+  }
+
   async fetchAllTags() {
     const result = await this.$http.get('/tags')
     this.taglist = result.data
@@ -158,27 +162,31 @@ export default class TagsIndex extends Vue {
   }
 
   async storeUserTag(tagId: any) {
-    const ref: any = this.$refs.search
-    let data = ref.tagSearch
-    if (typeof tagId === 'number') {
-      data = [tagId]
-    }
-
-    if (data.length !== 0) {
-      await this.$http.post(
-        `/tags/user/${this.$store.state.auth.user.id}`,
-        data
-      )
-      this.$store.commit('storeUserTag', data)
-      this.fetchUserTag()
-      this.isTagFollowed = true
+    if (this.isUser) {
       const ref: any = this.$refs.search
-      ref.tagSearch = []
-      this.$notify({
-        type: 'success',
-        message: '关注成功',
-        title: '成功'
-      })
+      let data = ref.tagSearch
+      if (typeof tagId === 'number') {
+        data = [tagId]
+      }
+
+      if (data.length !== 0) {
+        await this.$http.post(
+          `/tags/user/${this.$store.state.auth.user.id}`,
+          data
+        )
+        this.$store.commit('storeUserTag', data)
+        this.fetchUserTag()
+        this.isTagFollowed = true
+        const ref: any = this.$refs.search
+        ref.tagSearch = []
+        this.$notify({
+          type: 'success',
+          message: '关注成功',
+          title: '成功'
+        })
+      }
+    } else {
+      this.$store.commit('toggleLoginForm')
     }
   }
 
@@ -191,10 +199,12 @@ export default class TagsIndex extends Vue {
   }
 
   async fetchUserTag() {
-    const res = await this.$http.get(
-      `/tags/user/${this.$store.state.auth.user.id}`
-    )
-    this.userTags = res.data
+    if (this.isUser) {
+      const res = await this.$http.get(
+        `/tags/user/${this.$store.state.auth.user.id}`
+      )
+      this.userTags = res.data
+    }
   }
 
   show(id: any) {

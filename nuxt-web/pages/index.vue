@@ -59,22 +59,13 @@
                     size="small"
                   >
                     <el-radio-button label="message">
-                      <font-awesome-icon
-                        :icon="['fas', 'lightbulb']"
-                        class="fs-xm"
-                      />
+                      <i class="fs-sm iconfont icon-desLampidea"></i>
                     </el-radio-button>
                     <el-radio-button label="class">
-                      <font-awesome-icon
-                        :icon="['fab', 'cloudversify']"
-                        class="fs-xm"
-                      />
+                      <i class="fs-sm iconfont icon-message"></i>
                     </el-radio-button>
                     <el-radio-button label="follow">
-                      <font-awesome-icon
-                        :icon="['fas', 'male']"
-                        class="fs-xm"
-                      />
+                      <i class="fs-sm iconfont icon-follow"></i>
                     </el-radio-button>
                   </el-radio-group>
 
@@ -194,7 +185,7 @@
                 suffix-icon="el-icon-search"
               ></el-input>
 
-              <font-awesome-icon :icon="['fas', 'search']" />
+              <i class="iconfont icon-search"></i>
             </el-menu-item>
 
             <el-submenu
@@ -219,7 +210,7 @@
                 </el-avatar>
               </template>
               <el-menu-item :index="`/u`">
-                <i class="el-icon-user-solid"></i> 我的主页
+                <i class="iconfont icon-me px-3 fs-lg"></i> 我的主页
               </el-menu-item>
 
               <!-- <el-menu-item index="/u">
@@ -242,19 +233,14 @@
               </template>
 
               <el-menu-item :span="4" class="write ml-4" index="/post">
-                <font-awesome-icon :icon="['fas', 'pen']" class="fs-xm" />写文章
+                <i class="iconfont  pr-3  icon-Write fs-xm"></i>
+                写文章
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/ask">
-                <font-awesome-icon
-                  :icon="['fas', 'question-circle']"
-                  class="fs-xm"
-                />提问题
+                <i class="iconfont pr-3   icon-iconawsquestion fs-xm"></i>提问题
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/record">
-                <font-awesome-icon
-                  :icon="['fas', 'sticky-note']"
-                  class="fs-xm"
-                />记笔记
+                <i class="iconfont  pr-3 icon-note fs-xm"></i>记笔记
               </el-menu-item>
             </el-submenu>
 
@@ -475,7 +461,6 @@ export default class Home extends Vue {
   }
 
   validatePass(rule: any, value: any, callback: any) {
-    console.log(value)
     if (value === '') {
       callback(new Error('请输入密码'))
     }
@@ -488,7 +473,6 @@ export default class Home extends Vue {
   }
 
   validateName(rule: any, value: any, callback: any) {
-    console.log(value)
     if (value === '') {
       callback(new Error('请输入昵称'))
     }
@@ -547,6 +531,7 @@ export default class Home extends Vue {
         this.$store.commit('closeLoginForm')
         // this.fetchNotify()
       } else {
+        // eslint-disable-next-line
         console.log('error submit!!')
         return false
       }
@@ -565,6 +550,7 @@ export default class Home extends Vue {
         })
         this.isRegister = false
       } else {
+        // eslint-disable-next-line
         console.log('error submit!!')
         return false
       }
@@ -651,7 +637,7 @@ export default class Home extends Vue {
 }
 //登录相关
 .el-form {
-  width: 320px;
+  width: 320px !important;
   margin: 0 auto;
   input {
     height: 35px;

@@ -4,11 +4,11 @@
       <h4 class="pb-4">认证与成就</h4>
       <ul class="text-primary">
         <li class="pb-2">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']" class="pr-3" />
+          <i class="iconfont pr-3 icon-thumbs-up"></i>
           <span class="text-dark-1">获得 0 次点赞</span>
         </li>
         <li>
-          <font-awesome-icon :icon="['fab', 'discourse']" class="pr-3" />
+          <i class="iconfont pr-3 icon-follow1"></i>
           <span class="text-dark-1">获得 0 个关注</span>
         </li>
       </ul>
@@ -18,8 +18,8 @@
           <div>
             <h4 class="title">擅长技能</h4>
           </div>
-          <div class="text-gray">
-            <font-awesome-icon :icon="['fas', 'edit']" />
+          <div v-if="!id" class="text-gray">
+            <i class="iconfont icon-Write"></i>
             <el-button @click="show" type="text">编辑</el-button>
           </div>
         </div>
@@ -42,14 +42,14 @@
               class="mx-1 my-2"
               type="primary"
               size="small"
-              closable
+              :closable="id ? false : true"
               >{{ tag.name }}</el-tag
             >
           </div>
           <div v-else class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
 
-            <el-button @click="show" type="text">立即添加</el-button>
+            <el-button v-if="!id" @click="show" type="text">立即添加</el-button>
           </div>
         </div>
         <div v-else>
@@ -82,8 +82,9 @@
           <div>
             <h4 class="title">开源项目&著作</h4>
           </div>
-          <div class="text-gray">
-            <font-awesome-icon :icon="['fas', 'edit']" />编辑
+          <div v-if="!id" class="text-gray">
+            <i class="iconfont icon-Write"></i>
+            <el-button @click="show" type="text">编辑</el-button>
           </div>
         </div>
 
@@ -93,7 +94,7 @@
         >
           <div class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
-            <el-button type="text">立即添加</el-button>
+            <el-button v-if="!id" type="text">立即添加</el-button>
           </div>
         </div>
       </div>
@@ -110,12 +111,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import tag from '~/components/dialog/tag.vue'
 @Component({
   components: { 'sq-tag': tag }
 })
 export default class MySideBar extends Vue {
+  @Prop()
+  id: any
   tagmodel = []
   skillTag = []
   originTag = []

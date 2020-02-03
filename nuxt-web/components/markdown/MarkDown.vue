@@ -8,20 +8,23 @@
       type="file"
       accept="image/*"
     />
-    <div class="mt-1">
-      <el-button @click="submit" type="primary">{{ $attrs.name }}</el-button>
+    <div class="mt-2">
+      <el-button @click="submit" size="mini" type="primary">{{
+        $attrs.name
+      }}</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import Editor from 'tui-editor'
-import defalutConfig from './defalut-config'
-import 'codemirror/lib/codemirror.css'
-import 'tui-editor/dist/tui-editor.css'
-import 'tui-editor/dist/tui-editor-contents.css'
-import 'highlight.js/styles/github.css'
+import md from './md.js'
+// import Editor from 'tui-editor'
+// import defalutConfig from './defalut-config'
+// import 'codemirror/lib/codemirror.css'
+// import 'tui-editor/dist/tui-editor.css'
+// import 'tui-editor/dist/tui-editor-contents.css'
+// import 'highlight.js/styles/github.css'
 
 @Component({})
 export default class MarkDown extends Vue {
@@ -29,20 +32,13 @@ export default class MarkDown extends Vue {
   height: any
   body: any = ''
   editor: any
+  win: any = window
   mounted() {
     this.initEditor()
   }
   initEditor() {
-    this.editor = new Editor({
-      /* eslint-disable */
-      el: document.getElementById('editorSection'),
-      initialEditType: 'markdown',
-      language: 'zh_CN',
-      height: this.height ? this.height : '700px',
-      ...defalutConfig
-    })
     // window.editor = this.editor
-
+    this.editor = md(this.height)
     // 获取编辑器上的功能条
     const toolbar = this.editor.getUI().getToolbar()
     const fileDom: any = this.$refs.files
@@ -117,4 +113,8 @@ export default class MarkDown extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.te-preview {
+  background-color: white;
+}
+</style>

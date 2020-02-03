@@ -69,7 +69,7 @@
                 @click="showBookmark(post.id)"
                 class="text-gray hoverlink fs-xm "
               >
-                <font-awesome-icon :icon="['fas', 'bookmark']" class="pr-1" />
+                <i class="iconfont icon-book-mark pr-1"></i>
                 <span>{{ post.bookmarked }}</span>
                 收藏
               </div>

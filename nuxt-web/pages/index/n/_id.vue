@@ -38,13 +38,13 @@
             </div>
             <div>
               <el-tag
+                v-for="tag in notes.tags"
+                :key="tag.id"
                 class="mr-2 mb-2 point hover-2"
                 type="plain"
                 size="mini"
-                v-for="tag in notes.tags"
-                :key="tag.id"
               >
-                <router-link tag="div" :to="`/t/${tag.id}`">{{
+                <router-link :to="`/t/${tag.id}`" tag="div">{{
                   tag.name
                 }}</router-link>
               </el-tag>
