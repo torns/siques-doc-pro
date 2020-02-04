@@ -12,6 +12,7 @@ import {
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
 import { Reply } from './Reply.entity';
+import { Commentype } from 'src/core/enums/commentype.enum';
 
 @Entity()
 export class Comment {
@@ -35,6 +36,12 @@ export class Comment {
 
   @Column('tinyint', { default: 0 })
   is_read: boolean;
+
+  @Column('tinyint', { default: 0, nullable: true })
+  is_adopt: boolean;
+
+  @Column({ type: 'enum', enum: Commentype, default: 'comment' })
+  type: Commentype;
 
   //多个评论对应一篇文章
   @ManyToOne(

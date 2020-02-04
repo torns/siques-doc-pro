@@ -49,6 +49,7 @@
             >
               <el-popover
                 :popper-class="`message`"
+                @show="show"
                 placement="bottom"
                 trigger="click"
               >
@@ -80,7 +81,13 @@
                           notify.user.name
                         }}</span> </router-link
                       >评论了你的
-                      <router-link :to="`/p/${notify.post.id}`" tag="span">
+                      <router-link
+                        :to="
+                          (notify.post.type === 'post' ? '/p/' : '/q/') +
+                            `${notify.post.id}`
+                        "
+                        tag="span"
+                      >
                         <span class="point text-primary">{{
                           notify.post.title
                         }}</span>
@@ -509,12 +516,12 @@ export default class Home extends Vue {
   }
 
   mounted() {
-    this.fetchNotify()
+    // this.fetchNotify()
     // window.addEventListener('unload', this.saveState)
   }
 
-  get store() {
-    return this.$store.state.UserNotExist
+  get isUser() {
+    return !this.$store.state.UserNotExist
   }
 
   closeLoginForm() {
@@ -573,15 +580,15 @@ export default class Home extends Vue {
     this.$router.push('/')
   }
 
-  async fetchNotify() {
-    if (!this.store) {
+  async show() {
+    if (this.isUser) {
       const res = await this.$http.get('/notification')
       this.notifies = res.data
     }
   }
 
   async fetchuser() {
-    if (!this.store) {
+    if (this.isUser) {
       const res = await this.$http.get('users')
       const usertag = []
       res.data.tags.map((e: any) => {

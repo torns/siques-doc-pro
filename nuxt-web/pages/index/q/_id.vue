@@ -148,7 +148,9 @@
                   v-highlight
                   class="article lh-3 pt-3"
                 ></div>
-                <div class="text-primary mt-3">阅读：{{ question.views }}</div>
+                <div class="text-primary mt-3 text-gray-1 fs-xm">
+                  阅读：{{ question.views }}
+                </div>
                 <div class="d-flex ai-baseline jc-left my-4">
                   <el-button @click="like" class="hover-3" type="plain">
                     <i class="pr-2 iconfont icon-Thumbsup"></i>
@@ -187,7 +189,7 @@
               </div>
             </div>
           </div>
-          <div v-if="showCommentPanel" class="pt-4">
+          <!-- <div v-if="showCommentPanel" class="pt-4">
             <div v-if="fetchedComment" class="font-bold fs-xl py-1">
               {{ fetchedComment.length }}条评论
             </div>
@@ -354,15 +356,146 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="answerPanel"></div>
+          <!-- 回答模块 -->
+          <div v-if="fetchedComment" class="answerPanel pt-5">
+            <div class="font-bold fs-xl py-1">
+              {{ fetchedComment.length }}条回答
+            </div>
+            <div
+              v-for="answer in fetchedComment"
+              :key="answer.id"
+              style="min-height:200px"
+              class="bg-white"
+            >
+              <div class="px-4 py-3">
+                <div class="d-flex ai-center">
+                  <el-avatar :size="35" class="mr-2" src="https://empty">
+                    <img
+                      v-if="answer.user.avator[0].url"
+                      :src="answer.user.avator[0].url"
+                    />
+                    <img v-else src="/static/avator" />
+                  </el-avatar>
+                  <div
+                    style="font-weight:600"
+                    class="hover-3 text-primary fs-lg"
+                  >
+                    {{ answer.user.name }}
+                  </div>
+                </div>
+                <div class="pt-3">
+                  {{ answer.body }}
+                </div>
+                <div class="d-flex ai-baseline pt-3">
+                  <el-button
+                    @click="commentLike(answer.id)"
+                    size="small"
+                    type="plain"
+                  >
+                    <i class="fa fa-thumbs-o-up  pr-2"> </i>
+                    {{ answer.liked }} 赞
+                  </el-button>
+                  <el-button @click="adoptAnswer" size="small" type="plain">
+                    <i class="fa fa-check-square-o pr-2"> </i
+                    >采纳回答</el-button
+                  >
+                  <el-button
+                    @click="
+                      showComment == comment.id
+                        ? (showComment = '')
+                        : (showComment = comment.id)
+                      showReply = ''
+                      replyData = ''
+                    "
+                    type="text"
+                    >评论</el-button
+                  >
+                  <div class="fs-xm pl-2">
+                    {{ $dayjs(answer.created).format('M月D号') }}
+                  </div>
+                </div>
+                <div
+                  v-if="showComment == comment.id"
+                  class="pt-3 mt-2 bg-light-1"
+                >
+                  <div class="mx-3" style="min-width:0;">
+                    <el-input
+                      v-model="replyData"
+                      size="mini"
+                      placeholder="撰写评论"
+                    ></el-input>
+                    <div class="text-right mt-2">
+                      <el-button
+                        @click="sendReply(answer.id, answer.user.id)"
+                        size="mini"
+                        type="primary"
+                        >提交评论</el-button
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3  bg-light-1">
+                  <div class="mx-3 pt-3 ">
+                    <div v-for="reply in answer.reply" :key="reply.id">
+                      <span class="text-primary font-bold">
+                        <router-link
+                          :to="`/u/${reply.from_uid.id}`"
+                          tag="span"
+                          class="point hoverlink"
+                          >{{ reply.from_uid.name }}</router-link
+                        >
+                        :
+                      </span>
+                      <span> {{ reply.body }}</span>
+                      <div class="py-1">
+                        <el-link @click="replyLike" type="text"
+                          ><i class="fa fa-thumbs-o-up"></i> {{ reply.liked }}
+                        </el-link>
+                        <span>·</span>
+                        <el-button
+                          @click="
+                            showReply == reply.id
+                              ? (showReply = '')
+                              : (showReply = reply.id)
+                            replyData = ''
+                            showComment = ''
+                          "
+                          type="text"
+                          >回复</el-button
+                        >
+                        <span class="fs-xm text-gray">{{
+                          $dayjs(reply.created).format('M月D日 H:MM')
+                        }}</span>
+                      </div>
+                      <div v-if="showReply == reply.id">
+                        <el-input
+                          v-model="replyData"
+                          size="mini"
+                          placeholder="回复内容"
+                        ></el-input>
+                        <div class="text-right mt-3">
+                          <el-button
+                            @click="sendReply(answer.id, reply.from_uid.id)"
+                            size="mini"
+                            type="primary"
+                            >提交评论</el-button
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="font-bold pt-5 fs-xl">撰写回答</div>
           <div class="pt-1">
             <div>
               <markdown
                 ref="markdown"
-                @submit="updatePost"
+                @submit="sendAnswer"
                 name="提交回答"
                 height="400px"
               ></markdown>
@@ -436,7 +569,7 @@ export default class Question extends Vue {
   checkList = []
   mounted() {
     this.fetchQuestion(this.id)
-    this.fetchComment()
+    this.fetchAnswer()
   }
   updated() {
     // highlightCode()
@@ -444,6 +577,10 @@ export default class Question extends Vue {
   // TS中的计算属性
   get id(): any {
     return this.$route.params.id
+  }
+
+  get isUser(): any {
+    return !this.$store.state.UserNotExist
   }
 
   async fetchQuestion(id: any) {
@@ -462,13 +599,13 @@ export default class Question extends Vue {
   }
 
   // 获取文章评论
-  async fetchComment() {
+  async fetchAnswer() {
     const res = await this.$http.get(`posts/${this.id}/comments`)
     this.fetchedComment = res.data
   }
 
   async like() {
-    if (this.$store.state.UserNotExist === false) {
+    if (this.isUser) {
       await this.$http.get(`/users/${this.id}/like`)
       this.fetchQuestion(this.id)
     } else {
@@ -478,7 +615,7 @@ export default class Question extends Vue {
 
   async commentLike(id: any) {
     await this.$http.get(`posts/${id}/comments/like`)
-    this.fetchComment()
+    this.fetchAnswer()
   }
 
   async replyLike() {}
@@ -491,43 +628,55 @@ export default class Question extends Vue {
 
   // 关注问题
   async followQue() {
-    const res = await this.$http.get(`/users/${this.id}/concern`)
-    if (res.data) {
-      this.question.concerned += 1
-      this.$notify({
-        title: '成功',
-        type: 'success',
-        message: '关注成功'
-      })
+    if (this.isUser) {
+      const res = await this.$http.get(`/users/${this.id}/concern`)
+      if (res.data) {
+        this.question.concerned += 1
+        this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '关注成功'
+        })
+      } else {
+        this.$notify({
+          title: '消息',
+          type: 'info',
+          message: '已关注该问题'
+        })
+      }
     } else {
-      this.$notify({
-        title: '消息',
-        type: 'info',
-        message: '已关注该问题'
-      })
+      this.$store.commit('toggleLoginForm')
     }
   }
+  adoptAnswer() {}
 
-  async sendComment() {
-    if (this.comment) {
-      const data = {
-        body: this.comment,
-        owner_uid: this.question.user.id // 这个资源的用户id
+  async sendAnswer() {
+    if (this.isUser) {
+      const ref: any = this.$refs.markdown
+      const answer = ref.getContent()
+      if (answer) {
+        const data = {
+          body: answer,
+          owner_uid: this.question.user.id, // 这个资源的用户id
+          type: 'answer'
+        }
+        await this.$http.post(`/posts/${this.id}/comments`, data)
+        this.$notify({
+          type: 'success',
+          message: '回答成功',
+          title: '成功'
+        })
+        ref.setContent('')
+        this.fetchQuestion(this.id)
+      } else {
+        this.$notify({
+          type: 'error',
+          message: '内容不能为空',
+          title: '回答失败'
+        })
       }
-      await this.$http.post(`/posts/${this.id}/comments`, data)
-      this.$notify({
-        type: 'success',
-        message: '评论成功',
-        title: '成功'
-      })
-      this.comment = ''
-      this.fetchQuestion(this.id)
     } else {
-      this.$notify({
-        type: 'error',
-        message: '内容不能为空',
-        title: '评论失败'
-      })
+      this.$store.commit('toggleLoginForm')
     }
   }
 

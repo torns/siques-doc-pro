@@ -220,6 +220,7 @@
           >
             <!-- eslint-disable-next-line vue/require-component-is -->
             <component
+              :liked="id ? user.liked : $store.state.auth.user.liked"
               :id="id"
               :is="currentComponent === 'Homepage' ? 'SideBar' : ''"
             />
@@ -359,31 +360,38 @@ export default class Page extends Vue {
     const pageLinks = [
       {
         name: `${this.id ? '他' : '我'}的主页`,
-        alias: 'Homepage'
+        alias: 'Homepage',
+        nick: ''
       },
       {
         name: `${this.id ? '他' : '我'}的文章`,
-        alias: 'PostList'
+        alias: 'PostList',
+        nick: 'post'
       },
       {
         name: `${this.id ? '他' : '我'}的回答`,
-        alias: 'Que'
+        alias: 'Answer',
+        nick: ''
       },
       {
         name: `${this.id ? '他' : '我'}的提问`,
-        alias: 'questionList'
+        alias: 'questionList',
+        nick: 'question'
       },
       {
         name: `${this.id ? '他' : '我'}的关注`,
-        alias: 'followers'
+        alias: 'followers',
+        nick: ''
       },
       {
         name: `${this.id ? '他' : '我'}的笔记`,
-        alias: 'noteList'
+        alias: 'noteList',
+        nick: 'note'
       },
       {
         name: `${this.id ? '他' : '我'}的收藏夹`,
-        alias: 'bookmark'
+        alias: 'bookmark',
+        nick: ''
       }
     ]
     this.pageLinks = pageLinks
@@ -392,7 +400,10 @@ export default class Page extends Vue {
       const res = await this.$http.get(`/users/${this.id}`)
       this.user = res.data
       //* 改变数组中的数据的重要步骤*/
-      this.$set(this.pageLinks[1], 'count', res.data.posts.length)
+      for (let index = 0; index < pageLinks.length; index++) {
+        const nick = pageLinks[index].nick
+        this.$set(this.pageLinks[index], 'count', res.data[nick])
+      }
 
       try {
         this.avatorUrl = res.data.avator[0].url
@@ -400,9 +411,14 @@ export default class Page extends Vue {
         this.avatorUrl = ''
       }
     } else {
-      const count = this.$store.state.auth.user.posts.length
-
-      this.$set(this.pageLinks[1], 'count', count)
+      for (let index = 0; index < pageLinks.length; index++) {
+        const nick = pageLinks[index].nick
+        this.$set(
+          this.pageLinks[index],
+          'count',
+          this.$store.state.auth.user[nick]
+        )
+      }
     }
   }
 

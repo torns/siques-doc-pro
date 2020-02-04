@@ -52,7 +52,7 @@
         <el-col :xs="24" :sm="24" :md="5" :lg="4" :xl="4">
           <div class="d-flex " style="flex-direction: row-reverse;">
             <ul
-              class="text-left fs-xm sq-leftside-link"
+              class="text-left fs-xm sq-leftside-link text-gray-1"
               style="flex-wrap: wrap;
     display: flex;"
             >
@@ -77,7 +77,13 @@
                   :icon="[link.prefix, link.icon]"
                   :class="` pr-1 text-${link.color}`"
                 /> -->
-                <i :class="`fa pr-1 text-${link.color} fa-${link.icon}`"></i>
+                <i
+                  :class="
+                    (link.alias == category
+                      ? `text-white `
+                      : `text-${link.color} `) + `fa pr-1  fa-${link.icon}`
+                  "
+                ></i>
 
                 {{ link.name }}
               </li>
@@ -93,11 +99,6 @@
                     `pr-7  pl-3 py-2 `
                 "
               >
-                <!-- <font-awesome-icon
-                  :icon="[link.prefix, link.icon]"
-                  :class="`fs-md pr-1 text-${link.color}`"
-                /> -->
-
                 <i
                   :class="
                     (link.alias == category
@@ -108,6 +109,12 @@
                 ></i>
                 {{ link.name }}
               </li>
+              <router-link :to="`/tags`" tag="li">
+                <div class="pl-3 pr-6 py-2 hover-2">
+                  <i class="fa fa-tag pr-1"></i>
+                  更多标签
+                </div>
+              </router-link>
             </ul>
           </div>
         </el-col>
@@ -140,6 +147,7 @@
                 >
                   <router-link
                     :to="`/p/${post.id}`"
+                    target="_blank"
                     tag="a"
                     class="text-dark-1 hoverlink point  fs-lg"
                     >{{ post.title }}</router-link
@@ -247,23 +255,23 @@ export default class MyPage extends Vue {
       name: '近期热门',
       alias: 'hot',
       sort: 'liked',
-      prefix: 'far',
-      icon: 'thumbs-up'
+      icon: 'thumbs-up',
+      color: 'dark'
     },
     {
       name: '我的订阅',
       taglist: this.taglists,
       listId: true,
       sort: 'liked',
-      prefix: 'far',
-      icon: 'address-card'
+      icon: 'address-card',
+      color: 'dark'
     },
     {
       name: '最新内容',
       alias: 'new',
       sort: 'created',
-      prefix: 'far',
-      icon: 'compass'
+      icon: 'compass',
+      color: 'dark'
     }
   ]
 
@@ -273,7 +281,6 @@ export default class MyPage extends Vue {
       alias: 'frontEnd',
       taglist: ['frontEnd'],
       sort: 'created',
-      prefix: 'fab',
       icon: 'js',
       color: 'yellow-1'
     },
@@ -282,7 +289,6 @@ export default class MyPage extends Vue {
       alias: 'backEnd',
       taglist: ['cloudcomputing', 'database', 'server'],
       sort: 'created',
-      prefix: 'fab',
       icon: 'storage',
       color: 'blue-1'
     },
@@ -291,7 +297,6 @@ export default class MyPage extends Vue {
       alias: 'tools',
       taglist: ['tools'],
       sort: 'created',
-      prefix: 'fas',
       icon: 'tools',
       color: 'blue'
     },
@@ -300,7 +305,6 @@ export default class MyPage extends Vue {
       alias: 'node',
       tag: 'node.js',
       sort: 'created',
-      prefix: 'fab',
       icon: 'node-js',
       color: 'blue'
     },
@@ -309,7 +313,6 @@ export default class MyPage extends Vue {
       alias: 'vue',
       tag: 'vue.js',
       sort: 'created',
-      prefix: 'fab',
       icon: 'vuejs',
       color: 'green'
     },
@@ -318,7 +321,6 @@ export default class MyPage extends Vue {
       alias: 'miniProgram',
       taglist: ['miniProgram'],
       sort: 'created',
-      prefix: 'fab',
       icon: 'xiaochengxu',
       color: 'green'
     },
@@ -327,7 +329,6 @@ export default class MyPage extends Vue {
       alias: 'info',
       tag: 'info',
       sort: 'created',
-      prefix: 'fab',
       icon: 'hangye',
       color: 'yellow'
     }

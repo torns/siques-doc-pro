@@ -5,7 +5,7 @@
       <ul class="text-primary">
         <li class="pb-2">
           <i class="iconfont pr-3 icon-thumbs-up"></i>
-          <span class="text-dark-1">获得 0 次点赞</span>
+          <span class="text-dark-1">获得 {{ $attrs.liked }} 次点赞</span>
         </li>
         <li>
           <i class="iconfont pr-3 icon-follow1"></i>
@@ -38,11 +38,11 @@
             <el-tag
               v-for="tag in originTag"
               :key="tag.id"
+              :closable="id ? false : true"
               @close="handleClose(tag)"
               class="mx-1 my-2"
               type="primary"
               size="small"
-              :closable="id ? false : true"
               >{{ tag.name }}</el-tag
             >
           </div>
@@ -100,11 +100,9 @@
       </div>
       <el-divider></el-divider>
       <div>
-        注册于{{
-          this.$dayjs(this.$store.state.userCreated).format(
-            'YYYY-MM-DD & HH:MM'
-          )
-        }}分
+        <!-- 注册于{{
+          $dayjs(this.$store.state.userCreated).format('YYYY-MM-DD & HH:MM')
+        }}分 -->
       </div>
     </div>
   </div>

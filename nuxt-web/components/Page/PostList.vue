@@ -25,20 +25,26 @@
 
       <div>
         <span class="text-gray fs-xm">排序：</span>
-        <el-radio-group v-model="radio4" size="mini">
-          <el-radio-button label="时间"></el-radio-button>
-          <el-radio-button label="得票"></el-radio-button>
+        <el-radio-group v-model="sort" size="mini">
+          <el-radio-button label="时间" value="created"></el-radio-button>
+          <el-radio-button label="得票" value="liked"></el-radio-button>
         </el-radio-group>
       </div>
     </div>
     <el-divider></el-divider>
 
-    <list-panel :posts="posts" post collection="true"></list-panel>
+    <list-panel
+      @pageChange="fetch"
+      :posts="posts"
+      :len="len"
+      post
+      collection="true"
+    ></list-panel>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import ListPanel from '../ListPanel/ListPanel.vue'
 @Component({
   components: { 'list-panel': ListPanel }
@@ -48,8 +54,10 @@ export default class PageComponent extends Vue {
   id: any
   posts: any = null
   collections: any = null
+  len: any = 0
+  page: any = 1
   activeName: string = ''
-  radio4: string = '时间'
+  sort: string = '时间'
   mypageActiveName: string = 'mypost'
 
   mounted() {
@@ -57,14 +65,27 @@ export default class PageComponent extends Vue {
     this.fetchCollect()
   }
 
-  async fetch() {
+  @Watch('sort')
+  isSortChange() {
+    this.fetch(this.page)
+  }
+
+  get sorts() {
+    return this.sort === '时间' ? 'created' : 'liked'
+  }
+
+  async fetch(page?: any, limit?: any) {
+    this.page = page
     if (this.id) {
       const res = await this.$http.get(`/posts/${this.id}/user?type=post`)
       this.posts = res.data[0]
     } else {
-      const res = await this.$http.get(
-        `/posts/${this.$store.state.auth.user.id}/user?type=post`
-      )
+      const link = `/posts/${
+        this.$store.state.auth.user.id
+      }/user?type=post&page=${page || ''}&sort=${this.sorts}`
+
+      const res = await this.$http.get(link)
+      this.len = res.data[1]
       this.posts = res.data[0]
     }
   }

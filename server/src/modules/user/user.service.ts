@@ -75,8 +75,8 @@ export class UserService {
       .leftJoinAndSelect('user.avator', 'avator')
       .leftJoin('user.tags', 'tags')
       .addSelect(['tags.id'])
-      .leftJoin('user.posts', 'posts')
-      .addSelect(['posts.id'])
+      // .leftJoin('user.posts', 'posts')
+      // .addSelect(['posts.id'])
       .addOrderBy('avator.id', 'DESC')
       .getOne();
 
@@ -85,7 +85,9 @@ export class UserService {
       relations: ['follows', 'user', 'user.avator'],
     });
 
-    return { ...res1, ...res2 };
+    const res3 = await this.countsAll(id);
+
+    return { ...res1, ...res2, ...res3 };
   }
 
   //传入的用户id,用户点过赞的文章
@@ -322,5 +324,31 @@ export class UserService {
     });
 
     return res;
+  }
+  async countsAll(userId: number) {
+    let data = { liked: 0, post: 0, question: 0, counts: 0, note: 0 };
+
+    const res = await this.postRepository
+      .createQueryBuilder('post')
+      .where('userId=:userId', { userId })
+      .getMany();
+
+    res.map(e => {
+      data['liked'] += e['liked'];
+      data['counts'] += e['counts'];
+      switch (e.type) {
+        case 'post':
+          data['post'] += 1;
+          break;
+        case 'question':
+          data['question'] += 1;
+          break;
+        case 'note':
+          data['note'] += 1;
+          break;
+      }
+    });
+
+    return data;
   }
 }

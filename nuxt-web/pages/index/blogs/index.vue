@@ -14,7 +14,7 @@
             </div>
             <el-pagination
               @current-change="handleCurrentChange"
-              :total="50"
+              :total="total"
               background
               layout="prev, pager, next"
             ></el-pagination>
@@ -25,7 +25,7 @@
             </div>
             <el-pagination
               @current-change="handleCurrentChange"
-              :total="50"
+              :total="total"
               background
               layout="prev, pager, next"
             ></el-pagination>
@@ -36,7 +36,7 @@
             </div>
             <el-pagination
               @current-change="handleCurrentChange"
-              :total="50"
+              :total="total"
               background
               layout="prev, pager, next"
             ></el-pagination>
@@ -71,6 +71,7 @@ export default class index extends Vue {
   sort = 'views'
   listId = true
   page = 1
+  total: any
   posts = null
   list: any
 
@@ -109,6 +110,7 @@ export default class index extends Vue {
       (this.listId ? `&listId=${this.listId}` : '') +
       `&collection=true`
     const res = await this.$http.get(link)
+    this.total = res.data[1]
 
     this.posts = res.data[0]
   }

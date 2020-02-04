@@ -2,7 +2,15 @@
   <div>
     <div class="container pt-5">
       <el-row :gutter="0" type="flex">
-        <el-col v-if="tagInfo" :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
+        <el-col
+          v-if="tagInfo"
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="17"
+          :xl="17"
+          style="min-height:80vh"
+        >
           <div>
             <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/tags' }"
@@ -68,7 +76,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-footer :show="true"></el-footer>
+    <sq-footer top-border="true"></sq-footer>
   </div>
 </template>
 <script lang="ts">

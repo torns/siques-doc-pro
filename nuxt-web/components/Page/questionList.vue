@@ -13,7 +13,13 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel :collection="false" :posts="questions" question></list-panel>
+    <list-panel
+      @pageChange="fetchUserQue"
+      :len="len"
+      :collection="false"
+      :posts="questions"
+      question
+    ></list-panel>
   </div>
 </template>
 
@@ -26,6 +32,7 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 export default class QuestionList extends Vue {
   @Prop()
   id: any
+  len: any = 0
   questions = ''
   radio4 = []
   mounted() {
@@ -40,6 +47,7 @@ export default class QuestionList extends Vue {
       const res = await this.$http.get(
         `/posts/${this.$store.state.auth.user.id}/user?type=question`
       )
+      this.len = res.data[1]
       this.questions = res.data[0]
     }
   }

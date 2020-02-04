@@ -60,10 +60,10 @@ export default {
         href:
           'https://fonts.googleapis.com/css?family=Cinzel+Decorative:700|EB+Garamond&display=swap'
       },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.bootcss.com/element-ui/2.4.11/theme-chalk/index.css'
-      },
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://cdn.bootcss.com/element-ui/2.4.11/theme-chalk/index.css'
+      // },
       {
         rel: 'stylesheet',
         href:

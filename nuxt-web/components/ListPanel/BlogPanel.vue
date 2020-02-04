@@ -92,4 +92,8 @@ export default class HomepageList extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.el-divider--horizontal {
+  margin: 12px 0;
+}
+</style>

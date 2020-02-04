@@ -13,7 +13,12 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel :posts="notes" note></list-panel>
+    <list-panel
+      @pageChange="fetchUserNote"
+      :len="len"
+      :posts="notes"
+      note
+    ></list-panel>
   </div>
 </template>
 
@@ -26,6 +31,7 @@ import ListPanel from '../ListPanel/ListPanel.vue'
 export default class QuestionList extends Vue {
   @Prop()
   id: any
+  len: any = 0
   notes = ''
   radio4 = []
   mounted() {
@@ -40,6 +46,7 @@ export default class QuestionList extends Vue {
       const res = await this.$http.get(
         `/posts/${this.$store.state.auth.user.id}/user?type=note`
       )
+      this.len = res.data[1]
       this.notes = res.data[0]
     }
   }

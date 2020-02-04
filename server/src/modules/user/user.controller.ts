@@ -201,4 +201,11 @@ export class UserController {
   ) {
     return await this.userService.whofollows(id);
   }
+
+  // // 查询所有统计数据
+  // @Get(':id/counts')
+  // @UseGuards(AuthGuard())
+  // async countsAll(@User() user: userEntity) {
+  //   return await this.userService.countsAll(user.id);
+  // }
 }

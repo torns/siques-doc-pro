@@ -21,6 +21,13 @@
           <el-divider></el-divider>
         </div>
       </li>
+      <el-pagination
+        :hide-on-single-page="$attrs.len < 10 ? true : false"
+        @current-change="handleCurrentChange"
+        :total="$attrs.len"
+        background
+        layout="prev, pager, next"
+      ></el-pagination>
     </ul>
     <div v-if="show">(ﾟ∀ﾟ ) 暂时没有任何数据</div>
   </div>
@@ -37,6 +44,10 @@ export default class ListPanel extends Vue {
   collection: any
   link = ''
   show: boolean = false
+
+  get PostLen(): any {
+    return this.posts
+  }
   mounted() {
     if (this.$attrs.question !== undefined) {
       this.link = '/q/'
@@ -54,6 +65,10 @@ export default class ListPanel extends Vue {
     if (newVal.length === 0) {
       this.show = true
     }
+  }
+  handleCurrentChange(val: any) {
+    const page = val
+    this.$emit('pageChange', page)
   }
 }
 </script>
