@@ -100,10 +100,12 @@
 
                     <div
                       @click="
-                        ;(show = true),
-                          (messageBox =
-                            $store.state.auth.user[link.alias] || ''),
-                          (showname = link.alias)
+                        if (!id) {
+                          ;(show = true),
+                            (messageBox =
+                              $store.state.auth.user[link.alias] || ''),
+                            (showname = link.alias)
+                        }
                       "
                     >
                       <!-- 没有解决 -->

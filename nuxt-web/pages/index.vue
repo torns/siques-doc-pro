@@ -12,7 +12,7 @@
             style="margin:0 auto;"
             router
           >
-            <el-menu-item class="favicon flex-1">
+            <el-menu-item class="favicon xs-flex-1">
               <img
                 @click="$router.push('/')"
                 src="~/static/banner.png"
@@ -26,15 +26,15 @@
               >
             </el-menu-item>
 
-            <el-menu-item class="menu-item" index="/q">
+            <el-menu-item class="xm" index="/q">
               <span class="fs-md">问答</span>
             </el-menu-item>
 
-            <el-menu-item class="menu-item" index="/blogs">
+            <el-menu-item index="/blogs">
               <span class="fs-md">专栏</span>
             </el-menu-item>
 
-            <el-menu-item class="menu-item" index="/tags">
+            <el-menu-item index="/tags">
               <span class="fs-md">标签</span>
             </el-menu-item>
             <el-menu-item class="menu-item" index="/n">
@@ -42,10 +42,10 @@
             </el-menu-item>
 
             <el-menu-item
-              v-if="this.$store.state.UserNotExist == false"
+              v-show="this.$store.state.UserNotExist == false"
               :show-timeout="0"
               :hide-timeout="0"
-              class="menu-item"
+              class="xs"
             >
               <el-popover
                 :popper-class="`message`"
@@ -129,37 +129,6 @@
               </el-popover>
             </el-menu-item>
 
-            <!-- <el-menu-item :show-timeout="0" :hide-timeout="0" class="pl-4">
-              <el-badge value="new" type="primary" class="item pl-2">
-                <el-popover
-                  :popper-class="`message`"
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <div class="d-flex flex-column h-100">
-                    <div class="flex-1 pt-3"></div>
-                    <el-divider></el-divider>
-                    <div class="d-flex jc-between">
-                      <div class="point">全部标记为已读</div>
-                      <router-link
-                        to="/notification"
-                        tag="div"
-                        class="point hover-4"
-                        >查看全部</router-link
-                      >
-                    </div>
-                  </div>
-
-                  <el-button slot="reference" type="text">
-                    <font-awesome-icon
-                      :icon="['far', 'envelope']"
-                      class="fs-xm"
-                    />
-                  </el-button>
-                </el-popover>
-              </el-badge>
-            </el-menu-item>-->
-
             <!-- <el-menu-item class="menu-item">
               <el-popover v-model="visible" placement="top" width="160">
                 <div style="text-align: center; margin: 0">
@@ -181,18 +150,15 @@
               </el-popover>
             </el-menu-item> -->
 
-            <el-menu-item>
+            <el-menu-item class="md" :index="`search`">
               <el-input
                 v-model="search"
                 @change="dataSearch"
                 clearable
-                class="search"
                 size="small"
                 placeholder="请输入内容"
                 suffix-icon="el-icon-search"
               ></el-input>
-
-              <i class="iconfont icon-search"></i>
             </el-menu-item>
 
             <el-submenu
@@ -254,7 +220,6 @@
             <el-menu-item
               v-if="$store.state.UserNotExist"
               @click="$store.commit('toggleLoginForm'), (isRegister = false)"
-              class="menu-item"
               >立即登录</el-menu-item
             >
             <el-menu-item class="menu-item">
@@ -277,7 +242,8 @@
       :title="isRegister ? '注册' : '登录'"
       :visible="$store.state.loginFormVisible"
       @close="closeLoginForm"
-      width="500px"
+      style="max-width:500px;margin: 0 auto"
+      width="90%"
     >
       <el-form
         ref="RegisterDto"
@@ -712,6 +678,7 @@ export default class Home extends Vue {
 
 #home {
   overflow-y: auto;
+  overflow-x: hidden !important;
   height: 100vh;
 }
 </style>

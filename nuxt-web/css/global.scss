@@ -46,10 +46,16 @@ li {
     .sq-leftside-link {
       justify-content: space-around;
     }
+    .xs {
+      display: none;
+    }
+    .xs-flex-1 {
+      flex: 1;
+    }
   }
 
   @media (max-width: 992px) {
-    .tech-square-title {
+    .xm {
       display: none;
     }
     .menu-item {
@@ -58,7 +64,7 @@ li {
   }
 
   @media (max-width: 1200px) {
-    .search {
+    .md {
       display: none;
     }
   }
@@ -153,7 +159,7 @@ code {
 }
 
 .font-bold {
-  font-weight: 800;
+  font-weight: 700;
 }
 // 悬浮
 .hoverlink {
@@ -227,11 +233,6 @@ code {
     transition: transform 0.5s;
     transform: scaleX(0);
     transform-origin: right;
-  }
-}
-
-.hover-5 {
-  &:hover {
   }
 }
 

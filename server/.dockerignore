@@ -1,9 +1,9 @@
 # compiled output
 .git
 /dist
+.env
 /node_modules
 uploads
-.env 
 db
 # Logs
 logs

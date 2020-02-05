@@ -1,9 +1,8 @@
 # compiled output
-production.env
 /dist
 /node_modules
 uploads
-.env 
+# .env 
 db
 # Logs
 logs

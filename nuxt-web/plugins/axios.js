@@ -1,19 +1,16 @@
 import Vue from 'vue'
-import { state } from '../store'
 
-export default function({ $axios, redirect }, inject) {
+export default function({ $axios, redirect, store }) {
   // Create a custom axios instance
 
   $axios.onError((error) => {
-    if (error.response.status === 401) {
+    const code = parseInt(error.response && error.response.status)
+    if (code === 401) {
       //   redirect('/sorry')
       Vue.prototype.$notify({
         type: 'error',
-        message: error.response
+        message: error.response.data.message
       })
-      state.loginFormVisible = true
-      state.UserNotExist = true
     }
   })
-  const api = $axios.create({})
 }

@@ -1,6 +1,5 @@
-FROM node:10.16.3-buster
+FROM node:12.13.0
 WORKDIR /usr/src/app
-
 COPY . . 
 COPY production.env .env 
 

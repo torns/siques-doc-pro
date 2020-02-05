@@ -9,7 +9,11 @@ export default {
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'viewport',
+        content:
+          'width=device-width,maximum-scale=1,user-scalable=no, initial-scale=1'
+      },
       {
         hid: 'description',
         name: 'description',
@@ -115,7 +119,7 @@ export default {
     '@/plugins/filter',
     '@/plugins/nuxt-client-init.client.js',
     { src: '@/plugins/markdownEditor', ssr: false },
-    // '@/plugins/axios',
+    '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
     { src: '@plugins/localStorage', ssr: false }
     // { src: '@plugins/markdown', ssr: false }
@@ -188,8 +192,6 @@ export default {
     extend(config, ctx) {}
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3001'
+    baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'
   }
 }
-
-const axios = require('axios')

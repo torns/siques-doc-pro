@@ -87,7 +87,7 @@
 
                 {{ link.name }}
               </li>
-              <div class="pl-3 py-2 tech-square-title">技术频道</div>
+              <div class="pl-3 py-2 md">技术频道</div>
               <li
                 @click="
                   handleCategory(link.alias, link.sort, link.tag, link.taglist)

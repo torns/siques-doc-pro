@@ -6,6 +6,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.setGlobalPrefix('api');
   app.enableCors();
   app.useStaticAssets(join(__dirname, '../uploads/', 'avator'), {
     prefix: '/static/', // 虚拟名称 http://localhost:3000/static/...png

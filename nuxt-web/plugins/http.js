@@ -1,10 +1,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 
-// import Cookies from 'js-cookie'
-
 const http = axios.create({
-  baseURL: 'http://localhost:3001'
+  baseURL: process.env.BASE_URL
 })
 
 export default ({ store }) => {
@@ -31,7 +29,7 @@ export default ({ store }) => {
       if (err.response) {
         Vue.prototype.$notify({
           type: 'error',
-          message: err.response.data.message
+          message: '未登录暂无权限'
         })
 
         if (err.response.status === 401) {

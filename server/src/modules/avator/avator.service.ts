@@ -31,7 +31,7 @@ export class AvatorService {
     const date = dayjs(now).format('YYYY-MM-DD/');
     const ss = dayjs(now).format('ss');
 
-    const res = await Client.put(
+    const res: any = await Client.put(
       'avator/' + user.id + '/' + date + ss + data.originalname,
       data.buffer,
     );
