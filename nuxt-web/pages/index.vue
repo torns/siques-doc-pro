@@ -1,13 +1,12 @@
 <template>
   <div :id="$route.path == '/' ? 'home' : ''">
-    <!-- 父元素设置高度以及overflow，实现页面滚动的重要条件 -->
     <div id="app ">
       <div style="height:3px;" class="bg-primary"></div>
       <div>
         <div class="shadow-1" style="position:sticky;top:0;z-index: 10;">
           <el-menu
             default-active="/"
-            class="d-flex jc-between ai-center el-menu-demo container"
+            class="d-flex jc-between ai-center  container"
             mode="horizontal"
             style="margin:0 auto;"
             router
@@ -20,7 +19,7 @@
               />
             </el-menu-item>
 
-            <el-menu-item class="menu-item" index="/">
+            <el-menu-item class="xs" index="/">
               <span style="font-weight:600" class="text-primary fs-md"
                 >首页</span
               >
@@ -30,14 +29,14 @@
               <span class="fs-md">问答</span>
             </el-menu-item>
 
-            <el-menu-item index="/blogs">
+            <el-menu-item class="xs" index="/blogs">
               <span class="fs-md">专栏</span>
             </el-menu-item>
 
-            <el-menu-item index="/tags">
+            <el-menu-item class="xs" index="/tags">
               <span class="fs-md">标签</span>
             </el-menu-item>
-            <el-menu-item class="menu-item" index="/n">
+            <el-menu-item class="xs" index="/n">
               <span class="fs-md">笔记</span>
             </el-menu-item>
 
@@ -80,7 +79,9 @@
                         <span class="hover-4 point pr-1 text-primary">{{
                           notify.user.name
                         }}</span> </router-link
-                      >评论了你的
+                      >{{
+                        notify.post.type === 'post' ? '评论了' : '回答了'
+                      }}你的
                       <router-link
                         :to="
                           (notify.post.type === 'post' ? '/p/' : '/q/') +
@@ -129,37 +130,23 @@
               </el-popover>
             </el-menu-item>
 
-            <!-- <el-menu-item class="menu-item">
-              <el-popover v-model="visible" placement="top" width="160">
-                <div style="text-align: center; margin: 0">
-                  <div>夜间模式</div>
-                  <div class="d-flex jc-center pt-3">
-                    <el-button
-                      @click="visible = false"
-                      size="mini"
-                      type="primary"
-                      >开启</el-button
-                    >
-
-                    <el-button @click="visible = false" type="text" size="mini"
-                      >关闭</el-button
-                    >
-                  </div>
-                </div>
-                <el-button slot="reference" type="text">Aa</el-button>
-              </el-popover>
-            </el-menu-item> -->
-
-            <el-menu-item class="md" :index="`search`">
+            <el-menu-item>
               <el-input
                 v-model="search"
-                @change="dataSearch"
-                clearable
+                @keyup.enter.native="dataSearch"
                 size="small"
+                class="md"
                 placeholder="请输入内容"
-                suffix-icon="el-icon-search"
-              ></el-input>
+              >
+              </el-input>
+              <el-button @click="dataSearch" type="text" size="mini">
+                <i class="fa fa-search"></i>
+              </el-button>
             </el-menu-item>
+
+            <!-- <el-menu-item>
+              <i class="fa fa-search"></i>
+            </el-menu-item> -->
 
             <el-submenu
               :index="`person`"
@@ -186,20 +173,16 @@
                 <i class="iconfont icon-me px-3 fs-lg"></i> 我的主页
               </el-menu-item>
 
-              <!-- <el-menu-item index="/u">
-                <i class="el-icon-star-on"></i> 我的收藏
-              </el-menu-item> -->
-
-              <!-- <el-menu-item index="/u/setting">个人设置</el-menu-item>
-              <el-menu-item index="/u/help">帮助与反馈</el-menu-item> -->
-              <el-menu-item @click="logout">退出</el-menu-item>
+              <el-menu-item @click="logout">
+                <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出</el-menu-item
+              >
             </el-submenu>
 
             <el-submenu
               :index="`store`"
               :show-timeout="0"
               :hide-timeout="0"
-              class="menu-item"
+              class="xs"
             >
               <template slot="title">
                 <el-button type="plain">创建</el-button>
@@ -222,10 +205,9 @@
               @click="$store.commit('toggleLoginForm'), (isRegister = false)"
               >立即登录</el-menu-item
             >
-            <el-menu-item class="menu-item">
+            <el-menu-item v-if="$store.state.UserNotExist" class="xm">
               <el-button
                 @click="$store.commit('toggleLoginForm'), (isRegister = true)"
-                v-if="$store.state.UserNotExist"
                 type="primary"
                 >免费注册</el-button
               >
@@ -238,11 +220,15 @@
         <router-view :key="$route.path"></router-view>
       </div>
     </div>
+
+    <sq-navigation></sq-navigation>
+
     <el-dialog
       :title="isRegister ? '注册' : '登录'"
       :visible="$store.state.loginFormVisible"
       @close="closeLoginForm"
-      style="max-width:500px;margin: 0 auto"
+      custom-class="login"
+      style="margin: 0 auto"
       width="90%"
     >
       <el-form
@@ -366,9 +352,10 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue, Watch } from 'vue-property-decorator'
-// const Cookie = process.client ? require('js-cookie') : undefined
-
-@Component({})
+import navigation from '~/components/BottomNavigation/navigation.vue'
+@Component({
+  components: { 'sq-navigation': navigation }
+})
 export default class Home extends Vue {
   isRegister: boolean = false
 
@@ -564,7 +551,10 @@ export default class Home extends Vue {
     }
   }
 
-  dataSearch() {}
+  dataSearch() {
+    this.$router.push(`/search/${this.search}`)
+    this.search = ''
+  }
   // 刷新保存状态
 
   // saveState() {
@@ -617,6 +607,10 @@ export default class Home extends Vue {
   }
 }
 
+.login {
+  max-width: 450px;
+}
+
 .el-form-item__label {
   line-height: 20px !important;
 }
@@ -640,12 +634,7 @@ export default class Home extends Vue {
 }
 .el-menu-item:nth-child(1) {
   padding-left: 0 !important;
-}
-.article img {
-  justify-content: center;
-  display: flex;
-  max-width: -webkit-fill-available;
-  margin: 0.667em 0;
+  flex: 1;
 }
 
 .el-popover {

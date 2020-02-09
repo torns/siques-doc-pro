@@ -3,7 +3,7 @@
     <div class="d-flex jc-between header bg-light-1 border-solid py-1 px-3">
       <div style="line-height:28px">高分内容</div>
       <div>
-        <el-radio-group v-model="radio" size="mini">
+        <el-radio-group v-model="sort" size="mini">
           <el-radio-button label="概览"></el-radio-button>
           <el-radio-button label="提问"></el-radio-button>
           <el-radio-button label="回答"></el-radio-button>
@@ -11,8 +11,21 @@
         </el-radio-group>
       </div>
     </div>
-    <div class="body border-solid">
-      <div style="height:200px" class="d-flex ai-center">
+    <div style="min-height:200px" class="body border-solid">
+      <div v-if="posts !== '' && posts.length !== 0" class="px-3 pb-3">
+        <list-panel
+          :collection="false"
+          :posts="posts"
+          :pagination="false"
+          type
+        ></list-panel>
+        <div class="text-right fs-xm">
+          查看全部<span class="text-primary point hoverlink">文章</span>
+          、提问、回答
+        </div>
+      </div>
+
+      <div v-else style="height:200px" class="d-flex ai-center">
         <div
           class="d-flex bg-light-1 ai-center jc-center border-dash border-radius"
           style="height:80%;width:80%;margin:0 auto;"
@@ -57,17 +70,67 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-
-@Component({})
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import ListPanel from '../ListPanel/ListPanel.vue'
+@Component({
+  components: { 'list-panel': ListPanel }
+})
 export default class MyHomepage extends Vue {
   @Prop()
   id: any
-  radio = []
+  sort = '概览'
+  posts: any = ''
   action: any = ''
 
   mounted() {
     this.fetchUserAction()
+    this.fetchUserPost()
+  }
+
+  @Watch('sort')
+  isSortChanged(newValue: any, oldValue: any) {
+    switch (newValue) {
+      case '概览':
+        this.fetchUserPost('')
+        break
+      case '提问':
+        this.fetchUserPost('question')
+        break
+      case '回答':
+        this.fetchUserAnswer()
+        break
+      case '文章':
+        this.fetchUserPost('post')
+        break
+      default:
+        break
+    }
+  }
+
+  async fetchUserPost(type?: any) {
+    if (this.id) {
+      const res = await this.$http.get(
+        `/posts/${this.id}/user?type=${type || ''}`
+      )
+      this.posts = res.data[0]
+    } else {
+      const res = await this.$http.get(
+        `/posts/${this.$store.state.auth.user.id}/user?type=${type || ''}`
+      )
+      this.posts = res.data[0]
+    }
+  }
+
+  async fetchUserAnswer() {
+    if (this.id) {
+      const res = await this.$http.get(`/users/${this.id}/answer`)
+      this.posts = res.data
+    } else {
+      const res = await this.$http.get(
+        `/users/${this.$store.state.auth.user.id}/answer`
+      )
+      this.posts = res.data
+    }
   }
 
   async fetchUserAction() {

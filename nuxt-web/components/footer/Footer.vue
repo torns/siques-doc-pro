@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
     <el-divider v-if="topBorder"></el-divider>
-    <div class="container pt-4  px-3">
+    <div class="container pt-4  px-3 bg-white">
       <el-row :gutter="20" type="flex" class="point">
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">工具</div>
@@ -87,8 +87,14 @@
         <el-divider></el-divider>
         <div class="d-flex jc-between">
           <div class="pr-3">
-            Copyright © 2018-2019 Siques. 当前呈现版本 19.02.27
-            <div>浙ICP备 x6号-2 浙公网安备 3301000号</div>
+            Copyright © 2018-2019 Siques . 当前呈现版本 19.02.27
+            <div>
+              <img
+                style="height: 18px;"
+                src="https://img.shields.io/badge/浙ICP备19035817号-lightgray?style=plastic&logo=appveyor"
+                alt=""
+              />
+            </div>
             <div class="mb-4">CDN 存储服务由 又拍云 赞助提供</div>
           </div>
           <div style="flex:20" class="text-dark-1">

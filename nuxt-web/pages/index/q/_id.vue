@@ -189,176 +189,7 @@
               </div>
             </div>
           </div>
-          <!-- <div v-if="showCommentPanel" class="pt-4">
-            <div v-if="fetchedComment" class="font-bold fs-xl py-1">
-              {{ fetchedComment.length }}条评论
-            </div>
-            <div v-else class="font-bold fs-xl py-1">0条评论</div>
-            <div
-              class="py-4 bg-white border-radius shadow-1"
-              style="min-height:100px"
-            >
-              <div class="px-4">
-                <div class="d-flex">
-                  <div>
-                    <el-avatar class="mr-3">user</el-avatar>
-                  </div>
-                  <el-input v-model="comment" placeholder="撰写评论"></el-input>
-                </div>
-                <div class="text-right mt-4">
-                  <el-button @click="sendComment" type="primary"
-                    >提交评论</el-button
-                  >
-                </div>
-              </div>
 
-              <div v-if="fetchedComment" class="commentBody pt-3 px-4">
-                <div v-for="(comment, index) in fetchedComment" :key="index">
-                  <div class="pb-4">
-                    <div class="d-flex">
-                      <div class="mr-3">
-                        <router-link
-                          :to="`/u/${comment.user.id}`"
-                          tag="div"
-                          class="point"
-                        >
-                          <el-avatar class="shadow-1">
-                            <div v-if="!comment.user.avator[0]">user</div>
-                            <img v-else :src="comment.user.avator[0].url" alt />
-                          </el-avatar>
-                        </router-link>
-                      </div>
-                      <div>
-                        <div class="d-flex">
-                          <div
-                            style="font-weight:600"
-                            class="text-primary hover-4"
-                          >
-                            <router-link
-                              :to="`/u/${comment.user.id}`"
-                              tag="div"
-                              class="point"
-                              >{{ comment.user.name }}：</router-link
-                            >
-                          </div>
-                          <span>{{ comment.body }}</span>
-                        </div>
-                        <div class="d-flex fs-sm ai-baseline">
-                          <el-button
-                            @click="commentLike(comment.id)"
-                            type="text"
-                          >
-                            <i class="iconfont icon-thumbs-up"></i>
-                            {{ comment.liked }}
-                          </el-button>
-
-                          <div
-                            @click="
-                              showComment == comment.id
-                                ? (showComment = '')
-                                : (showComment = comment.id)
-                              showReply = ''
-                              replyData = ''
-                            "
-                            class="text-primary px-2 point"
-                          >
-                            回复
-                          </div>
-
-                          <div class="fs-xxs">
-                            {{
-                              $dayjs(comment.created).format('MM月DD号 HH点')
-                            }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      v-if="showComment == comment.id"
-                      style="min-width:0;margin-left:3em;margin-right:0em;"
-                    >
-                      <el-input
-                        v-model="replyData"
-                        size="mini"
-                        placeholder="回复内容"
-                      ></el-input>
-                      <div class="text-right">
-                        <el-button
-                          @click="sendReply(comment.id, comment.user.id)"
-                          class="mt-3"
-                          size="mini"
-                          type="primary"
-                          >提交评论</el-button
-                        >
-                      </div>
-                    </div>
-                    <div
-                      class="bg-light-1 border-radius px-3"
-                      style="margin-left:3em;margin-right:0em;"
-                    >
-                      <div
-                        v-for="reply in comment.reply"
-                        :key="reply.id"
-                        class="py-3"
-                      >
-                        <div class="d-flex ai-baseline">
-                          <div
-                            style="font-weight:600"
-                            class="text-primary pr-1"
-                          >
-                            {{ reply.from_uid.name }}：
-                            <span style="font-weight:400" class
-                              >@{{ reply.to_uid.name }}</span
-                            >
-                          </div>
-                          <div class="fs-xm">{{ reply.body }}</div>
-                        </div>
-                        <div class="d-flex ai-baseline fs-sm">
-                          <el-button @click="replyLike" type="text">
-                            <i class="iconfont icon-thumbs-up"></i>
-                          </el-button>
-                          <div
-                            @click="
-                              showReply == reply.id
-                                ? (showReply = '')
-                                : (showReply = reply.id)
-                              replyData = ''
-                              showComment = ''
-                            "
-                            class="text-primary px-2 point"
-                          >
-                            回复
-                          </div>
-                          <div></div>
-                          <div class="fs-xxs">
-                            {{ $dayjs(reply.created).format('MM月DD号 HH点') }}
-                          </div>
-                        </div>
-                        <div v-if="showReply == reply.id">
-                          <el-input
-                            v-model="replyData"
-                            size="mini"
-                            placeholder="回复内容"
-                          ></el-input>
-                          <div class="text-right">
-                            <el-button
-                              @click="sendReply(comment.id, reply.from_uid.id)"
-                              class="mt-3"
-                              size="mini"
-                              type="primary"
-                              >提交评论</el-button
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- 回答模块 -->
           <div v-if="fetchedComment" class="answerPanel pt-5">
             <div class="font-bold fs-xl py-1">
               {{ fetchedComment.length }}条回答
@@ -403,9 +234,9 @@
                   >
                   <el-button
                     @click="
-                      showComment == comment.id
+                      showComment == answer.id
                         ? (showComment = '')
-                        : (showComment = comment.id)
+                        : (showComment = answer.id)
                       showReply = ''
                       replyData = ''
                     "
@@ -417,7 +248,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="showComment == comment.id"
+                  v-if="showComment == answer.id"
                   class="pt-3 mt-2 bg-light-1"
                 >
                   <div class="mx-3" style="min-width:0;">
@@ -517,7 +348,6 @@
 
     <sq-footer class="mt-2"></sq-footer>
     <el-backtop></el-backtop>
-    <!-- <back-top @bck2Top="bck2Top"></back-top> -->
   </div>
 </template>
 
@@ -657,6 +487,7 @@ export default class Question extends Vue {
       if (answer) {
         const data = {
           body: answer,
+          title: this.question.title,
           owner_uid: this.question.user.id, // 这个资源的用户id
           type: 'answer'
         }
@@ -684,25 +515,34 @@ export default class Question extends Vue {
   // 当前用户id
   // 被回复用户id:from_uid
   async sendReply(commentId: any, fromUid: any) {
-    // console.log(commentId);
-    // console.log(this.$store.state.auth.user.id);
-    // console.log(from_uid);
-    const data = {
-      parent_id: commentId,
-      body: this.replyData,
-      from_uid: this.$store.state.auth.user.id,
-      to_uid: fromUid
-    }
+    if (this.isUser) {
+      if (this.replyData) {
+        const data = {
+          parent_id: commentId,
+          body: this.replyData,
+          from_uid: this.$store.state.auth.user.id,
+          to_uid: fromUid
+        }
 
-    await this.$http.post('posts/1/reply', data)
-    this.$notify({
-      type: 'success',
-      message: '回复成功',
-      title: '成功'
-    })
-    this.replyData = ''
-    this.showReply = ''
-    this.showComment = ''
+        await this.$http.post('posts/1/reply', data)
+        this.$notify({
+          type: 'success',
+          message: '回复成功',
+          title: '成功'
+        })
+        this.replyData = ''
+        this.showReply = ''
+        this.showComment = ''
+      } else {
+        this.$notify({
+          type: 'info',
+          message: '回复内容不能为空',
+          title: '提示'
+        })
+      }
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   showCreatDialog() {

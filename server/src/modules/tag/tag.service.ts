@@ -49,6 +49,15 @@ export class TagService {
           .relation(User, 'tags')
           .of(userId)
           .add(data[0]);
+
+        const id = data[0];
+
+        await this.tagRepository
+          .createQueryBuilder('tag')
+          .update(Tag)
+          .where('tag.id=:id', { id })
+          .set({ interest: () => 'interest + 1' })
+          .execute();
       } catch {
         return;
       }
@@ -60,6 +69,14 @@ export class TagService {
             .relation(User, 'tags')
             .of(userId)
             .add(e);
+
+          const id = e;
+          await this.tagRepository
+            .createQueryBuilder('tag')
+            .update(Tag)
+            .where('tag.id=:id', { id })
+            .set({ interest: () => 'interest + 1' })
+            .execute();
         } catch {
           return;
         }
@@ -73,6 +90,13 @@ export class TagService {
       .relation(User, 'tags')
       .of(userId)
       .remove(tagId);
+
+    await this.tagRepository
+      .createQueryBuilder('tag')
+      .update(Tag)
+      .where('tag.id=:tagId', { tagId })
+      .set({ interest: () => 'interest - 1' })
+      .execute();
   }
 
   async showUserTag(userId: number) {

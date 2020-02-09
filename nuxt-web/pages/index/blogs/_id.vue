@@ -21,7 +21,10 @@
             <div class="fs-xll pl-2">{{ collections.name }}</div>
           </div>
           <div>
-            <el-button type="primary" size="mini"
+            <el-button
+              @click="interestCollect(collections.id)"
+              type="primary"
+              size="mini"
               >关注 | {{ collections.interest }}</el-button
             >
           </div>
@@ -228,6 +231,25 @@ export default class collection extends Vue {
   // 刷新数据
   refetch() {
     this.fetchBookmark()
+  }
+  // 关注专栏
+  async interestCollect(id: any) {
+    const res = await this.$http.get(`users/${id}/interest`)
+    if (res.data) {
+      this.$notify({
+        type: 'success',
+        message: '关注成功',
+        title: '成功'
+      })
+      this.collections.interest += 1
+    } else {
+      this.$notify({
+        type: 'info',
+        message: '取消关注成功',
+        title: '信息'
+      })
+      this.collections.interest -= 1
+    }
   }
 }
 </script>

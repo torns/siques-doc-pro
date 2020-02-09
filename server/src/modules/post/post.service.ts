@@ -93,7 +93,9 @@ export class PostService {
     }
     queryBuilder.where('post.userId=:id', { id });
 
-    queryBuilder.andWhere('post.type=:type', { type });
+    if (type) {
+      queryBuilder.andWhere('post.type=:type', { type });
+    }
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
     //获取结果以及数量
@@ -128,6 +130,7 @@ export class PostService {
     // 添加两个关系relation
 
     queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.addSelect('post.cover');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     queryBuilder.leftJoinAndSelect('tag.taglist', 'taglist');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
@@ -223,7 +226,7 @@ export class PostService {
     //   .set({ views: () => 'views + 1' })
     //   .execute();
     // 还有问题
-    console.log(entities);
+
     entities.concerned = concern;
 
     return entities;
@@ -235,14 +238,27 @@ export class PostService {
 
     await this.postRepository.update(id, data);
     //如果修改的是body才执行
+
     if (data.body) {
+      let reg = /[\\\`\*\_\[\]\#\+\-\!\>]/g;
+      // 匹配封面链接
+      let reg1 = /(?<=\!\[.*\]\()(.+)(?=\))/;
+
+      let reg2 = /^[^?]+/;
+      const url =
+        data.body.match(reg1)[1].match(reg2) +
+        '?x-oss-process=style/' +
+        'cover-picture';
+
+      const body = data.body.replace(reg, '');
       await this.postRepository
         .createQueryBuilder()
         // .addSelect('post.body')
         .update(Post)
         .where('post.id=:id', { id })
         //截取一部分的数据
-        .set({ alias: data.body.substring(0, 100) })
+
+        .set({ cover: url, alias: body.substring(0, 120) })
         .execute();
     }
   }
@@ -328,5 +344,29 @@ export class PostService {
 
     const entity = querryBuilder.getOne();
     return entity;
+  }
+
+  async serchData(searchKey: any) {
+    const res1 = await this.postRepository
+      .createQueryBuilder('post')
+
+      .where('post.title Like :param')
+      .setParameters({
+        param: '%' + searchKey + '%',
+      })
+      .orderBy('post.liked', 'ASC')
+      .getManyAndCount();
+
+    const res2 = await this.postRepository
+      .createQueryBuilder('post')
+
+      .where('post.body Like :param')
+      .setParameters({
+        param: '%' + searchKey + '%',
+      })
+      .orderBy('post.liked', 'ASC')
+      .getManyAndCount();
+
+    return { ...res1, ...res2 };
   }
 }

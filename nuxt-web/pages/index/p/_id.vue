@@ -1,45 +1,7 @@
 <template>
   <div class="bg-light">
-    <div class="container pt-4 pb-3">
-      <el-dialog
-        :visible.sync="dialogFormVisible"
-        width="500px"
-        title="收藏"
-        class="border-radius"
-      >
-        <div>
-          <div>添加到收藏夹:</div>
-          <div>
-            <el-checkbox-group v-model="checkList">
-              <el-checkbox
-                v-for="(bookmark, index) in bookmarks"
-                :key="index"
-                :label="bookmark.id"
-                :disabled="
-                  list.find((value) => {
-                    return value === bookmark.id
-                  })
-                    ? true
-                    : false
-                "
-                >{{ bookmark.title }}</el-checkbox
-              >
-            </el-checkbox-group>
-            <el-button @click="showCreatDialog" type="text"
-              >创建收藏夹</el-button
-            >
-          </div>
-          <div class="text-right pt-5">
-            <el-button @click="dialogFormVisible = false" size="mini"
-              >取 消</el-button
-            >
-            <el-button @click="bookmarkPost" size="mini" type="primary"
-              >确 定</el-button
-            >
-          </div>
-        </div>
-      </el-dialog>
-      <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
+    <sq-bookmark ref="bookmark"></sq-bookmark>
+    <div class="container pt-4 pb-3 animated fadeIn">
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-1 border-radius">
@@ -57,7 +19,11 @@
                     <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
-                  <el-button @click="showBookmarkDialog" type="text" circle>
+                  <el-button
+                    @click="showBookmarkDialog(post.id)"
+                    type="text"
+                    circle
+                  >
                     <i class="iconfont icon-book-mark"></i>
                   </el-button>
 
@@ -65,11 +31,6 @@
 
                   <el-button style="margin-top:-15px" type="text" circle>
                     <i class="iconfont fs-xs icon-comments"></i>
-                  </el-button>
-
-                  <i></i>
-                  <el-button style="margin-top:-15px" type="text" circle>
-                    <i class="iconfont icon-share1"></i>
                   </el-button>
                 </div>
                 <h1 class="py-4">{{ post.title }}</h1>
@@ -145,7 +106,7 @@
                   </el-button>
 
                   <el-button
-                    @click="showBookmarkDialog"
+                    @click="showBookmarkDialog(post.id)"
                     class="hover-3"
                     type="plain"
                   >
@@ -362,7 +323,7 @@
           :xl="6"
           class="hidden-md-and-down pl-2"
         >
-          <div class="pl-3">
+          <div class="pl-3 ">
             <sq-postbar :data="post"></sq-postbar>
           </div>
         </el-col>
@@ -371,24 +332,19 @@
 
     <sq-footer style="z-index:10" class="mt-2"></sq-footer>
     <el-backtop></el-backtop>
-    <!-- <back-top @bck2Top="bck2Top"></back-top> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-
+import utils from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
-import BackToTop from '~/components/BackToTop/Back2Top.vue'
-import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
 
 @Component({
   components: {
     'sq-postbar': PostSideBar,
-    'back-top': BackToTop,
-    'bookmark-dialog': bookmark,
     'share-dialog': share
   }
 })
@@ -405,6 +361,7 @@ export default class Post extends Vue {
   list = []
   dialogFormVisible = false
   checkList = []
+
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
@@ -432,6 +389,9 @@ export default class Post extends Vue {
       this.liked = res.data.liked
       // if (!res.data.editor) {
       res.data.body = md.render('[[toc]] \n' + res.data.body)
+      this.$nextTick(() => {
+        utils()
+      })
       // }
     } else {
       // 如果文章已经载入就请求轻量级的方法
@@ -463,8 +423,12 @@ export default class Post extends Vue {
   }
 
   async commentLike(id: any) {
-    await this.$http.get(`posts/${id}/comments/like`)
-    this.fetchComment()
+    if (this.isUser) {
+      await this.$http.get(`posts/${id}/comments/like`)
+      this.fetchComment()
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   async replyLike() {}
@@ -472,7 +436,14 @@ export default class Post extends Vue {
   // 关注
   async follow(id: any) {
     // 提供用户id
-    await this.$http.get(`/users/${id}/follow`)
+    const res = await this.$http.get(`/users/${id}/follow`)
+    if (res.data) {
+      this.$notify({
+        type: 'success',
+        message: '关注成功',
+        title: '成功'
+      })
+    }
   }
 
   async sendComment() {
@@ -532,51 +503,14 @@ export default class Post extends Vue {
     }
   }
 
-  showCreatDialog() {
-    const ref: any = this.$refs.dialog
-    ref.dialogFormVisible = true
-  }
-  showBookmarkDialog() {
+  showBookmarkDialog(id: any) {
     if (this.isUser) {
       this.dialogFormVisible = true
-      this.fetchBookmark()
+      const ref: any = this.$refs.bookmark
+      ref.showBookmark(id)
     } else {
       this.$store.commit('toggleLoginForm')
     }
-  }
-
-  async fetchBookmark() {
-    const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.auth.user.id}/user`
-    )
-    this.bookmarks = res.data
-
-    const list: any = []
-    await this.bookmarks.map((el: any) => {
-      el.posts.map((e: any) => {
-        if (e.id === parseInt(this.id)) {
-          list.push(el.id)
-        }
-      })
-    })
-    this.list = list
-  }
-
-  // 刷新数据
-  refetch() {
-    this.fetchBookmark()
-  }
-
-  async bookmarkPost() {
-    await this.$http.get(
-      `/bookmarks?postId=${this.id}&bookmarkId=${this.checkList}`
-    )
-    this.$notify({
-      type: 'success',
-      message: '收藏成功',
-      title: '成功'
-    })
-    this.dialogFormVisible = false
   }
 }
 </script>

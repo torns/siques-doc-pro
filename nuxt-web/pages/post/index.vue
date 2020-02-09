@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="collections" width="18%">
+      <el-aside class="collections" width="14%">
         <div class="d-flex flex-column mt-4">
           <div class="lh-2 point backBtn fs-xs">
             <router-link tag="div" to="/">回首页</router-link>
@@ -108,7 +108,7 @@
       <el-aside
         id="post"
         class="postlist"
-        width="23%"
+        width="20%"
         style="background-color:white;color:#333"
       >
         <div @click="creatPost" type="primary" class="creatpost point pl-4">
@@ -129,7 +129,6 @@
               <span>{{ post.title }}</span>
             </div>
 
-            <!-- <i class="el-icon-s-tools pt-4 pr-2"> -->
             <el-dropdown
               @command="handlePost"
               placement="bottom-start"
@@ -155,7 +154,6 @@
                 >
               </el-dropdown-menu>
             </el-dropdown>
-            <!-- </i> -->
           </li>
         </ul>
       </el-aside>
@@ -232,7 +230,6 @@ export default class index extends Vue {
   selectedCollection: any = null
   selectedPost: any = ''
   posts: any = ''
-  defaultEditor: boolean = true
   selectEditor: boolean = true
   title: string = ''
   tagLen: number = 0
@@ -246,10 +243,16 @@ export default class index extends Vue {
   inputValue = ''
   // true是tinymce
 
+  get defaultEditor() {
+    try {
+      return this.$store.state.auth.user.editor
+    } catch {
+      return ''
+    }
+  }
+
   mounted() {
     this.fetchCollect()
-
-    this.fetchEditor()
   }
 
   @Watch('dynamicTags')
@@ -376,7 +379,9 @@ export default class index extends Vue {
   }
   // 刷新问题
   async fetchCollect() {
-    const res = await this.$http.get('/collections/')
+    const res = await this.$http.get(
+      `/collections/${this.$store.state.auth.user.id}/write`
+    )
     if (res.data.length !== 0) {
       this.collections = res.data
       this.selectedCollection = res.data[0].id
@@ -443,7 +448,7 @@ export default class index extends Vue {
 
   handleEditor(command: any) {
     if (command === 'a') {
-      this.defaultEditor = !this.defaultEditor
+      this.$store.commit('toggleEditor')
       const body = {
         editor: this.defaultEditor
       }
@@ -454,11 +459,6 @@ export default class index extends Vue {
         message: '设置成功'
       })
     }
-  }
-
-  async fetchEditor() {
-    const res = await this.$http.get('users')
-    this.defaultEditor = res.data.editor === 1
   }
 
   async handleClose(tag: any, id: any) {

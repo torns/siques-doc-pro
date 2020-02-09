@@ -25,6 +25,21 @@ h1 {
   line-height: 1.5;
   background-color: #e9ecef !important;
   overflow: auto;
+  ul {
+    margin: 0;
+    padding-left: 25px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    li {
+      list-style: decimal;
+
+      padding: 5px !important;
+      cursor: text;
+      line-height: 14px;
+      font-size: 13px;
+    }
+  }
 }
 
 .article {
@@ -33,6 +48,13 @@ h1 {
   h5,
   h6 {
     padding: 2em 0;
+  }
+  img {
+    max-width: -webkit-fill-available;
+    justify-content: center;
+
+    display: flex;
+    margin: 1.667em auto;
   }
 }
 
@@ -69,7 +91,7 @@ p code {
 
 .table-of-contents {
   background-color: white;
-  position: fixed;
+  position: absolute;
   margin-left: 62em;
   text-transform: capitalize;
 
@@ -78,7 +100,7 @@ p code {
 
   height: 210px;
   overflow: auto;
-  top: 49em;
+  top: 42.5em;
   padding: 0.618rem;
 
   list-style-type: none;

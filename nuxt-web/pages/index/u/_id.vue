@@ -61,7 +61,7 @@
             </el-col>
             <el-col :xs="12" :sm="9" :md="9" :lg="9" :xl="10">
               <div class="d-flex pb-1">
-                <h2 class="pr-4 text-ellipsis">
+                <h2 style="font-weight:600" class="pr-4 text-ellipsis">
                   {{ id ? user.name : this.$store.state.auth.user.name }}
                 </h2>
                 <el-button type="text">查看完整档案</el-button>
@@ -161,7 +161,7 @@
           >
             <div>
               <div class="d-flex jc-around">
-                <div @click="handleComponent({ 0: 'Followers' })" class="point">
+                <div @click="handleComponent({ 0: 'followers' })" class="point">
                   <div>关注了</div>
                   <div v-if="user !== ''">
                     <span v-if="user.follows">{{ user.follows.length }}人</span>
@@ -224,7 +224,7 @@
             <component
               :liked="id ? user.liked : $store.state.auth.user.liked"
               :id="id"
-              :is="currentComponent === 'Homepage' ? 'SideBar' : ''"
+              :is="sideComponent"
             />
           </el-col>
         </el-row>
@@ -235,13 +235,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import Homepage from '~/components/Page/Homepage.vue'
 import PostList from '~/components/Page/PostList.vue'
 import Fans from '~/components/Page/Fans.vue'
 import Followers from '~/components/Page/Followers.vue'
+import FollowPageBar from '~/components/Page/SideBar/followers.vue'
 
-import SideBar from '~/components/Page/SideBar.vue'
+import HomePageBar from '~/components/Page/SideBar/homepage.vue'
 import Bookmark from '~/components/Page/Bookmark.vue'
 import questionList from '~/components/Page/questionList.vue'
 import noteList from '~/components/Page/noteList.vue'
@@ -251,7 +252,8 @@ import noteList from '~/components/Page/noteList.vue'
     Homepage,
     PostList,
     questionList,
-    SideBar,
+    HomePageBar,
+    FollowPageBar,
     noteList,
     Fans,
     Followers,
@@ -263,6 +265,7 @@ export default class Page extends Vue {
   collections: string = ''
   defaultLink: string = 'Homepage'
   currentComponent: string = 'Homepage'
+  sideComponent: string = 'HomePageBar'
   messageBox: string = ''
   show: boolean = false
   postCount: number = 0
@@ -301,6 +304,22 @@ export default class Page extends Vue {
       icon: 'weblist'
     }
   ]
+
+  @Watch('currentComponent')
+  isComponentChanged(newval: any, oldval: any) {
+    switch (newval) {
+      case 'Homepage':
+        this.sideComponent = 'HomePageBar'
+        break
+      case 'followers':
+        this.sideComponent = 'FollowPageBar'
+        break
+
+      default:
+        this.sideComponent = ''
+        break
+    }
+  }
 
   // TS中的计算属性
   get id(): any {

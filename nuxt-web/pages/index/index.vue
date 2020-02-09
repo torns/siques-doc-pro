@@ -73,10 +73,6 @@
                     `pr-6  pl-3 py-2`
                 "
               >
-                <!-- <font-awesome-icon
-                  :icon="[link.prefix, link.icon]"
-                  :class="` pr-1 text-${link.color}`"
-                /> -->
                 <i
                   :class="
                     (link.alias == category
@@ -140,40 +136,69 @@
               <el-divider></el-divider>
 
               <ul style="overflow: auto;">
-                <li
+                <div
                   v-for="(post, $index) in posts"
                   :key="$index"
                   class="infinite-list-item"
                 >
-                  <router-link
-                    :to="`/p/${post.id}`"
-                    target="_blank"
-                    tag="a"
-                    class="text-dark-1 hoverlink point  fs-lg"
-                    >{{ post.title }}</router-link
-                  >
-                  <div class="text-gray fs-xm lh-2">
-                    <!-- 过滤 -->
-                    <span>{{ post.alias | capitalize }}...</span>
-                    <div class="d-flex mb-3">
-                      <div class="d-flex point ai-baseline">
-                        <i class="el-icon-success hover-1 lh-2"></i>
+                  <div class="d-flex ai-center pb-3">
+                    <div>
+                      <router-link
+                        :to="`/p/${post.id}`"
+                        target="_blank"
+                        tag="a"
+                        class="text-dark-1 hoverlink point   fs-lg"
+                        >{{ post.title }}</router-link
+                      >
+                      <el-tag
+                        v-for="tag in post.tags"
+                        :key="tag.id"
+                        effect="plain"
+                        size="mini"
+                        type="primary"
+                        class="mr-2 hover-4 hover-2 point "
+                      >
+                        <router-link :to="`/t/${tag.id}`">{{
+                          tag.name
+                        }}</router-link>
+                      </el-tag>
 
-                        <div class="pl-1 pr-3 text-primary hoverlink">
-                          ×{{ post.liked }} · 赞
+                      <div class="text-gray fs-xm lh-2 pt-2">
+                        <!-- 过滤 -->
+                        <span>{{ post.alias }}...</span>
+                        <div class="d-flex mb-3 pt-2">
+                          <div class="d-flex point ai-baseline">
+                            <i class="el-icon-success hover-1 lh-2"></i>
+
+                            <div class="pl-1 pr-3 text-primary hoverlink">
+                              ×{{ post.liked }} · 赞
+                            </div>
+                          </div>
+                          <nuxt-link :to="`u/${post.user.id}`" tag="div"
+                            ><div class="pr-2 point hoverlink">
+                              {{ post.user.name }} ·
+                            </div></nuxt-link
+                          >
+
+                          <div>
+                            {{ $dayjs(post.created).format('MM月DD日') }}
+                          </div>
+                          <div>{{ post.category }}</div>
                         </div>
                       </div>
-                      <nuxt-link :to="`u/${post.user.id}`" tag="div"
-                        ><div class="pr-2">
-                          {{ post.user.name }} ·
-                        </div></nuxt-link
-                      >
-
-                      <div>{{ $dayjs(post.created).format('MM月DD日') }}</div>
-                      <div>{{ post.category }}</div>
+                    </div>
+                    <div v-if="post.cover" class="pl-3 pr-2 pb-5 point">
+                      <router-link :to="`/p/${post.id}`">
+                        <el-image
+                          style="width: 80px; height: 60px"
+                          :src="post.cover"
+                          class="border-radius shadow-1 border-dash"
+                          fit="contain"
+                        ></el-image
+                      ></router-link>
                     </div>
                   </div>
-                </li>
+                </div>
                 <div v-if="loading" class="my-3 text-primary fs-xl">
                   <i class="el-icon-loading"></i> Loading
                 </div>

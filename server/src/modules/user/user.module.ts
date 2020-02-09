@@ -10,11 +10,12 @@ import { Post } from '../post/post.entity';
 import { Avator } from '../avator/avator.entity';
 import { Collection } from '../collection/collection.entity';
 import { ActionModule } from '../action/action.module';
+import { Tag } from '../tag/tag.entity';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature([User, Post, Avator, Collection]),
+    TypeOrmModule.forFeature([User, Post, Avator, Collection, Tag]),
     ActionModule,
   ],
   controllers: [UserController],

@@ -36,6 +36,7 @@ export default {
       // {
       //   src: 'https://cdn.bootcss.com/element-ui/2.4.11/index.js'
       // },
+
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
       },
@@ -43,9 +44,9 @@ export default {
         src:
           'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
       },
-      // {
-      //   src: 'https://cdn.bootcss.com/jquery/3.4.1/core.js'
-      // },
+      {
+        src: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'
+      },
       {
         src:
           'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js'
@@ -54,11 +55,15 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
-      // {
-      //   rel: 'stylesheet',
-      //   href:
-      //     'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css'
-      // },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css'
+      },
       {
         rel: 'stylesheet',
         href:
@@ -75,23 +80,24 @@ export default {
       },
       {
         rel: 'stylesheet',
+        href:
+          'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css'
+      },
+      {
+        rel: 'stylesheet',
         href: 'https://uicdn.toast.com/tui-editor/latest/tui-editor.css'
       },
       {
         rel: 'stylesheet',
         href:
           'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css'
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css'
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css'
       }
+
+      // {
+      //   rel: 'stylesheet',
+      //   href:
+      //     'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css'
+      // }
     ]
   },
   /*
@@ -118,9 +124,10 @@ export default {
     '@/plugins/http',
     '@/plugins/filter',
     '@/plugins/nuxt-client-init.client.js',
-    { src: '@/plugins/markdownEditor', ssr: false },
+    { src: '@/plugins/components.js', ssr: false },
     '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
+    { src: '@/plugins/mixin.js', ssr: false },
     { src: '@plugins/localStorage', ssr: false }
     // { src: '@plugins/markdown', ssr: false }
   ],
@@ -168,6 +175,7 @@ export default {
    */
   build: {
     transpile: [/^element-ui/],
+
     /*
      ** You can extend webpack config here
      */

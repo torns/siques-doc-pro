@@ -43,10 +43,11 @@
                   >
                 </div>
               </div>
-              <div class="text-gray pt-3 fs-xm">
-                超文本标记语言（英文：HyperText Markup
-                Language，HTML）是为“网页创建和其它可在网页浏览器中看到的信息”设计的一种标记语言。
-                <el-button type="text" class="hoverlink">[百科]</el-button>
+              <div class="text-gray  pt-3 fs-xm">
+                <div class="lh-2">
+                  {{ tagInfo.info.description }}
+                  <el-link type="text">[百科]</el-link>
+                </div>
               </div>
             </div>
           </div>

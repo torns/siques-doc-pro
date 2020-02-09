@@ -16,25 +16,44 @@
             </div>
             <div>
               <ul>
-                <li v-for="(post, index) in bookmark.posts" :key="index">
-                  <div class="d-flex jc-between">
-                    <div>
-                      <div class="hoverlink">{{ post.user.name }}</div>
-                      <router-link
-                        :to="`/p/${post.id}`"
-                        class="hover-2"
-                        tag="div"
+                <div v-for="(post, index) in bookmark.posts" :key="index">
+                  <div class="d-flex jc-between ishover">
+                    <div class="d-flex">
+                      <div
+                        class="mr-2 px-2 fs-xm text-center text-primary bg-green-1"
                       >
-                        {{ post.title }}</router-link
-                      >
+                        <div>{{ post.bookmarked }}</div>
+                        <div>收藏</div>
+                      </div>
+                      <div class="d-flex flex-column">
+                        <div class="d-flex fs-xm pl-2">
+                          <div class="hoverlink pr-2 point">
+                            <router-link tag="div" :to="`/u/${post.user.id}`">{{
+                              post.user.name
+                            }}</router-link>
+                          </div>
+                          <div>{{ $dayjs(post.created).format('M月D号') }}</div>
+                        </div>
+                        <router-link
+                          :to="`/p/${post.id}`"
+                          class="hover-4 point"
+                          tag="div"
+                        >
+                          {{ post.title }}</router-link
+                        >
+                      </div>
                     </div>
-                    <div class="pr-3">
-                      <el-button @click="del" size="mini" type="primary"
+                    <div class="pr-5">
+                      <el-button
+                        @click="del"
+                        class="btn"
+                        size="mini"
+                        type="text"
                         >删除条目</el-button
                       >
                     </div>
                   </div>
-                </li>
+                </div>
               </ul>
             </div>
           </div>
@@ -132,6 +151,7 @@ export default class Bookmark extends Vue {
   }
 
   followBookmark() {}
+  del() {}
 }
 </script>
 
@@ -142,5 +162,14 @@ export default class Bookmark extends Vue {
   width: 36px;
   height: 36px;
   text-align: center;
+}
+.ishover {
+  .btn {
+    opacity: 0.5 !important;
+  }
+
+  :hover {
+    opacity: 1 !important;
+  }
 }
 </style>

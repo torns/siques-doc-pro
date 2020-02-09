@@ -55,6 +55,9 @@ export class User {
   @Column({ nullable: true })
   website: string;
 
+  @Column({ default: 0 })
+  followedBy: number;
+
   @CreateDateColumn()
   created: Date;
 
@@ -133,6 +136,11 @@ export class User {
   @ManyToMany(type => Bookmark)
   @JoinTable()
   bookmarks: Bookmark[];
+
+  //一个用户给多个回答点赞
+  @ManyToMany(type => Comment)
+  @JoinTable()
+  up: Comment[];
 
   // 一个用户关注问题
   @ManyToMany(

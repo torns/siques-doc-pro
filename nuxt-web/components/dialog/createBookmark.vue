@@ -54,8 +54,18 @@ export default class createBookmark extends Vue {
   postId = ''
   list = []
 
+  get isUser() {
+    return !this.$store.state.UserNotExist || false
+  }
+
+  // @Watch('isUser')
+  // isUserChange
+
   mounted() {
     this.fetchBookmark()
+  }
+  updated() {
+    // this.fetchBookmark()
   }
 
   showCreatDialog() {
@@ -64,7 +74,7 @@ export default class createBookmark extends Vue {
   }
   async fetchBookmark() {
     // 依赖用户id
-    if (this.$store.state.UserNotExist === false) {
+    if (this.isUser) {
       const res = await this.$http.get(
         `/bookmarks/${this.$store.state.auth.user.id}/user`
       )

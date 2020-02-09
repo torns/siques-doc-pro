@@ -47,6 +47,9 @@ export class Post {
   @Column({ default: 0 })
   views: number;
 
+  @Column('longtext', { nullable: true, select: false })
+  cover: string;
+
   @Column({ default: 0 })
   liked: number;
 

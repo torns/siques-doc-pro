@@ -32,13 +32,22 @@ export default class MarkDown extends Vue {
   height: any
   body: any = ''
   editor: any
-  win: any = window
+
   mounted() {
     this.initEditor()
   }
   initEditor() {
-    // window.editor = this.editor
     this.editor = md(this.height)
+
+    // this.editor = new Editor({
+    //   /* eslint-disable */
+    //   el: document.getElementById('editorSection'),
+    //   initialEditType: 'markdown',
+    //   language: 'zh_CN',
+    //   height: this.height ? this.height : '700px',
+    //   ...defalutConfig
+    // })
+
     // 获取编辑器上的功能条
     const toolbar = this.editor.getUI().getToolbar()
     const fileDom: any = this.$refs.files
@@ -56,6 +65,7 @@ export default class MarkDown extends Vue {
         className: 'upload-img',
         event: 'uploadEvent',
         tooltip: '插入图片'
+        /* eslint-disable */
         // eslint-disable-next-line
         // $el: $(
         //   '<button class="custom-button fa fa-image" style="font-size: 14px;color: #000">123</button>'

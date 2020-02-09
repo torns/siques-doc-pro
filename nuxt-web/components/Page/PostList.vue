@@ -5,19 +5,23 @@
       <el-divider></el-divider>
     </div>
     <div>
-      <ul class="pb-3">
-        <li v-for="(collection, index) in collections" :key="index">
-          <nuxt-link :to="`blogs/${collection.id}`" tag="div">
+      <ul class="pb-2">
+        <div
+          class="py-2"
+          v-for="(collection, index) in collections"
+          :key="index"
+        >
+          <nuxt-link :to="`/blogs/${collection.id}`" tag="div">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
             </div></nuxt-link
           >
 
           <div class="d-flex fs-xm ">
-            <div class="pr-2">0 人关注</div>
-            <div>{{ collection.posts.length }}篇文章</div>
+            <div class="pr-2">{{ collection.interest }} 人关注</div>
+            <div>{{ collection.amount }}篇文章</div>
           </div>
-        </li>
+        </div>
       </ul>
     </div>
     <div class="d-flex jc-between pb-3">

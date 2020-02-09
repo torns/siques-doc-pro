@@ -34,6 +34,11 @@ export class CollectionController {
     return await this.CollectionService.showCollection(user.id);
   }
 
+  @Get(':id/write')
+  async fetchCollection(@Param('id', ParseIntPipe) id: number) {
+    return await this.CollectionService.showCollection(id);
+  }
+
   //这里传入的是用户id
   @Get(':id/user')
   async getUserCollection(@Param('id', ParseIntPipe) id: number) {

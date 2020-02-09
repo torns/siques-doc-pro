@@ -11,7 +11,7 @@
         <li v-for="post in data[0]" :key="post.id">
           <router-link :to="`/p/${post.id}`" tag="div">
             <mark>
-              {{ post.title }}
+              <div class="ellipsis-1 pr-2 mr-4">{{ post.title }}</div>
             </mark>
 
             <small class="text-yellow">{{ post.liked }} 👍</small>

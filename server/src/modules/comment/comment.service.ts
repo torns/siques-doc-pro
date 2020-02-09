@@ -13,7 +13,9 @@ export class CommentService {
     private readonly commentRepository: Repository<Comment>,
     @InjectRepository(Reply)
     private readonly replyRepository: Repository<Reply>,
-  ) { }
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   // 评论
   async storePostComment(id: number, user: User, data: CommentDto) {
@@ -43,33 +45,71 @@ export class CommentService {
   // }
 
   async storePostReply(Replydata: ReplyDto, user: User) {
-
-    const id = user.id
+    const id = user.id;
     return await this.replyRepository.save({
       from_uid: id,
-      ...Replydata
-    })
-
+      ...Replydata,
+    });
   }
 
-  async PostCommentLike(id: number) {
-    console.log(id)
-    await this.commentRepository.createQueryBuilder()
-      .update(Comment)
-      .where("comment.id=:id", { id })
-      .set({ liked: () => "liked+1" })
-      .execute();
+  async showUserAnswer(userId: number) {
+    const answer = 'answer';
 
+    const res = await this.commentRepository
+      .createQueryBuilder('comment')
+      .where('comment.owner_uid=:userId', { userId })
+      .andWhere('comment.type=:answer', { answer })
+      .leftJoin('comment.post', 'post')
+      .addSelect(['post.id'])
+      .getMany();
+
+    // let data = [];
+
+    // res.map(e => {
+    //   data.push(e.post);
+    // });
+
+    return res;
+  }
+
+  async PostCommentLike(id: number, userId: number) {
+    try {
+      await this.userRepository
+        .createQueryBuilder('user')
+        .relation(User, 'up')
+        .of(userId)
+        .add(id);
+
+      await this.userRepository
+        .createQueryBuilder('comment')
+        .update(Comment)
+        .where('comment.id=:id', { id })
+        .set({ liked: () => 'liked+1' })
+        .execute();
+    } catch {
+      await this.userRepository
+        .createQueryBuilder('user')
+        .relation(User, 'up')
+        .of(userId)
+        .remove(id);
+
+      await this.userRepository
+        .createQueryBuilder('comment')
+        .update(Comment)
+        .where('comment.id=:id', { id })
+        .set({ liked: () => 'liked-1' })
+        .execute();
+    }
   }
 
   async PostReplyLike(id: number) {
-    await this.replyRepository.createQueryBuilder()
+    await this.replyRepository
+      .createQueryBuilder()
       .update(Reply)
-      .where("reply.id", { id })
-      .set({ liked: () => "liked+1" })
+      .where('reply.id', { id })
+      .set({ liked: () => 'liked+1' })
       .execute();
   }
-
 
   async update(id: number, data: CommentDto) {
     return await this.commentRepository.update(id, data);
@@ -79,26 +119,24 @@ export class CommentService {
     return await this.commentRepository.delete(id);
   }
 
-
   //展示评论以及子评论
   async showPostComments(id: number) {
     return await this.commentRepository
       .createQueryBuilder('comment')
-      .orderBy("comment.created", "ASC")
+      .orderBy('comment.created', 'ASC')
       .leftJoin('comment.user', 'user')
-      .addSelect(["user.name", "user.id"])
+      .addSelect(['user.name', 'user.id'])
       .leftJoin('user.avator', 'avator')
-      .addSelect(["avator.url"])
+      .addSelect(['avator.url'])
 
       .leftJoinAndSelect('comment.reply', 'reply')
 
-      .addOrderBy("reply.created", "ASC")
+      .addOrderBy('reply.created', 'ASC')
       .leftJoin('reply.from_uid', 'from_uid')
-      .addSelect(["from_uid.name", "from_uid.id"])
-
+      .addSelect(['from_uid.name', 'from_uid.id'])
 
       .leftJoin('reply.to_uid', 'to_uid')
-      .addSelect(["to_uid.name", "to_uid.id"])
+      .addSelect(['to_uid.name', 'to_uid.id'])
       .leftJoin('comment.post', 'post')
 
       .where('post.id=:id', { id })
@@ -114,7 +152,6 @@ export class CommentService {
   //     .where("reply.parent_id=:id", { id })
   //     .innerJoinAndSelect("reply.parent_id", "parent")
   //     .getMany()
-
 
   // }
 

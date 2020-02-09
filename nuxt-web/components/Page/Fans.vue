@@ -4,9 +4,12 @@
       <div class="fs-xl pb-3">{{ id ? '他' : '我' }}的粉丝</div>
     </div>
     <div class="body">
-      <div style="height:150px" class="mt-4 bg-light-1 border-dash">
-        <div v-if="fans.user == []" class="d-flex ai-center jc-center">
-          <div class="text-gray">
+      <div
+        style="height:150px"
+        class="mt-4 bg-light-1 border-dash d-flex ai-center jc-center"
+      >
+        <div v-if="fans.user.length == 0">
+          <div class="text-gray ">
             (ﾟ∀ﾟ ) 暂时没有任何数据
           </div>
         </div>
@@ -44,7 +47,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 export default class Fans extends Vue {
   @Prop()
   id: any
-  fans = ''
+  fans = { user: [] }
   mounted() {
     this.fetchfans()
   }

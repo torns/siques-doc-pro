@@ -38,7 +38,7 @@ export function wordcounts(body) {
   const word = iTotal + inum
   return word
 }
-
+/* eslint-disable */
 export function listIntercep(taglist) {
   let list = ''
   if (taglist) {
@@ -69,4 +69,35 @@ export function listIntercep(taglist) {
     }
   }
   return list
+}
+
+export default () => {
+  // 代码前数字
+
+  $('pre code').each(function() {
+    $(this).html(
+      '<ul><li>' +
+        $(this)
+          .html()
+          .replace(/\n/g, '</li><li>') +
+        '\n</li></ul>'
+    )
+    // 给指定行增加样式
+    try {
+      var line = $(this)
+        .attr('class')
+        .match(/\d+/g)
+      for (let i in line) {
+        $(this)
+          .children()
+          .children()
+          .eq(line[i] - 1)
+          .addClass('selected')
+      }
+    } catch (err) {
+      throw err
+    }
+  })
+  // 去掉最后一行的空行
+  $('code ul li:last-child').remove()
 }

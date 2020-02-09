@@ -6,6 +6,7 @@ import {
   OneToMany,
   ManyToOne,
   CreateDateColumn,
+  AfterLoad,
 } from 'typeorm';
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
@@ -24,6 +25,9 @@ export class Tag {
 
   @Column()
   description: string;
+
+  @Column({ default: 0 })
+  interest: number;
 
   @CreateDateColumn()
   created: Date;

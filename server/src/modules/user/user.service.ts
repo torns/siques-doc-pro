@@ -12,6 +12,7 @@ import { UserTagDto } from '../tag/tag.dto';
 import { throwError } from 'rxjs';
 import { Avator } from '../avator/avator.entity';
 import { Collection } from '../collection/collection.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Injectable()
 export class UserService {
@@ -24,6 +25,8 @@ export class UserService {
     private readonly avatorRepository: Repository<Avator>,
     @InjectRepository(Collection)
     private readonly collectionRepository: Repository<Collection>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ) {}
   async store(data: UserDto) {
     const { phonenumber } = data;
@@ -158,7 +161,7 @@ export class UserService {
     return await this.userRepository.update(id, entity);
   }
 
-  //用户关注专栏和消除 id是文章id
+  //用户关注专栏和消除 id是专栏id
   async interest(id: number, user: User) {
     try {
       await this.userRepository
@@ -173,6 +176,7 @@ export class UserService {
         .where('collection.id =:id', { id })
         .set({ interest: () => 'interest + 1' })
         .execute();
+      return true;
     } catch {
       await this.userRepository
         .createQueryBuilder()
@@ -186,6 +190,7 @@ export class UserService {
         .where('collection.id =:id', { id })
         .set({ interest: () => 'interest - 1' })
         .execute();
+      return false;
     }
   }
 
@@ -247,11 +252,34 @@ export class UserService {
   // 用户之间关注
   async follow(userid1: number, userid2: number) {
     if (userid1 != userid2) {
-      const res = await this.userRepository
-        .createQueryBuilder('user')
-        .relation(User, 'follows')
-        .of(userid1)
-        .add(userid2);
+      try {
+        await this.userRepository
+          .createQueryBuilder('user')
+          .relation(User, 'follows')
+          .of(userid2)
+          .add(userid1);
+
+        await this.userRepository
+          .createQueryBuilder()
+          .update(User)
+          .where('user.id =:userid1', { userid1 })
+          .set({ followedBy: () => 'followedBy + 1' })
+          .execute();
+        return true;
+      } catch {
+        await this.userRepository
+          .createQueryBuilder('user')
+          .relation(User, 'follows')
+          .of(userid2)
+          .remove(userid1);
+
+        await this.userRepository
+          .createQueryBuilder()
+          .update(User)
+          .where('user.id =:userid1', { userid1 })
+          .set({ followedBy: () => 'followedBy - 1' })
+          .execute();
+      }
     } else {
       return;
     }
@@ -268,6 +296,24 @@ export class UserService {
     } catch {
       return false;
     }
+  }
+
+  // 用户所关注的问题
+  async userFollwedQue(userId: number) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .relation(User, 'concern')
+      .of(userId)
+      .loadMany();
+  }
+
+  // 用户所关注的专栏
+  async userFollowCollect(userId: number) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .relation(User, 'interest')
+      .of(userId)
+      .loadMany();
   }
 
   //用户擅长技能
@@ -305,7 +351,7 @@ export class UserService {
   }
 
   //关注了谁
-  async getfollows(id) {
+  async getfollows(id: any) {
     const res = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.follows', 'follows')
@@ -317,7 +363,7 @@ export class UserService {
     return res;
   }
   // 用户的粉丝,以及他们的头像
-  async whofollows(id) {
+  async whofollows(id: any) {
     // console.log(id)
     const res = await this.userRepository.findOne(id, {
       relations: ['follows', 'user', 'user.avator'],
@@ -350,5 +396,45 @@ export class UserService {
     });
 
     return data;
+  }
+
+  async getRecomendFollow() {
+    const tagLen = await this.tagRepository
+      .createQueryBuilder('tag')
+      .getCount();
+
+    let skipTag = Math.random() * tagLen;
+    if (skipTag < 4) {
+    } else {
+      skipTag -= 4;
+    }
+
+    const userLen = await this.userRepository
+      .createQueryBuilder('user')
+      .getCount();
+
+    let skipUser = Math.random() * userLen;
+    if (skipUser < 2) {
+    } else {
+      skipUser -= 2;
+    }
+    const res1 = await this.tagRepository
+      .createQueryBuilder('tag')
+      .take(4)
+      .skip(Math.floor(skipTag))
+      .orderBy('tag.interest', 'DESC')
+      .getMany();
+
+    const res2 = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoin('user.avator', 'avator')
+      .addSelect('avator.url')
+      .take(2)
+      .skip(Math.floor(skipUser))
+      .getMany();
+
+    var res3 = [];
+    res3.push(res1, res2);
+    return res3;
   }
 }

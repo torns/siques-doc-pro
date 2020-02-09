@@ -161,6 +161,17 @@ export class UserController {
     await this.actionService.storeAction(type, data);
     return await this.userService.userFollowQue(user.id, id);
   }
+  // 用户关注的问题
+  @Get(':id/concerned')
+  async concerned(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.userFollwedQue(id);
+  }
+
+  // 用户关注的专栏
+  @Get(':id/collection')
+  async Userinterest(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.userFollowCollect(id);
+  }
 
   // 文章受赞数量
   @Get(':id/liked/count')
@@ -202,10 +213,9 @@ export class UserController {
     return await this.userService.whofollows(id);
   }
 
-  // // 查询所有统计数据
-  // @Get(':id/counts')
-  // @UseGuards(AuthGuard())
-  // async countsAll(@User() user: userEntity) {
-  //   return await this.userService.countsAll(user.id);
-  // }
+  // 查询推荐的关注
+  @Get(':id/recomend')
+  async fetchRecFollow() {
+    return await this.userService.getRecomendFollow();
+  }
 }

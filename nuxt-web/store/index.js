@@ -19,6 +19,9 @@ export const mutations = {
     state.UserNotExist = true
     state.auth = {}
   },
+  toggleEditor(state) {
+    state.auth.user.editor = !state.auth.user.editor
+  },
   UserExist(state) {
     const autho = localStorage.getItem('auth._token.local')
     state.auth['auth._token.local'] = autho

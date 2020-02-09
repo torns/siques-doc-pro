@@ -136,6 +136,13 @@ export class PostController {
     return this.postService.liked(id);
   }
 
+  // 文章搜索
+
+  @Get(':key/search')
+  async fuzzySearch(@Param('key') key: string) {
+    return this.postService.serchData(key);
+  }
+
   // // 喜欢的文章
   // @Get(":id/liked_posts")
   // @UseGuards(AuthGuard())

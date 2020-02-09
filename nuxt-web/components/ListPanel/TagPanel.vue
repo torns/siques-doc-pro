@@ -25,7 +25,7 @@
                 <router-link
                   :to="post.type === 'post' ? `/p/${post.id}` : `/q/${post.id}`"
                   tag="div"
-                  class="hoverlink mr-3"
+                  class="hoverlink mr-3 point"
                 >
                   {{ post.title }}
                 </router-link>
@@ -34,7 +34,7 @@
                     v-for="tag in post.tags"
                     :key="tag.id"
                     size="mini"
-                    class="hover-3 "
+                    class="hover-3 point"
                     type="primary"
                   >
                     {{ tag.name }}
@@ -56,7 +56,7 @@
               <div class="pr-2">
                 <router-link
                   :to="`/u/${post.user.id}`"
-                  class="text-primary hoverlink"
+                  class="text-primary hoverlink point"
                   tag="div"
                 >
                   {{ post.user.name }}</router-link
@@ -65,13 +65,33 @@
               <div class="pr-2">
                 {{ $dayjs(post.created).format('M月DD号') }}
               </div>
-              <div
-                @click="showBookmark(post.id)"
-                class="text-gray hoverlink fs-xm "
-              >
-                <i class="iconfont icon-book-mark pr-1"></i>
-                <span>{{ post.bookmarked }}</span>
-                收藏
+
+              <el-link @click="showBookmark(post.id)">
+                <div class="text-gray ">
+                  <i class="iconfont icon-book-mark "></i>
+                  <span>{{ post.bookmarked }}</span>
+                  收藏
+                </div>
+              </el-link>
+
+              <div v-if="post.type === 'post'" class="pl-2">
+                <el-link type="primary"
+                  ><router-link :to="`/p/${post.id}`" tag="div"
+                    >评论</router-link
+                  ></el-link
+                >
+                <el-link
+                  ><router-link :to="`/blogs/`" class="text-blue"
+                    >专栏</router-link
+                  ></el-link
+                >
+              </div>
+              <div v-else class="pl-2">
+                <el-link type="danger"
+                  ><router-link :to="`/q/${post.id}`" tag="div"
+                    >回答</router-link
+                  ></el-link
+                >
               </div>
             </div>
 
@@ -94,6 +114,12 @@ import createBookmark from '~/components/dialog/createBookmark.vue'
 export default class TagPanel extends Vue {
   @Prop()
   data: any
+
+  // type(type:any){
+  //   if(type==="post"){
+  //     return
+  //   }
+  // }
 
   async like(id: any) {
     await this.$http.get(`/users/${id}/like`)

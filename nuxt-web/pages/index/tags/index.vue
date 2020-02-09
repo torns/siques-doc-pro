@@ -58,24 +58,25 @@
                   <li
                     v-for="tag in title.tags"
                     :key="tag.id"
-                    class="bg-3 mr-1 my-1 hover-3 fs-xm"
+                    class="bg-3 mr-1 my-1 hover-3 fs-xm point"
                   >
-                    <!-- 会报错暂时先不用 -->
-
                     <el-popover
                       :open-delay="500"
                       :close-delay="1000"
                       @show="show(tag.id)"
                       placement="top"
-                      width="300"
+                      width="250"
                       trigger="hover"
                     >
-                      <div v-if="taginfo" class="px-2 py-1">
+                      <div v-if="taginfo" class="px-3 py-2">
                         <div>
                           <div style="font-weight:700" class="fs-md">
                             {{ taginfo.info.name }}
                           </div>
-                          <div style="min-height:80px;">
+                          <div
+                            class="ellipsis fs-xm pt-2"
+                            style="min-height:60px;"
+                          >
                             {{ taginfo.info.description }}
                           </div>
                         </div>

@@ -55,7 +55,7 @@
         >
       </el-row>
     </div>
-    <sq-footer class="pt-5" topBorder="true"></sq-footer>
+    <sq-footer top-border="true" class="pt-5"></sq-footer>
   </div>
 </template>
 

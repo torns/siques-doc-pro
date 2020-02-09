@@ -4,7 +4,7 @@
       <el-row style="min-height:60vh" type="flex" class="pt-4">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
           <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
-            <el-tab-pane label="最新问答" name="first">
+            <el-tab-pane label="最新笔记" name="first">
               <div>
                 <ul>
                   <li
@@ -40,7 +40,7 @@
                 </ul>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="等待回答" name="second">等待回答</el-tab-pane>
+            <el-tab-pane label="等待笔记" name="second">等待笔记</el-tab-pane>
           </el-tabs>
         </el-col>
         <el-col

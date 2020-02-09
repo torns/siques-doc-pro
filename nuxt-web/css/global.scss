@@ -17,7 +17,7 @@ body {
   // height: 100%;
 
   -webkit-text-size-adjust: none;
-  scroll-behavior: smooth;
+  // scroll-behavior: smooth;
   margin-right: calc(100% - 100vw);
   overflow-x: hidden;
   box-sizing: border-box;
@@ -41,34 +41,6 @@ li {
 .container {
   margin-right: auto;
   margin-left: auto;
-
-  @media (max-width: 768px) {
-    .sq-leftside-link {
-      justify-content: space-around;
-    }
-    .xs {
-      display: none;
-    }
-    .xs-flex-1 {
-      flex: 1;
-    }
-  }
-
-  @media (max-width: 992px) {
-    .xm {
-      display: none;
-    }
-    .menu-item {
-      display: none;
-    }
-  }
-
-  @media (max-width: 1200px) {
-    .md {
-      display: none;
-    }
-  }
-
   @media (min-width: 768px) {
     width: 750px;
   }
@@ -79,6 +51,49 @@ li {
     width: 1140px;
   }
 }
+
+.visible-xs,
+.visible-sm,
+.visible-md,
+.visible-lg {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .sq-leftside-link {
+    justify-content: space-around;
+  }
+
+  .visible-xs {
+    display: block !important;
+  }
+
+  .xs {
+    display: none;
+  }
+  .xs-flex-1 {
+    flex: 1;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .visible-sm {
+    display: block !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .xm {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .md {
+    display: none !important;
+  }
+}
+
 code {
   font-family: Source Code Pro;
   font-size: 13.3px;
@@ -101,6 +116,14 @@ code {
 }
 .relative {
   position: relative;
+}
+
+.absolute {
+  position: absolute !important;
+}
+.fixed {
+  top: 1em !important;
+  position: fixed !important;
 }
 
 .border-radius {
@@ -140,6 +163,20 @@ code {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.ellipsis-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 //鼠标样式
