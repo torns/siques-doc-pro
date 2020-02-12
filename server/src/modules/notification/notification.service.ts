@@ -22,7 +22,7 @@ export class NotificationService {
     private readonly CommentRepository: Repository<Comment>,
   ) {}
 
-  //用户评论通知
+  // 查询用户评论通知
   async commentMessage(id: number) {
     const comment = await this.CommentRepository.createQueryBuilder('comment')
       .where('comment.owner_uid=:id', { id })
@@ -39,16 +39,27 @@ export class NotificationService {
   }
 
   // 私信存储
-  async storeLetter(user: User, data: Partial<NotificationDto>) {
-    const { body } = data;
-    // console.log(data)
-    const enetity = await this.LetterRepository.save({
-      content: body,
-    });
+  async storeLetter(user: User, id: number, data: Partial<NotificationDto>) {
+    const { content } = data;
+
+    // const enetity = await this.LetterRepository.save({
+    //   content: body,
+    // });
+
+    const to_user = await this.UserRepository.findOne(id);
+    console.log(data);
     await this.NotificationRepository.save({
-      ...enetity,
-      data,
+      content,
       send_uid: user,
+      receive_uid: to_user,
     });
+  }
+  // 查询用户私信
+  async showUserLetter(userId: number) {
+    return await this.NotificationRepository.createQueryBuilder('notification')
+
+      .where('notification.receive_uid=:userId', { userId })
+      .leftJoinAndSelect('notification.send_uid', 'user')
+      .getMany();
   }
 }

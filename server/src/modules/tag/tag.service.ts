@@ -137,11 +137,16 @@ export class TagService {
   async showTagInfo(id: number) {
     const res1 = await this.userRepository
       .createQueryBuilder('tag')
+      .addSelect('tag.description')
       .relation(Tag, 'user')
       .of(id)
       .loadMany();
 
-    const res2 = await this.tagRepository.findOne(id);
+    const res2 = await this.tagRepository
+      .createQueryBuilder('tag')
+      .addSelect('tag.description')
+      .where('tag.id=:id', { id })
+      .getOne();
     return { info: res2, count: res1.length };
   }
 
@@ -153,10 +158,19 @@ export class TagService {
     return await this.tagRepository.delete(id);
   }
 
+  async showHotTag() {
+    return await this.tagRepository
+      .createQueryBuilder('tag')
+      .take(24)
+      .orderBy('tag.interest', 'DESC')
+      .getMany();
+  }
+
   async listInit() {
     const list = [
       { name: '开发语言', alias: 'language' },
       { name: '前端开发', alias: 'frontEnd' },
+      { name: '后端开发', alias: 'backEnd' },
       { name: '数据库', alias: 'database' },
       { name: '开发工具', alias: 'tools' },
       { name: '云计算', alias: 'cloudcomputing' },
@@ -226,6 +240,7 @@ export class TagService {
       { name: 'firefox', description: '', taglist: 'JavaScript开发' },
       { name: 'chrome', description: '', taglist: 'JavaScript开发' },
       { name: '微信小程序', description: '', taglist: '小程序开发' },
+      { name: 'nestjs', description: '', taglist: '后端开发' },
     ];
 
     tags.map(async e => {

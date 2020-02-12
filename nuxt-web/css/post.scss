@@ -14,22 +14,22 @@ blockquote {
 }
 
 h1 {
-  font-size: 30px !important;
+  font-size: 1.8em !important;
   font-weight: 700 !important;
   word-break: break-word;
 }
 
 .hljs {
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   padding: 0.5rem;
   max-height: 35rem;
-  line-height: 1.5;
-  background-color: #e9ecef !important;
+  line-height: 1.7;
+  background-color: #f6f6f6 !important;
   overflow: auto;
   ul {
     margin: 0;
-    padding-left: 25px;
+    padding-left: 2.5em;
     max-height: 500px;
-    overflow-y: auto;
 
     li {
       list-style: decimal;
@@ -37,7 +37,8 @@ h1 {
       padding: 5px !important;
       cursor: text;
       line-height: 14px;
-      font-size: 13px;
+      font-size: 14px;
+      color: #333;
     }
   }
 }
@@ -47,7 +48,18 @@ h1 {
   h4,
   h5,
   h6 {
-    padding: 2em 0;
+    margin-top: 1.618em;
+    padding-bottom: 0.618em;
+    margin-bottom: 0.3em;
+    font-weight: 400 !important;
+  }
+  h2 {
+    font-family: inherit;
+    margin-top: 1.618em;
+    padding-bottom: 0.618em;
+    margin-bottom: 0.3em;
+    font-weight: 400 !important;
+    border-bottom: 1px solid #e9ecef;
   }
   img {
     max-width: -webkit-fill-available;
@@ -55,6 +67,10 @@ h1 {
 
     display: flex;
     margin: 1.667em auto;
+  }
+  pre {
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 }
 
@@ -66,12 +82,15 @@ h1 {
       opacity: 0.5;
     }
   }
-}
-.article h2 {
-  margin-top: 1.618em;
-  padding-bottom: 0.618em;
-  margin-bottom: 0.3em;
-  border-bottom: 1px solid #e9ecef;
+  p {
+    margin-bottom: 16px;
+    code {
+      color: #c7254e;
+      padding: 3px 7px;
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
 }
 
 p code {

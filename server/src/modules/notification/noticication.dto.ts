@@ -1,9 +1,9 @@
-export class NotificationDto {
+import { User } from '../user/user.entity';
 
-    readonly body: string;
-    readonly send_uid: string;
-    readonly receive_uid: string;
-    readonly user_uid: string;
-    readonly friend_uid: string;
-    readonly type: string;
+export class NotificationDto {
+  readonly content: string;
+  readonly send_uid: User;
+  readonly receive_uid: User;
+
+  readonly type: string;
 }

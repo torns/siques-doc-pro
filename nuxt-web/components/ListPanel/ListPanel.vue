@@ -13,7 +13,7 @@
             :to="`${link(post)}`"
             target="_blank"
             tag="a"
-            class="flex-1 text-dark text-ellipsis hoverlink"
+            class="flex-1 text-dark ellipsis-1 hoverlink"
             >{{ post.title }}</router-link
           >
           <div v-if="collection" class="mr-4 hover-4 text-primary point">

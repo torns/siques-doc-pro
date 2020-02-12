@@ -32,7 +32,7 @@
         <el-divider></el-divider>
         <div>
           <ul>
-            <li v-for="(post, index) in collections.posts" :key="index">
+            <div v-for="(post, index) in collections.posts" :key="index">
               <div class="d-flex">
                 <div class="pr-3">
                   <el-button
@@ -53,28 +53,29 @@
                   <div class="fs-lg">
                     <router-link
                       :to="`/p/${post.id}`"
-                      tag="div"
-                      class="hoverlink"
+                      tag="li"
+                      class="hoverlink "
                     >
                       {{ post.title }}
                     </router-link>
                   </div>
                   <div class="d-flex ai-baseline py-2">
                     <div class="text-primary pr-2">
-                      <router-link
-                        :to="`/u/${collections.user.id}`"
-                        tag="div"
-                        >{{ collections.user.name }}</router-link
-                      >
+                      <router-link :to="`/u/${collections.user.id}`" tag="li">{{
+                        collections.user.name
+                      }}</router-link>
                     </div>
-                    <div class="pr-2">
-                      {{ $dayjs(post.created).fromNow() }}
+                    <div class="pr-2 fs-xm text-gray-1">
+                      {{
+                        $dayjs(post.created).fromNow() +
+                          $dayjs(post.created).format('(M月D号)')
+                      }}
                     </div>
                     <div
                       @click="showBookmark(post.id)"
-                      class="text-gray hoverlink fs-xm "
+                      class="text-gray hoverlink fs-xm point"
                     >
-                      <i class="iconfont icon-book-mark pr-1"></i>
+                      <i class="iconfont icon-book-mark pr-1 fs-xm"></i>
 
                       <span>{{ post.bookmarked }}</span>
                       收藏
@@ -87,7 +88,7 @@
                 </div>
               </div>
               <el-divider></el-divider>
-            </li>
+            </div>
           </ul>
         </div>
       </el-col>

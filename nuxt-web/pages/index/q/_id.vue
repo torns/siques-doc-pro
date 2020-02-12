@@ -1,45 +1,7 @@
 <template>
   <div class="bg-light">
     <div class="container pt-4 pb-3">
-      <el-dialog
-        :visible.sync="dialogFormVisible"
-        width="500px"
-        title="收藏"
-        class="border-radius"
-      >
-        <div>
-          <div>添加到收藏夹:</div>
-          <div>
-            <el-checkbox-group v-model="checkList">
-              <el-checkbox
-                v-for="(bookmark, index) in bookmarks"
-                :key="index"
-                :label="bookmark.id"
-                :disabled="
-                  list.find((value) => {
-                    return value === bookmark.id
-                  })
-                    ? true
-                    : false
-                "
-                >{{ bookmark.title }}</el-checkbox
-              >
-            </el-checkbox-group>
-            <el-button @click="showCreatDialog" type="text"
-              >创建收藏夹</el-button
-            >
-          </div>
-          <div class="text-right pt-5">
-            <el-button @click="dialogFormVisible = false" size="mini"
-              >取 消</el-button
-            >
-            <el-button @click="bookmarkQuestion" size="mini" type="primary"
-              >确 定</el-button
-            >
-          </div>
-        </div>
-      </el-dialog>
-      <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
+      <sq-bookmark ref="bookmark"></sq-bookmark>
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-1 border-radius">
@@ -57,7 +19,7 @@
                     <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
-                  <el-button @click="showBookmarkDialog" type="text" circle>
+                  <el-button @click="showBookmark" type="text" circle>
                     <i class="iconfont icon-book-mark"></i>
                   </el-button>
 
@@ -99,16 +61,7 @@
                         >关注</el-button
                       >
                       <el-button
-                        v-if="
-                          this.$store.state.auth
-                            ? this.$store.state.auth.user
-                              ? this.$store.state.auth.user.id ===
-                                question.user.id
-                                ? true
-                                : false
-                              : false
-                            : false
-                        "
+                        v-if="isowner"
                         @click="$router.push(`/ask/${question.id}`)"
                         type="text"
                         >编辑</el-button
@@ -151,17 +104,13 @@
                 <div class="text-primary mt-3 text-gray-1 fs-xm">
                   阅读：{{ question.views }}
                 </div>
-                <div class="d-flex ai-baseline jc-left my-4">
+                <div class="d-flex ai-baseline flex-wrap jc-left my-4">
                   <el-button @click="like" class="hover-3" type="plain">
                     <i class="pr-2 iconfont icon-Thumbsup"></i>
                     {{ liked }} 赞
                   </el-button>
 
-                  <el-button
-                    @click="showBookmarkDialog"
-                    class="hover-3"
-                    type="plain"
-                  >
+                  <el-button @click="showBookmark" class="hover-3" type="plain">
                     <i class="pr-2 iconfont icon-bookmark"></i>收藏
                   </el-button>
 
@@ -190,7 +139,10 @@
             </div>
           </div>
 
-          <div v-if="fetchedComment" class="answerPanel pt-5">
+          <div
+            v-if="fetchedComment && fetchedComment.length !== 0"
+            class="answerPanel pt-5"
+          >
             <div class="font-bold fs-xl py-1">
               {{ fetchedComment.length }}条回答
             </div>
@@ -202,7 +154,12 @@
             >
               <div class="px-4 py-3">
                 <div class="d-flex ai-center">
-                  <el-avatar :size="35" class="mr-2" src="https://empty">
+                  <el-avatar
+                    :size="35"
+                    class="mr-2"
+                    src="https://empty"
+                    style="background-color:white"
+                  >
                     <img
                       v-if="answer.user.avator[0].url"
                       :src="answer.user.avator[0].url"
@@ -211,14 +168,14 @@
                   </el-avatar>
                   <div
                     style="font-weight:600"
-                    class="hover-3 text-primary fs-lg"
+                    class="hover-4 text-primary fs-lg"
                   >
-                    {{ answer.user.name }}
+                    <router-link tag="li" :to="`/u/${answer.user.id}`">
+                      {{ answer.user.name }}</router-link
+                    >
                   </div>
                 </div>
-                <div class="pt-3">
-                  {{ answer.body }}
-                </div>
+                <div v-highlight v-html="answer.body" class="pt-3"></div>
                 <div class="d-flex ai-baseline pt-3">
                   <el-button
                     @click="commentLike(answer.id)"
@@ -228,10 +185,32 @@
                     <i class="fa fa-thumbs-o-up  pr-2"> </i>
                     {{ answer.liked }} 赞
                   </el-button>
-                  <el-button @click="adoptAnswer" size="small" type="plain">
-                    <i class="fa fa-check-square-o pr-2"> </i
-                    >采纳回答</el-button
-                  >
+
+                  <div class="px-2">
+                    <el-popconfirm
+                      @onConfirm="adoptAnswer(answer.id)"
+                      v-if="
+                        question.adoptAnswer === null &&
+                          isowner &&
+                          adoptAnswerId === ''
+                      "
+                      confirmButtonText="好的"
+                      cancelButtonText="取消"
+                      icon="el-icon-info"
+                      iconColor="red"
+                      title="确定要采纳此答案？(不可修改)"
+                    >
+                      <el-button slot="reference" size="small" type="plain">
+                        <i class="fa fa-check-square-o pr-2"> </i
+                        >采纳回答</el-button
+                      >
+                    </el-popconfirm>
+                    <div v-else>
+                      <div v-if="adoptAnswerId === answer.id">
+                        <el-button size="mini" type="primary">已采纳</el-button>
+                      </div>
+                    </div>
+                  </div>
                   <el-button
                     @click="
                       showComment == answer.id
@@ -359,22 +338,12 @@ import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 
-import bookmark from '~/components/dialog/bookmark.vue'
 import share from '~/components/dialog/share.vue'
-
-// const highlightCode = () => {
-//   const preEl = document.querySelectorAll('pre code')
-
-//   preEl.forEach((el) => {
-//     hljs.highlightBlock(el)
-//   })
-// }
 
 @Component({
   components: {
     'el-footer': footer,
     'sq-postbar': PostSideBar,
-    'bookmark-dialog': bookmark,
     'share-dialog': share
   }
 })
@@ -397,13 +366,12 @@ export default class Question extends Vue {
   list = []
   dialogFormVisible = false
   checkList = []
+  adoptAnswerId = ''
   mounted() {
     this.fetchQuestion(this.id)
     this.fetchAnswer()
   }
-  updated() {
-    // highlightCode()
-  }
+  updated() {}
   // TS中的计算属性
   get id(): any {
     return this.$route.params.id
@@ -413,13 +381,22 @@ export default class Question extends Vue {
     return !this.$store.state.UserNotExist
   }
 
+  get isowner() {
+    try {
+      return this.$store.state.auth.user.id === this.question.user.id
+    } catch {
+      return false
+    }
+  }
+
   async fetchQuestion(id: any) {
     if (!this.question) {
       const res = await this.$http.get(`posts/${id}`)
       this.question = res.data
       this.liked = res.data.liked
       // if (!res.data.editor) {
-      res.data.body = md.render('[[toc]] \n' + res.data.body)
+      this.adoptAnswerId = res.data.adoptAnswer.id
+      res.data.body = md.render(res.data.body)
       // }
     } else {
       // 如果文章已经载入就请求轻量级的方法
@@ -431,7 +408,13 @@ export default class Question extends Vue {
   // 获取文章评论
   async fetchAnswer() {
     const res = await this.$http.get(`posts/${this.id}/comments`)
+
+    res.data.map((e: any) => {
+      e.body = md.render(e.body)
+    })
     this.fetchedComment = res.data
+    const ref: any = this.$refs.markdown
+    ref.setContent('')
   }
 
   async like() {
@@ -444,8 +427,12 @@ export default class Question extends Vue {
   }
 
   async commentLike(id: any) {
-    await this.$http.get(`posts/${id}/comments/like`)
-    this.fetchAnswer()
+    if (this.isUser) {
+      await this.$http.get(`posts/${id}/comments/like`)
+      this.fetchAnswer()
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   async replyLike() {}
@@ -468,17 +455,27 @@ export default class Question extends Vue {
           message: '关注成功'
         })
       } else {
+        this.question.concerned -= 1
         this.$notify({
           title: '消息',
-          type: 'info',
-          message: '已关注该问题'
+          type: 'warning',
+          message: '取消关注该问题'
         })
       }
     } else {
       this.$store.commit('toggleLoginForm')
     }
   }
-  adoptAnswer() {}
+  // 采纳回答
+  async adoptAnswer(answerId: any) {
+    await this.$http.get(`posts/${this.id}/adopt?answerId=${answerId}`)
+    this.$notify({
+      title: '成功',
+      message: '采纳答案成功',
+      type: 'success'
+    })
+    this.adoptAnswerId = answerId
+  }
 
   async sendAnswer() {
     if (this.isUser) {
@@ -498,7 +495,7 @@ export default class Question extends Vue {
           title: '成功'
         })
         ref.setContent('')
-        this.fetchQuestion(this.id)
+        this.fetchAnswer()
       } else {
         this.$notify({
           type: 'error',
@@ -545,48 +542,9 @@ export default class Question extends Vue {
     }
   }
 
-  showCreatDialog() {
-    const ref: any = this.$refs.dialog
-    ref.dialogFormVisible = true
-  }
-  showBookmarkDialog() {
-    this.dialogFormVisible = true
-    this.fetchBookmark()
-  }
-
-  async fetchBookmark() {
-    const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.auth.user.id}/user`
-    )
-    this.bookmarks = res.data
-
-    const list: any = []
-    await this.bookmarks.map((el: any) => {
-      el.posts.map((e: any) => {
-        if (e.id === parseInt(this.id)) {
-          list.push(el.id)
-        }
-      })
-    })
-    this.list = list
-  }
-
-  // 刷新数据
-  refetch() {
-    this.fetchBookmark()
-  }
-  updatePost() {}
-
-  async bookmarkQuestion() {
-    await this.$http.get(
-      `/bookmarks?postId=${this.id}&bookmarkId=${this.checkList}`
-    )
-    this.$notify({
-      type: 'success',
-      message: '收藏成功',
-      title: '成功'
-    })
-    this.dialogFormVisible = false
+  showBookmark(id: any) {
+    const ref: any = this.$refs.bookmark
+    ref.showBookmark(id)
   }
 }
 </script>

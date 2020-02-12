@@ -94,4 +94,9 @@ export class TagController {
   async getTags() {
     return await this.tagService.getTags();
   }
+
+  @Get(':id/hot')
+  async getHotTags() {
+    return await this.tagService.showHotTag();
+  }
 }

@@ -6,9 +6,14 @@ import { Comment } from './comment.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Reply } from './Reply.entity';
 import { User } from '../user/user.entity';
+import { ActionModule } from '../action/action.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comment, Reply, User]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Comment, Reply, User]),
+    AuthModule,
+    ActionModule,
+  ],
   controllers: [CommentController],
   providers: [CommentService],
 })

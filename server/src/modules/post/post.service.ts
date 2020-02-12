@@ -7,6 +7,8 @@ import { User } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
 import { Tag } from '../tag/tag.entity';
 import { Collection } from '../collection/collection.entity';
+import { Comment } from '../comment/comment.entity';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -19,6 +21,8 @@ export class PostService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Collection)
     private readonly collectionRepository: Repository<Collection>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async beforeTag(tags: Partial<Tag>[], postId: any) {
@@ -186,11 +190,18 @@ export class PostService {
 
   async show(id: string, query: any) {
     const concern = await this.calcuConcern(id);
-    console.log(concern);
+    console.log({ concern: concern });
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.addSelect('post.body');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
+
+    try {
+      queryBuilder
+        .leftJoin('post.adoptAnswer', 'adoptAnswer')
+        .addSelect(['adoptAnswer.id']);
+    } catch {}
+
     queryBuilder.leftJoinAndSelect('user.interest', 'interest');
 
     const { collection } = query;
@@ -226,8 +237,11 @@ export class PostService {
     //   .set({ views: () => 'views + 1' })
     //   .execute();
     // 还有问题
-
-    entities.concerned = concern;
+    try {
+      entities.concerned = concern;
+    } catch {
+      return;
+    }
 
     return entities;
   }
@@ -245,10 +259,15 @@ export class PostService {
       let reg1 = /(?<=\!\[.*\]\()(.+)(?=\))/;
 
       let reg2 = /^[^?]+/;
-      const url =
-        data.body.match(reg1)[1].match(reg2) +
-        '?x-oss-process=style/' +
-        'cover-picture';
+      let url: string;
+      try {
+        url =
+          data.body.match(reg1)[1].match(reg2) +
+          '?x-oss-process=style/' +
+          'cover-picture';
+      } catch {
+        url = null;
+      }
 
       const body = data.body.replace(reg, '');
       await this.postRepository
@@ -261,6 +280,14 @@ export class PostService {
         .set({ cover: url, alias: body.substring(0, 120) })
         .execute();
     }
+  }
+  // 采纳答案
+
+  async adoptAnswer(postId: number, commentId: number) {
+    const entity = await this.commentRepository.findOne(commentId);
+    const post = await this.postRepository.findOne(postId);
+    post.adoptAnswer = entity;
+    await this.postRepository.save(post);
   }
 
   async delete(id: string, collectionId: number) {

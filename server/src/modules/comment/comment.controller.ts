@@ -10,6 +10,7 @@ import {
   Put,
   Delete,
   Get,
+  SetMetadata,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,6 +19,7 @@ import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { ReplyDto } from './reply.dto';
+import { ActionGuard } from 'src/core/guards/action.guard';
 
 @ApiTags('评论')
 @Controller()
@@ -26,13 +28,14 @@ export class CommentController {
 
   // 评论
   @Post('posts/:id/comments')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['commentpost'])
   @UseGuards(AuthGuard('jwt'))
   async storePostComment(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: CommentDto,
     @User() user: UserEntity,
   ) {
-    console.log(data);
     return await this.commentService.storePostComment(id, user, data);
   }
 
@@ -100,5 +103,11 @@ export class CommentController {
   @Get('users/:id/comments')
   async showUserComments(@Param('id', ParseIntPipe) id: number) {
     return await this.commentService.showUserComments(id);
+  }
+
+  // 获取热门评论
+  @Get('comments')
+  async showHotComments() {
+    return await this.commentService.showHotComments();
   }
 }

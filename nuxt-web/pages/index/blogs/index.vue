@@ -15,6 +15,8 @@
               </div>
               <el-pagination
                 @current-change="handleCurrentChange"
+                :current-page="page"
+                pager-count="7"
                 :total="total"
                 background
                 layout="prev, pager, next"
@@ -26,6 +28,8 @@
               </div>
               <el-pagination
                 @current-change="handleCurrentChange"
+                :current-page="page"
+                pager-count="7"
                 :total="total"
                 background
                 layout="prev, pager, next"
@@ -37,6 +41,8 @@
               </div>
               <el-pagination
                 @current-change="handleCurrentChange"
+                :current-page="page"
+                pager-count="7"
                 :total="total"
                 background
                 layout="prev, pager, next"
@@ -101,6 +107,7 @@ export default class index extends Vue {
   }
 
   handleCurrentChange(val: any) {
+    // currentPage =val
     this.page = val
     this.fetchPost()
   }

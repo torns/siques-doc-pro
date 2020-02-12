@@ -17,17 +17,33 @@ export class ActionService {
   ) {}
 
   async storeAction(type: any, data: Partial<ActionDto>) {
-    const { from_uid, to_Collection, to_Post, to_uid } = data;
-    const entity = await this.actionRepository.save({
-      type: type,
-      from_uid: from_uid,
-    });
+    const { from_uid, alias, to_Collection, to_Post, to_uid } = data;
+    let entity;
+    try {
+      entity = await this.actionRepository.save({
+        type: type,
+        alias: alias,
+        from_uid: from_uid,
+        to_Collection: to_Collection,
+        to_Post: to_Post,
+        to_uid: to_uid,
+      });
+    } catch {
+      if (
+        type[0] !== 'commentpost' &&
+        type[0] !== 'createpost' &&
+        type[0] !== 'adoptanswer' &&
+        type[0] !== 'bookmarkpost'
+      ) {
+        await this.actionRepository
+          .createQueryBuilder('action_user')
+          .delete()
+          .where('action_user.alias=:alias', { alias })
+          .execute();
+      }
+    }
 
-    const Post = await this.postRepository.findOne(to_Post);
-
-    entity.to_Post = Post;
-    const res = await this.actionRepository.save(entity);
-    return res;
+    return entity;
 
     console.log(type, from_uid, to_Collection, to_Post, to_uid);
   }
@@ -36,8 +52,14 @@ export class ActionService {
     return await this.actionRepository
       .createQueryBuilder('action')
       .where('action.from_uid=:userid', { userid })
-      .leftJoinAndSelect('action.from_uid', 'user')
+      .leftJoin('action.from_uid', 'user')
+      .addSelect(['user.name', 'user.id'])
       .leftJoinAndSelect('action.to_Post', 'post')
+      .addSelect(['post.cover'])
+      .leftJoinAndSelect('action.to_uid', 'touser')
+      .leftJoin('touser.avator', 'avator')
+      .addSelect(['avator.url'])
+      .orderBy('action.created', 'DESC')
       .getMany();
   }
 }

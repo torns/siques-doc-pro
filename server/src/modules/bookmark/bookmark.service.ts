@@ -49,8 +49,8 @@ export class BookmarkService {
     return res;
   }
 
-  async bookmarkPost(query: any) {
-    const { postId, bookmarkId } = query;
+  async bookmarkPost(postId: number, query: any) {
+    const { bookmarkId } = query;
 
     const id = bookmarkId.split(',');
 

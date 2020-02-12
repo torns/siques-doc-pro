@@ -32,6 +32,12 @@ export class Comment {
   @Column({ default: 0 })
   liked: number;
 
+  @Column({ nullable: true })
+  browser: string;
+
+  @Column({ nullable: true })
+  os: string;
+
   @Column('tinyint', { default: 0 })
   is_read: boolean;
 

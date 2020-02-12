@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   UseGuards,
   Delete,
+  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto, UpdatePasswordDto } from './user.dto';
@@ -26,6 +27,7 @@ import { TransformInterceptor } from 'src/core/interceptors/transform.intercepto
 import { transcode } from 'buffer';
 import { UserTagDto } from '../tag/tag.dto';
 import { ActionService } from '../action/action.service';
+import { ActionGuard } from 'src/core/guards/action.guard';
 
 @ApiTags('用户')
 @Controller('users')
@@ -35,13 +37,13 @@ export class UserController {
     private readonly actionService: ActionService,
   ) {}
 
+  // 创建用户
   @Post()
   async create(@Body() data: UserDto) {
     return await this.userService.store(data);
   }
 
   @Get(':id')
-  // 排除用户密码
   async show(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.showMessage(id);
   }
@@ -141,6 +143,8 @@ export class UserController {
 
   // 用户点赞
   @Get(':id/like')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['likepost'])
   @UseGuards(AuthGuard())
   async like(@Param('id', ParseIntPipe) id: number, @User() user: userEntity) {
     return await this.userService.like(id, user);
@@ -148,17 +152,13 @@ export class UserController {
 
   // 用户关注问题
   @Get(':id/concern')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['followque'])
   @UseGuards(AuthGuard())
   async concern(
     @Param('id', ParseIntPipe) id: number,
     @User() user: userEntity,
   ) {
-    const type = 'followque';
-    const data = {
-      from_uid: user,
-      to_Post: id,
-    };
-    await this.actionService.storeAction(type, data);
     return await this.userService.userFollowQue(user.id, id);
   }
   // 用户关注的问题
@@ -190,6 +190,8 @@ export class UserController {
 
   // 关注 id是要关注的用户的id
   @Get(':id/follow')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['followuser'])
   @UseGuards(AuthGuard())
   async follow(
     @User() user: userEntity,
@@ -217,5 +219,11 @@ export class UserController {
   @Get(':id/recomend')
   async fetchRecFollow() {
     return await this.userService.getRecomendFollow();
+  }
+
+  // 查询所有
+  @Get(':id/all')
+  async fetchAll() {
+    return await this.userService.countSite();
   }
 }

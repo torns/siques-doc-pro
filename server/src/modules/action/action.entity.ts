@@ -18,6 +18,9 @@ export class ActionUser {
   @Column({ type: 'enum', enum: UserAction })
   type: UserAction;
 
+  @Column({ unique: true, nullable: true })
+  alias: string;
+
   @ManyToOne(type => User)
   from_uid: User;
 

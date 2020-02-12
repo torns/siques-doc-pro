@@ -16,11 +16,15 @@
                     <div class="d-flex ai-center px-2 ">
                       <div class="pr-3 text-gray">
                         <div class="px-2 fs-xs">{{ question.liked }}</div>
-                        得票
+                        点赞
                       </div>
                       <div class="pr-3">
                         <div class="px-2 fs-xs">{{ question.views }}</div>
                         浏览
+                      </div>
+                      <div class="pr-3">
+                        <div class="px-2 fs-xs">{{ question.concerned }}</div>
+                        关注
                       </div>
                       <div>
                         <div class="fs-xm text-gray hoverlink">

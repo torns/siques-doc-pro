@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Bookmark } from './bookmark.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Post } from '../post/post.entity';
+import { ActionModule } from '../action/action.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bookmark, Post]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Bookmark, Post]),
+    AuthModule,
+    ActionModule,
+  ],
   controllers: [BookmarkController],
   providers: [BookmarkService],
 })

@@ -125,9 +125,15 @@ export default class MySideBar extends Vue {
     this.fetchUserTag()
   }
   async fetchUserTag() {
-    const res = await this.$http.get(
-      `/users/${this.$store.state.auth.user.id}/skill`
-    )
+    let res
+    if (this.id) {
+      res = await this.$http.get(`/users/${this.id}/skill`)
+    } else {
+      res = await this.$http.get(
+        `/users/${this.$store.state.auth.user.id}/skill`
+      )
+    }
+
     this.originTag = res.data
     this.skillTag = res.data.map((e: any) => {
       return e.id

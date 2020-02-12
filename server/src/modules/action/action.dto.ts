@@ -6,8 +6,8 @@ import { Collection } from '../collection/collection.entity';
 export class ActionDto {
   readonly from_uid: User;
   readonly to_uid: User;
-
-  readonly to_Post: number;
+  readonly alias: string;
+  readonly to_Post: any;
 
   readonly to_Collection: Collection;
 }

@@ -10,10 +10,11 @@ import { User } from '../user/user.entity';
 import { Collection } from '../collection/collection.entity';
 
 import { ActionModule } from '../action/action.module';
+import { Comment } from '../comment/comment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Post, Tag, User, Collection]),
+    TypeOrmModule.forFeature([Post, Tag, User, Collection, Comment]),
     UserModule,
     AuthModule,
     ActionModule,

@@ -8,6 +8,7 @@
               <div class="d-flex">
                 <el-input
                   v-model="search"
+                  @keyup.enter.native="changeRoute"
                   placeholder="输入关键字搜索"
                 ></el-input>
               </div>

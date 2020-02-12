@@ -12,6 +12,8 @@ import {
   Query,
   Options,
   ParseIntPipe,
+  SetMetadata,
+  Req,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -29,6 +31,7 @@ import { UserService } from '../user/user.service';
 import { UserRole } from 'src/core/enums/user-role.enum';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ActionService } from '../action/action.service';
+import { ActionGuard } from 'src/core/guards/action.guard';
 
 @ApiTags('文章')
 @Controller('posts')
@@ -76,7 +79,9 @@ export class PostController {
 
   @Put(':id')
   // @ApiQuery({ name: 'role', enum: UserRole })
-  @UseGuards(AuthGuard('jwt'), AccessGuard)
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['createpost'])
+  @UseGuards(AuthGuard(), AccessGuard)
 
   //用户需要拥有这条资源的所有权才可以修改
   @Permissions({
@@ -84,7 +89,12 @@ export class PostController {
     possession: Possession.OWN,
     // role: UserRole.USER,
   })
-  async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
+  async update(
+    @Param('id') id: string,
+    @Body() data: Partial<PostDto>,
+    @User() user: UserEntity,
+  ) {
+    console.log(user);
     return await this.postService.update(id, data);
   }
 
@@ -115,6 +125,19 @@ export class PostController {
   // async liked(@Param('id', ParseIntPipe) id: number) {
   //   return await this.postService.liked(id);
   // }
+
+  // 提问采纳答案
+  @Get(':id/adopt')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['adoptanswer'])
+  @UseGuards(AuthGuard())
+  async adoptAnswer(
+    @Req() req: any,
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.postService.adoptAnswer(id, req.query.answerId);
+  }
 
   // 点赞
   @Get(':id/like')

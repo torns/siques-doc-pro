@@ -9,6 +9,8 @@ import {
   JoinTable,
   OneToMany,
   AfterLoad,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { User } from '../user/user.entity';
@@ -64,6 +66,11 @@ export class Post {
 
   @Column({ type: 'enum', enum: Posttype })
   type: Posttype;
+
+  // 一个问题对应一个回答
+  @OneToOne(type => Comment, { nullable: true })
+  @JoinColumn()
+  adoptAnswer: Comment;
 
   // 多个文章对应一个用户
   @ManyToOne(

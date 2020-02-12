@@ -43,25 +43,78 @@
     <div class="body border-solid">
       <div style="min-height:200px">
         <div
-          v-for="act in action"
-          :key="act.id"
-          style="height:80px;width: -webkit-fill-available;"
-          class="d-flex flex-column border-bottom mx-3 my-2"
+          v-for="action in actions"
+          :key="action.id"
+          style="width: -webkit-fill-available;"
+          class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2"
         >
-          <div v-if="act.type === 'followque'" class="text-gray fs-xm ">
-            <span class="">{{ act.from_uid.name }}</span> 关注了问题·
-            {{ $dayjs(act.created).format('M月D日') }}
-          </div>
-          <div class="text-primary py-1 hoverlink point">
-            <router-link :to="`/q/${act.to_Post.id}`" tag="div">
-              {{ act.to_Post.title }}</router-link
-            >
-          </div>
-          <div class="d-flex ">
-            <div class="fs-xm text-gray pr-3">
-              关注 {{ act.to_Post.concerned }}
+          <div v-if="action.type != 'followuser'" class="d-flex jc-between">
+            <div>
+              <div class="text-gray fs-xm ">
+                <span class="text-primary">
+                  {{ action.from_uid.name }}
+                </span>
+                {{ actionTransFomer(action) }}
+                {{ $dayjs(action.created).format('M月D日') }}
+              </div>
+              <div class="text-primary py-1 hoverlink point">
+                <router-link
+                  :to="`${link(action) + action.to_Post.id}`"
+                  tag="div"
+                >
+                  {{ action.to_Post.title }}</router-link
+                >
+              </div>
+              <div class="d-flex ">
+                <div class="fs-xm text-gray pr-3">
+                  关注 {{ action.to_Post.concerned }}
+                </div>
+                <div class="fs-xm text-gray">
+                  收藏 {{ action.to_Post.bookmarked }}
+                </div>
+              </div>
             </div>
-            <div class="fs-xm text-gray">收藏 {{ act.to_Post.bookmarked }}</div>
+            <div v-if="action.to_Post.cover !== null" class="xs pr-3">
+              <el-image
+                style="width: 80px; height: 60px"
+                :src="action.to_Post.cover"
+                fit="cover"
+              ></el-image>
+            </div>
+          </div>
+          <div v-else>
+            <div class="text-gray fs-xm  ">
+              <span class="text-primary">
+                {{ action.from_uid.name }}
+              </span>
+              {{ actionTransFomer(action) }}
+              {{ $dayjs(action.created).format('M月D日') }}
+            </div>
+            <div class="d-flex text-primary py-1 ">
+              <div class="pr-3">
+                <el-avatar :size="40" :src="`${action.to_uid.avator[0].url}`">
+                  <img src="~/static/avator.jpg" />
+                </el-avatar>
+              </div>
+
+              <div>
+                <router-link
+                  :to="`/u/${action.to_uid.id}`"
+                  class="point hoverlink"
+                  tag="div"
+                >
+                  {{ action.to_uid.name }}</router-link
+                >
+                <div class="fs-xs text-gray pt-1">
+                  这个用户太懒,什么都没有留下
+                </div>
+              </div>
+            </div>
+            <div class="d-flex ">
+              <div class="fs-xm text-gray pr-3 ">
+                粉丝 {{ action.to_uid.followedBy }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -80,7 +133,9 @@ export default class MyHomepage extends Vue {
   id: any
   sort = '概览'
   posts: any = ''
-  action: any = ''
+  data: any = ''
+
+  actions: any = ''
 
   mounted() {
     this.fetchUserAction()
@@ -104,6 +159,65 @@ export default class MyHomepage extends Vue {
         break
       default:
         break
+    }
+  }
+
+  actionTransFomer(action: any) {
+    if (
+      action.to_Post !== null &&
+      action.to_Post.type === 'question' &&
+      action.type === 'commentpost'
+    ) {
+      return '评论了问题'
+    } else {
+      switch (action.type) {
+        case 'likepost':
+          return '点赞了文章'
+        case 'followque':
+          return '关注了问题'
+
+        case 'followuser':
+          return '关注了用户'
+        case 'commentpost':
+          return '评论了文章'
+
+        case 'createpost':
+          return '发布了文章'
+
+        case 'adoptanswer':
+          return '采纳了答案'
+        case 'bookmarkpost':
+          return '收藏了文章'
+        default:
+          break
+      }
+    }
+  }
+
+  link(action: any) {
+    if (action.to_Post.type === 'question') {
+      return '/q/'
+    } else {
+      switch (action.type) {
+        case 'likepost':
+          return '/p/'
+        case 'followque':
+          return '/q/'
+
+        case 'followuser':
+          return '关注了用户'
+
+        case 'commentpost':
+          return '/p/'
+        case 'createpost':
+          return '/p/'
+        case 'adoptanswer':
+          return '/q/'
+        case 'bookmarkpost':
+          return '/p/'
+        default:
+          break
+      }
     }
   }
 
@@ -136,15 +250,19 @@ export default class MyHomepage extends Vue {
   async fetchUserAction() {
     if (this.id) {
       const res = await this.$http.get(`/actions/${this.id}`)
-      this.action = res.data
+      this.actions = res.data
     } else {
       const res = await this.$http.get(
         `/actions/${this.$store.state.auth.user.id}`
       )
-      this.action = res.data
+      this.actions = res.data
     }
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.el-avatar--circle {
+  background-color: white !important;
+}
+</style>

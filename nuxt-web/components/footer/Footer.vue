@@ -43,7 +43,9 @@
         </el-col>
         <el-col :xs="0" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">资源</div>
-          <li>每周精选</li>
+          <li>
+            <a target="_blank" href="https://www.canva.cn/">创意设计</a>
+          </li>
           <li>用户排行榜</li>
           <li>帮助中心</li>
           <li>声望与权限</li>

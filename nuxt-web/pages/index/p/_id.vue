@@ -4,7 +4,7 @@
     <div class="container pt-4 pb-3 animated fadeIn">
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-          <div class="font-songti bg-white shadow-1 border-radius">
+          <div class="bg-white shadow-1 border-radius">
             <div>
               <div v-if="post.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
@@ -36,10 +36,11 @@
                 <h1 class="py-4">{{ post.title }}</h1>
                 <div class="d-flex py-3">
                   <router-link :to="`/u/${post.user.id}`">
-                    <div v-if="post.user.avator[0].url !== null">
+                    <div v-if="post.user.avator[0]">
                       <img
                         :src="post.user.avator[0].url"
                         class="avator shadow-1 contain"
+                        style="border: 1px solid #de7d7d;padding: 2px;"
                       />
                     </div>
                     <img
@@ -50,7 +51,9 @@
                   </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
-                      <div class="pr-2">{{ post.user.name }}</div>
+                      <div class="mr-2 font-bold text-primary hover-4 point">
+                        {{ post.user.name }}
+                      </div>
                       <el-button
                         @click="follow(post.user.id)"
                         type="text"
@@ -58,12 +61,12 @@
                         >关注</el-button
                       >
                     </div>
-                    <div class="d-flex fs-xm">
+                    <div class="d-flex fs-xm ai-center">
                       <div class="pr-2">
                         {{ $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss') }}
                       </div>
                       <div class="pr-2">字数：{{ post.counts }}</div>
-                      <div>阅读：{{ post.views }}</div>
+                      <div>浏览：{{ post.views }}</div>
                     </div>
                   </div>
                 </div>
@@ -90,8 +93,12 @@
                   v-highlight
                   class="article lh-3"
                 ></div>
-                <div class="text-primary mt-3">
-                  阅读：{{ post.views }}
+                <div class="text-primary mt-3 fs-xm">
+                  阅读：{{
+                    post.views > 1000
+                      ? (post.views / 1000).toFixed(1) + 'k'
+                      : post.views
+                  }}
                   <span>.</span>
                   {{
                     $dayjs(
@@ -119,9 +126,13 @@
                     </el-button>
                   </share-dialog>
                 </div>
-                <div class="text-center text-gray">
-                  本作品系 原创 ， 采用《署名-非商业性使用-禁止演绎 4.0
-                  国际》许可协议
+                <div class="fs-xm text-center text-gray hover-1">
+                  本作品系 原创 ， 采用
+                  <a
+                    class="text-gray"
+                    href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+                    >《署名-非商业性使用-禁止演绎 4.0 国际》</a
+                  >许可协议
                 </div>
                 <el-divider></el-divider>
               </div>
@@ -167,27 +178,28 @@
                         </router-link>
                       </div>
                       <div>
-                        <div class="d-flex">
+                        <div class="d-flex flex-wrap ai-center">
                           <div
                             style="font-weight:600"
-                            class="text-primary hover-4"
+                            class="text-primary hover-4 "
                           >
                             <router-link
                               :to="`/u/${comment.user.id}`"
                               tag="div"
-                              class="point"
-                              >{{ comment.user.name }}：</router-link
+                              class="point fs-lg"
+                              >{{ comment.user.name }}</router-link
                             >
                           </div>
-                          <span>{{ comment.body }}</span>
+                          ：
+                          <div>{{ comment.body }}</div>
                         </div>
                         <div class="d-flex fs-sm ai-baseline">
                           <el-button
                             @click="commentLike(comment.id)"
                             type="text"
                           >
-                            <i class="iconfont icon-thumbs-up"></i>
-                            {{ comment.liked }}
+                            <i class="iconfont icon-thumbs-up text-gray"></i>
+                            <span class="text-gray"> {{ comment.liked }}</span>
                           </el-button>
 
                           <div
@@ -203,10 +215,18 @@
                             回复
                           </div>
 
-                          <div class="fs-xxs">
-                            {{
-                              $dayjs(comment.created).format('MM月DD号 HH点')
-                            }}
+                          <div class="fs-xxs text-gray">
+                            {{ $dayjs(comment.created).format('YYYY-MM-DD') }}
+                          </div>
+                          <div
+                            class="xs fs-xxs ml-2 text-gray bg-2 border-radius px-1 ellipsis-1"
+                          >
+                            {{ comment.browser }}
+                          </div>
+                          <div
+                            class="xs fs-xxs  ml-2 text-gray bg-2 border-radius px-1 ellipsis-1"
+                          >
+                            {{ comment.os }}
                           </div>
                         </div>
                       </div>
@@ -237,7 +257,7 @@
                       <div
                         v-for="reply in comment.reply"
                         :key="reply.id"
-                        class="py-3"
+                        class="py-2"
                       >
                         <div class="d-flex ai-baseline">
                           <div
@@ -269,7 +289,9 @@
                           </div>
                           <div></div>
                           <div class="fs-xxs">
-                            {{ $dayjs(reply.created).format('MM月DD号 HH点') }}
+                            {{
+                              $dayjs(reply.created).format('YYYY-MM-DD HH点')
+                            }}
                           </div>
                         </div>
                         <div v-if="showReply == reply.id">
@@ -307,7 +329,7 @@
               <router-link :to="`/p/${post.id}`" tag="div">
                 <h3>{{ post.title }}</h3>
                 <div class="text-gray py-2">{{ post.alias }}</div>
-                <div class="d-flex fs-xm">
+                <div class="d-flex fs-xm ai-baseline">
                   <div class="text-primary pr-3">{{ post.user.name }}</div>
                   <div class="text-gray">阅读{{ post.views }}</div>
                 </div>
@@ -339,6 +361,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import utils from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
+import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import share from '~/components/dialog/share.vue'
 
@@ -361,15 +384,15 @@ export default class Post extends Vue {
   list = []
   dialogFormVisible = false
   checkList = []
+  browser: any = Browser[0] || ''
+  os = OS || ''
 
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
     this.fetchRecommendPost()
   }
-  updated() {
-    // highlightCode()
-  }
+  updated() {}
   // TS中的计算属性
   get id(): any {
     return this.$route.params.id
@@ -377,9 +400,6 @@ export default class Post extends Vue {
 
   get isUser(): any {
     return !this.$store.state.UserNotExist
-  }
-  bck2Top() {
-    window.scrollTo(0, 0)
   }
 
   async fetchpost(id: any) {
@@ -451,7 +471,9 @@ export default class Post extends Vue {
       if (this.comment) {
         const data = {
           body: this.comment,
-          owner_uid: this.post.user.id // 这个资源的用户id
+          owner_uid: this.post.user.id, // 这个资源的用户id
+          browser: this.browser,
+          os: this.os
         }
         await this.$http.post(`/posts/${this.id}/comments`, data)
         this.$notify({
@@ -460,7 +482,7 @@ export default class Post extends Vue {
           title: '成功'
         })
         this.comment = ''
-        this.fetchpost(this.id)
+        this.fetchComment()
       } else {
         this.$notify({
           type: 'error',
@@ -497,7 +519,7 @@ export default class Post extends Vue {
       this.replyData = ''
       this.showReply = ''
       this.showComment = ''
-      this.fetchpost(this.id)
+      this.fetchComment()
     } else {
       this.$store.commit('toggleLoginForm')
     }

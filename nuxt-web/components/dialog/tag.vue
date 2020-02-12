@@ -7,7 +7,7 @@
       :popper-class="cunstom"
       width="450"
     >
-      <div class="px-4 py-2" style="height:300px;">
+      <div class="px-3 py-2" style="height:300px;">
         <div class="d-flex jc-between gray-1 fs-sm" style="font-weight:600;">
           <div>还可添加{{ taglen }}个标签</div>
           <div>找不到标签?</div>
@@ -15,7 +15,7 @@
         <el-input
           v-model="state"
           :fetch-suggestions="querySearchAsync"
-          placeholder="请输入内容"
+          placeholder="输入内容搜索标签"
         ></el-input>
 
         <div v-if="state !== ''">
@@ -82,8 +82,15 @@ export default class Tag extends Vue {
     this.fetchTags()
   }
   async fetchTags() {
-    const result = await this.$http.get('/tags')
-    this.taglist = result.data
+    let result
+    if (this.$store.state.tags.length === 0) {
+      result = await this.$http.get('/tags')
+      this.$store.commit('storeTags', result.data)
+      this.taglist = result.data
+    } else {
+      result = this.$store.state.tags
+      this.taglist = result
+    }
 
     let tags: any = []
     this.taglist.map((e: any) => {

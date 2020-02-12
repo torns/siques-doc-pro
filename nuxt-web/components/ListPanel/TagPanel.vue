@@ -101,7 +101,7 @@
         <el-divider></el-divider>
       </li>
     </ul>
-    <el-bookmark ref="bookmark"></el-bookmark>
+    <sq-bookmark ref="bookmark"></sq-bookmark>
   </div>
 </template>
 
@@ -109,7 +109,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import createBookmark from '~/components/dialog/createBookmark.vue'
 @Component({
-  components: { 'el-bookmark': createBookmark }
+  components: { 'sq-bookmark': createBookmark }
 })
 export default class TagPanel extends Vue {
   @Prop()

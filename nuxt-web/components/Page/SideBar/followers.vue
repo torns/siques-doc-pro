@@ -2,7 +2,7 @@
   <div class="h-100">
     <div class="d-flex jc-between ai-center">
       <div class="fs-md">推荐关注</div>
-      <el-button type="text" @click="fetchRecomendFollow">换一批</el-button>
+      <el-button @click="fetchRecomendFollow" type="text">换一批</el-button>
     </div>
     <div class="body">
       <div
@@ -12,9 +12,12 @@
       >
         <div class="d-flex jc-between py-4 px-3">
           <div>
-            <el-tag class="point" size="mini" type="primary hover-3">{{
-              data.name
-            }}</el-tag>
+            <router-link :to="`/t/${data.id}`" tag="div">
+              <el-tag class="point" size="mini" type="primary hover-3">
+                <i :class="`fa fa-${data.name} `"></i>
+                <span class="pr-1">{{ data.name }}</span>
+              </el-tag></router-link
+            >
             <div class="fs-xm text-gray">{{ data.interest }}关注</div>
           </div>
           <div>
@@ -73,6 +76,7 @@ export default class FollowSideBar extends Vue {
       this.datas = res.data
     }
   }
+  follow() {}
 }
 </script>
 

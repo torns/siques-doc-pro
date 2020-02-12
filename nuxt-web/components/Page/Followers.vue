@@ -18,7 +18,7 @@
                     effect="light"
                     class="hover-3 point mb-2"
                   >
-                    <router-link tag="div" :to="`/t/${tag.id}`"
+                    <router-link :to="`/t/${tag.id}`" tag="div"
                       >{{ tag.name }}
                     </router-link>
                   </el-tag>
@@ -52,13 +52,15 @@
               <div class="d-flex  jc-between">
                 <div class="d-flex ai-center">
                   <el-avatar
-                    class="mr-3 "
                     :size="35"
                     :src="follow.avator[0].url"
+                    class="mr-3 "
                     ><img src="~/static/avator.jpg" alt=""
                   /></el-avatar>
                   <div class="text-primary point hoverlink">
-                    {{ follow.name }}
+                    <router-link tag="li" :to="`/u/${follow.id}`">
+                      {{ follow.name }}</router-link
+                    >
                   </div>
                 </div>
 
@@ -89,7 +91,7 @@
               <div class="d-flex jc-between">
                 <div>
                   <li class="fs-xm text-primary hoverlink">
-                    <router-link tag="div" :to="`/blogs/${collection.id}`">{{
+                    <router-link :to="`/blogs/${collection.id}`" tag="div">{{
                       collection.name
                     }}</router-link>
                   </li>

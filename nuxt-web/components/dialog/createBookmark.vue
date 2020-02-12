@@ -83,13 +83,14 @@ export default class createBookmark extends Vue {
   }
   async bookmarkPost() {
     await this.$http.get(
-      `/bookmarks?postId=${this.postId}&bookmarkId=${this.checkList}`
+      `/bookmarks/${this.postId}/post?bookmarkId=${this.checkList}`
     )
     this.$notify({
       type: 'success',
       message: '收藏成功',
       title: '成功'
     })
+    this.fetchBookmark()
     this.dialogFormVisible = false
   }
 

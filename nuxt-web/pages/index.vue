@@ -11,11 +11,11 @@
             style="margin:0 auto;"
             router
           >
-            <el-menu-item class="favicon xs-flex-1">
+            <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
               <img
                 @click="$router.push('/')"
                 src="~/static/banner.png"
-                style="object-fit:cover;height:100%;"
+                style="object-fit:cover;height:70%;"
               />
             </el-menu-item>
 
@@ -46,88 +46,143 @@
               :hide-timeout="0"
               class="xs"
             >
-              <el-popover
-                :popper-class="`message`"
-                @show="show"
-                placement="bottom"
-                trigger="click"
-              >
-                <div class="d-flex flex-column h-100">
-                  <el-radio-group
-                    @change="change"
-                    v-model="topRadio"
-                    size="small"
-                  >
-                    <el-radio-button label="message">
-                      <i class="fs-sm iconfont icon-desLampidea"></i>
-                    </el-radio-button>
-                    <el-radio-button label="class">
-                      <i class="fs-sm iconfont icon-message"></i>
-                    </el-radio-button>
-                    <el-radio-button label="follow">
-                      <i class="fs-sm iconfont icon-follow"></i>
-                    </el-radio-button>
-                  </el-radio-group>
-
-                  <div v-if="topRadio == 'message'">
-                    <div
-                      v-for="(notify, index) in notifies.comment"
-                      :key="index"
-                      class="py-1 lh-2"
+              <el-badge value="new" class="item" type="primary">
+                <el-popover
+                  :popper-class="`message`"
+                  @show="show"
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <div class="d-flex flex-column h-100">
+                    <el-radio-group
+                      @change="change"
+                      v-model="topRadio"
+                      size="small"
                     >
-                      <router-link :to="`/u/${notify.user.id}`" tag="span">
-                        <span class="hover-4 point pr-1 text-primary">{{
-                          notify.user.name
-                        }}</span> </router-link
-                      >{{
-                        notify.post.type === 'post' ? '评论了' : '回答了'
-                      }}你的
-                      <router-link
-                        :to="
-                          (notify.post.type === 'post' ? '/p/' : '/q/') +
-                            `${notify.post.id}`
-                        "
-                        tag="span"
+                      <el-radio-button label="message">
+                        <i class="fs-sm iconfont icon-desLampidea"></i>
+                      </el-radio-button>
+                      <el-radio-button label="letter">
+                        <i class="fs-sm iconfont icon-message"></i>
+                      </el-radio-button>
+                      <el-radio-button label="follow">
+                        <i class="fs-sm iconfont icon-follow"></i>
+                      </el-radio-button>
+                    </el-radio-group>
+
+                    <div
+                      v-if="topRadio == 'message'"
+                      style="width: 350px;overflow-y: auto;"
+                    >
+                      <div class="border-bottom py-1 pl-2">
+                        一些关于你的通知
+                      </div>
+                      <div
+                        v-for="(notify, index) in notifies.comment"
+                        :key="index"
+                        class="py-1  lh-2 bg-2 "
                       >
-                        <span class="point text-primary">{{
-                          notify.post.title
-                        }}</span>
-                      </router-link>
+                        <div class=" d-flex">
+                          <router-link :to="`/u/${notify.user.id}`" tag="div">
+                            <div
+                              class="hover-4 point pr-1 text-primary "
+                              style="white-space: nowrap;"
+                            >
+                              {{ notify.user.name }}
+                            </div>
+                          </router-link>
+                          <div style="white-space: nowrap;">
+                            {{
+                              notify.post.type === 'post' ? '评论了' : '回答了'
+                            }}你的
+                          </div>
+                          <router-link
+                            :to="
+                              (notify.post.type === 'post' ? '/p/' : '/q/') +
+                                `${notify.post.id}`
+                            "
+                            tag="div"
+                          >
+                            <div
+                              class="point text-primary hoverlink ellipsis-1"
+                            >
+                              {{ notify.post.title }}
+                            </div>
+                          </router-link>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-if="topRadio == 'follow'">
+                      <div class="border-bottom py-1 pl-2">
+                        他们最近关注了你
+                      </div>
+
+                      <div
+                        v-for="(notify, index) in notifies.follow.user"
+                        :key="index"
+                        class="py-1 lh-2 bg-2"
+                      >
+                        <router-link :to="`/u/${notify.id}`" tag="span">
+                          <span class="ml-2 hover-4 text-primary point pr-1">{{
+                            notify.name
+                          }}</span> </router-link
+                        >关注了你
+                      </div>
+                    </div>
+
+                    <div v-if="topRadio == 'letter'">
+                      <div class="border-bottom py-1 pl-2">
+                        他们最近私信了你
+                      </div>
+
+                      <div
+                        v-for="(letter, index) in userLetters"
+                        :key="index"
+                        class="py-1 lh-2 bg-2"
+                      >
+                        <el-popover
+                          placement="bottom"
+                          title="私信详情"
+                          width=""
+                          icon
+                          trigger="hover"
+                          :content="letter.content"
+                        >
+                          <router-link
+                            :to="`/u/${letter.send_uid.id}`"
+                            tag="span"
+                            slot="reference"
+                          >
+                            <span
+                              class="ml-2 hover-4 text-primary point pr-1"
+                              >{{ letter.send_uid.name }}</span
+                            >
+                            私信了你
+                          </router-link>
+                        </el-popover>
+                      </div>
+                    </div>
+                    <div class="flex-1 pt-3"></div>
+
+                    <div></div>
+                    <div class=" border-top ">
+                      <div class="d-flex jc-between pt-2">
+                        <div class="point ">全部标记为已读</div>
+                        <router-link
+                          to="/notification"
+                          tag="div"
+                          class="point hover-4"
+                          >查看全部</router-link
+                        >
+                      </div>
                     </div>
                   </div>
-
-                  <div v-if="topRadio == 'follow'">
-                    <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
-
-                    <div
-                      v-for="(notify, index) in notifies.follow.user"
-                      :key="index"
-                      class="py-1 lh-2 bg-2"
-                    >
-                      <router-link :to="`/u/${notify.id}`" tag="span">
-                        <span class="ml-2 hover-4 text-primary point pr-1">{{
-                          notify.name
-                        }}</span> </router-link
-                      >关注了你
-                    </div>
-                  </div>
-
-                  <div class="flex-1 pt-3"></div>
-                  <el-divider></el-divider>
-                  <div class="d-flex jc-between pb-3 px-3">
-                    <div class="point">全部标记为已读</div>
-                    <router-link
-                      to="/notification"
-                      tag="div"
-                      class="point hover-4"
-                      >查看全部</router-link
-                    >
-                  </div>
-                </div>
-                <el-button slot="reference" type="text">
-                  <i class="el-icon-bell"></i>
-                </el-button>
-              </el-popover>
+                  <el-button slot="reference" type="text">
+                    <i class="el-icon-bell"></i>
+                  </el-button>
+                </el-popover>
+              </el-badge>
             </el-menu-item>
 
             <el-menu-item>
@@ -170,7 +225,8 @@
                 </el-avatar>
               </template>
               <el-menu-item :index="`/u`">
-                <i class="iconfont icon-me px-3 fs-lg"></i> 我的主页
+                <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
+                我的主页
               </el-menu-item>
 
               <el-menu-item @click="logout">
@@ -185,11 +241,11 @@
               class="xs"
             >
               <template slot="title">
-                <el-button type="plain">创建</el-button>
+                <el-button type="text">创建</el-button>
               </template>
 
-              <el-menu-item :span="4" class="write ml-4" index="/post">
-                <i class="iconfont  pr-3  icon-Write fs-xm"></i>
+              <el-menu-item :span="4" class="write ml-3" index="/post">
+                <i class="iconfont  pr-3  icon-nav2 fs-xm"></i>
                 写文章
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/ask">
@@ -363,7 +419,7 @@ export default class Home extends Vue {
   notifies = ''
   search = ''
   formLabelWidth: string = '120'
-
+  userLetters = []
   visible: boolean = false
 
   @Watch('isRegister')
@@ -371,6 +427,17 @@ export default class Home extends Vue {
     if (!newval) {
       this.resetForm()
     }
+  }
+
+  @Watch('topRadio')
+  isRadioChanged(newval: any, oldval: any) {
+    if (newval === 'letter') {
+      this.fetchUserLetter()
+    }
+  }
+
+  get isUser() {
+    return !this.$store.state.UserNotExist
   }
 
   phoneLength(value: any) {
@@ -473,10 +540,6 @@ export default class Home extends Vue {
     // window.addEventListener('unload', this.saveState)
   }
 
-  get isUser() {
-    return !this.$store.state.UserNotExist
-  }
-
   closeLoginForm() {
     this.$store.commit('closeLoginForm')
   }
@@ -540,26 +603,17 @@ export default class Home extends Vue {
     }
   }
 
-  async fetchuser() {
-    if (this.isUser) {
-      const res = await this.$http.get('users')
-      const usertag = []
-      res.data.tags.map((e: any) => {
-        usertag.push(e)
-      })
-      // console.log(usertag)
-    }
+  async fetchUserLetter() {
+    const res = await this.$http.get(
+      `notification/${this.$store.state.auth.user.id}`
+    )
+    this.userLetters = res.data
   }
 
   dataSearch() {
     this.$router.push(`/search/${this.search}`)
     this.search = ''
   }
-  // 刷新保存状态
-
-  // saveState() {
-  //   localStorage.setItem('state', JSON.stringify(this.$store.state))
-  // }
 
   change(e: any) {}
 }
@@ -572,22 +626,6 @@ export default class Home extends Vue {
   line-height: 60px;
   padding: 0 !important;
   position: relative;
-}
-
-.favicon {
-  object-fit: contain;
-  &:hover {
-    &::before {
-      content: '';
-      background: url(../static/tip.png) no-repeat;
-      position: absolute;
-      top: 98%;
-      width: 160px;
-      z-index: 1;
-      height: inherit;
-      background-size: contain;
-    }
-  }
 }
 
 .item {
@@ -625,16 +663,15 @@ export default class Home extends Vue {
   width: 320px !important;
 }
 
-.el-popover {
-  padding: 0 !important;
-}
+// .el-popover {
+//   padding: 0 !important;
+// }
 
 .el-menu-item * {
   vertical-align: unset !important;
 }
 .el-menu-item:nth-child(1) {
-  padding-left: 0 !important;
-  flex: 1;
+  padding-left: 10px !important;
 }
 
 .el-popover {
@@ -655,10 +692,10 @@ export default class Home extends Vue {
   }
 }
 
-//首页标签
+//首页红点
 .el-badge__content.is-fixed {
-  top: 15px !important;
-  right: 1px !important;
+  top: 18px !important;
+  right: 11px !important;
 }
 
 .el-menu.el-menu--horizontal {

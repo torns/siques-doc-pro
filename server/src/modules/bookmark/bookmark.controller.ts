@@ -8,12 +8,14 @@ import {
   ParseIntPipe,
   Delete,
   Query,
+  SetMetadata,
 } from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
 import { AuthGuard } from '@nestjs/passport';
 import { BookmarkDto } from './bookmark.dto';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { ActionGuard } from 'src/core/guards/action.guard';
 
 @Controller('bookmarks')
 export class BookmarkController {
@@ -43,9 +45,14 @@ export class BookmarkController {
     return await this.BookmarkService.deleteBookmark(id);
   }
 
-  @Get()
+  @Get(':id/post')
+  @UseGuards(ActionGuard)
+  @SetMetadata('type', ['bookmarkpost'])
   @UseGuards(AuthGuard())
-  async bookmarkPost(@Query() query: any) {
-    await this.BookmarkService.bookmarkPost(query);
+  async bookmarkPost(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() query: any,
+  ) {
+    await this.BookmarkService.bookmarkPost(id, query);
   }
 }

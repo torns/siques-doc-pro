@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,6 +20,9 @@ import { ContentModule } from './modules/content/content.module';
 import { ActionModule } from './modules/action/action.module';
 
 import dotenv from 'dotenv';
+import { ActionMiddleware } from './core/middleware/action.middleware';
+import { PostController } from './modules/post/post.controller';
+import { UserController } from './modules/user/user.controller';
 dotenv.config();
 
 @Module({
@@ -55,4 +58,8 @@ dotenv.config();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ActionMiddleware).forRoutes(UserController);
+  }
+}

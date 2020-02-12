@@ -15,7 +15,9 @@
 html,
 body {
   // height: 100%;
-
+  font-family: Helvetica Neue, NotoSansHans-Regular, AvenirNext-Regular, arial,
+    Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica,
+    sans-serif;
   -webkit-text-size-adjust: none;
   // scroll-behavior: smooth;
   margin-right: calc(100% - 100vw);
@@ -26,6 +28,17 @@ body {
   :focus {
     outline: none;
   }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d5d5d5;
+  border-radius: 1em;
 }
 
 // #app {
@@ -46,6 +59,22 @@ li {
   }
   @media (min-width: 992px) {
     width: 970px;
+    .favicon {
+      object-fit: contain;
+      &:hover {
+        &::before {
+          content: '';
+          background: url(../static/tip.png) no-repeat;
+          position: absolute;
+          top: 98%;
+          right: 4%;
+          width: 160px;
+          z-index: 1;
+          height: inherit;
+          background-size: contain;
+        }
+      }
+    }
   }
   @media (min-width: 1200px) {
     width: 1140px;
@@ -59,6 +88,16 @@ li {
   display: none !important;
 }
 
+.col-33 {
+  flex: 0 0 33.3%;
+  max-width: 33.3%;
+}
+
+.col-50 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
 @media (max-width: 768px) {
   .sq-leftside-link {
     justify-content: space-around;
@@ -69,10 +108,13 @@ li {
   }
 
   .xs {
-    display: none;
+    display: none !important;
   }
   .xs-flex-1 {
     flex: 1;
+  }
+  .xs-flex-wrap {
+    flex-wrap: wrap;
   }
 }
 
@@ -86,6 +128,9 @@ li {
   .xm {
     display: none;
   }
+  .xm-flex-wrap {
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -95,7 +140,7 @@ li {
 }
 
 code {
-  font-family: Source Code Pro;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 13.3px;
 }
 
@@ -162,7 +207,6 @@ code {
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .ellipsis {
@@ -226,6 +270,14 @@ code {
   background-color: rgba(1, 126, 102, 0.08);
   color: #017e66;
 }
+.bg-4 {
+  background: linear-gradient(
+    60deg,
+    rgba(84, 58, 183, 1) 0%,
+    rgba(0, 172, 193, 1) 100%
+  );
+  color: white;
+}
 //去阴影
 
 .hover-1 {
@@ -242,6 +294,7 @@ code {
 }
 
 .hover-3 {
+  transition: 0.8s;
   &:hover {
     background-color: #009a61;
     color: white;

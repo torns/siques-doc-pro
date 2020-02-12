@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container h-100 pb-5">
+    <div class="container h-100 pb-5 tagIndex">
       <el-row type="flex" class="pt-4 px-2">
         <el-col
           :xs="24"
@@ -64,6 +64,7 @@
                       :open-delay="500"
                       :close-delay="1000"
                       @show="show(tag.id)"
+                      popper-class="tag"
                       placement="top"
                       width="250"
                       trigger="hover"
@@ -232,9 +233,12 @@ export default class TagsIndex extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-.el-divider--horizontal {
+<style lang="scss">
+.tagIndex .el-divider--horizontal {
   margin: 10px 0;
   width: 90%;
+}
+.tag {
+  padding: 0px !important;
 }
 </style>

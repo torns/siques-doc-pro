@@ -5,6 +5,8 @@ export class CommentDto {
   readonly body: string;
   readonly parentid: string;
   //拥有这个资源的用户id
+  readonly os: string;
+  readonly browser: string;
   readonly owner_uid: string;
   readonly type: Commentype;
 }

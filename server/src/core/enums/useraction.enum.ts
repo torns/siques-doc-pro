@@ -4,5 +4,8 @@ export enum UserAction {
   FOLLOWUSER = 'followuser',
   FOLLOWCOLLECTION = 'followcollection',
   LIKEPOST = 'likepost',
+  CREATEPOST = 'createpost',
   BOOKMARKPOST = 'bookmarkpost',
+  COMMENTPOST = 'commentpost',
+  ADOPTANSWER = 'adoptanswer',
 }

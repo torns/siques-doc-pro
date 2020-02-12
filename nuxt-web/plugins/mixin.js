@@ -6,7 +6,43 @@ Vue.mixin({
   },
 
   methods: {
+    throttle2() {
+      // onScroll函数节流
+
+      let previous = 0
+
+      // previous初始设置上一次调用 onScroll 函数时间点为 0。
+
+      let timeout
+
+      const wait = 1550
+
+      // 250毫秒触发一次
+
+      return () => {
+        const now = Date.now()
+
+        const remaining = wait - (now - previous)
+
+        if (remaining <= 0) {
+          if (timeout) {
+            window.clearTimeout(timeout)
+          }
+
+          previous = now
+
+          timeout = null
+
+          this.handleScroll()
+        } else if (!timeout) {
+          timeout = window.setTimeout(this.handleScroll, wait)
+        }
+      }
+    },
     listenScrollBehave: function() {
+      window.onscroll = this.throttle2()
+    },
+    handleScroll: function() {
       $(document).ready(function() {
         var p = 0,
           t = 0

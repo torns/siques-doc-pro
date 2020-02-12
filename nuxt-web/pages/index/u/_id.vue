@@ -98,16 +98,7 @@
                   <div v-else class="d-flex ai-baseline">
                     <i :class="`pr-2 iconfont icon-${link.icon}`"> </i>
 
-                    <div
-                      @click="
-                        if (!id) {
-                          ;(show = true),
-                            (messageBox =
-                              $store.state.auth.user[link.alias] || ''),
-                            (showname = link.alias)
-                        }
-                      "
-                    >
+                    <div @click="clickname(link.alias)">
                       <!-- 没有解决 -->
                       <div v-if="user != ''">
                         <div v-if="user[link.alias] !== null">
@@ -132,12 +123,37 @@
                   class="profile__heading--desc-heading"
                   style="height:32px;background-color: #E3E3E3;border-radius: 5px 5px 0 0;"
                 ></div>
+
                 <div
-                  class="profile__heading--desc-body"
+                  class="profile__heading--desc-body px-2"
                   style="height:210px;background-color: #EEEEEE;"
                 >
-                  暂时没有个人简介,
-                  <el-button type="text">立即添加</el-button>
+                  <div v-if="!id">
+                    {{ $store.state.auth.user.introduction }}
+                  </div>
+                  <div v-else>
+                    {{
+                      user.introduction === null
+                        ? '暂时没有个人简介'
+                        : user.introduction
+                    }}
+                  </div>
+                  <div
+                    v-if="$store.state.auth.user.introduction == null && !id"
+                  >
+                    暂时没有个人简介
+                    <el-button type="text" @click="showIntroductionInput"
+                      >,立即添加</el-button
+                    >
+                  </div>
+                  <div v-else>
+                    <el-button
+                      type="text"
+                      v-if="!id"
+                      @click="showIntroductionInput"
+                      >修改简介</el-button
+                    >
+                  </div>
                 </div>
               </div>
             </el-col>
@@ -160,30 +176,49 @@
             class="hidden-xs-and-down pb-3"
           >
             <div>
-              <div class="d-flex jc-around">
-                <div @click="handleComponent({ 0: 'followers' })" class="point">
-                  <div>关注了</div>
-                  <div v-if="user !== ''">
-                    <span v-if="user.follows">{{ user.follows.length }}人</span>
-                  </div>
-
-                  <div v-else>
-                    <span v-if="!$store.state.UserNotExist"
-                      >{{ $store.state.auth.user.follows.length }}人</span
-                    >
-                  </div>
+              <div class="d-flex flex-column jc-around">
+                <div v-if="id && id != userId" class="d-flex jc-center pb-2">
+                  <el-button @click="followUser" size="small" type="primary">
+                    {{ isUser && isfan ? '已' : '加' }}关注</el-button
+                  >
+                  <el-button @click="sendMessage" size="small" type="plain"
+                    >发私信</el-button
+                  >
                 </div>
-                <el-divider direction="vertical"></el-divider>
 
-                <div @click="handleComponent({ 0: 'Fans' })" class="pl-1 point">
-                  <div>粉丝</div>
-                  <div v-if="user !== ''">
-                    <span v-if="user.user">{{ user.user.length }}人</span>
+                <div class="d-flex jc-around">
+                  <div
+                    @click="handleComponent({ 0: 'followers' })"
+                    class="point"
+                  >
+                    <div>关注了</div>
+                    <div v-if="user.length !== 0">
+                      <span v-if="user.follows"
+                        >{{ user.follows.length }}人</span
+                      >
+                    </div>
+
+                    <div v-else>
+                      <span v-if="!$store.state.UserNotExist"
+                        >{{ $store.state.auth.user.follows.length }}人</span
+                      >
+                    </div>
                   </div>
-                  <div v-else>
-                    <span v-if="!$store.state.UserNotExist"
-                      >{{ $store.state.auth.user.user.length }}人</span
-                    >
+                  <el-divider direction="vertical"></el-divider>
+
+                  <div
+                    @click="handleComponent({ 0: 'Fans' })"
+                    class="pl-1 point"
+                  >
+                    <div>粉丝</div>
+                    <div v-if="user.length !== 0">
+                      <span v-if="user.user">{{ user.user.length }}人</span>
+                    </div>
+                    <div v-else>
+                      <span v-if="!$store.state.UserNotExist"
+                        >{{ $store.state.auth.user.user.length }}人</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
@@ -212,19 +247,13 @@
             <!-- eslint-disable-next-line vue/require-component-is -->
             <component v-bind:is="currentComponent" :id="id" />
           </el-col>
-          <el-col
-            :xs="0"
-            :sm="6"
-            :md="6"
-            :lg="6"
-            :xl="6"
-            class="hidden-sm-and-down"
-          >
+          <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="pt-2">
             <!-- eslint-disable-next-line vue/require-component-is -->
             <component
               :liked="id ? user.liked : $store.state.auth.user.liked"
               :id="id"
               :is="sideComponent"
+              class="px-2"
             />
           </el-col>
         </el-row>
@@ -271,7 +300,9 @@ export default class Page extends Vue {
   postCount: number = 0
   avatorUrl = ''
   showname: string = ''
-  user: any = ''
+
+  user: any = []
+  isfan = false
 
   pageLinks: any = []
   messageLinks = [
@@ -330,6 +361,35 @@ export default class Page extends Vue {
     }
   }
 
+  get userId() {
+    try {
+      return !this.$store.state.auth.user.id
+    } catch {
+      return ''
+    }
+  }
+
+  get isUser(): any {
+    return !this.$store.state.UserNotExist
+  }
+
+  @Watch('user')
+  isValid(newval: any, oldval: any) {
+    let isfan = false
+    if (newval) {
+      try {
+        this.user.user.map((e: any) => {
+          if (e.id === (this.$store.state.auth.user.id || '')) {
+            isfan = true
+          }
+        })
+      } catch {
+        return
+      }
+      this.isfan = isfan
+    }
+  }
+
   mounted() {
     this.fetchUser()
   }
@@ -374,6 +434,33 @@ export default class Page extends Vue {
     }
 
     this.messageBox = ''
+  }
+
+  showIntroductionInput() {
+    this.$prompt(`修改你的简介:`, '简介', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputType: 'textarea',
+      inputPlaceholder: '仅支持纯文本'
+    })
+      .then(async ({ value }: any) => {
+        const data = {
+          introduction: value
+        }
+        this.$store.commit('updataPersonData', data)
+        await this.$http.put(`/users/${this.$store.state.auth.user.id}`, data)
+        this.$notify({
+          type: 'success',
+          message: '更新成功',
+          title: '成功'
+        })
+      })
+      .catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
   }
 
   // 如果有id把这个用户的信息都查出来
@@ -482,6 +569,60 @@ export default class Page extends Vue {
   }
 
   edit() {}
+  // 个人信息
+  clickname(alias: any) {
+    if (!this.id) {
+      this.show = true
+      this.messageBox = this.$store.state.auth.user[alias] || ''
+      this.showname = alias
+    }
+  }
+
+  async followUser() {
+    if (this.isUser) {
+      await this.$http.get(`users/${this.id}/follow`)
+      if (this.isfan) {
+        this.$notify({
+          type: 'warning',
+          message: '取消关注',
+          title: '消息'
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          message: '关注成功',
+          title: '成功'
+        })
+      }
+
+      this.isfan = !this.isfan
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
+  }
+
+  sendMessage() {
+    this.$prompt(`发私信给 ${this.user.name}:`, '发私信', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputType: 'textarea',
+      inputPlaceholder: '仅支持纯文本'
+    })
+      .then(async ({ value }: any) => {
+        await this.$http.post(`/notification/${this.id}`, { content: value })
+        this.$notify({
+          type: 'success',
+          message: '发送成功',
+          title: '成功'
+        })
+      })
+      .catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
+  }
 }
 </script>
 

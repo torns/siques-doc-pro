@@ -19,7 +19,10 @@
             <h3>
               {{ collection.name }}
             </h3>
-            <div class="fs-xm bg-blue text-white border-radius px-1 ">
+            <div
+              style="width: fit-content;"
+              class="fs-xm bg-blue text-white border-radius px-1 "
+            >
               用户专栏
             </div>
           </div>

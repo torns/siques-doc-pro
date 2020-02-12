@@ -28,7 +28,7 @@
                       <div class="d-flex flex-column">
                         <div class="d-flex fs-xm pl-2">
                           <div class="hoverlink pr-2 point">
-                            <router-link tag="div" :to="`/u/${post.user.id}`">{{
+                            <router-link :to="`/u/${post.user.id}`" tag="div">{{
                               post.user.name
                             }}</router-link>
                           </div>

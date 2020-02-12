@@ -108,7 +108,7 @@
       <el-aside
         id="post"
         class="postlist"
-        width="20%"
+        width="22%"
         style="background-color:white;color:#333"
       >
         <div @click="creatPost" type="primary" class="creatpost point pl-4">
@@ -124,9 +124,9 @@
             class="d-flex jc-between"
             type="primary"
           >
-            <i class="el-icon-document fs-ll pt-4 pl-3"></i>
-            <div class="text-ellipsis">
-              <span>{{ post.title }}</span>
+            <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
+            <div class="text-ellipsis ">
+              <div class="pl-2">{{ post.title }}</div>
             </div>
 
             <el-dropdown
@@ -251,8 +251,14 @@ export default class index extends Vue {
     }
   }
 
+  get isUser() {
+    return !this.$store.state.UserNotExist
+  }
+
   mounted() {
-    this.fetchCollect()
+    if (this.isUser) {
+      this.fetchCollect()
+    }
   }
 
   @Watch('dynamicTags')
@@ -263,22 +269,27 @@ export default class index extends Vue {
   }
 
   async createCollect() {
-    if (this.newCollection === '') {
-      return this.$notify({
-        title: '错误',
-        type: 'error',
-        message: '文集不能为空'
+    if (this.isUser) {
+      if (this.newCollection === '') {
+        return this.$notify({
+          title: '错误',
+          type: 'error',
+          message: '专栏名不能为空'
+        })
+      }
+      await this.$http.post('/collections', { name: this.newCollection })
+      this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '添加成功'
       })
+      this.fetchCollect()
+      this.show = false
+      this.newCollection = ''
+    } else {
+      this.$router.push('/')
+      this.$store.commit('toggleLoginForm')
     }
-    await this.$http.post('/collections', { name: this.newCollection })
-    this.$notify({
-      title: '成功',
-      type: 'success',
-      message: '添加成功'
-    })
-    this.fetchCollect()
-    this.show = false
-    this.newCollection = ''
   }
 
   selectCollect(id: any) {
@@ -286,22 +297,24 @@ export default class index extends Vue {
   }
 
   async selectPost(id: any) {
-    this.selectedPost = id
-    const res = await this.$http.get(`/posts/${id}`)
-    this.dynamicTags = res.data.tags
-    this.selectEditor = res.data.editor
+    if (this.selectedPost !== id) {
+      this.selectedPost = id
+      const res = await this.$http.get(`/posts/${id}`)
+      this.dynamicTags = res.data.tags
+      this.selectEditor = res.data.editor
 
-    this.title = res.data.title
-    if (res.data.editor) {
-      this.$nextTick(() => {
-        const ref: any = this.$refs.tinymce
-        ref.setContent(res.data.body)
-      })
-    } else {
-      this.$nextTick(() => {
-        const ref: any = this.$refs.markdown
-        ref.setContent(res.data.body)
-      })
+      this.title = res.data.title
+      if (res.data.editor) {
+        this.$nextTick(() => {
+          const ref: any = this.$refs.tinymce
+          ref.setContent(res.data.body)
+        })
+      } else {
+        this.$nextTick(() => {
+          const ref: any = this.$refs.markdown
+          ref.setContent(res.data.body)
+        })
+      }
     }
   }
 
@@ -369,6 +382,7 @@ export default class index extends Vue {
         type: 'success',
         message: '更新成功'
       })
+      this.fetchPost(this.selectedCollection)
     } else {
       this.$notify({
         type: 'info',

@@ -123,7 +123,7 @@ export class CommentService {
   async showPostComments(id: number) {
     return await this.commentRepository
       .createQueryBuilder('comment')
-      .orderBy('comment.created', 'ASC')
+      .orderBy('comment.created', 'DESC')
       .leftJoin('comment.user', 'user')
       .addSelect(['user.name', 'user.id'])
       .leftJoin('user.avator', 'avator')
@@ -131,7 +131,7 @@ export class CommentService {
 
       .leftJoinAndSelect('comment.reply', 'reply')
 
-      .addOrderBy('reply.created', 'ASC')
+      .addOrderBy('reply.created', 'DESC')
       .leftJoin('reply.from_uid', 'from_uid')
       .addSelect(['from_uid.name', 'from_uid.id'])
 
@@ -161,6 +161,21 @@ export class CommentService {
       .leftJoinAndSelect('comment.user', 'user')
       .leftJoinAndSelect('comment.post', 'post')
       .where('user.id=:id', { id })
+      .getMany();
+  }
+
+  async showHotComments() {
+    const type = 'comment';
+    return await this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user')
+
+      .leftJoinAndSelect('user.avator', 'avator')
+      // .addSelect(['avator.url'])
+      .leftJoinAndSelect('comment.post', 'post')
+      .where('comment.type=:type', { type })
+      .orderBy('comment.liked', 'DESC')
+      .take(6)
       .getMany();
   }
 }

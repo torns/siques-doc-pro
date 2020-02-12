@@ -25,8 +25,7 @@
               <div class="d-flex flex-column jc-center">
                 <div class="fs-xll pb-3">在思趣，学习技能、解决问题</div>
                 <div>
-                  每个月，我们帮助 1000
-                  万的开发者解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
+                  每个月，我们帮助开发者们解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
                 </div>
               </div>
               <div class="d-flex"></div>
@@ -48,12 +47,12 @@
       </div>
     </div>
     <div class="container" style="min-height: 100vh;">
-      <el-row :gutter="0" class="d-flex flex-wrap  pt-4">
-        <el-col :xs="24" :sm="24" :md="5" :lg="4" :xl="4">
+      <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
+        <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4" class=" ">
           <div class="d-flex " style="flex-direction: row-reverse;">
             <ul
-              class="text-left fs-xm sq-leftside-link text-gray-1"
-              style="flex-wrap: wrap;
+              class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
+              style="
     display: flex;"
             >
               <li
@@ -70,7 +69,7 @@
                 :key="link.alias"
                 :class="
                   (link.alias == category ? 'bg-1 ' : 'hover-2 ') +
-                    `pr-6  pl-3 py-2`
+                    `w-100  pl-3 py-2`
                 "
               >
                 <i
@@ -83,7 +82,7 @@
 
                 {{ link.name }}
               </li>
-              <div class="pl-3 py-2 md">技术频道</div>
+              <div class="pl-3 py-2 xm ">技术频道</div>
               <li
                 @click="
                   handleCategory(link.alias, link.sort, link.tag, link.taglist)
@@ -92,7 +91,7 @@
                 :key="link.alias"
                 :class="
                   (link.alias == category ? `bg-1 ` : 'hover-2 ') +
-                    `pr-7  pl-3 py-2 `
+                    `w-100  pl-3 py-2 `
                 "
               >
                 <i
@@ -100,13 +99,13 @@
                     (link.alias == category
                       ? `text-white `
                       : `text-${link.color} `) +
-                      `fs-md iconfont  pr-1  icon-${link.icon}`
+                      `fs-md pr-1 iconfont   icon-${link.icon}`
                   "
                 ></i>
                 {{ link.name }}
               </li>
-              <router-link :to="`/tags`" tag="li">
-                <div class="pl-3 pr-6 py-2 hover-2">
+              <router-link class="w-100 " :to="`/tags`" tag="li">
+                <div class="pl-3   py-2 hover-2">
                   <i class="fa fa-tag pr-1"></i>
                   更多标签
                 </div>
@@ -114,17 +113,13 @@
             </ul>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2">
+        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
           <div>
             <div>
-              <el-carousel
-                height="150px"
-                style="border-radius: 5px;"
-                direction="vertical"
-              >
+              <el-carousel height="150px" style="border-radius: 5px;">
                 <el-carousel-item v-for="item in 4" :key="item">
                   <div
-                    style="background: url(https://image-static.segmentfault.com/299/579/2995795553-5e0acc638a96c);background-size: cover;height:150px"
+                    style="background: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png);background-size: cover;height:150px"
                     class="w-100"
                   ></div>
                   <div class="mask"></div>
@@ -139,59 +134,76 @@
                 <div
                   v-for="(post, $index) in posts"
                   :key="$index"
-                  class="infinite-list-item"
+                  class="infinite-list-item pb-3"
                 >
-                  <div class="d-flex ai-center pb-3">
-                    <div>
-                      <router-link
-                        :to="`/p/${post.id}`"
-                        target="_blank"
-                        tag="a"
-                        class="text-dark-1 hoverlink point   fs-lg"
-                        >{{ post.title }}</router-link
-                      >
-                      <el-tag
-                        v-for="tag in post.tags"
-                        :key="tag.id"
-                        effect="plain"
-                        size="mini"
-                        type="primary"
-                        class="mr-2 hover-4 hover-2 point "
-                      >
-                        <router-link :to="`/t/${tag.id}`">{{
-                          tag.name
-                        }}</router-link>
-                      </el-tag>
+                  <div class="d-flex ai-center">
+                    <div class=" ">
+                      <div>
+                        <router-link
+                          :to="`/p/${post.id}`"
+                          target="_blank"
+                          tag="a"
+                          class="text-dark-1 hoverlink point   fs-lg"
+                          >{{ post.title }}</router-link
+                        >
+                      </div>
+                      <div>
+                        <el-tag
+                          v-for="tag in post.tags"
+                          :key="tag.id"
+                          effect="plain"
+                          size="mini"
+                          type="primary"
+                          class="mt-2 mr-2 hover-4 hover-2 point "
+                        >
+                          <router-link :to="`/t/${tag.id}`">{{
+                            tag.name
+                          }}</router-link>
+                        </el-tag>
+                      </div>
+                      <div>
+                        <div class="text-gray fs-xm lh-2 pt-2">
+                          <!-- 过滤 -->
+                          <span>{{ post.alias }}...</span>
+                        </div>
+                      </div>
 
-                      <div class="text-gray fs-xm lh-2 pt-2">
-                        <!-- 过滤 -->
-                        <span>{{ post.alias }}...</span>
-                        <div class="d-flex mb-3 pt-2">
-                          <div class="d-flex point ai-baseline">
-                            <i class="el-icon-success hover-1 lh-2"></i>
+                      <div class="d-flex mb-4 pt-2 ai-center fs-xm">
+                        <div class="d-flex point ai-center">
+                          <i
+                            class="fs-xl el-icon-success hover-1  text-primary"
+                          ></i>
 
-                            <div class="pl-1 pr-3 text-primary hoverlink">
-                              ×{{ post.liked }} · 赞
+                          <div class="pl-1 pr-3 ">
+                            <div>
+                              <span class="text-primary hoverlink font-bold"
+                                >× {{ post.liked }}
+                              </span>
+                              <span>· 赞</span>
                             </div>
                           </div>
-                          <nuxt-link :to="`u/${post.user.id}`" tag="div"
-                            ><div class="pr-2 point hoverlink">
-                              {{ post.user.name }} ·
-                            </div></nuxt-link
-                          >
-
-                          <div>
-                            {{ $dayjs(post.created).format('MM月DD日') }}
+                        </div>
+                        <nuxt-link :to="`u/${post.user.id}`" tag="div"
+                          ><div class="pr-2 point hoverlink text-gray-1">
+                            {{ post.user.name }} ·
                           </div>
-                          <div>{{ post.category }}</div>
+                        </nuxt-link>
+
+                        <div>
+                          <i class="fa fa-calendar-check-o text-blue"></i>
+                          {{
+                            $dayjs(post.created).format(
+                              'YYYY年MM月DD日 HH:MM:ss'
+                            )
+                          }}
                         </div>
                       </div>
                     </div>
-                    <div v-if="post.cover" class="pl-3 pr-2 pb-5 point">
+                    <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
                       <router-link :to="`/p/${post.id}`">
                         <el-image
-                          style="width: 80px; height: 60px"
                           :src="post.cover"
+                          style="width: 140px; height: 90px"
                           class="border-radius shadow-1 border-dash"
                           fit="contain"
                         ></el-image
@@ -213,27 +225,12 @@
         <el-col
           :xs="0"
           :sm="6"
-          :md="5"
+          :md="6"
           :lg="6"
           :xl="6"
           class="hidden-sm-and-down"
         >
-          <div class="pl-3" style="min-width:200px;max-width:240px;">
-            <div class="bg-info border-1">
-              <div
-                style="height:50px;margin:0 auto;"
-                class="notice text-black fs-sm"
-              >
-                <div class="fs-xxs" style="padding: 16px 10px;">
-                  抒写年度有奖征文丨一起来总结你的 2019
-                </div>
-              </div>
-            </div>
-            <div class="pt-3 d-flex jc-between">
-              <div>文章推荐</div>
-              <div class="text-primary">更多</div>
-            </div>
-          </div>
+          <sq-indexBar></sq-indexBar>
         </el-col>
       </el-row>
     </div>
@@ -244,8 +241,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
+import indexSideBar from '~/components/SideBar/indexSideBar.vue'
 @Component({
-  components: {}
+  components: {
+    'sq-indexBar': indexSideBar
+  }
 })
 export default class MyPage extends Vue {
   page = 1
@@ -292,7 +292,7 @@ export default class MyPage extends Vue {
       color: 'dark'
     },
     {
-      name: '最新内容',
+      name: '最近更新',
       alias: 'new',
       sort: 'created',
       icon: 'compass',
@@ -348,6 +348,22 @@ export default class MyPage extends Vue {
       sort: 'created',
       icon: 'xiaochengxu',
       color: 'green'
+    },
+    {
+      name: 'Nuxt',
+      alias: 'nuxtjs',
+      tag: 'nuxtjs',
+      sort: 'created',
+      icon: 'nuxt-dot-js',
+      color: 'green'
+    },
+    {
+      name: 'Nest',
+      alias: 'nestjs',
+      tag: 'nestjs',
+      sort: 'created',
+      icon: 'file_type_nestjs',
+      color: 'red'
     },
     {
       name: '行业',
@@ -418,7 +434,7 @@ export default class MyPage extends Vue {
       (listId ? `&listId=${listId}` : '') +
       `&type=post`
     const res = await this.$http.get(link)
-
+    this.maxcount = res.data[1]
     this.posts = res.data[0]
   }
 

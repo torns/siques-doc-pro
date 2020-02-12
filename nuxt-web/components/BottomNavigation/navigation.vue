@@ -35,7 +35,7 @@ export default class navigation extends Vue {
     { name: '问答', icon: 'question', link: '/q' },
     { name: '专栏', icon: 'wpexplorer ', link: '/blogs' },
     { name: '标签', icon: 'tags', link: '/tags' },
-    { name: '更多', icon: 'ellipsis-h', link: '/any' }
+    { name: '更多', icon: 'ellipsis-h', link: '/' }
   ]
 
   get link() {

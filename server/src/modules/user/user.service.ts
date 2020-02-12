@@ -13,6 +13,7 @@ import { throwError } from 'rxjs';
 import { Avator } from '../avator/avator.entity';
 import { Collection } from '../collection/collection.entity';
 import { Tag } from '../tag/tag.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,8 @@ export class UserService {
     private readonly collectionRepository: Repository<Collection>,
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Comment)
+    private readonly CommentRepository: Repository<Comment>,
   ) {}
   async store(data: UserDto) {
     const { phonenumber } = data;
@@ -286,16 +289,39 @@ export class UserService {
   }
   // 用户关注问题
   async userFollowQue(userId: number, postId: number) {
+    const entity = await this.postRepository.findOne(postId);
+    let boolen;
     try {
       await this.userRepository
         .createQueryBuilder('user')
         .relation(User, 'concern')
         .of(userId)
         .add(postId);
-      return true;
+
+      boolen = true;
     } catch {
-      return false;
+      await this.userRepository
+        .createQueryBuilder('user')
+        .relation(User, 'concern')
+        .of(userId)
+        .remove(postId);
+      boolen = false;
     }
+
+    const res = await this.postConcerned(postId);
+    entity.concerned = res;
+    await this.postRepository.save(entity);
+    return boolen;
+  }
+
+  // 一个问题被关注的数量 反向查询
+  async postConcerned(postId: number) {
+    const res = await this.userRepository
+      .createQueryBuilder()
+      .relation(Post, 'concern')
+      .of(postId)
+      .loadMany();
+    return res.length;
   }
 
   // 用户所关注的问题
@@ -395,6 +421,54 @@ export class UserService {
       }
     });
 
+    return data;
+  }
+
+  async countSite() {
+    let data = {
+      post: 0,
+      question: 0,
+      note: 0,
+      collection: 0,
+      comment: 0,
+      answer: 0,
+      tag: 0,
+      user: 0,
+    };
+
+    const res = await this.postRepository.createQueryBuilder('post').getMany();
+    const res1 = await this.collectionRepository.createQueryBuilder().getMany();
+    const res2 = await this.CommentRepository.createQueryBuilder().getMany();
+    const res3 = await this.tagRepository.createQueryBuilder().getMany();
+    const res4 = await this.userRepository.createQueryBuilder().getMany();
+
+    data['collection'] = res1.length;
+    data['tag'] = res3.length;
+    data['user'] = res4.length;
+    res.map(e => {
+      switch (e.type) {
+        case 'post':
+          data['post'] += 1;
+          break;
+        case 'question':
+          data['question'] += 1;
+          break;
+        case 'note':
+          data['note'] += 1;
+          break;
+      }
+    });
+
+    res2.map(e => {
+      switch (e.type) {
+        case 'comment':
+          data['comment'] += 1;
+          break;
+        case 'answer':
+          data['answer'] += 1;
+          break;
+      }
+    });
     return data;
   }
 

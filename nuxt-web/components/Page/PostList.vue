@@ -7,9 +7,9 @@
     <div>
       <ul class="pb-2">
         <div
-          class="py-2"
           v-for="(collection, index) in collections"
           :key="index"
+          class="py-2"
         >
           <nuxt-link :to="`/blogs/${collection.id}`" tag="div">
             <div class="text-primary point pb-2 hoverlink">

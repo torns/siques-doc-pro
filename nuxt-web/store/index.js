@@ -37,6 +37,9 @@ export const mutations = {
   setUserInfo(state, data) {
     state.user = data
   },
+  storeTags(state, data) {
+    state.tags = data
+  },
   SET_AUTHO(state, auth) {
     state.auth.token = auth
   },

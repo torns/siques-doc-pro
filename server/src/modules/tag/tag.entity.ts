@@ -23,7 +23,7 @@ export class Tag {
   @Column({ unique: true, nullable: true })
   alias: string;
 
-  @Column()
+  @Column({ select: false })
   description: string;
 
   @Column({ default: 0 })
