@@ -6,6 +6,7 @@ import { ActionDto } from './action.dto';
 import { UserAction } from 'src/core/enums/useraction.enum';
 import { User } from '../user/user.entity';
 import { Post } from '../post/post.entity';
+import { Notification } from '../notification/notification.entity';
 
 @Injectable()
 export class ActionService {
@@ -17,10 +18,11 @@ export class ActionService {
   ) {}
 
   async storeAction(type: any, data: Partial<ActionDto>) {
-    const { from_uid, alias, to_Collection, to_Post, to_uid } = data;
+    const { from_uid, alias, content, to_Collection, to_Post, to_uid } = data;
     let entity;
     try {
       entity = await this.actionRepository.save({
+        content,
         type: type,
         alias: alias,
         from_uid: from_uid,
@@ -60,6 +62,7 @@ export class ActionService {
       .leftJoin('touser.avator', 'avator')
       .addSelect(['avator.url'])
       .orderBy('action.created', 'DESC')
+      .limit(15)
       .getMany();
   }
 }

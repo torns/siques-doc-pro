@@ -48,14 +48,17 @@
           style="width: -webkit-fill-available;"
           class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2"
         >
-          <div v-if="action.type != 'followuser'" class="d-flex jc-between">
+          <div
+            v-if="action.type != 'followuser' && action.type != 'privateletter'"
+            class="d-flex jc-between"
+          >
             <div>
               <div class="text-gray fs-xm ">
                 <span class="text-primary">
                   {{ action.from_uid.name }}
                 </span>
                 {{ actionTransFomer(action) }}
-                {{ $dayjs(action.created).format('M月D日') }}
+                {{ $dayjs(action.created).format('M月D日 H:mm') }}
               </div>
               <div class="text-primary py-1 hoverlink point">
                 <router-link
@@ -76,8 +79,8 @@
             </div>
             <div v-if="action.to_Post.cover !== null" class="xs pr-3">
               <el-image
-                style="width: 80px; height: 60px"
                 :src="action.to_Post.cover"
+                style="width: 80px; height: 60px"
                 fit="cover"
               ></el-image>
             </div>
@@ -88,7 +91,7 @@
                 {{ action.from_uid.name }}
               </span>
               {{ actionTransFomer(action) }}
-              {{ $dayjs(action.created).format('M月D日') }}
+              {{ $dayjs(action.created).format('M月D日 H:mm') }}
             </div>
             <div class="d-flex text-primary py-1 ">
               <div class="pr-3">
@@ -105,8 +108,13 @@
                 >
                   {{ action.to_uid.name }}</router-link
                 >
-                <div class="fs-xs text-gray pt-1">
-                  这个用户太懒,什么都没有留下
+                <div class="fs-xs text-gray py-1">
+                  {{
+                    action.to_uid.introduction || '这个用户太懒,什么都没有留下'
+                  }}
+                </div>
+                <div v-if="action.content && !id" class="fs-xs">
+                  消息内容：{{ action.content }}
                 </div>
               </div>
             </div>
@@ -188,6 +196,8 @@ export default class MyHomepage extends Vue {
           return '采纳了答案'
         case 'bookmarkpost':
           return '收藏了文章'
+        case 'privateletter':
+          return '私信了'
         default:
           break
       }
@@ -203,10 +213,10 @@ export default class MyHomepage extends Vue {
           return '/p/'
         case 'followque':
           return '/q/'
-
         case 'followuser':
           return '关注了用户'
-
+        case 'privateletter':
+          return '私信了用户'
         case 'commentpost':
           return '/p/'
         case 'createpost':

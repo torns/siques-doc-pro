@@ -43,12 +43,18 @@ export const mutations = {
   SET_AUTHO(state, auth) {
     state.auth.token = auth
   },
-  increPostLen(state) {
-    state.auth.user.postLength = state.user.postLength + 1
+  increLen(state, data) {
+    state.auth.user[data] = state.auth.user[data] + 1
   },
-  decrePostLen(state) {
-    state.user.postLength = state.user.postLength - 1
+  decreLen(state, data) {
+    state.auth.user[data] = state.auth.user[data] + 1
   },
+  // increPostLen(state) {
+  //   state.auth.user.postLength = state.user.postLength + 1
+  // },
+  // decrePostLen(state) {
+  //   state.user.postLength = state.user.postLength - 1
+  // },
   storeUserTag(state, data) {
     data.map((e) => {
       const item = { id: e }

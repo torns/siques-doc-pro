@@ -12,12 +12,12 @@
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-tags text-blue pr-2 "></i>热门标签</div>
         <div class="text-primary">
-          <router-link tag="li" :to="`/tags`">更多</router-link>
+          <router-link :to="`/tags`" tag="li">更多</router-link>
         </div>
       </div>
       <div class="d-flex flex-wrap ">
         <div v-for="tag in hotTags" :key="tag.id" class="col-33">
-          <router-link tag="li" :to="`/t/${tag.id}`">
+          <router-link :to="`/t/${tag.id}`" tag="li">
             <div
               class="bg-light-1 py-1 mr-2 mb-2 text-gray text-center fs-xm hover-3 point ellipsis-1"
             >
@@ -69,7 +69,7 @@
                     {{ $dayjs(comment.user.created).format('YYYY年M月D日') }}
                   </div>
 
-                  <span class="text-blue-1" slot="reference">
+                  <span slot="reference" class="text-blue-1">
                     {{ comment.user.name }}</span
                   >
                 </el-popover>
@@ -87,8 +87,8 @@
               <div class="ellipsis-1 text-primary">
                 评:
                 <router-link
-                  tag="span"
                   :to="`/p/${comment.post.id}`"
+                  tag="span"
                   class="hoverlink point"
                   >{{ comment.post.title }}</router-link
                 >

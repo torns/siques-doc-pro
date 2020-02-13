@@ -12,12 +12,24 @@ import { Collection } from '../collection/collection.entity';
 import { ActionModule } from '../action/action.module';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
+import { NotificationModule } from '../notification/notification.module';
+import { Notification } from '../notification/notification.entity';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature([User, Post, Avator, Collection, Tag, Comment]),
+
+    TypeOrmModule.forFeature([
+      User,
+      Post,
+      Avator,
+      Collection,
+      Tag,
+      Comment,
+      Notification,
+    ]),
     ActionModule,
+    NotificationModule,
   ],
   controllers: [UserController],
   providers: [UserService],

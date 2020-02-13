@@ -58,7 +58,7 @@
                     ><img src="~/static/avator.jpg" alt=""
                   /></el-avatar>
                   <div class="text-primary point hoverlink">
-                    <router-link tag="li" :to="`/u/${follow.id}`">
+                    <router-link :to="`/u/${follow.id}`" tag="li">
                       {{ follow.name }}</router-link
                     >
                   </div>

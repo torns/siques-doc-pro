@@ -339,7 +339,7 @@ export default class index extends Vue {
       })
       setTimeout(async () => {
         await this.$http.post('/posts', data)
-        // this.$store.commit('increPostLen')
+        this.$store.commit('increLen', 'post')
         this.selectCollect(this.selectedCollection)
         loading.close()
         this.$notify({
@@ -352,7 +352,7 @@ export default class index extends Vue {
       this.$notify({
         title: '错误',
         type: 'error',
-        message: '请先创建文集'
+        message: '请先创建专栏'
       })
     }
   }
@@ -450,12 +450,13 @@ export default class index extends Vue {
       await this.$http.delete(
         `/posts/${id}?collectionId=${this.selectedCollection}`
       )
-      // this.$store.commit('decrePostLen')
+
       this.$notify({
         title: '成功',
         type: 'success',
         message: '删除成功'
       })
+      this.$store.commit('decreLen', 'post')
       this.fetchPost(this.selectedCollection)
     }
   }

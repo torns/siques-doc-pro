@@ -7,12 +7,17 @@ import { User } from '../user/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Comment } from '../comment/comment.entity';
 import { Letter } from './letter.entity';
-
+import { Post } from '../post/post.entity';
+import { ActionModule } from '../action/action.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Notification, User, Comment, Letter]), AuthModule
+  imports: [
+    TypeOrmModule.forFeature([Notification, User, Comment, Letter, Post]),
+    AuthModule,
+    ActionModule,
   ],
   controllers: [NotificationController],
-  providers: [NotificationService]
+  providers: [NotificationService],
+  exports: [NotificationService],
 })
-export class NotificationModule { }
+export class NotificationModule {}

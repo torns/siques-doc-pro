@@ -142,15 +142,15 @@
                     v-if="$store.state.auth.user.introduction == null && !id"
                   >
                     暂时没有个人简介
-                    <el-button type="text" @click="showIntroductionInput"
+                    <el-button @click="showIntroductionInput" type="text"
                       >,立即添加</el-button
                     >
                   </div>
                   <div v-else>
                     <el-button
-                      type="text"
                       v-if="!id"
                       @click="showIntroductionInput"
+                      type="text"
                       >修改简介</el-button
                     >
                   </div>

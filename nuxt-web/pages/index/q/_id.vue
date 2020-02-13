@@ -170,7 +170,7 @@
                     style="font-weight:600"
                     class="hover-4 text-primary fs-lg"
                   >
-                    <router-link tag="li" :to="`/u/${answer.user.id}`">
+                    <router-link :to="`/u/${answer.user.id}`" tag="li">
                       {{ answer.user.name }}</router-link
                     >
                   </div>
@@ -194,10 +194,10 @@
                           isowner &&
                           adoptAnswerId === ''
                       "
-                      confirmButtonText="好的"
-                      cancelButtonText="取消"
+                      confirm-button-text="好的"
+                      cancel-button-text="取消"
                       icon="el-icon-info"
-                      iconColor="red"
+                      icon-color="red"
                       title="确定要采纳此答案？(不可修改)"
                     >
                       <el-button slot="reference" size="small" type="plain">

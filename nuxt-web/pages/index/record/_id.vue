@@ -195,7 +195,7 @@ export default class Index extends Vue {
           title: this.title,
           body: data,
 
-          type: 'question',
+          type: 'note',
           tags: this.dynamicTags
         }
         await this.$http.post(`/posts/`, body)
@@ -204,6 +204,7 @@ export default class Index extends Vue {
           type: 'success',
           message: '发布成功'
         })
+        this.$store.commit('increLen', 'note')
         this.$router.push(`/n`)
       }
     } else {

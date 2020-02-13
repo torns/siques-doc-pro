@@ -2,7 +2,7 @@
   <div class="bg-white">
     <el-divider v-if="topBorder"></el-divider>
     <div class="container pt-4  px-3 bg-white">
-      <el-row :gutter="20" type="flex" class="point">
+      <el-row :gutter="20" type="flex">
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">工具</div>
           <li>
@@ -39,14 +39,18 @@
               >Font Awesome</a
             >
           </li>
-          <li>移动开发课程</li>
+          <li>
+            <a target="_blank" href="https://www.iconfont.cn/">矢量图标库</a>
+          </li>
         </el-col>
         <el-col :xs="0" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">资源</div>
           <li>
             <a target="_blank" href="https://www.canva.cn/">创意设计</a>
           </li>
-          <li>用户排行榜</li>
+          <li>
+            <a href="https://www.bookstack.cn/">书栈网</a>
+          </li>
           <li>帮助中心</li>
           <li>声望与权限</li>
           <li>社区服务中心</li>
@@ -86,24 +90,27 @@
         :xl="24"
         class="hidden-xs-and-down text-gray fs-sm"
       >
-        <el-divider></el-divider>
-        <div class="d-flex jc-between">
-          <div class="pr-3">
-            Copyright © 2018-2019 Siques . 当前呈现版本 19.02.27
+        <!-- <el-divider></el-divider> -->
+        <div class="text-center py-5 mb-2">
+          <div class="fs-xm pb-3">
+            <div>浙ICP备19035817号</div>
+            <div class="py-1">Copyright © 2018-2019 Siques .</div>
             <div>
-              <img
-                style="height: 18px;"
-                src="https://img.shields.io/badge/浙ICP备19035817号-lightgray?style=plastic&logo=appveyor"
-                alt=""
-              />
+              用到的技术
+              <span>
+                <span v-for="(item, index) in techs" :key="index" class="pr-2">
+                  <a :href="item.link" class="text-primary hover-1 hoverlink">{{
+                    item.name
+                  }}</a>
+                </span>
+              </span>
             </div>
-            <div class="mb-4">CDN 存储服务由 又拍云 赞助提供</div>
           </div>
-          <div style="flex:20" class="text-dark-1">
-            <i class="iconfont icon-xiangmulan-weixinhao pr-2"></i>
-            <i class="iconfont icon-weibo pr-2"></i>
-            <i class="iconfont icon-github pr-2"></i>
-            <i class="iconfont icon-twitter pr-2"></i>
+          <div class="text-dark-1 ">
+            <i class="fa fa-weixin pr-2"></i>
+            <i class="fa fa-weibo pr-2"></i>
+            <i class="fa fa-github pr-2"></i>
+            <i class="fa fa-twitter pr-2"></i>
           </div>
         </div>
       </el-col>
@@ -118,6 +125,14 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 export default class Footer extends Vue {
   @Prop()
   topBorder: any
+
+  techs = [
+    { name: 'ElementUi', link: 'https://element.eleme.cn/#/zh-CN' },
+    { name: 'Node.js', link: 'https://www.nodeapp.cn/N' },
+    { name: 'jQuery', link: 'https://www.jquery123.com/' },
+    { name: 'Nuxtjs', link: 'https://www.nuxtjs.cn/guide' },
+    { name: 'Nestjs', link: 'www.nestjs.com/' }
+  ]
 }
 </script>
 
@@ -133,8 +148,14 @@ li {
   color: gray;
   padding-top: 3px;
   padding-bottom: 3px;
+
   a {
     color: gray;
+    // transition: 0.3s;
+    &:hover {
+      color: #009a61;
+      font-weight: 600;
+    }
   }
 }
 .title {

@@ -4,16 +4,23 @@ import { ActionService } from 'src/modules/action/action.service';
 import { Reflector } from '@nestjs/core';
 import { ActionDto } from 'src/modules/action/action.dto';
 import e = require('express');
+import { NotificationService } from 'src/modules/notification/notification.service';
+import { NotificationDto } from 'src/modules/notification/noticication.dto';
 
 @Injectable()
 export class ActionGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly ActionService: ActionService,
+    private readonly NotificationService: NotificationService,
   ) {}
 
   async storeAction(type: any, data: Partial<ActionDto>) {
     await this.ActionService.storeAction(type, data);
+  }
+
+  async storeNotification(type: any, data: Partial<NotificationDto>) {
+    await this.NotificationService.storeNotification(type, data);
   }
 
   canActivate(
@@ -56,7 +63,19 @@ export class ActionGuard implements CanActivate {
       };
     }
 
+    if (type[0] === 'privateletter') {
+      const alias = `${req.user.id + 'privateletter' + req.params.id}`;
+      const { content } = req.body;
+      data = {
+        content,
+        from_uid: req.user,
+        alias: alias.toString() + content,
+        to_uid: req.params,
+      };
+    }
+
     this.storeAction(type, data);
+    this.storeNotification(type, data);
     return true;
   }
 }

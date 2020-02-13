@@ -21,6 +21,9 @@ export class ActionUser {
   @Column({ unique: true, nullable: true })
   alias: string;
 
+  @Column({ nullable: true })
+  content: string;
+
   @ManyToOne(type => User)
   from_uid: User;
 

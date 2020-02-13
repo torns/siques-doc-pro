@@ -207,6 +207,7 @@ export default class Index extends Vue {
           type: 'success',
           message: '发布成功'
         })
+        this.$store.commit('increLen', 'question')
         this.$router.push(`/q`)
       }
     } else {

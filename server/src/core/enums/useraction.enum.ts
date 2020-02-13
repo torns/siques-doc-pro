@@ -8,4 +8,5 @@ export enum UserAction {
   BOOKMARKPOST = 'bookmarkpost',
   COMMENTPOST = 'commentpost',
   ADOPTANSWER = 'adoptanswer',
+  PRIVATELETTER = 'privateletter',
 }

@@ -6,9 +6,13 @@ import { ActionUser } from './action.entity';
 import { AuthModule } from '../auth/auth.module';
 import { User } from '../user/user.entity';
 import { Post } from '../post/post.entity';
+import { Notification } from '../notification/notification.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ActionUser, Post]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([ActionUser, Post, Notification]),
+    AuthModule,
+  ],
   controllers: [ActionController],
   exports: [ActionService],
   providers: [ActionService],

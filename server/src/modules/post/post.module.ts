@@ -11,6 +11,7 @@ import { Collection } from '../collection/collection.entity';
 
 import { ActionModule } from '../action/action.module';
 import { Comment } from '../comment/comment.entity';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Comment } from '../comment/comment.entity';
     UserModule,
     AuthModule,
     ActionModule,
+    NotificationModule,
   ],
   controllers: [PostController],
   providers: [PostService],

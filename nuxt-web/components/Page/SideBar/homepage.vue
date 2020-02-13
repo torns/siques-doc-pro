@@ -99,11 +99,7 @@
         </div>
       </div>
       <el-divider></el-divider>
-      <div>
-        <!-- 注册于{{
-          $dayjs(this.$store.state.userCreated).format('YYYY-MM-DD & HH:MM')
-        }}分 -->
-      </div>
+      <div>注册于{{ userCreated }}分</div>
     </div>
   </div>
 </template>
@@ -124,6 +120,17 @@ export default class MySideBar extends Vue {
   mounted() {
     this.fetchUserTag()
   }
+
+  get userCreated() {
+    try {
+      return this.$dayjs(this.$store.state.auth.user.created).format(
+        'YYYY-MM-DD & HH:MM'
+      )
+    } catch {
+      return ''
+    }
+  }
+
   async fetchUserTag() {
     let res
     if (this.id) {

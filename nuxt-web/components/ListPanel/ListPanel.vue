@@ -61,6 +61,9 @@ export default class ListPanel extends Vue {
     if (type === 'answer') {
       return '回答'
     }
+    if (type === 'note') {
+      return '笔记'
+    }
   }
 
   link(post: any) {

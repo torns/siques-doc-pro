@@ -36,24 +36,22 @@
                 <h1 class="py-4">{{ post.title }}</h1>
                 <div class="d-flex py-3">
                   <router-link :to="`/u/${post.user.id}`">
-                    <div v-if="post.user.avator[0]">
-                      <img
-                        :src="post.user.avator[0].url"
-                        class="avator shadow-1 contain"
-                        style="border: 1px solid #de7d7d;padding: 2px;"
-                      />
-                    </div>
-                    <img
-                      v-else
-                      src="~/static/avator.jpg"
-                      class="avator shadow-1 contain"
-                    />
+                    <el-avatar
+                      :size="60"
+                      :src="post.user.avator[0].url"
+                      class="shadow-1"
+                      style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;"
+                    >
+                      <img src="~/static/avator.jpg" />
+                    </el-avatar>
                   </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
-                      <div class="mr-2 font-bold text-primary hover-4 point">
-                        {{ post.user.name }}
-                      </div>
+                      <router-link :to="`/u/${post.user.id}`">
+                        <div class="mr-2 font-bold text-primary hover-4 point">
+                          {{ post.user.name }}
+                        </div>
+                      </router-link>
                       <el-button
                         @click="follow(post.user.id)"
                         type="text"
@@ -550,10 +548,7 @@ export default class Post extends Vue {
   margin-top: 10em;
 }
 
-.avator {
-  width: 60px !important;
-  height: 60px !important;
+.el-avatar > img {
   border-radius: 50%;
-  object-fit: contain;
 }
 </style>

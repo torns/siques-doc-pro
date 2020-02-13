@@ -3,7 +3,7 @@
     <div id="app ">
       <div style="height:3px;" class="bg-primary"></div>
       <div>
-        <div class="shadow-1" style="position:sticky;top:0;z-index: 10;">
+        <div class="shadow-1" style="z-index: 10;">
           <el-menu
             default-active="/"
             class="d-flex jc-between ai-center  container"
@@ -44,12 +44,17 @@
               v-show="this.$store.state.UserNotExist == false"
               :show-timeout="0"
               :hide-timeout="0"
-              class="xs"
+              class="xm "
+              style="padding-left:40px"
             >
-              <el-badge value="new" class="item" type="primary">
+              <el-badge
+                :value="hasNewMessage ? 'new' : null"
+                class="item"
+                type="primary"
+              >
                 <el-popover
                   :popper-class="`message`"
-                  @show="show"
+                  @show="fetchUserLetter"
                   placement="bottom"
                   trigger="click"
                 >
@@ -77,36 +82,40 @@
                       <div class="border-bottom py-1 pl-2">
                         一些关于你的通知
                       </div>
-                      <div
-                        v-for="(notify, index) in notifies.comment"
-                        :key="index"
-                        class="py-1  lh-2 bg-2 "
-                      >
-                        <div class=" d-flex">
-                          <router-link :to="`/u/${notify.user.id}`" tag="div">
+                      <div v-for="(letter, index) in userLetters" :key="index">
+                        <div
+                          v-if="
+                            letter.type !== 'followuser' &&
+                              letter.content === null
+                          "
+                          :class="
+                            `d-flex py-1  lh-2 ${
+                              letter.is_read === 1 ? '' : 'bg-2'
+                            }`
+                          "
+                        >
+                          <router-link
+                            :to="`/u/${letter.from_uid.id}`"
+                            tag="div"
+                          >
                             <div
                               class="hover-4 point pr-1 text-primary "
                               style="white-space: nowrap;"
                             >
-                              {{ notify.user.name }}
+                              {{ letter.from_uid.name }}
                             </div>
                           </router-link>
-                          <div style="white-space: nowrap;">
-                            {{
-                              notify.post.type === 'post' ? '评论了' : '回答了'
-                            }}你的
+                          <div style="white-space: nowrap;" class="pr-1">
+                            {{ actionTransFomer(letter) }}
                           </div>
                           <router-link
-                            :to="
-                              (notify.post.type === 'post' ? '/p/' : '/q/') +
-                                `${notify.post.id}`
-                            "
+                            :to="link(letter) + `${letter.to_Post.id}`"
                             tag="div"
                           >
                             <div
                               class="point text-primary hoverlink ellipsis-1"
                             >
-                              {{ notify.post.title }}
+                              {{ letter.to_Post.title }}
                             </div>
                           </router-link>
                         </div>
@@ -118,16 +127,23 @@
                         他们最近关注了你
                       </div>
 
-                      <div
-                        v-for="(notify, index) in notifies.follow.user"
-                        :key="index"
-                        class="py-1 lh-2 bg-2"
-                      >
-                        <router-link :to="`/u/${notify.id}`" tag="span">
-                          <span class="ml-2 hover-4 text-primary point pr-1">{{
-                            notify.name
-                          }}</span> </router-link
-                        >关注了你
+                      <div v-for="(letter, index) in userLetters" :key="index">
+                        <div
+                          v-if="letter.type == 'followuser'"
+                          :class="
+                            `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                          "
+                        >
+                          <router-link
+                            :to="`/u/${letter.from_uid.id}`"
+                            tag="span"
+                          >
+                            <span
+                              class="ml-2 hover-4 text-primary point pr-1"
+                              >{{ letter.from_uid.name }}</span
+                            > </router-link
+                          >关注了你
+                        </div>
                       </div>
                     </div>
 
@@ -136,31 +152,50 @@
                         他们最近私信了你
                       </div>
 
-                      <div
-                        v-for="(letter, index) in userLetters"
-                        :key="index"
-                        class="py-1 lh-2 bg-2"
-                      >
-                        <el-popover
-                          placement="bottom"
-                          title="私信详情"
-                          width=""
-                          icon
-                          trigger="hover"
-                          :content="letter.content"
+                      <div v-for="(letter, index) in userLetters" :key="index">
+                        <div
+                          v-if="
+                            letter.content != null && letter.from_uid !== null
+                          "
+                          :class="
+                            `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                          "
                         >
-                          <router-link
-                            :to="`/u/${letter.send_uid.id}`"
-                            tag="span"
-                            slot="reference"
+                          <el-popover
+                            :content="
+                              ` ${letter.content +
+                                $dayjs(letter.created).format('M月D日 H:MM')}`
+                            "
+                            placement="bottom"
+                            title="私信详情"
+                            width=""
+                            icon
+                            trigger="hover"
                           >
-                            <span
-                              class="ml-2 hover-4 text-primary point pr-1"
-                              >{{ letter.send_uid.name }}</span
+                            <router-link
+                              slot="reference"
+                              :to="`/u/${letter.from_uid.id}`"
+                              tag="span"
                             >
-                            私信了你
-                          </router-link>
-                        </el-popover>
+                              <span
+                                class="ml-2 hover-4 text-primary point pr-1"
+                                >{{ letter.from_uid.name }}</span
+                              >
+                              私信了你
+                            </router-link>
+                          </el-popover>
+                        </div>
+                        <div v-if="letter.from_uid === null">
+                          <div
+                            :class="
+                              `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                            "
+                          >
+                            <div class="pl-2">
+                              {{ letter.content }}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="flex-1 pt-3"></div>
@@ -168,7 +203,9 @@
                     <div></div>
                     <div class=" border-top ">
                       <div class="d-flex jc-between pt-2">
-                        <div class="point ">全部标记为已读</div>
+                        <div @click="markedRead" class="point ">
+                          全部标记为已读
+                        </div>
                         <router-link
                           to="/notification"
                           tag="div"
@@ -178,9 +215,7 @@
                       </div>
                     </div>
                   </div>
-                  <el-button slot="reference" type="text">
-                    <i class="el-icon-bell"></i>
-                  </el-button>
+                  <i slot="reference" class="fa fa-bell-o fs-xm "> </i>
                 </el-popover>
               </el-badge>
             </el-menu-item>
@@ -194,7 +229,7 @@
                 placeholder="请输入内容"
               >
               </el-input>
-              <el-button @click="dataSearch" type="text" size="mini">
+              <el-button @click="dataSearch" type="text">
                 <i class="fa fa-search"></i>
               </el-button>
             </el-menu-item>
@@ -429,11 +464,82 @@ export default class Home extends Vue {
     }
   }
 
-  @Watch('topRadio')
-  isRadioChanged(newval: any, oldval: any) {
-    if (newval === 'letter') {
-      this.fetchUserLetter()
+  actionTransFomer(action: any) {
+    if (
+      action.to_Post !== null &&
+      action.to_Post.type === 'question' &&
+      action.type === 'commentpost'
+    ) {
+      return '评论了问题'
+    } else {
+      switch (action.type) {
+        case 'likepost':
+          return '点赞了文章'
+        case 'followque':
+          return '关注了问题'
+
+        case 'followuser':
+          return '关注了用户'
+        case 'commentpost':
+          return '评论了文章'
+
+        case 'createpost':
+          return '发布了文章'
+
+        case 'adoptanswer':
+          return '采纳了答案'
+        case 'bookmarkpost':
+          return '收藏了文章'
+        case 'privateletter':
+          return '私信了'
+        default:
+          break
+      }
     }
+  }
+
+  link(action: any) {
+    if (action.to_Post.type === 'question') {
+      return '/q/'
+    } else {
+      switch (action.type) {
+        case 'likepost':
+          return '/p/'
+        case 'followque':
+          return '/q/'
+        case 'followuser':
+          return '关注了用户'
+        case 'privateletter':
+          return '私信了用户'
+        case 'commentpost':
+          return '/p/'
+        case 'createpost':
+          return '/p/'
+        case 'adoptanswer':
+          return '/q/'
+        case 'bookmarkpost':
+          return '/p/'
+        default:
+          break
+      }
+    }
+  }
+
+  // @Watch('topRadio')
+  // isRadioChanged(newval: any, oldval: any) {
+  //   if (newval === 'letter') {
+  //     this.fetchUserLetter()
+  //   }
+  // }
+
+  get hasNewMessage() {
+    let hasNew = false
+    this.userLetters.map((e: any) => {
+      if (e.is_read !== 1) {
+        hasNew = true
+      }
+    })
+    return hasNew
   }
 
   get isUser() {
@@ -536,7 +642,12 @@ export default class Home extends Vue {
   }
 
   mounted() {
-    // this.fetchNotify()
+    setTimeout(() => {
+      if (this.isUser) {
+        this.fetchUserLetter()
+      }
+    }, 300)
+
     // window.addEventListener('unload', this.saveState)
   }
 
@@ -596,18 +707,31 @@ export default class Home extends Vue {
     this.$router.push('/')
   }
 
-  async show() {
+  // async show() {
+  //   if (this.isUser) {
+  //     const res = await this.$http.get('/notification')
+  //     this.notifies = res.data
+  //   }
+  // }
+
+  async fetchUserLetter() {
     if (this.isUser) {
-      const res = await this.$http.get('/notification')
-      this.notifies = res.data
+      const res = await this.$http.get(
+        `/notification/${this.$store.state.auth.user.id}`
+      )
+      this.userLetters = res.data
     }
   }
 
-  async fetchUserLetter() {
-    const res = await this.$http.get(
-      `notification/${this.$store.state.auth.user.id}`
-    )
-    this.userLetters = res.data
+  async markedRead() {
+    if (this.isUser) {
+      await this.$http.get(
+        `/notification/${this.$store.state.auth.user.id}/marked`
+      )
+      this.userLetters.map((e: any) => {
+        e.is_read = 1
+      })
+    }
   }
 
   dataSearch() {

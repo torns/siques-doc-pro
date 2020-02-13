@@ -14,6 +14,7 @@ import { Avator } from '../avator/avator.entity';
 import { Collection } from '../collection/collection.entity';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
+import { Notification } from '../notification/notification.entity';
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,8 @@ export class UserService {
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Comment)
     private readonly CommentRepository: Repository<Comment>,
+    @InjectRepository(Notification)
+    private readonly notificationRepository: Repository<Notification>,
   ) {}
   async store(data: UserDto) {
     const { phonenumber } = data;
@@ -38,14 +41,53 @@ export class UserService {
       throw new BadRequestException('用户已存在');
     }
     const res = await this.userRepository.create(data);
-    await this.userRepository.save(res);
-
+    const newUser = await this.userRepository.save(res);
+    this.userInit(newUser.id, newUser);
     const avatorData = {
       user: res,
     };
     const res2 = await this.avatorRepository.create(avatorData);
     await this.avatorRepository.save(res2);
     return res;
+  }
+
+  // 用户注册结束通知
+  async userInit(userId: number, user: User) {
+    const content = 'Congradulations!!! 欢迎加入思趣大家庭';
+    const type = 'userinit';
+    await this.notificationRepository.save({
+      to_uid: user,
+      type,
+      content,
+      alias: type + userId,
+    });
+    // 用户注册结束自动关注一些标签
+    const tags = await this.tagRepository
+      .createQueryBuilder('tag')
+      .take(5)
+      .orderBy('tag.interest')
+      .getMany();
+
+    console.log(tags);
+    tags.map(async e => {
+      try {
+        await this.tagRepository
+          .createQueryBuilder()
+          .relation(User, 'tags')
+          .of(userId)
+          .add(e.id);
+
+        const id = e.id;
+        await this.tagRepository
+          .createQueryBuilder('tag')
+          .update(Tag)
+          .where('tag.id=:id', { id })
+          .set({ interest: () => 'interest + 1' })
+          .execute();
+      } catch {
+        return;
+      }
+    });
   }
 
   async show(id: number) {

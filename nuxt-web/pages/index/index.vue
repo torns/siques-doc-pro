@@ -104,7 +104,7 @@
                 ></i>
                 {{ link.name }}
               </li>
-              <router-link class="w-100 " :to="`/tags`" tag="li">
+              <router-link :to="`/tags`" class="w-100 " tag="li">
                 <div class="pl-3   py-2 hover-2">
                   <i class="fa fa-tag pr-1"></i>
                   更多标签
@@ -116,12 +116,23 @@
         <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
           <div>
             <div>
-              <el-carousel height="150px" style="border-radius: 5px;">
-                <el-carousel-item v-for="item in 4" :key="item">
-                  <div
-                    style="background: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png);background-size: cover;height:150px"
+              <el-carousel
+                ref="carousel"
+                @click.native="linkTo"
+                height="150px"
+                style="border-radius: 5px;"
+                class="point"
+              >
+                <el-carousel-item
+                  v-for="(item, index) in carousel"
+                  :key="index"
+                >
+                  <img
+                    :src="item.img"
                     class="w-100"
-                  ></div>
+                    style="min-height:150px;object-fit: cover;"
+                  />
+
                   <div class="mask"></div>
                 </el-carousel-item>
               </el-carousel>
@@ -257,7 +268,25 @@ export default class MyPage extends Vue {
   taglist = null
   showBanner = true
   posts = []
+  carousel = [
+    {
+      img:
+        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png?x-oss-process=style/banner-picture',
+      link: '/blogs'
+    },
+    {
+      img:
+        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E9%BB%91%E8%89%B2%E5%9C%B0%E7%90%83LinkedIn%20Banner.png',
+      link: '/blogs'
+    }
+  ]
   category: string = 'hot'
+
+  linkTo() {
+    const ref: any = this.$refs.carousel
+    const activeIndex = ref.activeIndex
+    this.$router.push(this.carousel[activeIndex].link)
+  }
 
   get noMore(): any {
     return this.count >= this.maxcount
