@@ -41,6 +41,10 @@ export class CollectionService {
       .getOne();
   }
 
+  async changeCollection(id: number, data: CollectionDto) {
+    return await this.CollectionRepository.update(id, data);
+  }
+
   async getPostCollection(id: number) {
     return await this.CollectionRepository.findOne(id);
   }

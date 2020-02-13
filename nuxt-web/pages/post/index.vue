@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="collections" width="14%">
+      <el-aside class="collections" width="16%">
         <div class="d-flex flex-column mt-4">
           <div class="lh-2 point backBtn fs-xs">
             <router-link tag="div" to="/">回首页</router-link>
@@ -52,24 +52,22 @@
               v-for="collect in collections"
               :key="collect.id"
             >
-              <li @click="selectCollect(collect.id)" class="d-flex jc-between">
+              <li @click="selectCollect(collect.id)" class="d-flex jc-between ">
                 <div class="text-ellipsis">{{ collect.name }}</div>
 
-                <el-dropdown
-                  @command="handleCollection"
-                  class="text-white"
-                  trigger="click"
-                >
+                <el-dropdown @command="handleCollection" trigger="click">
                   <span>
-                    <i class="el-icon-s-tools el-icon--right"></i>
+                    <i class="el-icon-s-tools el-icon--right text-white"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-edit-outline"
+                    <el-dropdown-item
+                      :command="{ change: collect.id }"
+                      icon="el-icon-edit-outline"
                       >修改文集</el-dropdown-item
                     >
 
                     <el-dropdown-item
-                      :command="collect.id"
+                      :command="{ delete: collect.id }"
                       icon="el-icon-delete"
                       >删除文集</el-dropdown-item
                     >
@@ -410,17 +408,43 @@ export default class index extends Vue {
     this.posts = res.data
   }
 
-  handleCollection(command: number) {
-    this.$confirm('此操作将永久删除该文集，是否继续?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-      .then(async () => {
-        await this.$http.delete(`/collections/${command}`)
-        this.fetchCollect()
+  handleCollection(command: any) {
+    if (command.change) {
+      this.$prompt('请输入标题', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
-      .catch(() => {})
+        .then(async ({ value }: any) => {
+          await this.$http.put(`/collections/${command.change}`, {
+            name: value
+          })
+          this.fetchCollect()
+          this.$notify({
+            title: '成功',
+            type: 'success',
+            message: '修改成功 '
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+    }
+
+    if (command.delete) {
+      this.$confirm('此操作将永久删除该文集，是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          await this.$http.delete(`/collections/${command.delete}`)
+          this.fetchCollect()
+        })
+        .catch(() => {})
+    }
   }
   async handlePost(command: any) {
     const id = command.split('.')[1]

@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   UseInterceptors,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CollectionService } from './collection.service';
@@ -49,6 +50,14 @@ export class CollectionController {
   @Get(':id')
   async getCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.getCollection(id);
+  }
+  // 修改专栏名字
+  @Put(':id')
+  async changeCollection(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: CollectionDto,
+  ) {
+    return await this.CollectionService.changeCollection(id, body);
   }
 
   @Get(':id/post')
