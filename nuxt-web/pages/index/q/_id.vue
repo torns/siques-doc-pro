@@ -332,7 +332,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-
+import { Meta } from '@sophosoft/vue-meta-decorator'
 // import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
@@ -348,10 +348,12 @@ import share from '~/components/dialog/share.vue'
   }
 })
 export default class Question extends Vue {
-  // async asyncData({ params, $api }) {
-  //   const id = await params.id // When calling /abc the slug will be "abc"
-  //   console.log(id)
-  // }
+  @Meta
+  getMetaInfo() {
+    return {
+      title: this.question.title
+    }
+  }
   showCommentPanel = false
   question: any = ''
   recommendPost = []

@@ -277,7 +277,7 @@ export class PostService {
         .where('post.id=:id', { id })
         //截取一部分的数据
 
-        .set({ cover: url, alias: body.substring(0, 120) })
+        .set({ cover: url, alias: body.substring(0, 60) })
         .execute();
     }
   }

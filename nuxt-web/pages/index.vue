@@ -1,5 +1,6 @@
 <template>
   <div :id="$route.path == '/' ? 'home' : ''">
+    <!-- <div> -->
     <div id="app ">
       <div style="height:3px;" class="bg-primary"></div>
       <div>
@@ -89,7 +90,7 @@
                               letter.content === null
                           "
                           :class="
-                            `d-flex py-1  lh-2 ${
+                            `d-flex py-1 pl-2 lh-2 ${
                               letter.is_read === 1 ? '' : 'bg-2'
                             }`
                           "
@@ -443,11 +444,19 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import navigation from '~/components/BottomNavigation/navigation.vue'
+
 @Component({
   components: { 'sq-navigation': navigation }
 })
 export default class Home extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: '思趣'
+    }
+  }
   isRegister: boolean = false
 
   topRadio = 'message'

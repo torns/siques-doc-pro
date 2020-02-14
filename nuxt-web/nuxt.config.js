@@ -49,7 +49,8 @@ export default {
       },
       {
         src:
-          'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js'
+          'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
+        async: 'async'
       }
     ],
     link: [
@@ -142,6 +143,9 @@ export default {
   /*
    ** Nuxt.js modules
    */
+  render: {
+    resourceHints: false
+  },
 
   modules: [
     // Doc: https://axios.nuxtjs.org/usage

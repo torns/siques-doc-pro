@@ -68,7 +68,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tag d-flex ai-baseline">
+                <div class="tag d-flex ai-baseline mb-3">
                   <ul class="d-flex">
                     <li v-for="tag in post.tags" :key="tag.id">
                       <router-link :to="`/t/${tag.id}`">
@@ -89,7 +89,7 @@
                   v-if="post.body"
                   v-html="post.body"
                   v-highlight
-                  class="article lh-3"
+                  class="article lh-3 "
                 ></div>
                 <div class="text-primary mt-3 fs-xm">
                   阅读：{{
@@ -357,6 +357,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+// import { Meta } from '../../../plugins/decorators'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import utils from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
@@ -370,6 +372,13 @@ import share from '~/components/dialog/share.vue'
   }
 })
 export default class Post extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: this.post.title
+    }
+  }
+
   post: any = ''
   recommendPost = []
   liked: number = 0

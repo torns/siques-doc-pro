@@ -82,14 +82,21 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import TagPannel from '~/components/ListPanel/TagPanel.vue'
 @Component({
   components: { 'el-pannel': TagPannel }
 })
 export default class T extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: this.tagInfo.info.name || ''
+    }
+  }
   activeName = 'first'
   posts = null
-  tagInfo = null
+  tagInfo = { info: { name: '' } }
   get id(): any {
     return this.$route.params.id
   }

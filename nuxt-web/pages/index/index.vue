@@ -1,7 +1,7 @@
 <template>
   <div
     v-infinite-scroll="load"
-    class="infinite-list home"
+    class="infinite-list "
     infinite-scroll-disabled="disabled"
     infinite-scroll-distance="0"
   >
@@ -271,7 +271,7 @@ export default class MyPage extends Vue {
   carousel = [
     {
       img:
-        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png?x-oss-process=style/banner-picture',
+        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png',
       link: '/blogs'
     },
     {

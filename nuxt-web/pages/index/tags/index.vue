@@ -131,11 +131,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import mysearch from '~/components/searchPanel/search.vue'
 @Component({
   components: { 'el-search': mysearch }
 })
 export default class TagsIndex extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: '标签'
+    }
+  }
   taglist = []
   taginfo = ''
   tags = ''

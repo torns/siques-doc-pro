@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
+import VueMeta from 'vue-meta'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 import SocialSharing from 'vue-social-sharing'
@@ -18,3 +19,4 @@ Vue.component('sq-bookmark', createBookmark)
 Vue.component('sq-leaderboard', leaderboard)
 Vue.component('sq-likebtn', likebutton)
 Vue.use(SocialSharing)
+Vue.use(VueMeta)

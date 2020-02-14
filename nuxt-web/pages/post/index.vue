@@ -214,6 +214,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import { wordcounts } from '../../plugins/utils.js'
 import Tag from '~/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
@@ -222,6 +223,12 @@ import tinymce from '~/components/Tinymce/Tinymce.vue'
   components: { tinymce, 'sq-tag': Tag }
 })
 export default class index extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: '写文章'
+    }
+  }
   collections: any = []
   newCollection: any = ''
   show: boolean = false

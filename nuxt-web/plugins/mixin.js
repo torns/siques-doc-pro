@@ -20,7 +20,7 @@ Vue.mixin({
 
       let timeout
 
-      const wait = 1550
+      const wait = 1215550
 
       // 250毫秒触发一次
 
@@ -28,7 +28,7 @@ Vue.mixin({
         const now = Date.now()
 
         const remaining = wait - (now - previous)
-
+        // console.log(remaining, now - previous)
         if (remaining <= 0) {
           if (timeout) {
             window.clearTimeout(timeout)
@@ -40,7 +40,7 @@ Vue.mixin({
 
           this.handleScroll()
         } else if (!timeout) {
-          timeout = window.setTimeout(this.handleScroll, wait)
+          timeout = window.setTimeout(this.handleScroll(), wait)
         }
       }
     },
@@ -48,20 +48,19 @@ Vue.mixin({
       window.onscroll = this.throttle2()
     },
     handleScroll: function() {
+      var p = 0,
+        t = 0
       $(document).ready(function() {
-        var p = 0,
-          t = 0
-
         $(document).scroll(function() {
           p = $(this).scrollTop()
-          //   console.log(p)
+          // console.log(t, p)
 
           if (t >= p) {
             try {
               if (
                 $('#navigation')
                   .attr('class')
-                  .indexOf('fadeOut') != -1
+                  .includes('fadeOut')
               ) {
                 $('#navigation').removeClass('animated fadeOut')
                 $('#navigation').addClass('animated fadeIn')
@@ -74,7 +73,7 @@ Vue.mixin({
               if (
                 $('#navigation')
                   .attr('class')
-                  .indexOf('fadeOut') == -1
+                  .includes('fadeIn')
               ) {
                 $('#navigation').removeClass('animated fadeIn')
                 $('#navigation').addClass('animated fadeOut')

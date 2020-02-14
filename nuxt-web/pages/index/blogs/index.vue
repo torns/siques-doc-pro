@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import { listIntercep } from '../../../plugins/utils.js'
 import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 
@@ -71,6 +72,12 @@ import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
   components: { 'sq-panel': BlogPanel }
 })
 export default class index extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: '专栏'
+    }
+  }
   @Prop()
   name: any
   activeName = 'first'

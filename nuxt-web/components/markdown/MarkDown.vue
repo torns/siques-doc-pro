@@ -19,6 +19,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import md from './md.js'
+import plugin from './plugin.js'
 // import Editor from 'tui-editor'
 // import defalutConfig from './defalut-config'
 // import 'codemirror/lib/codemirror.css'
@@ -38,18 +39,8 @@ export default class MarkDown extends Vue {
   }
   initEditor() {
     this.editor = md(this.height)
+    plugin(this.editor)
 
-    // this.editor = new Editor({
-    //   /* eslint-disable */
-    //   el: document.getElementById('editorSection'),
-    //   initialEditType: 'markdown',
-    //   language: 'zh_CN',
-    //   height: this.height ? this.height : '700px',
-    //   ...defalutConfig
-    // })
-
-    // 获取编辑器上的功能条
-    const toolbar = this.editor.getUI().getToolbar()
     const fileDom: any = this.$refs.files
     // 添加事件
     this.editor.eventManager.addEventType('uploadEvent')
@@ -58,21 +49,6 @@ export default class MarkDown extends Vue {
       // console.log('按下按钮')
       // Do some other thing...
     })
-    // 添加自定义按钮 第二个参数代表位置，不传默认放在最后
-    toolbar.addButton(
-      {
-        name: 'customize',
-        className: 'upload-img',
-        event: 'uploadEvent',
-        tooltip: '插入图片'
-        /* eslint-disable */
-        // eslint-disable-next-line
-        // $el: $(
-        //   '<button class="custom-button fa fa-image" style="font-size: 14px;color: #000">123</button>'
-        // )
-      },
-      15
-    )
   }
   submit() {
     this.body = this.getContent()

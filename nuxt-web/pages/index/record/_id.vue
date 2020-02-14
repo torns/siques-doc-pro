@@ -65,12 +65,19 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Meta } from '@sophosoft/vue-meta-decorator'
 import Tag from '@/components/dialog/tag.vue'
 
 @Component({
   components: { 'sq-tag': Tag }
 })
 export default class Index extends Vue {
+  @Meta
+  getMetaInfo() {
+    return {
+      title: '记笔记'
+    }
+  }
   title = ''
   dynamicTags: Array<any> = []
   content = [{ development: '' }]
