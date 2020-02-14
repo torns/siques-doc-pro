@@ -7,6 +7,8 @@ import {
   Get,
   UseGuards,
   Req,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
@@ -23,6 +25,16 @@ export class AuthController {
   @UseInterceptors(ClassSerializerInterceptor)
   async login(@Body() data: LoginDto) {
     return await this.authService.login(data);
+  }
+
+  @Get('url')
+  async fetchUrl() {
+    return await this.authService.fetchUrl();
+  }
+
+  @Get(':code/signToken')
+  async signToken(@Param('code') id: any) {
+    return await this.authService.signWeiboToken(id);
   }
 
   @Get('test')

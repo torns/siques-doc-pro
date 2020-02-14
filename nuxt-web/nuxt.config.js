@@ -36,6 +36,10 @@ export default {
       // {
       //   src: 'https://cdn.bootcss.com/element-ui/2.4.11/index.js'
       // },
+      {
+        src:
+          'http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1817535842&debug=true'
+      },
 
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'

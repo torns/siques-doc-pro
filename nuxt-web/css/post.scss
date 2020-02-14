@@ -152,3 +152,41 @@ p code {
     display: none;
   }
 }
+// 表格样式
+.article table {
+  *border-collapse: collapse; /* IE7 and lower */
+  border-spacing: 0;
+  width: 100%;
+  margin: 16px 0;
+}
+.article table {
+  border: solid #ccc 1px;
+}
+.article table tr:hover {
+  background: #fbf8e9;
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+.article table td,
+.article .table th {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.article table th {
+  background-color: #dce9f9;
+
+  border-top: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  padding: 5px;
+}
+
+.article table td:first-child,
+.article table th:first-child {
+  border-left: none;
+}

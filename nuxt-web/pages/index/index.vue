@@ -281,7 +281,7 @@ export default class MyPage extends Vue {
     }
   ]
   category: string = 'hot'
-
+  // 轮播图跳转
   linkTo() {
     const ref: any = this.$refs.carousel
     const activeIndex = ref.activeIndex

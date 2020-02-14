@@ -70,7 +70,7 @@ export default class MarkDown extends Vue {
 
     const res = await this.$http.post('/files/ali', params, config)
 
-    const url = res.data.url + '?x-oss-process=style/' + 'nest-picture'
+    const url = res.data.url + '?x-oss-process=style/' + 'post-picture'
     this.addImgToMd(url)
     target.value = '' // 这个地方清除一下不然会有问题
   }

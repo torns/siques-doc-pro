@@ -23,6 +23,8 @@ import dotenv from 'dotenv';
 import { ActionMiddleware } from './core/middleware/action.middleware';
 import { PostController } from './modules/post/post.controller';
 import { UserController } from './modules/user/user.controller';
+import { ThirdpartModule } from './modules/thirdpart/thirdpart.module';
+
 dotenv.config();
 
 @Module({
@@ -54,6 +56,7 @@ dotenv.config();
     BookmarkModule,
     ContentModule,
     ActionModule,
+    ThirdpartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

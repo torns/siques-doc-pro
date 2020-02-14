@@ -420,6 +420,16 @@
         <div class="dialog-footer d-flex flex-column">
           <div class="py-4">
             <el-divider content-position="center">更多登录方式</el-divider>
+            <div class="text-center">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="微博登录"
+                placement="bottom"
+              >
+                <a :href="weiboUrl" class="fs-lg fa fa-weibo text-red"></a>
+              </el-tooltip>
+            </div>
           </div>
           <el-button
             v-if="isRegister"
@@ -462,6 +472,7 @@ export default class Home extends Vue {
   topRadio = 'message'
   notifies = ''
   search = ''
+  weiboUrl = ''
   formLabelWidth: string = '120'
   userLetters = []
   visible: boolean = false
@@ -628,6 +639,7 @@ export default class Home extends Vue {
 
   LoginDto = {
     phonenumber: '',
+    name: '',
     password: ''
   }
 
@@ -657,7 +669,27 @@ export default class Home extends Vue {
       }
     }, 300)
 
-    // window.addEventListener('unload', this.saveState)
+    this.getWeiboUrl()
+
+    if (this.code) {
+      this.signToken()
+    }
+  }
+
+  get code() {
+    return this.$route.query.code
+  }
+
+  async signToken() {
+    const res = await this.$http.get(`/auth/${this.code}/signToken`)
+    this.LoginDto.name = res.data.name
+    this.LoginDto.password = '123'
+    this.login()
+  }
+
+  async getWeiboUrl() {
+    const res = await this.$http.get('/auth/url')
+    this.weiboUrl = res.data
   }
 
   closeLoginForm() {
@@ -672,6 +704,7 @@ export default class Home extends Vue {
 
         this.$store.commit('UserExist')
         this.$store.commit('closeLoginForm')
+        this.LoginDto.name = ''
         // this.fetchNotify()
       } else {
         // eslint-disable-next-line

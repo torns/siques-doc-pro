@@ -14,12 +14,14 @@ import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
 import { NotificationModule } from '../notification/notification.module';
 import { Notification } from '../notification/notification.entity';
+import { ThirdPart } from '../thirdpart/third.entity';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
 
     TypeOrmModule.forFeature([
+      ThirdPart,
       User,
       Post,
       Avator,
@@ -29,6 +31,7 @@ import { Notification } from '../notification/notification.entity';
       Notification,
     ]),
     ActionModule,
+
     NotificationModule,
   ],
   controllers: [UserController],

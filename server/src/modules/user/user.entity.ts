@@ -22,6 +22,7 @@ import { Collection } from '../collection/collection.entity';
 import { Avator } from '../avator/avator.entity';
 import { Bookmark } from '../bookmark/bookmark.entity';
 import { Tag } from '../tag/tag.entity';
+import { ThirdPart } from '../thirdpart/third.entity';
 
 @Entity()
 export class User {
@@ -36,7 +37,7 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column({ select: false, unique: true, nullable: false })
+  @Column({ select: false, unique: true, nullable: true })
   @Exclude()
   phonenumber: string;
 
@@ -97,6 +98,13 @@ export class User {
   )
   @JoinTable()
   skill: Tag[];
+
+  @ManyToMany(
+    type => ThirdPart,
+    thirdpart => thirdpart.user,
+  )
+  @JoinTable()
+  thirdpart: ThirdPart[];
 
   // 用户关注专栏
   @ManyToMany(type => Collection)

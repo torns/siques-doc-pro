@@ -15,6 +15,8 @@ import { Collection } from '../collection/collection.entity';
 import { Tag } from '../tag/tag.entity';
 import { Comment } from '../comment/comment.entity';
 import { Notification } from '../notification/notification.entity';
+import { ThirdpartService } from '../thirdpart/thirdpart.service';
+import { ThirdPart } from '../thirdpart/third.entity';
 
 @Injectable()
 export class UserService {
@@ -33,26 +35,49 @@ export class UserService {
     private readonly CommentRepository: Repository<Comment>,
     @InjectRepository(Notification)
     private readonly notificationRepository: Repository<Notification>,
+    @InjectRepository(ThirdPart)
+    private readonly thirdRepository: Repository<ThirdPart>,
   ) {}
   async store(data: UserDto) {
-    const { phonenumber } = data;
-    const user = await this.userRepository.findOne({ phonenumber });
-    if (user) {
-      throw new BadRequestException('用户已存在');
+    console.log(data);
+    if (data.password != '123') {
+      const { phonenumber } = data;
+      const user = await this.userRepository.findOne({ phonenumber });
+      if (user) {
+        throw new BadRequestException('用户已存在');
+      }
     }
+
     const res = await this.userRepository.create(data);
+    delete res.id;
     const newUser = await this.userRepository.save(res);
-    this.userInit(newUser.id, newUser);
-    const avatorData = {
-      user: res,
-    };
-    const res2 = await this.avatorRepository.create(avatorData);
-    await this.avatorRepository.save(res2);
+    this.userInit(newUser.id, newUser, data);
+
     return res;
   }
 
   // 用户注册结束通知
-  async userInit(userId: number, user: User) {
+  async userInit(userId: number, user: User, data: any) {
+    if (data.id) {
+      const dto = {
+        uid: data.id,
+      };
+
+      let entity = await this.thirdRepository.save(dto);
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'thirdpart')
+        .of(userId)
+        .add(entity);
+    }
+
+    const avatorData = {
+      user: user,
+      url: data ? data.avatar_hd : '',
+    };
+    const res1 = await this.avatorRepository.create(avatorData);
+    await this.avatorRepository.save(res1);
+
     const content = 'Congradulations!!! 欢迎加入思趣大家庭';
     const type = 'userinit';
     await this.notificationRepository.save({
@@ -164,11 +189,18 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(phonenumber: string, password?: boolean) {
+  async findByName(phonenumber: string, password?: boolean, name?: any) {
     const querryBuilder = await this.userRepository.createQueryBuilder('user');
-    querryBuilder
-      .where('user.phonenumber = :phonenumber', { phonenumber })
-      .leftJoinAndSelect('user.roles', 'roles');
+
+    if (name) {
+      querryBuilder
+        .where('user.name = :name', { name })
+        .leftJoinAndSelect('user.roles', 'roles');
+    } else {
+      querryBuilder
+        .where('user.phonenumber = :phonenumber', { phonenumber })
+        .leftJoinAndSelect('user.roles', 'roles');
+    }
 
     if (password) {
       querryBuilder.addSelect('user.password');

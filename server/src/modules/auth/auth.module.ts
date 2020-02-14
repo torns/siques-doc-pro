@@ -5,10 +5,14 @@ import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '../user/user.entity';
+import { ThirdPart } from '../thirdpart/third.entity';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
+    TypeOrmModule.forFeature([User, ThirdPart]),
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),

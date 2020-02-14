@@ -5,4 +5,6 @@ export class LoginDto {
   readonly phonenumber: string;
   @ApiProperty({ description: '密码' })
   readonly password: string;
+
+  readonly name?: string;
 }
