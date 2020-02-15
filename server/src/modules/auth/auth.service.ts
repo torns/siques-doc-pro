@@ -23,8 +23,8 @@ export class AuthService {
   ) {}
 
   async login(data: LoginDto) {
-    const { phonenumber, password, name } = data;
-    const entity = await this.userService.findByName(phonenumber, true, name);
+    const { account, password } = data;
+    const entity = await this.userService.findByName(account, true);
 
     if (!entity) {
       throw new UnauthorizedException('用户不存在');
@@ -34,7 +34,7 @@ export class AuthService {
       throw new UnauthorizedException('密码不匹配');
     }
     const { id } = entity;
-    const payload = { id, phonenumber, name };
+    const payload = { id, account };
     const token = this.signToken(payload);
     return {
       ...payload,
@@ -45,7 +45,7 @@ export class AuthService {
   async fetchUrl() {
     const weibo_app_key = '1817535842';
     const reponse_type = 'code';
-    const redirect_uri = 'http://127.0.0.1:3000';
+    const redirect_uri = process.env.CALL_BACK_URL;
     const baseUrl = 'https://api.weibo.com/oauth2/authorize?';
 
     const url =

@@ -386,12 +386,11 @@
         v-show="!isRegister"
         status-icon
       >
-        <el-form-item :label-width="formLabelWidth" label="手机号">
+        <el-form-item :label-width="formLabelWidth" label="账号">
           <el-input
-            v-model="LoginDto.phonenumber"
-            :maxlength="11"
+            v-model="LoginDto.account"
             height="10"
-            placeholder="11位手机号"
+            placeholder="手机号/昵称"
             autocomplete="off"
           >
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
@@ -638,8 +637,7 @@ export default class Home extends Vue {
   }
 
   LoginDto = {
-    phonenumber: '',
-    name: '',
+    account: '',
     password: ''
   }
 
@@ -682,7 +680,7 @@ export default class Home extends Vue {
 
   async signToken() {
     const res = await this.$http.get(`/auth/${this.code}/signToken`)
-    this.LoginDto.name = res.data.name
+    this.LoginDto.account = res.data.name
     this.LoginDto.password = '123'
     this.login()
   }
@@ -704,7 +702,7 @@ export default class Home extends Vue {
 
         this.$store.commit('UserExist')
         this.$store.commit('closeLoginForm')
-        this.LoginDto.name = ''
+        this.LoginDto.account = ''
         // this.fetchNotify()
       } else {
         // eslint-disable-next-line

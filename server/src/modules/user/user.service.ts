@@ -189,24 +189,26 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(phonenumber: string, password?: boolean, name?: any) {
+  async findByName(account: string, password?: boolean) {
     const querryBuilder = await this.userRepository.createQueryBuilder('user');
+    const querryBuilder1 = await this.userRepository.createQueryBuilder('user');
 
-    if (name) {
-      querryBuilder
-        .where('user.name = :name', { name })
-        .leftJoinAndSelect('user.roles', 'roles');
-    } else {
-      querryBuilder
-        .where('user.phonenumber = :phonenumber', { phonenumber })
-        .leftJoinAndSelect('user.roles', 'roles');
-    }
+    querryBuilder
+      .where('user.phonenumber = :account', { account })
+      .leftJoinAndSelect('user.roles', 'roles');
+
+    querryBuilder1
+      .where('user.name = :account', { account })
+      .leftJoinAndSelect('user.roles', 'roles');
 
     if (password) {
       querryBuilder.addSelect('user.password');
+      querryBuilder1.addSelect('user.password');
     }
-    const entity = querryBuilder.getOne();
-    return entity;
+    const entity = await querryBuilder.getOne();
+    const entity1 = await querryBuilder1.getOne();
+
+    return entity || entity1;
   }
 
   //更新用户

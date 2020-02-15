@@ -3,7 +3,7 @@
     <div class="bg-info border-1">
       <div style="height:50px;margin:0 auto;" class="notice text-black fs-sm">
         <div class="fs-xxs" style="padding: 16px 10px;">
-          抒写年度有奖征文丨一起来总结你的 2019
+          抒写年度有奖征文丨一起来总结你的 2020
         </div>
       </div>
     </div>

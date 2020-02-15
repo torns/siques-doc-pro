@@ -139,7 +139,11 @@
                     }}
                   </div>
                   <div
-                    v-if="$store.state.auth.user.introduction == null && !id"
+                    v-if="
+                      isAuth &&
+                        $store.state.auth.user.introduction == null &&
+                        !id
+                    "
                   >
                     暂时没有个人简介
                     <el-button @click="showIntroductionInput" type="text"
@@ -378,6 +382,10 @@ export default class Page extends Vue {
 
   get isUser(): any {
     return !this.$store.state.UserNotExist
+  }
+
+  get isAuth() {
+    return this.$store.state.auth.user
   }
 
   @Watch('user')

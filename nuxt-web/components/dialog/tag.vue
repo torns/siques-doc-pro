@@ -83,6 +83,7 @@ export default class Tag extends Vue {
   }
   async fetchTags() {
     let result
+    // 节流 只请求这一次
     if (this.$store.state.tags.length === 0) {
       result = await this.$http.get('/tags')
       this.$store.commit('storeTags', result.data)
@@ -98,11 +99,6 @@ export default class Tag extends Vue {
     })
     this.tags = tags
   }
-
-  //   get alltags() {
-
-  //     return data
-  //   }
 
   @Watch('state')
   onStateChanged(newvalue: any, oldvalue: any) {
