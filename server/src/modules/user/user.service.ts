@@ -39,41 +39,41 @@ export class UserService {
     private readonly thirdRepository: Repository<ThirdPart>,
   ) {}
   async store(data: UserDto) {
-    console.log(data);
-    if (data.password != '123') {
-      const { phonenumber } = data;
-      const user = await this.userRepository.findOne({ phonenumber });
-      if (user) {
-        throw new BadRequestException('用户已存在');
-      }
+    const { phonenumber, uid } = data;
+    const user = await this.userRepository.findOne({ phonenumber });
+    if (user) {
+      throw new BadRequestException('手机号已被注册');
     }
 
     const res = await this.userRepository.create(data);
     delete res.id;
     const newUser = await this.userRepository.save(res);
-    this.userInit(newUser.id, newUser, data);
+
+    if (uid) {
+      const entity = await this.thirdRepository
+        .createQueryBuilder('third')
+        .where('third.uid=:uid', { uid })
+        .getOne();
+      if (entity) {
+        await this.userRepository
+          .createQueryBuilder()
+          .relation(User, 'thirdpart')
+          .of(newUser)
+          .add(entity);
+      } else {
+        throw new BadRequestException('请重新拉取信息');
+      }
+    }
+
+    this.userInit(newUser.id, newUser);
 
     return res;
   }
 
   // 用户注册结束通知
-  async userInit(userId: number, user: User, data: any) {
-    if (data.id) {
-      const dto = {
-        uid: data.id,
-      };
-
-      let entity = await this.thirdRepository.save(dto);
-      await this.userRepository
-        .createQueryBuilder()
-        .relation(User, 'thirdpart')
-        .of(userId)
-        .add(entity);
-    }
-
+  async userInit(userId: number, user: User) {
     const avatorData = {
       user: user,
-      url: data ? data.avatar_hd : '',
     };
     const res1 = await this.avatorRepository.create(avatorData);
     await this.avatorRepository.save(res1);
@@ -93,7 +93,6 @@ export class UserService {
       .orderBy('tag.interest')
       .getMany();
 
-    console.log(tags);
     tags.map(async e => {
       try {
         await this.tagRepository

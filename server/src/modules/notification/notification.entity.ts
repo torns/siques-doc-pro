@@ -31,11 +31,11 @@ export class Notification {
   type: string;
 
   // 通知发给谁（谁拥有这条通知）
-  @ManyToOne(type => User)
+  @ManyToOne(type => User, { onDelete: 'CASCADE' })
   to_uid: User;
 
   // 谁触发的这条通知
-  @ManyToOne(type => User)
+  @ManyToOne(type => User, { onDelete: 'CASCADE' })
   from_uid: User;
 
   // from_uid评论to_Post

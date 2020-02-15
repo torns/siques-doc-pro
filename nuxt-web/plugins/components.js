@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
 import VueMeta from 'vue-meta'
+
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 import SocialSharing from 'vue-social-sharing'

@@ -9,6 +9,7 @@ import {
   Req,
   Param,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
@@ -33,14 +34,14 @@ export class AuthController {
   }
 
   @Get(':code/signToken')
-  async signToken(@Param('code') id: any) {
-    return await this.authService.signWeiboToken(id);
+  async signToken(@Param('code') id: any, @Query('thirdpart') thirdpart: any) {
+    console.log(thirdpart);
+    return await this.authService.signThirdToken(id, thirdpart);
   }
 
   @Get('test')
   @UseGuards(AuthGuard('jwt'))
   async authTest(@User() user) {
-    console.log(user);
     return {
       message: 'ok',
     };

@@ -4,6 +4,7 @@ export class UserDto {
   readonly phonenumber: string;
   name: string;
   password: string;
+  uid: string;
   readonly roles: Role[];
   readonly city: string;
   readonly school: string;

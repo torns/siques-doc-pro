@@ -150,7 +150,7 @@
               v-for="answer in fetchedComment"
               :key="answer.id"
               style="min-height:200px"
-              class="bg-white"
+              class="bg-white mb-3"
             >
               <div class="px-4 py-3">
                 <div class="d-flex ai-center">
@@ -246,7 +246,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="mt-3  bg-light-1">
+                <div v-if="answer.reply.length !== 0" class="mt-3  bg-light-1">
                   <div class="mx-3 pt-3 ">
                     <div v-for="reply in answer.reply" :key="reply.id">
                       <span class="text-primary font-bold">
@@ -256,7 +256,10 @@
                           class="point hoverlink"
                           >{{ reply.from_uid.name }}</router-link
                         >
-                        :
+                        <span style="font-weight:400" class="fs-xm">
+                          :@
+                          {{ reply.to_uid.name }}</span
+                        >
                       </span>
                       <span> {{ reply.body }}</span>
                       <div class="py-1">
@@ -524,6 +527,7 @@ export default class Question extends Vue {
         }
 
         await this.$http.post('posts/1/reply', data)
+        this.fetchAnswer()
         this.$notify({
           type: 'success',
           message: '回复成功',

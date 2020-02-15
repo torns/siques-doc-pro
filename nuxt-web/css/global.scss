@@ -132,6 +132,9 @@ li {
   .xm-flex-wrap {
     flex-wrap: wrap;
   }
+  .visible-md {
+    display: block !important;
+  }
 }
 
 @media (max-width: 1200px) {

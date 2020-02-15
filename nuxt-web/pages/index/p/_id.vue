@@ -19,19 +19,22 @@
                     <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
-                  <el-button
-                    @click="showBookmarkDialog(post.id)"
-                    type="text"
-                    circle
-                  >
-                    <i class="iconfont icon-book-mark"></i>
-                  </el-button>
+                  <el-tooltip content="收藏" placement="right" effect="dark">
+                    <el-button
+                      @click="showBookmarkDialog(post.id)"
+                      type="text"
+                      circle
+                    >
+                      <i class="iconfont icon-book-mark"></i>
+                    </el-button>
+                  </el-tooltip>
 
                   <i></i>
-
-                  <el-button style="margin-top:-15px" type="text" circle>
-                    <i class="iconfont fs-xs icon-comments"></i>
-                  </el-button>
+                  <el-tooltip content="评论" placement="right" effect="dark">
+                    <el-button style="margin-top:-15px" type="text" circle>
+                      <i class="iconfont fs-xs icon-comments"></i>
+                    </el-button>
+                  </el-tooltip>
                 </div>
                 <h1 class="py-4">{{ post.title }}</h1>
                 <div class="d-flex py-3">
@@ -357,13 +360,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-// import { Meta } from '../../../plugins/decorators'
+
 import { Meta } from '@sophosoft/vue-meta-decorator'
+import mediumZoom from 'medium-zoom'
 import utils from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import share from '~/components/dialog/share.vue'
+
+const mediumzoom = () => {
+  mediumZoom(document.querySelectorAll('p img'))
+}
 
 @Component({
   components: {
@@ -425,6 +433,9 @@ export default class Post extends Vue {
       const res = await this.$http.get(`/users/${this.id}/liked/count`)
       this.liked = res.data
     }
+    setTimeout(() => {
+      mediumzoom()
+    }, 500)
   }
 
   async fetchRecommendPost() {

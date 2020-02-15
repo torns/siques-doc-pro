@@ -13,6 +13,12 @@ blockquote {
   }
 }
 
+.article li {
+  cursor: text;
+  list-style: unset;
+  margin-left: 20px;
+}
+
 h1 {
   font-size: 1.8em !important;
   font-weight: 700 !important;
@@ -41,6 +47,12 @@ h1 {
       color: #333;
     }
   }
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: unset !important;
+  font-style: normal;
 }
 
 .article {

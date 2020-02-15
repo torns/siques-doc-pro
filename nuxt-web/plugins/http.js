@@ -27,9 +27,10 @@ export default ({ store }) => {
     },
     (err) => {
       if (err.response) {
+        // console.log(err.response)
         Vue.prototype.$notify({
           type: 'error',
-          message: '未登录暂无权限'
+          message: err.response.data.message
         })
 
         if (err.response.status === 401) {

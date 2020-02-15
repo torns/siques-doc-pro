@@ -229,10 +229,13 @@
                 class="md"
                 placeholder="请输入内容"
               >
+                <el-button @click="dataSearch" slot="append">
+                  <i class="fa fa-search"></i>
+                </el-button>
               </el-input>
-              <el-button @click="dataSearch" type="text">
-                <i class="fa fa-search"></i>
-              </el-button>
+              <div style="padding: 23px 0;">
+                <i @click="dataSearch" class="fa fa-search visible-md"></i>
+              </div>
             </el-menu-item>
 
             <!-- <el-menu-item>
@@ -421,12 +424,31 @@
             <el-divider content-position="center">更多登录方式</el-divider>
             <div class="text-center">
               <el-tooltip
-                class="item"
+                class="item "
                 effect="dark"
                 content="微博登录"
                 placement="bottom"
               >
-                <a :href="weiboUrl" class="fs-lg fa fa-weibo text-red"></a>
+                <a :href="url.weibo_url" class="fs-lg fa fa-weibo text-red"></a>
+              </el-tooltip>
+              <el-tooltip
+                class="item px-2"
+                effect="dark"
+                content="QQ登录(暂时不可用)"
+                placement="bottom"
+              >
+                <a :href="url.weibo_url" class=" fa fa-qq text-blue"></a>
+              </el-tooltip>
+              <el-tooltip
+                class="item "
+                effect="dark"
+                content="Github登录"
+                placement="bottom"
+              >
+                <a
+                  :href="url.github_url"
+                  class="fs-lg fa fa-github text-dark"
+                ></a>
               </el-tooltip>
             </div>
           </div>
@@ -471,7 +493,9 @@ export default class Home extends Vue {
   topRadio = 'message'
   notifies = ''
   search = ''
-  weiboUrl = ''
+  url = {}
+  // 绑定第三方账号用
+  uid = ''
   formLabelWidth: string = '120'
   userLetters = []
   visible: boolean = false
@@ -620,7 +644,7 @@ export default class Home extends Vue {
     if (this.charLength(value) && this.lowercase(value) && this.number(value)) {
       callback()
     } else {
-      callback(new Error('密码强度不足'))
+      callback(new Error('密码必须包含数字、字母，区分大小写'))
     }
   }
 
@@ -633,12 +657,15 @@ export default class Home extends Vue {
   RegisterDto = {
     name: '',
     phonenumber: '',
-    password: ''
+    password: '',
+    uid: ''
   }
 
   LoginDto = {
     account: '',
-    password: ''
+    password: '',
+    thirdpart: false,
+    uid: ''
   }
 
   rules = {
@@ -667,7 +694,7 @@ export default class Home extends Vue {
       }
     }, 300)
 
-    this.getWeiboUrl()
+    this.getUrl()
 
     if (this.code) {
       this.signToken()
@@ -679,15 +706,38 @@ export default class Home extends Vue {
   }
 
   async signToken() {
-    const res = await this.$http.get(`/auth/${this.code}/signToken`)
-    this.LoginDto.account = res.data.name
-    this.LoginDto.password = '123'
-    this.login()
+    let res: any
+
+    if (this.$route.query.git !== undefined) {
+      res = await this.$http.get(`/auth/${this.code}/signToken?thirdpart=git`)
+    }
+
+    if (this.$route.query.weibo !== undefined) {
+      res = await this.$http.get(`/auth/${this.code}/signToken?thirdpart=weibo`)
+    }
+    if (res.data.allowThirdpartLogin) {
+      this.LoginDto.thirdpart = true
+      this.LoginDto.uid = res.data.id
+      this.login()
+    } else {
+      this.$notify({
+        title: '成功',
+        message: '只差最后一步，完成注册绑定您的帐号',
+        type: 'success',
+        duration: 0
+      })
+      this.isRegister = true
+      this.RegisterDto.name = res.data.name
+      this.RegisterDto.uid = res.data.uid
+      this.RegisterDto.phonenumber = ''
+      this.RegisterDto.password = ''
+    }
   }
 
-  async getWeiboUrl() {
+  async getUrl() {
     const res = await this.$http.get('/auth/url')
-    this.weiboUrl = res.data
+
+    this.url = res.data
   }
 
   closeLoginForm() {
@@ -715,7 +765,7 @@ export default class Home extends Vue {
   register() {
     const ref: any = this.$refs.RegisterDto
     ref.validate(async (valid: any) => {
-      if (valid) {
+      if (valid && !this.RegisterDto.uid) {
         await this.$http.post('/users', this.RegisterDto)
         this.$notify({
           title: '',
@@ -723,6 +773,16 @@ export default class Home extends Vue {
           message: '注册成功'
         })
         this.isRegister = false
+      } else if (valid && this.RegisterDto.uid) {
+        await this.$http.post('/users', this.RegisterDto)
+        this.$notify({
+          title: '',
+          type: 'success',
+          message: '账号绑定成功'
+        })
+        this.LoginDto.account = this.RegisterDto.name
+        this.LoginDto.password = this.RegisterDto.password
+        this.login()
       } else {
         // eslint-disable-next-line
         console.log('error submit!!')

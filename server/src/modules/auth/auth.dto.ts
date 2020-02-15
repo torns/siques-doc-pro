@@ -5,4 +5,6 @@ export class LoginDto {
   readonly account: string;
   @ApiProperty({ description: '密码' })
   readonly password: string;
+  thirdpart: boolean;
+  uid: string;
 }
