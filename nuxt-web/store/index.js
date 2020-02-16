@@ -4,11 +4,22 @@ export const state = () => ({
   UserNotExist: true,
   loginFormVisible: false,
   isValid: '',
+  time: 0,
   tags: [],
-  showBanner: true
+  showBanner: true,
+  bakendCode: ''
 })
 
 export const mutations = {
+  setCode(state, data) {
+    state.bakendCode = data
+  },
+  setTime(state, data) {
+    state.time = data
+  },
+  timeDcre(state, interval) {
+    state.time = state.time - interval
+  },
   toggleLoginForm(state) {
     state.loginFormVisible = !state.loginFormVisible
   },
@@ -49,12 +60,19 @@ export const mutations = {
   decreLen(state, data) {
     state.auth.user[data] = state.auth.user[data] + 1
   },
-  // increPostLen(state) {
-  //   state.auth.user.postLength = state.user.postLength + 1
-  // },
-  // decrePostLen(state) {
-  //   state.user.postLength = state.user.postLength - 1
-  // },
+  toggleUserLiked(state, data) {
+    state.auth.user.likes.push(data)
+  },
+  deleteUserLiked(state, data) {
+    let i
+    state.auth.user.likes.map((e, index) => {
+      if (e.id === data) {
+        i = index
+      }
+    })
+    state.auth.user.likes.splice(i, 1)
+  },
+
   storeUserTag(state, data) {
     data.map((e) => {
       const item = { id: e }

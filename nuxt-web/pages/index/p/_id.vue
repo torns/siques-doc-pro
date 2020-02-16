@@ -9,7 +9,11 @@
               <div v-if="post.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
                   <div class="mb-2 text-center">{{ liked }}</div>
-                  <el-button
+                  <div @click="like">
+                    <sq-likebutton :status="isLike"></sq-likebutton>
+                  </div>
+
+                  <!-- <el-button
                     @click="like"
                     class="hover-3"
                     type="plain"
@@ -17,7 +21,8 @@
                     style="width:fit-content;"
                   >
                     <i class="iconfont icon-thumbs-up"></i>
-                  </el-button>
+                  </el-button> -->
+
                   <i></i>
                   <el-tooltip content="收藏" placement="right" effect="dark">
                     <el-button
@@ -37,7 +42,7 @@
                   </el-tooltip>
                 </div>
                 <h1 class="py-4">{{ post.title }}</h1>
-                <div class="d-flex py-3">
+                <div class="d-flex py-3 ">
                   <router-link :to="`/u/${post.user.id}`">
                     <el-avatar
                       :size="60"
@@ -48,19 +53,21 @@
                       <img src="~/static/avator.jpg" />
                     </el-avatar>
                   </router-link>
-                  <div class="pl-2">
-                    <div class="d-flex ai-baseline">
+                  <div class="pl-2 ">
+                    <div style="height: 32px;" class="d-flex ai-baseline">
                       <router-link :to="`/u/${post.user.id}`">
                         <div class="mr-2 font-bold text-primary hover-4 point">
                           {{ post.user.name }}
                         </div>
                       </router-link>
                       <el-button
+                        v-if="!isowner"
                         @click="follow(post.user.id)"
                         type="text"
                         class="btn"
                         >关注</el-button
                       >
+                      <el-button v-else type="text">作者</el-button>
                     </div>
                     <div class="d-flex fs-xm ai-center">
                       <div class="pr-2">
@@ -362,11 +369,13 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 import { Meta } from '@sophosoft/vue-meta-decorator'
+
 import mediumZoom from 'medium-zoom'
 import utils from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
+import likebutton from '~/components/subgroup/likebutton.vue'
 import share from '~/components/dialog/share.vue'
 
 const mediumzoom = () => {
@@ -376,6 +385,7 @@ const mediumzoom = () => {
 @Component({
   components: {
     'sq-postbar': PostSideBar,
+    'sq-likebutton': likebutton,
     'share-dialog': share
   }
 })
@@ -417,6 +427,28 @@ export default class Post extends Vue {
     return !this.$store.state.UserNotExist
   }
 
+  get isowner() {
+    try {
+      return this.$store.state.auth.user.id === this.post.user.id
+    } catch {
+      return false
+    }
+  }
+
+  get isLike() {
+    let status = false
+    try {
+      this.$store.state.auth.user.likes.map((e: any) => {
+        if (e.id === this.post.id) {
+          status = true
+        }
+      })
+    } catch {
+      return false
+    }
+    return status
+  }
+
   async fetchpost(id: any) {
     if (!this.post) {
       const res = await this.$http.get(`posts/${id}?collection=true`)
@@ -453,7 +485,13 @@ export default class Post extends Vue {
 
   async like() {
     if (this.isUser) {
-      await this.$http.get(`/users/${this.id}/like`)
+      const res = await this.$http.get(`/users/${this.id}/like`)
+      if (res.data) {
+        const data = { id: this.post.id }
+        this.$store.commit('toggleUserLiked', data)
+      } else {
+        this.$store.commit('deleteUserLiked', this.post.id)
+      }
       this.fetchpost(this.id)
     } else {
       this.$store.commit('toggleLoginForm')
@@ -474,13 +512,17 @@ export default class Post extends Vue {
   // 关注
   async follow(id: any) {
     // 提供用户id
-    const res = await this.$http.get(`/users/${id}/follow`)
-    if (res.data) {
-      this.$notify({
-        type: 'success',
-        message: '关注成功',
-        title: '成功'
-      })
+    if (this.isUser) {
+      const res = await this.$http.get(`/users/${id}/follow`)
+      if (res.data) {
+        this.$notify({
+          type: 'success',
+          message: '关注成功',
+          title: '成功'
+        })
+      }
+    } else {
+      this.$store.commit('toggleLoginForm')
     }
   }
 

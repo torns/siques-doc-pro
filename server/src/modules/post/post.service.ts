@@ -75,6 +75,7 @@ export class PostService {
     return await this.postRepository
       .createQueryBuilder('post')
       .where('collectionId=:id', { id })
+      .orderBy('post.created', 'DESC')
       .getMany();
   }
 

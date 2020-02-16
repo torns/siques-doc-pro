@@ -35,6 +35,7 @@ export class CollectionService {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('collection.id=:id', { id })
       .leftJoinAndSelect('collection.posts', 'posts')
+      .orderBy('posts.created', 'DESC')
       .leftJoin('collection.user', 'user')
       .addSelect(['user.introduction', 'user.name', 'user.id'])
       .leftJoinAndSelect('user.avator', 'avator')

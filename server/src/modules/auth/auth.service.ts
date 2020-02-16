@@ -49,6 +49,29 @@ export class AuthService {
     };
   }
 
+  async validatePhoneNumber(number: string) {
+    const random = String(Math.random()).substring(2, 8);
+    const apikey = 'a15d23ef365095cadfe6e4c77aeec912';
+    const mobile = number;
+    const text = `【我思我趣】您的验证码是${random}。如非本人操作，请忽略本短信`;
+
+    const baseUrl = 'https://sms.yunpian.com/v2/sms/single_send.json';
+    const url = encodeURI(
+      baseUrl + `?apikey=${apikey}&mobile=${mobile}&text=${text}`,
+    );
+    await axios
+      .post(url)
+      .then(res => {
+        // token赋值
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+        // throw error;
+      });
+    return random;
+  }
+
   async fetchUrl() {
     const weibo_app_key = '1817535842';
     const reponse_type = 'code';

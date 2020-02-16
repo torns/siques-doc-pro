@@ -48,6 +48,11 @@ export class UserController {
     return await this.userService.showMessage(id);
   }
 
+  @Get(':id/validate')
+  async validateNumber(@Param('id') id: string) {
+    return await this.userService.findByName(id);
+  }
+
   // 获取个人信息
   @Get()
   @UseGuards(AuthGuard('jwt'))

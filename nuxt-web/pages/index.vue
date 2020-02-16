@@ -380,6 +380,24 @@
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
         </el-form-item>
+        <el-form-item
+          :label-width="formLabelWidth"
+          class="pt-2"
+          label="验证码"
+          prop="verification"
+        >
+          <el-input
+            v-model="RegisterDto.verification"
+            placeholder="验证码"
+            autocomplete="off"
+          >
+            <el-button slot="append" type="primary" @click="getCode">{{
+              this.$store.state.time !== 0
+                ? this.$store.state.time + 's后再次获取'
+                : '获取验证码'
+            }}</el-button>
+          </el-input>
+        </el-form-item>
       </el-form>
 
       <el-form
@@ -499,6 +517,8 @@ export default class Home extends Vue {
   formLabelWidth: string = '120'
   userLetters = []
   visible: boolean = false
+  bakendCode = '123456'
+  phoneRegisted = false
 
   @Watch('isRegister')
   isVisible(newval: any, oldval: any) {
@@ -624,13 +644,20 @@ export default class Home extends Vue {
       return true
     }
   }
-  validatePhone(rule: any, value: any, callback: any) {
+  async validatePhone(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入手机号'))
     }
 
     if (this.phoneLength(value)) {
-      callback()
+      const res = await this.$http.get(`users/${value}/validate`)
+      if (res.data) {
+        callback(new Error('该手机号已被注册'))
+        this.phoneRegisted = true
+      } else {
+        this.phoneRegisted = false
+        callback()
+      }
     } else {
       callback(new Error('不合格的手机号'))
     }
@@ -648,6 +675,17 @@ export default class Home extends Vue {
     }
   }
 
+  validateCode(rule: any, value: any, callback: any) {
+    if (value === this.$store.state.bakendCode) {
+      callback()
+    } else if (value !== this.$store.state.bakendCode && value !== '') {
+      callback(new Error('验证码不匹配'))
+    }
+    if (value === '') {
+      callback(new Error('请输入验证码'))
+    }
+  }
+
   validateName(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入昵称'))
@@ -658,7 +696,8 @@ export default class Home extends Vue {
     name: '',
     phonenumber: '',
     password: '',
-    uid: ''
+    uid: '',
+    verification: ''
   }
 
   LoginDto = {
@@ -684,6 +723,9 @@ export default class Home extends Vue {
     ],
     password: [
       { required: true, validator: this.validatePass, trigger: 'blur' }
+    ],
+    verification: [
+      { required: true, validator: this.validateCode, trigger: 'blur' }
     ]
   }
 
@@ -699,6 +741,9 @@ export default class Home extends Vue {
     if (this.code) {
       this.signToken()
     }
+    setTimeout(() => {
+      this.startClock()
+    }, 1000)
   }
 
   get code() {
@@ -742,6 +787,32 @@ export default class Home extends Vue {
 
   closeLoginForm() {
     this.$store.commit('closeLoginForm')
+  }
+
+  startClock() {
+    if (this.$store.state.time > 0) {
+      const settime = setInterval(() => {
+        this.$store.commit('timeDcre', 1)
+        if (this.$store.state.time <= 0) {
+          clearTimeout(settime)
+        }
+      }, 1000)
+    }
+  }
+  // 短信验证码
+  getCode() {
+    if (this.$store.state.time === 0 && !this.phoneRegisted) {
+      const ref: any = this.$refs.RegisterDto
+      ref.validate(async (valid: any, index: any) => {
+        if (index.phonenumber === undefined) {
+          const data = { phonenumber: this.RegisterDto.phonenumber }
+          const res = await this.$http.post('auth/code', data)
+          this.$store.commit('setTime', 60)
+          this.startClock()
+          this.$store.commit('setCode', JSON.stringify(res.data))
+        }
+      })
+    }
   }
 
   login() {

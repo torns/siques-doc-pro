@@ -147,6 +147,9 @@ export class UserService {
       .leftJoinAndSelect('user.avator', 'avator')
       .leftJoin('user.tags', 'tags')
       .addSelect(['tags.id'])
+      // 这里要不要查呢
+      .leftJoin('user.likes', 'likes')
+      .addSelect(['likes.id'])
       // .leftJoin('user.posts', 'posts')
       // .addSelect(['posts.id'])
       .addOrderBy('avator.id', 'DESC')

@@ -107,6 +107,9 @@ export class NotificationService {
       .leftJoinAndSelect('notification.from_uid', 'user')
       .leftJoinAndSelect('notification.to_Post', 'post')
       .leftJoinAndSelect('notification.to_uid', 'to_user')
+      .leftJoin('to_user.avator', 'avator')
+      .addSelect(['avator.url'])
+      .orderBy('notification.created', 'DESC')
       .getMany();
   }
 

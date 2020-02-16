@@ -95,7 +95,14 @@
             </div>
             <div class="d-flex text-primary py-1 ">
               <div class="pr-3">
-                <el-avatar :size="40" :src="`${action.to_uid.avator[0].url}`">
+                <el-avatar
+                  :size="40"
+                  :src="
+                    `${
+                      action.to_uid.avator[0] ? action.to_uid.avator[0].url : ''
+                    }`
+                  "
+                >
                   <img src="~/static/avator.jpg" />
                 </el-avatar>
               </div>

@@ -39,6 +39,11 @@ export class AuthController {
     return await this.authService.signThirdToken(id, thirdpart);
   }
 
+  @Post('code')
+  async validatePhoneNumber(@Body('phonenumber') number: string) {
+    return await this.authService.validatePhoneNumber(number);
+  }
+
   @Get('test')
   @UseGuards(AuthGuard('jwt'))
   async authTest(@User() user) {
