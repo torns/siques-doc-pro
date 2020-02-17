@@ -229,7 +229,7 @@
                 class="md"
                 placeholder="请输入内容"
               >
-                <el-button @click="dataSearch" slot="append">
+                <el-button slot="append" @click="dataSearch">
                   <i class="fa fa-search"></i>
                 </el-button>
               </el-input>
@@ -391,7 +391,7 @@
             placeholder="验证码"
             autocomplete="off"
           >
-            <el-button slot="append" type="primary" @click="getCode">{{
+            <el-button slot="append" @click="getCode" type="primary">{{
               this.$store.state.time !== 0
                 ? this.$store.state.time + 's后再次获取'
                 : '获取验证码'

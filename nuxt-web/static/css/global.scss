@@ -26,7 +26,7 @@ body {
     Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica,
     sans-serif;
   -webkit-text-size-adjust: none;
-  // scroll-behavior: smooth;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   margin-right: calc(100% - 100vw);
   overflow-x: hidden;
@@ -72,7 +72,7 @@ li {
       &:hover {
         &::before {
           content: '';
-          background: url(../static/tip.png) no-repeat;
+          background: url(../tip.png) no-repeat;
           position: absolute;
           top: 98%;
           right: 4%;
@@ -406,7 +406,7 @@ code {
 }
 
 .showoff {
-  display: none;
+  visibility: hidden;
 }
 
 .margin {

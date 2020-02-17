@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html {{ HTML_ATTRS }}>
+  <head {{ HEAD_ATTRS }}>
+    {{ HEAD }}
+
+    <meta
+      name="baidu_union_verify"
+      content="66bae701cf93c39a1609f913362d18cd"
+    />
+    <script>
+      ;(function() {
+        var bp = document.createElement('script')
+        var curProtocol = window.location.protocol.split(':')[0]
+        if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+        } else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+        }
+        var s = document.getElementsByTagName('script')[0]
+        s.parentNode.insertBefore(bp, s)
+      })()
+    </script>
+  </head>
+  <body {{ BODY_ATTRS }}>
+    {{ APP }}
+  </body>
+</html>

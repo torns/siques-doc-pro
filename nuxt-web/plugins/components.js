@@ -4,7 +4,9 @@ import VueMeta from 'vue-meta'
 
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
+
 import SocialSharing from 'vue-social-sharing'
+import scroll from './scroll'
 import markdown from '~/components/markdown/MarkDown.vue'
 import footer from '~/components/footer/Footer.vue'
 import createBookmark from '~/components/dialog/createBookmark.vue'
@@ -21,3 +23,6 @@ Vue.component('sq-leaderboard', leaderboard)
 Vue.component('sq-likebtn', likebutton)
 Vue.use(SocialSharing)
 Vue.use(VueMeta)
+Vue.use(scroll)
+// eslint-disable-next-line
+// Vue.use(vue2-scrollspy)

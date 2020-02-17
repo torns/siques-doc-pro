@@ -36,10 +36,10 @@ export default {
       // {
       //   src: 'https://cdn.bootcss.com/element-ui/2.4.11/index.js'
       // },
-      {
-        src:
-          'http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1817535842&debug=true'
-      },
+      // {
+      //   src:
+      //     'http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1817535842&debug=true'
+      // },
 
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
@@ -48,13 +48,14 @@ export default {
         src:
           'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
       },
-      {
-        src: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'
-      },
+
       {
         src:
           'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
         async: 'async'
+      },
+      {
+        src: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'
       }
     ],
     link: [
@@ -115,9 +116,9 @@ export default {
   css: [
     // 'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
-    '~/css/global.scss',
-    '~/css/post.scss',
-    '~/css/tag.scss'
+    '~/static/css/global.scss',
+    '~/static/css/post.scss',
+    '~/static/css/tag.scss'
   ],
   /*
    ** Plugins to load before mounting the App

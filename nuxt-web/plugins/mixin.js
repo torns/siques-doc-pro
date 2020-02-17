@@ -56,6 +56,7 @@ Vue.mixin({
           // console.log(t, p)
 
           if (t >= p) {
+            $('#show').addClass('showoff ')
             try {
               if (
                 $('#navigation')
@@ -69,6 +70,8 @@ Vue.mixin({
               return
             }
           } else {
+            $('#show').removeClass('showoff')
+
             try {
               if (
                 $('#navigation')
@@ -92,50 +95,10 @@ Vue.mixin({
           var top = $(document).scrollTop()
           var viewH = $(window).height()
 
-          if (
-            document.body.scrollTop > 650 ||
-            document.documentElement.scrollTop > 650
-          ) {
-            //   $(".table-of-contents").offset({ top: document.documentElement.scrollTop });
-            // $(".table-of-contents").css("top",document.documentElement.scrollTop-450+"px");
-            try {
-              if (
-                $('.table-of-contents')
-                  .attr('class')
-                  .indexOf('fadeInDown') == -1
-              ) {
-                $('.table-of-contents').removeClass('animated fadeInUp')
-                $('.table-of-contents').addClass(' animated fadeInDown fixed')
-              }
-            } catch {
-              return
-            }
-
-            // window.addEventListener('scroll', debounce(scrollFunc, 0));
-            // $(".table-of-contents").removeClass("animated hinge");
+          if ((top / (max - viewH)) * 100 > 90) {
+            $('#toc').addClass('showoff')
           } else {
-            try {
-              if (
-                $('.table-of-contents')
-                  .attr('class')
-                  .indexOf('fadeInUp') == -1
-              ) {
-                $('.table-of-contents').removeClass(
-                  ' animated fadeInDown fixed'
-                )
-                $('.table-of-contents').addClass('animated fadeIn absolute')
-              }
-            } catch {
-              return
-            }
-
-            // window.removeEventListener('scroll', debounce(scrollFunc));
-          }
-
-          if ((top / (max - viewH)) * 100 > 96) {
-            $('.table-of-contents').addClass('showoff')
-          } else {
-            $('.table-of-contents').removeClass('showoff')
+            $('#toc').removeClass('showoff')
           }
         })
       })
