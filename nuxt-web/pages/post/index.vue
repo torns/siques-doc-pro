@@ -206,7 +206,7 @@
             name="发布文章"
           ></markdown>
         </div>
-        <div v-else class="bg" style="flex:1">抒写</div>
+        <div v-else class="bg" style="flex:1">思趣</div>
       </el-main>
     </el-container>
   </div>

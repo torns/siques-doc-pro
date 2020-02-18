@@ -34,6 +34,7 @@
     "medium-zoom": "^1.0.5",
     "nuxt": "^2.0.0",
     "nuxt-property-decorator": "^2.5.0",
+    "transliteration": "^2.1.8",
     "vue-cookies": "^1.6.1",
     "vue-property-decorator": "^8.3.0",
     "vue-social-sharing": "^2.4.7",

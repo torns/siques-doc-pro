@@ -90,7 +90,6 @@
         :xl="24"
         class="hidden-xs-and-down text-gray fs-sm"
       >
-        <!-- <el-divider></el-divider> -->
         <div class="text-center py-5 mb-2">
           <div class="fs-xm pb-3">
             <div>浙ICP备19035817号</div>

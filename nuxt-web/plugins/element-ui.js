@@ -75,7 +75,7 @@ import {
   Divider,
   Image,
   //   Calendar,
-  Backtop,
+
   //   PageHeader,
   //   CascaderPanel,
   Loading,
@@ -156,7 +156,6 @@ Vue.use(Link)
 Vue.use(Divider)
 Vue.use(Image)
 // Vue.use(Calendar)
-Vue.use(Backtop)
 // Vue.use(PageHeader)
 // Vue.use(CascaderPanel)
 // Vue.use(Loading.directive)

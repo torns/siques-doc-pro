@@ -21,7 +21,7 @@
                           ? avatorUrl
                           : this.$store.state.auth.user.avator[0].url
                       "
-                      style="background-color:white;"
+                      style="background-color:white;height: inherit;width: inherit;"
                       class="avatar"
                     />
                     <img v-else src="~/static/avator.jpg" />

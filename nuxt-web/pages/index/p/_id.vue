@@ -1,17 +1,17 @@
 <template>
   <div>
-    <!-- <transition
-      enter-active-class="animated bounceInUp"
-      leave-active-class="animated bounceOutDown"
+    <transition
+      enter-active-class="animated slideInDown"
+      leave-active-class="animated slideOutUp"
     >
       <div
-        id="show"
+        v-if="!direction"
         class="bg-white w-100 d-flex ai-center jc-center shadow-1"
-        style="position: fixed;top: 0;height:50px;z-index:1"
+        style="position: fixed;top: 0;height:60px;z-index:1"
       >
         <div class="font-bold">{{ post.title }}</div>
       </div>
-    </transition> -->
+    </transition>
     <div class="bg-light">
       <sq-bookmark ref="bookmark"></sq-bookmark>
       <div class="container pt-4 pb-3 animated fadeIn">
@@ -25,16 +25,6 @@
                     <div @click="like">
                       <sq-likebutton :status="isLike"></sq-likebutton>
                     </div>
-
-                    <!-- <el-button
-                    @click="like"
-                    class="hover-3"
-                    type="plain"
-                    circle
-                    style="width:fit-content;"
-                  >
-                    <i class="iconfont icon-thumbs-up"></i>
-                  </el-button> -->
 
                     <i></i>
                     <el-tooltip content="收藏" placement="right" effect="dark">
@@ -146,7 +136,8 @@
                       class="hover-3"
                       type="plain"
                     >
-                      <i class="pr-2 iconfont icon-bookmark"></i>收藏
+                      <i class="pr-2 iconfont icon-bookmark"></i
+                      ><span>收藏</span>
                     </el-button>
 
                     <share-dialog :description="post" class="pl-2">
@@ -392,8 +383,8 @@
         </el-row>
       </div>
       <div></div>
-      <el-backtop></el-backtop>
     </div>
+    <sq-backbtn :direction="direction"></sq-backbtn>
     <sq-footer></sq-footer>
   </div>
 </template>
@@ -406,6 +397,7 @@ import { Meta } from '@sophosoft/vue-meta-decorator'
 import mediumZoom from 'medium-zoom'
 import mdTable from '../../../plugins/markdownTable'
 import utils from '../../../plugins/utils.js'
+import { clock, getDirection } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
@@ -445,14 +437,40 @@ export default class Post extends Vue {
   checkList = []
   browser: any = Browser[0] || ''
   os = OS || ''
+  timer: any
+  timer2: any
+  direction = ''
 
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
     this.fetchRecommendPost()
+    this.scrollDirection()
+    this.getDierction()
   }
   updated() {}
   // TS中的计算属性
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+    if (this.timer2) {
+      clearInterval(this.timer2)
+    }
+  }
+
+  scrollDirection() {
+    this.timer = clock(800)
+
+    // eslint-disable-next-line
+  }
+
+  getDierction() {
+    this.timer2 = setInterval(() => {
+      this.direction = getDirection()
+    }, 800)
+  }
+
   get id(): any {
     return this.$route.params.id
   }

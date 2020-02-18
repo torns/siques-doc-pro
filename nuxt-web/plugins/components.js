@@ -12,6 +12,7 @@ import footer from '~/components/footer/Footer.vue'
 import createBookmark from '~/components/dialog/createBookmark.vue'
 import leaderboard from '~/components/subgroup/leaderboard.vue'
 import likebutton from '~/components/subgroup/likebutton.vue'
+import backbutton from '~/components/BackToTop/Back2Top.vue'
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
@@ -21,8 +22,7 @@ Vue.component('sq-footer', footer)
 Vue.component('sq-bookmark', createBookmark)
 Vue.component('sq-leaderboard', leaderboard)
 Vue.component('sq-likebtn', likebutton)
+Vue.component('sq-backbtn', backbutton)
 Vue.use(SocialSharing)
 Vue.use(VueMeta)
 Vue.use(scroll)
-// eslint-disable-next-line
-// Vue.use(vue2-scrollspy)

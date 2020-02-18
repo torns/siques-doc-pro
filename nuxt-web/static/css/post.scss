@@ -165,50 +165,6 @@ nav li {
   }
 }
 
-// .table-of-contents {
-//   background-color: white;
-//   position: absolute;
-//   margin-left: 62em;
-//   text-transform: capitalize;
-
-//   width: 300px;
-//   font-size: 13px;
-
-//   height: 210px;
-//   overflow: auto;
-//   top: 42.5em;
-//   padding: 0.618rem;
-
-//   list-style-type: none;
-//   z-index: 1;
-
-//   &::before {
-//     content: '目录';
-//     font-weight: bold;
-//     font-size: 16px;
-//     // position: absolute;
-//     z-index: 10;
-//     position: relative;
-//     // left: 42%;
-//   }
-
-//   &::-webkit-scrollbar {
-//     width: 0px;
-//     height: 0px;
-//   }
-
-//   ol {
-//     list-style-type: circle;
-//     margin-block-start: 0.2em;
-//     padding-inline-start: 25px;
-//   }
-
-//   // background-color: white;
-//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-//   @media (max-width: 76em) {
-//     display: none;
-//   }
-// }
 // 表格样式
 .article table {
   *border-collapse: collapse; /* IE7 and lower */

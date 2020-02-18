@@ -26,21 +26,6 @@ export default {
         src:
           'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
       },
-      // {
-      //   src: 'https://cdn.bootcss.com/vue/2.6.10/vue.min.js'
-      // },
-      // {
-      //   src:
-      //     ' https://cdn.bootcss.com/markdown-it-footnote/3.0.2/markdown-it-footnote.js'
-      // },
-      // {
-      //   src: 'https://cdn.bootcss.com/element-ui/2.4.11/index.js'
-      // },
-      // {
-      //   src:
-      //     'http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1817535842&debug=true'
-      // },
-
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
       },
@@ -124,13 +109,13 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/element-ui',
+    { src: '@/plugins/element-ui', ssr: true },
     '@/plugins/fontawesome',
     '@/plugins/directive',
     '@/plugins/http',
     '@/plugins/filter',
     '@/plugins/nuxt-client-init.client.js',
-    { src: '@/plugins/components.js', ssr: false },
+    { src: '@/plugins/components.js', ssr: true },
     '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
     { src: '@/plugins/mixin.js', ssr: false },

@@ -1,5 +1,19 @@
 <template>
-  <button id="backbt" @click="btnTop" class="backtop"></button>
+  <div>
+    <transition
+      enter-active-class="animated flipInY"
+      leave-active-class="animated slideOutUp"
+    >
+      <section
+        v-if="$attrs.direction"
+        class="point d-flex jc-between ai-center shadow-1"
+        id="section04"
+        @click="btnTop"
+      >
+        <i class="el-icon-caret-top text-primary" style="margin: 0 auto;"></i>
+      </section>
+    </transition>
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,27 +27,14 @@ export default class Back2Top extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.backtop {
+section {
   position: fixed;
-  width: 42px;
-  height: 42px;
-  bottom: 29px;
-  right: 5%;
-  font-size: 18px;
+  width: 40px;
+  height: 40px;
   background-color: white;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  border: transparent;
-  z-index: 10;
-  @media (max-width: 36em) {
-    display: none;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: none;
-  }
+  bottom: 5%;
+  right: 5%;
+  z-index: 20;
 }
 </style>

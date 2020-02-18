@@ -4,6 +4,7 @@ Vue.mixin({
   created: function() {
     this.listenScrollBehave()
   },
+
   watch: {
     $route: function() {
       window.scrollTo(0, 0)
@@ -56,7 +57,8 @@ Vue.mixin({
           // console.log(t, p)
 
           if (t >= p) {
-            $('#show').addClass('showoff ')
+            this.scrollDirection = true
+
             try {
               if (
                 $('#navigation')
@@ -70,7 +72,7 @@ Vue.mixin({
               return
             }
           } else {
-            $('#show').removeClass('showoff')
+            this.scrollDirection = false
 
             try {
               if (
@@ -85,7 +87,7 @@ Vue.mixin({
               return
             }
           }
-
+          // console.log(this)
           setTimeout(function() {
             t = p
           }, 0)

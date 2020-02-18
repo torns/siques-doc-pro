@@ -71,6 +71,17 @@ export function listIntercep(taglist) {
   return list
 }
 
+export function getDirection() {
+  return window.direction
+}
+
+export function clock(interval) {
+  return setInterval(() => {
+    // console.log(document['scrollDirection'])
+    window.direction = document['scrollDirection']
+  }, interval)
+}
+
 export default () => {
   // 代码前数字
 
