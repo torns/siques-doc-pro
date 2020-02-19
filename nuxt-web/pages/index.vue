@@ -6,6 +6,7 @@
       <div>
         <div class="shadow-1" style="z-index: 10;">
           <el-menu
+            ref="menu"
             default-active="/"
             class="d-flex jc-between ai-center  container"
             mode="horizontal"
@@ -21,24 +22,32 @@
             </el-menu-item>
 
             <el-menu-item class="xs" index="/">
-              <span style="font-weight:600" class="text-primary fs-md"
-                >首页</span
-              >
+              <span style="font-weight:600" class="text-primary fs-md" to="/">
+                <a href="/" onclick="return false">首页</a>
+              </span>
             </el-menu-item>
 
             <el-menu-item class="xm" index="/q">
-              <span class="fs-md">问答</span>
+              <span class="fs-md"
+                ><a href="/q" onclick="return false"> 问答</a></span
+              >
             </el-menu-item>
 
             <el-menu-item class="xs" index="/blogs">
-              <span class="fs-md">专栏</span>
+              <span class="fs-md"
+                ><a href="/blogs" onclick="return false"> 专栏</a></span
+              >
             </el-menu-item>
 
             <el-menu-item class="xs" index="/tags">
-              <span class="fs-md">标签</span>
+              <span class="fs-md"
+                ><a href="/tags" onclick="return false">标签</a></span
+              >
             </el-menu-item>
             <el-menu-item class="xs" index="/n">
-              <span class="fs-md">笔记</span>
+              <span class="fs-md"
+                ><a href="/n" onclick="return false">笔记</a></span
+              >
             </el-menu-item>
 
             <el-menu-item
@@ -263,9 +272,11 @@
                   <img v-else src="~/static/avator.jpg" />
                 </el-avatar>
               </template>
-              <el-menu-item :index="`/u`">
-                <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
-                我的主页
+              <el-menu-item index="/u">
+                <span>
+                  <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
+                  我的主页
+                </span>
               </el-menu-item>
 
               <el-menu-item @click="logout">
@@ -284,14 +295,21 @@
               </template>
 
               <el-menu-item :span="4" class="write ml-3" index="/post">
-                <i class="iconfont  pr-3  icon-nav2 fs-xm"></i>
-                写文章
+                <span to="/post">
+                  <i class="iconfont  pr-3  icon-nav2 fs-xm"></i>
+                  写文章</span
+                >
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/ask">
-                <i class="iconfont pr-3   icon-iconawsquestion fs-xm"></i>提问题
+                <span to="/ask">
+                  <i class="iconfont pr-3   icon-iconawsquestion fs-xm"></i
+                  >提问题
+                </span>
               </el-menu-item>
               <el-menu-item :span="4" class="write ml-3" index="/record">
-                <i class="iconfont  pr-3 icon-note fs-xm"></i>记笔记
+                <span to="/record">
+                  <i class="iconfont  pr-3 icon-note fs-xm"></i>记笔记
+                </span>
               </el-menu-item>
             </el-submenu>
 
@@ -519,6 +537,7 @@ export default class Home extends Vue {
   visible: boolean = false
   bakendCode = '123456'
   phoneRegisted = false
+  activerouter = ''
 
   @Watch('isRegister')
   isVisible(newval: any, oldval: any) {
@@ -744,6 +763,8 @@ export default class Home extends Vue {
     setTimeout(() => {
       this.startClock()
     }, 1000)
+
+    this.activerouter = window.location.pathname
   }
 
   get code() {

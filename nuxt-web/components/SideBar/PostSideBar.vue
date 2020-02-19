@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
 @Component({})
 export default class SideBar extends Vue {
@@ -82,24 +82,13 @@ export default class SideBar extends Vue {
   isInterest = false
   relaPost = null
 
-  @Watch('data')
-  idDataChanged() {
+  mounted() {
     this.initfetchCollection()
   }
 
   get isUser() {
     return this.$store.state.UserNotExist
   }
-
-  // get isInterest() {
-  //   return this.data.user.interest.map((e) => {
-  //     let valid = false
-  //     if (this.data.collection.id === e.id) {
-  //       valid = true
-  //     }
-  //     return valid
-  //   })[0]
-  // }
 
   changeStatu() {
     if (!this.isUser) {

@@ -120,8 +120,8 @@ import { Vue, Component } from 'vue-property-decorator'
 
 @Component({})
 export default class SideBar extends Vue {
-  hotComments: any = []
-  hotTags: any = []
+  hotComments: any = this.$attrs.hotComments
+  hotTags: any = this.$attrs.hotTags
   allSiteData: any = {}
   siteDatas = [
     { title: '文章总数:', alias: 'post', classifier: '篇' },
@@ -136,16 +136,12 @@ export default class SideBar extends Vue {
 
   mounted() {
     this.fetchHotComment()
-    this.fetchHotTags()
+    // this.fetchHotTags()
     this.fetchAll()
   }
   async fetchHotComment() {
     const res = await this.$http.get('comments')
     this.hotComments = res.data
-  }
-  async fetchHotTags() {
-    const res = await this.$http.get('tags/1/hot')
-    this.hotTags = res.data
   }
 
   async fetchAll() {

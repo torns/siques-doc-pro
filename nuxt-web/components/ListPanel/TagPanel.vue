@@ -24,7 +24,8 @@
               <div class="d-flex ">
                 <router-link
                   :to="post.type === 'post' ? `/p/${post.id}` : `/q/${post.id}`"
-                  tag="div"
+                  target="_blank"
+                  tag="a"
                   class="hoverlink mr-3 point"
                 >
                   {{ post.title }}
@@ -115,15 +116,16 @@ export default class TagPanel extends Vue {
   @Prop()
   data: any
 
-  // type(type:any){
-  //   if(type==="post"){
-  //     return
-  //   }
-  // }
-
+  get isUser() {
+    return !this.$store.state.UserNotExist
+  }
   async like(id: any) {
-    await this.$http.get(`/users/${id}/like`)
-    this.$emit('refetch')
+    if (this.isUser) {
+      await this.$http.get(`/users/${id}/like`)
+      this.$emit('refetch')
+    } else {
+      this.$store.commit('toggleLoginForm')
+    }
   }
 
   showBookmark(id: any) {

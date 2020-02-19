@@ -3,6 +3,8 @@
 const install = (Vue, options) => {
   if (install.installed) return
 
+  if (typeof window === 'undefined') return
+
   const bodyScrollEl = {}
 
   // For ff, ie
@@ -162,7 +164,7 @@ const install = (Vue, options) => {
         const id = scrollSpyId(el)
         // console.log(id)
         const idScrollSections = scrollSpySections[id]
-        // console.log(scrollSpySections)
+
         const { scrollEl, options } = el[scrollSpyContext]
         // console.log(scrollEl)
         let index

@@ -241,7 +241,10 @@
           :xl="6"
           class="hidden-sm-and-down"
         >
-          <sq-indexBar></sq-indexBar>
+          <sq-indexBar
+            :hotTags="hotTags"
+            :hotComments="hotComments"
+          ></sq-indexBar>
         </el-col>
       </el-row>
     </div>
@@ -250,7 +253,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
 import indexSideBar from '~/components/SideBar/indexSideBar.vue'
 @Component({
@@ -259,6 +262,19 @@ import indexSideBar from '~/components/SideBar/indexSideBar.vue'
   }
 })
 export default class MyPage extends Vue {
+  async asyncData() {
+    // 在 @component 中不可以写 this.$http //
+    const http = Vue.prototype.$http
+    const res = await http.get('/posts/all?limit=10&page=1&type=post')
+    const res1 = await http.get('tags/1/hot')
+    const res2 = await http.get('comments')
+    return {
+      posts: res.data[0],
+      maxcount: res.data[1],
+      hotTags: res1.data,
+      hotComments: res2.data
+    }
+  }
   page = 1
   count = 10
   maxcount: number = 0
@@ -404,14 +420,7 @@ export default class MyPage extends Vue {
     }
   ]
 
-  mounted() {
-    this.fetchPost()
-  }
-  async fetchPost() {
-    const res = await this.$http.get('/posts/all?limit=10&page=1&type=post')
-    this.posts = res.data[0]
-    this.maxcount = res.data[1]
-  }
+  mounted() {}
 
   load() {
     this.loading = true

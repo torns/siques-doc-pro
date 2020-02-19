@@ -101,9 +101,9 @@ export default {
   css: [
     // 'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
-    '~/static/css/global.scss',
-    '~/static/css/post.scss',
-    '~/static/css/tag.scss'
+    '~/css/global.scss',
+    '~/css/post.scss',
+    '~/css/tag.scss'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -113,9 +113,11 @@ export default {
     '@/plugins/fontawesome',
     '@/plugins/directive',
     '@/plugins/http',
+    '@/plugins/global.ts',
     '@/plugins/filter',
     '@/plugins/nuxt-client-init.client.js',
     { src: '@/plugins/components.js', ssr: true },
+    '@/plugins/nullSSRComponents.js',
     '@/plugins/axios',
     { src: '@plugins/router', ssr: false },
     { src: '@/plugins/mixin.js', ssr: false },
@@ -168,6 +170,7 @@ export default {
    ** Build configuration
    */
   build: {
+    extractCSS: { allChunks: true },
     transpile: [/^element-ui/],
 
     /*

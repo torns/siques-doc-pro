@@ -58,7 +58,7 @@
                   <li
                     v-for="tag in title.tags"
                     :key="tag.id"
-                    class="bg-3 mr-1 my-1 hover-3 fs-xm point"
+                    class="bg-3 mr-1 my-1  fs-xm point"
                   >
                     <el-popover
                       :open-delay="500"
@@ -105,16 +105,17 @@
                       </div>
 
                       <slot slot="reference">
-                        <router-link
+                        <nuxt-link
                           :to="`/t/${tag.id}`"
                           style="display: -webkit-inline-box;-webkit-box-align: baseline;"
-                          tag="div"
+                          tag="a"
+                          class="text-primary hover-3"
                         >
                           <i :class="` fs-xm fa fa-${tag.name} px-1`"></i>
                           <div style="padding:2px 8px 2px 0;">
                             {{ tag.name }}
                           </div>
-                        </router-link>
+                        </nuxt-link>
                       </slot>
                     </el-popover>
                   </li>
@@ -130,13 +131,22 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import { Meta } from '@sophosoft/vue-meta-decorator'
 import mysearch from '~/components/searchPanel/search.vue'
 @Component({
   components: { 'el-search': mysearch }
 })
 export default class TagsIndex extends Vue {
+  async asyncData() {
+    // 在 @component 中不可以写 this.$http //
+    const http = Vue.prototype.$http
+    const res = await http.get('/tags')
+
+    return {
+      taglist: res.data
+    }
+  }
   @Meta
   getMetaInfo() {
     return {
@@ -160,9 +170,8 @@ export default class TagsIndex extends Vue {
     return !this.$store.state.UserNotExist
   }
 
-  async fetchAllTags() {
-    const result = await this.$http.get('/tags')
-    this.taglist = result.data
+  fetchAllTags() {
+    this.$store.commit('storeTags', this.taglist)
     let tags: any = []
     this.taglist.map((e: any) => {
       tags = tags.concat(e.tags)

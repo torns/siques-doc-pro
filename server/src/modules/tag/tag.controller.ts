@@ -23,6 +23,7 @@ import { User as UserEntity } from '../user/user.entity';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  // 添加标签
   @Post()
   async store(@Body() data: TagDto) {
     return await this.tagService.store(data);

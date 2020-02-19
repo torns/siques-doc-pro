@@ -82,7 +82,7 @@ export function clock(interval) {
   }, interval)
 }
 
-export default () => {
+export function hljs() {
   // 代码前数字
 
   $('pre code').each(function() {

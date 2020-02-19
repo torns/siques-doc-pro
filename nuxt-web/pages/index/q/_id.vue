@@ -329,7 +329,6 @@
     </div>
 
     <sq-footer class="mt-2"></sq-footer>
-    <el-backtop></el-backtop>
   </div>
 </template>
 

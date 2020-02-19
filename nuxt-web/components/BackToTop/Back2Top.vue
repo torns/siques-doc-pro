@@ -5,10 +5,10 @@
       leave-active-class="animated slideOutUp"
     >
       <section
-        v-if="$attrs.direction"
-        class="point d-flex jc-between ai-center shadow-1"
         id="section04"
+        v-if="$attrs.direction"
         @click="btnTop"
+        class="point d-flex jc-between ai-center shadow-1"
       >
         <i class="el-icon-caret-top text-primary" style="margin: 0 auto;"></i>
       </section>

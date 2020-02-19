@@ -20,7 +20,12 @@
           </div>
           <div>
             <div class="fs-lg">
-              <router-link :to="`/p/${post.id}`" tag="div" class="hoverlink">
+              <router-link
+                :to="`/p/${post.id}`"
+                target="_blank"
+                tag="a"
+                class="hoverlink"
+              >
                 {{ post.title }}
               </router-link>
             </div>
@@ -87,6 +92,7 @@ export default class HomepageList extends Vue {
 
   showBookmark(id: any) {
     const ref: any = this.$refs.reference
+    // 传入一个文章id
     ref.showBookmark(id)
   }
 }

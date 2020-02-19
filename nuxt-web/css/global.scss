@@ -72,7 +72,7 @@ li {
       &:hover {
         &::before {
           content: '';
-          background: url(../tip.png) no-repeat;
+          background: url(../static/tip.png) no-repeat;
           position: absolute;
           top: 98%;
           right: 4%;
@@ -308,7 +308,7 @@ code {
   transition: 0.8s;
   &:hover {
     background-color: #009a61;
-    color: white;
+    color: white !important;
   }
 }
 

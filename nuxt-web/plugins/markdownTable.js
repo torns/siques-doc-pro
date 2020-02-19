@@ -19,7 +19,8 @@ export default () => {
     // $('body').scrollspy({ target: '#post-toc' })
   })
 
-  var toc_position = $('#toc').offset().top || ''
+  var toc_position =
+    $('#toc').offset() !== undefined ? $('#toc').offset().top : ''
   // var toc_width = $('#toc').width()
 
   // 滚动事件，修改目录部分的 position

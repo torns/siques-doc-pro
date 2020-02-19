@@ -17,7 +17,7 @@
       <div class="container pt-4 pb-3 animated fadeIn">
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-            <div class="bg-white shadow-1 border-radius">
+            <article class="bg-white shadow-1 border-radius">
               <div>
                 <div v-if="post.title" style="padding:25px">
                   <div class="d-flex flex-column menu-button">
@@ -51,7 +51,9 @@
                     <router-link :to="`/u/${post.user.id}`">
                       <el-avatar
                         :size="60"
-                        :src="post.user.avator[0].url"
+                        :src="
+                          post.user.avator[0] ? post.user.avator[0].url : ''
+                        "
                         class="shadow-1"
                         style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;"
                       >
@@ -157,7 +159,7 @@
                   <el-divider></el-divider>
                 </div>
               </div>
-            </div>
+            </article>
             <div id="comment" class="pt-4">
               <div v-if="fetchedComment" class="font-bold fs-xl py-1">
                 {{ fetchedComment.length }}条评论
@@ -357,7 +359,7 @@
                 class="point hover-1 py-4 px-3 bg-white border-radius shadow-1"
                 style="min-height:100px"
               >
-                <router-link :to="`/p/${post.id}`" tag="div">
+                <router-link :to="`/p/${post.id}`" tag="a">
                   <h3>{{ post.title }}</h3>
                   <div class="text-gray py-2">{{ post.alias }}</div>
                   <div class="d-flex fs-xm ai-baseline">
@@ -390,14 +392,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-
+import { Vue, Component } from 'nuxt-property-decorator'
 import { Meta } from '@sophosoft/vue-meta-decorator'
-
 import mediumZoom from 'medium-zoom'
 import mdTable from '../../../plugins/markdownTable'
-import utils from '../../../plugins/utils.js'
-import { clock, getDirection } from '../../../plugins/utils.js'
+import { clock, getDirection, hljs } from '../../../plugins/utils.js'
+
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
@@ -416,10 +416,25 @@ const mediumzoom = () => {
   }
 })
 export default class Post extends Vue {
+  async asyncData({ params }: any) {
+    // 在 @component 中不可以写 this.$http //
+
+    const http = Vue.prototype.$http
+    const res = await http.get(`posts/${params.id}?collection=true`)
+    res.data.body = md.render(res.data.body)
+
+    const link = `/posts/all?limit=8&sort=liked&type=post`
+    const res1 = await http.get(link)
+
+    return {
+      post: res.data,
+      recommendPost: res1.data[0]
+    }
+  }
   @Meta
   getMetaInfo() {
     return {
-      title: this.post.title
+      title: this.post.title + '_文章_思趣'
     }
   }
 
@@ -444,11 +459,13 @@ export default class Post extends Vue {
   mounted() {
     this.fetchpost(this.id)
     this.fetchComment()
-    this.fetchRecommendPost()
     this.scrollDirection()
     this.getDierction()
   }
-  updated() {}
+
+  beforeMount() {
+    mdTable()
+  }
   // TS中的计算属性
   beforeDestroy() {
     if (this.timer) {
@@ -502,33 +519,17 @@ export default class Post extends Vue {
   }
 
   async fetchpost(id: any) {
-    if (!this.post) {
-      const res = await this.$http.get(`posts/${id}?collection=true`)
-      this.post = res.data
-      this.liked = res.data.liked
-      // if (!res.data.editor) {
-      // res.data.body = md.render('[[toc]] \n' + res.data.body)
-      res.data.body = md.render(res.data.body)
-      this.$nextTick(() => {
-        utils()
-      })
-      mdTable()
-      // }
-    } else {
-      // 如果文章已经载入就请求轻量级的方法
+    if (this.post) {
       const res = await this.$http.get(`/users/${this.id}/liked/count`)
       this.liked = res.data
+      // mdTable()
+      this.$nextTick(() => {
+        hljs()
+      })
     }
     setTimeout(() => {
       mediumzoom()
     }, 500)
-  }
-
-  async fetchRecommendPost() {
-    const link = `/posts/all?limit=8&sort=liked&type=post`
-    const res = await this.$http.get(link)
-
-    this.recommendPost = res.data[0]
   }
 
   // 获取文章评论

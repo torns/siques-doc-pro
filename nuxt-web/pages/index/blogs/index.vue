@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { Meta } from '@sophosoft/vue-meta-decorator'
 import { listIntercep } from '../../../plugins/utils.js'
 import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
@@ -72,10 +72,34 @@ import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
   components: { 'sq-panel': BlogPanel }
 })
 export default class index extends Vue {
+  async asyncData({ params, store }: any) {
+    const Taglist = store.state.auth
+      ? store.state.auth.user
+        ? store.state.auth.user.tags
+          ? store.state.auth.user.tags
+          : null
+        : null
+      : null
+    const List = listIntercep(Taglist)
+    const http = Vue.prototype.$http
+
+    const link =
+      `/posts/all?limit=10&page=1&sort=views` +
+      (Taglist ? `&taglist=${List}` : '') +
+      `&listId=true&collection=true`
+    const res = await http.get(link)
+
+    return {
+      list: List,
+      taglist: Taglist,
+      posts: res.data[0],
+      total: res.data[1]
+    }
+  }
   @Meta
   getMetaInfo() {
     return {
-      title: '专栏'
+      title: '专栏_思趣'
     }
   }
   @Prop()
@@ -87,28 +111,9 @@ export default class index extends Vue {
   total: any
   posts = null
   list: any
+  taglist = []
 
-  taglist = this.$store.state.auth
-    ? this.$store.state.auth.user
-      ? this.$store.state.auth.user.tags
-      : ''
-    : ''
-
-  mounted() {
-    setTimeout(() => {
-      this.fetchPost()
-    }, 0)
-
-    this.listInit()
-  }
-
-  listInit() {
-    if (this.taglist !== '') {
-      const list = listIntercep(this.taglist)
-
-      this.list = list
-    }
-  }
+  mounted() {}
 
   handleCurrentChange(val: any) {
     // currentPage =val
