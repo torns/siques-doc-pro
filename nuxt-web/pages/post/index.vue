@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="collections" width="16%">
+      <el-aside class="collections" width="15%">
         <div class="d-flex flex-column mt-4">
           <div class="lh-2 point backBtn fs-xs">
             <router-link tag="div" to="/">回首页</router-link>
@@ -106,53 +106,70 @@
       <el-aside
         id="post"
         class="postlist"
-        width="22%"
-        style="background-color:white;color:#333"
+        :width="wdith"
+        style="background-color:white;color:#333;transition: all 0.5s ease-out 0s;"
       >
-        <div @click="creatPost" type="primary" class="creatpost point pl-4">
-          <i class="el-icon-circle-plus pr-2"></i>新建文章
+        <div class="d-flex ai-center jc-between">
+          <div v-if="showItem" @click="creatPost" class="creatpost point pl-4 ">
+            <i class="el-icon-circle-plus pr-2"></i>新建文章
+          </div>
+          <div
+            :style="!showItem ? 'margin:auto' : ''"
+            class="mr-4  point creatpost"
+            @click="changeWidth"
+          >
+            <i class="el-icon-s-unfold"></i>
+          </div>
         </div>
+
         <ul
           v-for="post in posts"
           :key="post.id"
           :class="selectedPost == post.id ? 'post-bd-left' : ''"
         >
-          <li
-            @click="selectPost(post.id)"
-            class="d-flex jc-between"
-            type="primary"
+          <el-popover
+            placement="left"
+            title="标题"
+            width="200"
+            trigger="hover"
+            :content="post.title"
           >
-            <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
-            <div class="text-ellipsis ">
-              <div class="pl-2">{{ post.title }}</div>
-            </div>
+            <li slot="reference" @click="selectPost(post.id)" type="primary">
+              <span v-if="showItem" class="d-flex jc-between hover-4">
+                <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
 
-            <el-dropdown
-              @command="handlePost"
-              placement="bottom-start"
-              class="pr-3"
-              trigger="click"
-            >
-              <span>
-                <i class="el-icon-s-tools el-icon--right"></i>
+                <div class="ellipsis-1">
+                  <div class="pl-2">{{ post.title }}</div>
+                </div>
+
+                <el-dropdown
+                  @command="handlePost"
+                  placement="bottom-start"
+                  class="pr-3"
+                  trigger="click"
+                >
+                  <span>
+                    <i class="el-icon-s-tools el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      :command="'a.' + post.id + '.' + post.title"
+                      icon="el-icon-chat-dot-round"
+                      >修改文章标题</el-dropdown-item
+                    >
+                    <el-dropdown-item icon="el-icon-edit-outline"
+                      >移动文章</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      :command="'c.' + post.id"
+                      icon="el-icon-delete"
+                      >删除文章</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </el-dropdown>
               </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  :command="'a.' + post.id + '.' + post.title"
-                  icon="el-icon-chat-dot-round"
-                  >修改文章标题</el-dropdown-item
-                >
-                <el-dropdown-item icon="el-icon-edit-outline"
-                  >移动文章</el-dropdown-item
-                >
-                <el-dropdown-item
-                  :command="'c.' + post.id"
-                  icon="el-icon-delete"
-                  >删除文章</el-dropdown-item
-                >
-              </el-dropdown-menu>
-            </el-dropdown>
-          </li>
+            </li>
+          </el-popover>
         </ul>
       </el-aside>
       <el-main
@@ -164,7 +181,12 @@
       >
         <div v-if="selectedPost">
           <div class="my-3">
-            <el-input v-model="title" size="medium" placeholder></el-input>
+            <el-input
+              v-focus
+              v-model="title"
+              size="medium"
+              placeholder
+            ></el-input>
           </div>
           <div class="d-flex tags text-left my-3">
             <el-tag
@@ -213,8 +235,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
+
 import { wordcounts } from '../../plugins/utils.js'
 import Tag from '~/components/dialog/tag.vue'
 import tinymce from '~/components/Tinymce/Tinymce.vue'
@@ -223,8 +245,7 @@ import tinymce from '~/components/Tinymce/Tinymce.vue'
   components: { tinymce, 'sq-tag': Tag }
 })
 export default class index extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: '写文章'
     }
@@ -240,6 +261,9 @@ export default class index extends Vue {
   tagLen: number = 0
   showtag: boolean = false
   visible: any
+  wdith = '22%'
+  leftwdith = '16%'
+  showItem = true
 
   // 标签
   dynamicTags: Array<any> = []
@@ -247,6 +271,18 @@ export default class index extends Vue {
   inputVisible = false
   inputValue = ''
   // true是tinymce
+  changeWidth() {
+    this.wdith === '22%' ? (this.wdith = '2%') : (this.wdith = '22%')
+  }
+
+  @Watch('wdith')
+  isWidthChanged(newVal: any, oldVal: any) {
+    if (newVal === '2%') {
+      this.showItem = false
+    } else {
+      this.showItem = true
+    }
+  }
 
   get defaultEditor() {
     try {

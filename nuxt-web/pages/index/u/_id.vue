@@ -268,8 +268,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
+
 import Homepage from '~/components/Page/Homepage.vue'
 import PostList from '~/components/Page/PostList.vue'
 import Fans from '~/components/Page/Fans.vue'
@@ -295,8 +295,7 @@ import noteList from '~/components/Page/noteList.vue'
   }
 })
 export default class Page extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: this.id ? '他' : '我' + '的主页'
     }

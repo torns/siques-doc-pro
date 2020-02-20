@@ -63,16 +63,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
+
 @Component({
   components: {}
 })
 export default class Index extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
-      title: '问答'
+      title: '问答_思趣'
     }
   }
 

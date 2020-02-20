@@ -333,8 +333,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
+
 // import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
 import footer from '~/components/footer/Footer.vue'
@@ -350,8 +350,7 @@ import share from '~/components/dialog/share.vue'
   }
 })
 export default class Question extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: this.question.title
     }

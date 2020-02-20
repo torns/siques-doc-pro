@@ -25,6 +25,10 @@ export class TagService {
     return await this.tagRepository.save(data);
   }
 
+  async storeTaglist(data: Taglist) {
+    return await this.tagListRepository.save(data);
+  }
+
   async storePostTag(postId: number, tagId: number) {
     try {
       await this.tagRepository

@@ -28,6 +28,7 @@ body {
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  transition: 0.5s;
   margin-right: calc(100% - 100vw);
   overflow-x: hidden;
   box-sizing: border-box;

@@ -81,15 +81,14 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
+
 import TagPannel from '~/components/ListPanel/TagPanel.vue'
 @Component({
   components: { 'el-pannel': TagPannel }
 })
 export default class T extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: this.tagInfo.info.name || ''
     }

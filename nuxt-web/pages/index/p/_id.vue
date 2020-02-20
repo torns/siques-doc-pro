@@ -393,7 +393,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+
 import mediumZoom from 'medium-zoom'
 import mdTable from '../../../plugins/markdownTable'
 import { clock, getDirection, hljs } from '../../../plugins/utils.js'
@@ -431,8 +431,8 @@ export default class Post extends Vue {
       recommendPost: res1.data[0]
     }
   }
-  @Meta
-  getMetaInfo() {
+
+  head() {
     return {
       title: this.post.title + '_文章_思趣'
     }

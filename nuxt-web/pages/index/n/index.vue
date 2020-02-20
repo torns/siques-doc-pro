@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 @Component({
   components: {}
 })
@@ -67,6 +67,11 @@ export default class NotesIndex extends Vue {
   activeName = 'first'
   notes = ''
 
+  head() {
+    return {
+      title: '笔记_思趣'
+    }
+  }
   mounted() {
     this.fetchNote()
   }

@@ -65,8 +65,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
+
 import { wordcounts } from '../../../plugins/utils.js'
 import Tag from '@/components/dialog/tag.vue'
 
@@ -74,8 +74,7 @@ import Tag from '@/components/dialog/tag.vue'
   components: { 'sq-tag': Tag }
 })
 export default class Index extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: '提问题'
     }

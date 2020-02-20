@@ -17,6 +17,7 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
+import { Taglist } from './taglist.entity';
 
 @ApiTags('标签')
 @Controller('tags')
@@ -27,6 +28,11 @@ export class TagController {
   @Post()
   async store(@Body() data: TagDto) {
     return await this.tagService.store(data);
+  }
+  // 添加标签列
+  @Post('taglist')
+  async storeTaglist(@Body() data: Taglist) {
+    return await this.tagService.storeTaglist(data);
   }
 
   @Post('user/:id')

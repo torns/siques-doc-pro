@@ -510,18 +510,16 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import navigation from '~/components/BottomNavigation/navigation.vue'
 
 @Component({
   components: { 'sq-navigation': navigation }
 })
 export default class Home extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
-      title: '思趣'
+      title: '思趣--一个自由分享的平台-yahoo'
     }
   }
   isRegister: boolean = false

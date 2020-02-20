@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+
 import { listIntercep } from '../../../plugins/utils.js'
 import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 
@@ -96,8 +96,8 @@ export default class index extends Vue {
       total: res.data[1]
     }
   }
-  @Meta
-  getMetaInfo() {
+
+  head() {
     return {
       title: '专栏_思趣'
     }

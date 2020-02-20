@@ -53,7 +53,7 @@
                 <div class="d-flex ai-center">
                   <el-avatar
                     :size="35"
-                    :src="follow.avator[0].url"
+                    :src="follow.avator[0] ? follow.avator[0].url : ''"
                     class="mr-3 "
                     ><img src="~/static/avator.jpg" alt=""
                   /></el-avatar>

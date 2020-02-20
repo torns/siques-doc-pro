@@ -132,7 +132,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+
 import mysearch from '~/components/searchPanel/search.vue'
 @Component({
   components: { 'el-search': mysearch }
@@ -147,10 +147,10 @@ export default class TagsIndex extends Vue {
       taglist: res.data
     }
   }
-  @Meta
-  getMetaInfo() {
+
+  head() {
     return {
-      title: '标签'
+      title: '标签_思趣'
     }
   }
   taglist = []

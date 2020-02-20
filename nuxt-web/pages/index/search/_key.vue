@@ -68,13 +68,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Meta } from '@sophosoft/vue-meta-decorator'
+
 @Component({
   components: {}
 })
 export default class Index extends Vue {
-  @Meta
-  getMetaInfo() {
+  head() {
     return {
       title: '来愉快的搜索吧'
     }
