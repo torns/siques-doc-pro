@@ -71,6 +71,12 @@ export class PostController {
     return await this.postService.showPost(id);
   }
 
+  // 获取用户所有笔记
+  @Get(':id/note')
+  async showUserNote(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.showUserNote(id);
+  }
+
   @Get(':id')
   // @UseGuards(AuthGuard())
   async show(@Param('id') id: string, @Query() query: any) {

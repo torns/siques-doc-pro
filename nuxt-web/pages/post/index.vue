@@ -58,7 +58,10 @@
                 trigger="hover"
                 :close-delay="100"
               >
-                <img class="w-100" :src="collect.cover" alt="暂无" />
+                <img v-if="collect.cover" class="w-100" :src="collect.cover" />
+                <div v-else>
+                  暂无封面
+                </div>
                 <li
                   slot="reference"
                   @click="selectCollect(collect.id)"

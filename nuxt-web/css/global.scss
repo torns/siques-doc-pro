@@ -317,6 +317,7 @@ code {
 }
 
 .hover-2 {
+  transition: 0.3s;
   &:hover {
     background: rgba(0, 154, 97, 0.08);
     border-radius: 4px;

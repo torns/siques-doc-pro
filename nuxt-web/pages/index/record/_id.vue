@@ -1,13 +1,33 @@
 <template>
   <div class="bg-light">
+    <el-drawer
+      :show-close="true"
+      title="所有笔记"
+      :visible.sync="drawer"
+      :modal="false"
+      size="350px"
+    >
+      <div v-for="note in noteList" :key="note.id">
+        <div
+          :class="
+            `bg-2 hover-3 ${note.id == $route.params.id ? ' boder-x' : ''}`
+          "
+        >
+          <nuxt-link
+            tag="li"
+            :to="`/record/${note.id}`"
+            class="ellipsis-1 px-3 py-3 "
+          >
+            {{ note.title }}</nuxt-link
+          >
+        </div>
+      </div>
+    </el-drawer>
     <div class="container ">
       <el-row type="flex" class="pt-4">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div>
-            <el-input
-              v-model="title"
-              placeholder="请输入标题，用号码结尾"
-            ></el-input>
+            <el-input v-model="title" placeholder="请输入标题"></el-input>
             <div class="d-flex jc-between tags text-left my-3">
               <div class="d-flex">
                 <el-tag
@@ -30,25 +50,13 @@
                   >
                 </sq-tag>
               </div>
-              <el-select
-                v-model="model"
-                size="mini"
-                placeholder="提问模板(可选)"
+              <el-button
+                @click="drawer = true"
+                type="primary"
+                style="margin-left: 16px;"
               >
-                <el-option-group
-                  v-for="group in options"
-                  :key="group.label"
-                  :label="group.label"
-                >
-                  <el-option
-                    v-for="item in group.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-option-group>
-              </el-select>
+                切换笔记
+              </el-button>
             </div>
             <markdown
               ref="markdown"
@@ -72,17 +80,32 @@ import Tag from '@/components/dialog/tag.vue'
   components: { 'sq-tag': Tag }
 })
 export default class Index extends Vue {
+  async asyncData({ store }: any) {
+    const http = Vue.prototype.$http
+
+    let res
+    if (store.state.auth.user.id) {
+      res = await http.get(`posts/${store.state.auth.user.id}/note`)
+    }
+
+    return {
+      noteList: res.data
+    }
+  }
+
   head() {
     return {
       title: '记笔记'
     }
   }
+  drawer = false
   title = ''
   dynamicTags: Array<any> = []
   content = [{ development: '' }]
   model = ''
   tagLen: number = 5
   questions: any
+  noteList = []
   visible: any
 
   @Watch('model')
@@ -93,49 +116,34 @@ export default class Index extends Vue {
     }
   }
 
+  @Watch('dynamicTags')
+  dynamicTagsChanged(val: any, oldval: any) {
+    this.tagLen = 5 - val.length
+    const ref: any = this.$refs.tag
+    ref.taglen = 5 - val.length
+  }
+
   get id(): any {
     return this.$route.params.id
   }
+
+  get isUser() {
+    return !this.$store.state.UserNotExist
+  }
+
   mounted() {
     this.fetchQue()
   }
 
-  options = [
-    {
-      label: '提问模板(可选)',
-      options: [
-        {
-          value: 'development',
-          label: '开发相关'
-        },
-        {
-          value: 'program',
-          label: '编程相关'
-        },
-        {
-          value: 'tools',
-          label: '工具软件相关'
-        }
-      ]
-    }
-  ]
-
   async fetchQue() {
     if (this.id) {
-      const res = await this.$http.get(`posts/${this.id}`)
+      const res = await this.$http.get(`posts/${this.id}?type=edit`)
       this.questions = res.data
       const ref: any = this.$refs.markdown
       ref.setContent(res.data.body)
       this.title = res.data.title
       this.dynamicTags = res.data.tags
     }
-  }
-
-  @Watch('dynamicTags')
-  dynamicTagsChanged(val: any, oldval: any) {
-    this.tagLen = 5 - val.length
-    const ref: any = this.$refs.tag
-    ref.taglen = 5 - val.length
   }
 
   async handleClose(tag: any, id: any) {
@@ -187,7 +195,7 @@ export default class Index extends Vue {
           title: this.title,
           body: data,
 
-          type: 'question'
+          type: 'note'
         }
         await this.$http.put(`/posts/${this.id}`, body)
         this.$notify({
@@ -195,7 +203,6 @@ export default class Index extends Vue {
           type: 'success',
           message: '更新成功'
         })
-        this.$router.push(`/q`)
       } else {
         const body = {
           title: this.title,
@@ -211,7 +218,6 @@ export default class Index extends Vue {
           message: '发布成功'
         })
         this.$store.commit('increLen', 'note')
-        this.$router.push(`/n`)
       }
     } else {
       this.$notify({

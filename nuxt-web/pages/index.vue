@@ -551,6 +551,8 @@ export default class Home extends Vue {
       action.type === 'commentpost'
     ) {
       return '评论了问题'
+    } else if (action.to_Post !== null && action.to_Post.type === 'note') {
+      return '发布了笔记'
     } else {
       switch (action.type) {
         case 'likepost':
@@ -581,6 +583,8 @@ export default class Home extends Vue {
   link(action: any) {
     if (action.to_Post.type === 'question') {
       return '/q/'
+    } else if (action.to_Post.type === 'note') {
+      return '/n/'
     } else {
       switch (action.type) {
         case 'likepost':
@@ -604,13 +608,6 @@ export default class Home extends Vue {
       }
     }
   }
-
-  // @Watch('topRadio')
-  // isRadioChanged(newval: any, oldval: any) {
-  //   if (newval === 'letter') {
-  //     this.fetchUserLetter()
-  //   }
-  // }
 
   get hasNewMessage() {
     let hasNew = false

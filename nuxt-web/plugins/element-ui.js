@@ -74,6 +74,7 @@ import {
   Link,
   Divider,
   Image,
+  Drawer,
   //   Calendar,
 
   //   PageHeader,
@@ -161,6 +162,7 @@ Vue.use(Image)
 // Vue.use(Loading.directive)
 Vue.use(InfiniteScroll)
 Vue.use(avatar)
+Vue.use(Drawer)
 
 Vue.prototype.$loading = Loading.service
 // Vue.prototype.$msgbox = MessageBox

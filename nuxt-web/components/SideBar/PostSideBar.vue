@@ -72,8 +72,25 @@
         class="d-none d-lg-block  bg-white mt-3 px-2 shadow-2"
         style="max-height: calc(100vh - 120px); min-height:200px;width:300px"
       >
-        <div class="py-2">
-          关于我
+        <div class="py-2 text-center">
+          <div class="text-left">关于我</div>
+          <el-avatar
+            :size="100"
+            :src="data.user.avator[0] ? data.user.avator[0].url : ''"
+            class="shadow-1"
+            style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;"
+          >
+            <img src="~/static/avator.jpg" />
+          </el-avatar>
+          <div class="py-2">{{ data.user.name }}</div>
+          <div class="pb-2">
+            {{
+              data.user.description
+                ? data.user.description
+                : '也许将来作者会在这里留下一点痕迹'
+            }}
+          </div>
+          <div></div>
         </div>
       </div>
     </div>

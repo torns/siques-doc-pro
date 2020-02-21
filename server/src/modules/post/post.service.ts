@@ -79,6 +79,16 @@ export class PostService {
       .getMany();
   }
 
+  // 展示用户笔记
+  async showUserNote(id: number) {
+    const type = 'note';
+    return await this.postRepository
+      .createQueryBuilder('post')
+      .where('post.userId=:id', { id })
+      .andWhere('post.type=:type', { type })
+      .getMany();
+  }
+
   async index(options: ListOptionsInterface, id: number) {
     const { categories, tags, type, page, limit, sort, order } = options;
     const queryBuilder = await this.postRepository.createQueryBuilder('post');

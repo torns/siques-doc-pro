@@ -3,7 +3,7 @@
     <div class="container h-100 pb-4">
       <el-row type="flex" class="pt-4">
         <el-col
-          v-if="notes != null"
+          v-if="note != null"
           :xs="24"
           :sm="24"
           :md="24"
@@ -13,23 +13,23 @@
           <div>
             <div class="fs-xll d-flex ai-baseline mb-2">
               <div class="text-primary note-title mr-2">记</div>
-              <div>{{ notes.title }}</div>
+              <div>{{ note.title }}</div>
             </div>
             <div class="d-flex ai-baseline text-gray">
               <div class="text-primary pr-2">
                 <router-link
-                  :to="`/u/${notes.user.id}`"
+                  :to="`/u/${note.user.id}`"
                   tag="div"
                   class="point hoverlink"
-                  >{{ notes.user.name }}</router-link
+                  >{{ note.user.name }}</router-link
                 >
               </div>
               <div class="text-gray pr-2">
-                {{ $dayjs(notes.created).format('M月D日') }}发布
+                {{ $dayjs(note.created).format('M月D日') }}发布
               </div>
               <div v-if="hasAccess" class="d-flex ai-baseline ">
                 <el-button
-                  @click="$router.push(`/record/${notes.id}`)"
+                  @click="$router.push(`/record/${note.id}`)"
                   type="text"
                   >编辑</el-button
                 >
@@ -38,8 +38,8 @@
             </div>
             <div>
               <el-tag
-                v-for="tag in notes.tags"
-                :key="tag.id"
+                v-for="(tag, index) in note.tags"
+                :key="index"
                 class="mr-2 mb-2 point hover-2"
                 type="plain"
                 size="mini"
@@ -49,19 +49,24 @@
                 }}</router-link>
               </el-tag>
             </div>
-            <div v-html="notes.body" style="min-height:300px;"></div>
+            <div
+              v-highlight
+              v-html="note.body"
+              class="article lh-3 "
+              style="min-height:300px;"
+            ></div>
           </div>
           <div>
             <el-button type="text">链接</el-button>
             <el-button
               v-if="hasAccess"
-              @click="$router.push(`/record/${notes.id}`)"
+              @click="$router.push(`/record/${note.id}`)"
               type="text"
               >编辑</el-button
             >
           </div>
           <div class="text-center">
-            <el-button @click="showBookmark(notes.id)" type="plain"
+            <el-button @click="showBookmark(note.id)" type="plain"
               >收藏</el-button
             >
           </div>
@@ -83,26 +88,43 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import md from '../../../plugins/markdown'
+import { hljs } from '../../../plugins/utils.js'
 @Component({
   components: {}
 })
-export default class Notes extends Vue {
+export default class Note extends Vue {
+  async asyncData({ store, params }: any) {
+    const http = Vue.prototype.$http
+
+    const res = await http.get(`/posts/${params.id}`)
+    res.data.body = md.render(res.data.body)
+
+    return {
+      note: res.data
+    }
+  }
+
+  head() {
+    return {
+      title: `笔记_${this.note.title ? this.note.title : ''}`
+    }
+  }
   name: string = ''
   activeName = 'first'
   dialogFormVisible = false
-  notes: any = null
+  note: any = []
 
   mounted() {
-    this.fetchNote()
+    this.initNote()
   }
 
   get hasAccess(): any {
     return this.$store.state.auth
       ? this.$store.state.auth.user
         ? this.$store.state.auth.user.id
-          ? this.notes.user.id === this.$store.state.auth.user.id
+          ? this.note.user.id === this.$store.state.auth.user.id
           : false
         : false
       : false
@@ -116,10 +138,10 @@ export default class Notes extends Vue {
     }
   }
 
-  async fetchNote() {
-    const res = await this.$http.get(`/posts/${this.id}`)
-    res.data.body = md.render(res.data.body)
-    this.notes = res.data
+  initNote() {
+    this.$nextTick(() => {
+      hljs()
+    })
   }
 
   showBookmark(id: any) {
