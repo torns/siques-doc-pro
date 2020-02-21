@@ -26,9 +26,9 @@ export default () => {
   // 滚动事件，修改目录部分的 position
   $(window).scroll(function() {
     var toc = $('#toc')
-    if ($(window).scrollTop() >= toc_position + 500) {
+    if ($(window).scrollTop() >= toc_position + 280) {
       // toc.css('width', toc_width)
-      toc.css('top', 0)
+      toc.css('top', 18)
       toc.css('position', 'fixed')
     } else {
       // toc.css('width', '')

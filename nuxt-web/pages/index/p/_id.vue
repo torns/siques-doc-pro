@@ -9,7 +9,7 @@
         class="bg-white w-100 d-flex ai-center jc-center shadow-1"
         style="position: fixed;top: 0;height:60px;z-index:1"
       >
-        <div class="font-bold">{{ post.title }}</div>
+        <div class="font-bold ">{{ post.title }}</div>
       </div>
     </transition>
     <div class="bg-light">
@@ -18,9 +18,20 @@
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
             <article class="bg-white shadow-1 border-radius">
+              <div class="pt-5 ">
+                <h1
+                  class="bg-light-green boder-x"
+                  style="padding-left:25px;padding-right:25px;"
+                >
+                  <div class="text-dark py-2 ">{{ post.title }}</div>
+                </h1>
+              </div>
               <div>
                 <div v-if="post.title" style="padding:25px">
-                  <div class="d-flex flex-column menu-button">
+                  <div
+                    class="d-flex flex-column menu-button"
+                    style="margin-top:3.4em"
+                  >
                     <div class="mb-2 text-center">{{ liked }}</div>
                     <div @click="like">
                       <sq-likebutton :status="isLike"></sq-likebutton>
@@ -46,7 +57,7 @@
                       </el-button>
                     </el-tooltip>
                   </div>
-                  <h1 class="py-4">{{ post.title }}</h1>
+
                   <div class="d-flex py-3 ">
                     <router-link :to="`/u/${post.user.id}`">
                       <el-avatar
@@ -78,14 +89,17 @@
                         >
                         <el-button v-else type="text">作者</el-button>
                       </div>
-                      <div class="d-flex fs-xm ai-center">
+                      <div class="d-flex fs-xm ai-center pt-1 text-gray-1">
                         <div class="pr-2">
+                          <i class="el-icon-time"></i>
                           {{
                             $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss')
                           }}
                         </div>
-                        <div class="pr-2">字数：{{ post.counts }}</div>
-                        <div>浏览：{{ post.views }}</div>
+
+                        <div>
+                          <i class="el-icon-view pr-1"></i>{{ post.views }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -121,6 +135,7 @@
                         : post.views
                     }}
                     <span>.</span>
+                    <span class="pr-2">字数：{{ post.counts }}</span>
                     {{
                       $dayjs(
                         Date.now() - new Date(post.created).getTime()
@@ -160,7 +175,10 @@
                 </div>
               </div>
             </article>
-            <div id="comment" class="pt-4">
+            <div id="card">
+              <sq-card :data="recommendCollection"></sq-card>
+            </div>
+            <div id="comment">
               <div v-if="fetchedComment" class="font-bold fs-xl py-1">
                 {{ fetchedComment.length }}条评论
               </div>
@@ -403,6 +421,7 @@ import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import likebutton from '~/components/subgroup/likebutton.vue'
 import share from '~/components/dialog/share.vue'
+import card from '~/components/Card/card.vue'
 
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
@@ -412,7 +431,8 @@ const mediumzoom = () => {
   components: {
     'sq-postbar': PostSideBar,
     'sq-likebutton': likebutton,
-    'share-dialog': share
+    'share-dialog': share,
+    'sq-card': card
   }
 })
 export default class Post extends Vue {
@@ -426,9 +446,12 @@ export default class Post extends Vue {
     const link = `/posts/all?limit=8&sort=liked&type=post`
     const res1 = await http.get(link)
 
+    const res2 = await http.get(`collections/1/recommend`)
+
     return {
       post: res.data,
-      recommendPost: res1.data[0]
+      recommendPost: res1.data[0],
+      recommendCollection: res2.data
     }
   }
 
@@ -458,6 +481,7 @@ export default class Post extends Vue {
 
   mounted() {
     this.fetchpost(this.id)
+
     this.fetchComment()
     this.scrollDirection()
     this.getDierction()
@@ -465,6 +489,7 @@ export default class Post extends Vue {
 
   beforeMount() {
     mdTable()
+    this.initPost()
   }
   // TS中的计算属性
   beforeDestroy() {
@@ -518,18 +543,20 @@ export default class Post extends Vue {
     return status
   }
 
+  initPost() {
+    this.$nextTick(() => {
+      hljs()
+    })
+    setTimeout(() => {
+      mediumzoom()
+    }, 500)
+  }
+
   async fetchpost(id: any) {
     if (this.post) {
       const res = await this.$http.get(`/users/${this.id}/liked/count`)
       this.liked = res.data
-      // mdTable()
-      this.$nextTick(() => {
-        hljs()
-      })
     }
-    setTimeout(() => {
-      mediumzoom()
-    }, 500)
   }
 
   // 获取文章评论

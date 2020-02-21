@@ -2,6 +2,7 @@
 $colors: (
   'primary': #009a61,
   'green': #2ba346,
+  'light-green': #ebf5f3,
   'green-1': #f0f5f3,
   'white': #fff,
   'light': #e9ecef,
@@ -28,6 +29,7 @@ $fonts: (
 );
 
 $color-red: map-get($colors, 'orange');
+$color-primary: map-get($colors, 'primary');
 
 $border-color: map-get($colors, 'border');
 // font size 的工具类

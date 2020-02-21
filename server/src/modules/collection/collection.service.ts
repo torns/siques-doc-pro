@@ -4,6 +4,9 @@ import { Collection } from './collection.entity';
 import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { CollectionDto } from './collection.dto';
+import { UploadFileDto } from '../file/file.dto';
+import Client from '../../core/oos/ali';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class CollectionService {
@@ -21,6 +24,13 @@ export class CollectionService {
   async showCollection(id: number) {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('userId=:id', { id })
+      .getMany();
+  }
+
+  async getRecommend() {
+    return await this.CollectionRepository.createQueryBuilder('collection')
+      .limit(4)
+      .orderBy('collection.interest', 'DESC')
       .getMany();
   }
 
@@ -52,5 +62,31 @@ export class CollectionService {
 
   async removeCollection(id: number) {
     return await this.CollectionRepository.delete(id);
+  }
+
+  async uploadCover(data: UploadFileDto, id: number) {
+    //上传头像 头像还需要裁剪
+
+    const now = new Date();
+    const date = dayjs(now).format('YYYY-MM-DD/');
+    const ss = dayjs(now).format('ss');
+
+    const res: any = await Client.put(
+      'collection/cover/' + id + '/' + date + ss + data.originalname,
+      data.buffer,
+    );
+
+    const url = res.url;
+    // + '?x-oss-process=style/' + 'collection-picture';
+
+    await this.CollectionRepository.createQueryBuilder('collection')
+      .update(Collection)
+      .where('id =:id', { id })
+      .update({
+        cover: url,
+      })
+      .execute();
+
+    return res;
   }
 }

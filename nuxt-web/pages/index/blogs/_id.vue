@@ -53,7 +53,7 @@
                   <div class="fs-lg">
                     <router-link
                       :to="`/p/${post.id}`"
-                      tag="li"
+                      tag="a"
                       class="hoverlink "
                     >
                       {{ post.title }}
@@ -103,7 +103,7 @@
           {{ collections.posts.length }}篇文章
         </div></el-col
       >
-      <el-backtop></el-backtop>
+      <sq-backbtn></sq-backbtn>
       <bookmark-dialog ref="dialog" @refetch="refetch"></bookmark-dialog>
       <el-dialog
         :visible.sync="dialogFormVisible"
@@ -148,13 +148,26 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import bookmark from '~/components/dialog/bookmark.vue'
 
 @Component({
   components: { 'bookmark-dialog': bookmark }
 })
 export default class collection extends Vue {
+  async asyncData({ params, store }: any) {
+    const http = Vue.prototype.$http
+    const res = await http.get(`/collections/${params.id}`)
+    return {
+      collections: res.data
+    }
+  }
+  head() {
+    return {
+      title: `专栏_${this.collections.name}`
+    }
+  }
+
   collections: any = []
   bookmarks: any = null
   dialogFormVisible = false
@@ -173,13 +186,6 @@ export default class collection extends Vue {
     setTimeout(() => {
       this.fetchBookmark()
     }, 500)
-
-    this.fetchCollect()
-  }
-
-  async fetchCollect() {
-    const res = await this.$http.get(`/collections/${this.id}`)
-    this.collections = res.data
   }
 
   async like(id: any, index: any) {
@@ -207,7 +213,6 @@ export default class collection extends Vue {
       title: '成功'
     })
     this.dialogFormVisible = false
-    this.fetchCollect()
   }
 
   showCreatDialog() {

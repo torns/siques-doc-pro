@@ -205,7 +205,7 @@ export class PostService {
 
     queryBuilder.leftJoinAndSelect('user.interest', 'interest');
 
-    const { collection } = query;
+    const { collection, type } = query;
 
     if (collection) {
       queryBuilder
@@ -229,15 +229,18 @@ export class PostService {
     queryBuilder.where('post.id =:id', { id });
 
     const entities = await queryBuilder.getOne();
-    // 文章不属于自己才增加浏览量
 
-    // await this.postRepository
-    //   .createQueryBuilder()
-    //   .update(Post)
-    //   .where('post.id =:id', { id })
-    //   .set({ views: () => 'views + 1' })
-    //   .execute();
-    // 还有问题
+    const number = Math.random() * 3;
+
+    if (type !== 'edit' && number > 2) {
+      await this.postRepository
+        .createQueryBuilder()
+        .update(Post)
+        .where('post.id =:id', { id })
+        .set({ views: () => 'views + 1' })
+        .execute();
+    }
+
     try {
       entities.concerned = concern;
     } catch {

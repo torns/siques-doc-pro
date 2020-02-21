@@ -31,6 +31,9 @@ export class Collection {
   @Column({ default: 0 })
   amount: Number;
 
+  @Column({ nullable: true })
+  cover: string;
+
   //多个集合对应一个用户
   @ManyToOne(
     type => User,

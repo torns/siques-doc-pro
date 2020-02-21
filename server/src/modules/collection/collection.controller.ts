@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   UseInterceptors,
   Put,
+  UploadedFile,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CollectionService } from './collection.service';
@@ -17,6 +18,8 @@ import { CollectionDto } from './collection.dto';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadFileDto } from '../file/file.dto';
 
 @Controller('collections')
 @ApiTags('集合')
@@ -44,6 +47,22 @@ export class CollectionController {
   @Get(':id/user')
   async getUserCollection(@Param('id', ParseIntPipe) id: number) {
     return await this.CollectionService.getUserCollection(id);
+  }
+
+  // 展示推荐专栏
+  @Get(':id/recommend')
+  async getRecommend(@Param('id', ParseIntPipe) id: number) {
+    return await this.CollectionService.getRecommend();
+  }
+
+  //上传封面
+  @Post(':id/cover')
+  @UseInterceptors(FileInterceptor('cover'))
+  async uploadCover(
+    @UploadedFile() data: UploadFileDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.CollectionService.uploadCover(data, id);
   }
 
   //这里传入的是集合id

@@ -52,28 +52,55 @@
               v-for="collect in collections"
               :key="collect.id"
             >
-              <li @click="selectCollect(collect.id)" class="d-flex jc-between ">
-                <div class="text-ellipsis">{{ collect.name }}</div>
+              <el-popover
+                placement="left"
+                width="200"
+                trigger="hover"
+                :close-delay="100"
+              >
+                <img class="w-100" :src="collect.cover" alt="暂无" />
+                <li
+                  slot="reference"
+                  @click="selectCollect(collect.id)"
+                  class="d-flex jc-between "
+                >
+                  <div class="text-ellipsis">
+                    {{ collect.name }}
+                  </div>
 
-                <el-dropdown @command="handleCollection" trigger="click">
-                  <span>
-                    <i class="el-icon-s-tools el-icon--right text-white"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      :command="{ change: collect.id }"
-                      icon="el-icon-edit-outline"
-                      >修改文集</el-dropdown-item
-                    >
+                  <el-dropdown @command="handleCollection" trigger="click">
+                    <span>
+                      <i class="el-icon-s-tools el-icon--right text-white"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item
+                        :command="{ change: collect.id }"
+                        icon="el-icon-edit-outline"
+                        >修改文集名称</el-dropdown-item
+                      >
 
-                    <el-dropdown-item
-                      :command="{ delete: collect.id }"
-                      icon="el-icon-delete"
-                      >删除文集</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </li>
+                      <el-upload
+                        :http-request="uploadCover"
+                        :show-file-list="false"
+                        :on-success="handleCoverSuccess"
+                        action="string"
+                      >
+                        <el-dropdown-item
+                          :command="{ addCover: collect.id }"
+                          icon="el-icon-edit-outline"
+                          >添加封面</el-dropdown-item
+                        >
+                      </el-upload>
+
+                      <el-dropdown-item
+                        :command="{ delete: collect.id }"
+                        icon="el-icon-delete"
+                        >删除文集</el-dropdown-item
+                      >
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </li>
+              </el-popover>
             </ul>
             <div>
               <el-dropdown
@@ -132,6 +159,7 @@
             title="标题"
             width="200"
             trigger="hover"
+            :disabled="showItem ? true : false"
             :content="post.title"
           >
             <li slot="reference" @click="selectPost(post.id)" type="primary">
@@ -334,13 +362,15 @@ export default class index extends Vue {
   }
 
   selectCollect(id: any) {
-    this.fetchPost(id)
+    if (this.selectedCollection !== id) {
+      this.fetchPost(id)
+    }
   }
 
   async selectPost(id: any) {
     if (this.selectedPost !== id) {
       this.selectedPost = id
-      const res = await this.$http.get(`/posts/${id}`)
+      const res = await this.$http.get(`/posts/${id}?type=edit`)
       this.dynamicTags = res.data.tags
       this.selectEditor = res.data.editor
 
@@ -449,6 +479,38 @@ export default class index extends Vue {
     const res = await this.$http.get(`/posts/collections/${id}`)
     this.selectedCollection = id
     this.posts = res.data
+  }
+
+  async uploadCover(param: any) {
+    const params = new FormData()
+
+    params.append('cover', param.file, param.file.name)
+
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
+
+    await this.$http.post(
+      `/collections/${this.selectedCollection}/cover`,
+      params,
+      config
+    )
+
+    this.$notify({
+      title: '成功',
+      type: 'success',
+      message: '上传成功'
+    })
+  }
+
+  // 文集封面
+
+  handleCoverSuccess(res: any, file: any) {
+    this.collections.map((e: any) => {
+      if (e.id === this.selectedCollection) {
+        e.cover = URL.createObjectURL(file.raw)
+      }
+    })
   }
 
   handleCollection(command: any) {

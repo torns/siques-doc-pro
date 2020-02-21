@@ -11,6 +11,15 @@
   --color-heart: #ea442b;
   --easing: cubic-bezier(0.7, 0, 0.3, 1);
   --duration: 0.5s;
+  --background-dark: #2d3548;
+  --text-light: rgba(255, 255, 255, 0.6);
+  --text-lighter: rgba(255, 255, 255, 0.9);
+  --spacing-s: 8px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 64px;
+  --width-container: 1200px;
 }
 
 //重置图标大小？
@@ -28,7 +37,7 @@ body {
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  transition: 0.5s;
+  transition: 0.2s;
   margin-right: calc(100% - 100vw);
   overflow-x: hidden;
   box-sizing: border-box;
@@ -37,6 +46,15 @@ body {
   :focus {
     outline: none;
   }
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
 }
 
 ::-webkit-scrollbar {
@@ -331,7 +349,7 @@ code {
     height: 2px;
     top: 100%;
     left: 0;
-    background: $color-red;
+    background: $color-primary;
     transition: transform 0.5s;
     transform: scaleX(0);
     transform-origin: right;
@@ -489,6 +507,11 @@ code {
   .border-#{$dir} {
     border-#{$dir}: 1px solid $border-color;
   }
+}
+
+.boder-x {
+  border-left: 4.5px solid $color-primary;
+  border-right: 4.5px solid $color-primary;
 }
 
 .el-popup-parent--hidden {

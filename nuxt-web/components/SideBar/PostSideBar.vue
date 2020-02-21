@@ -54,18 +54,27 @@
       :postId="data.id"
       :data="relaPost"
     ></sq-leaderboard>
-    <div
-      id="toc"
-      class="d-none d-lg-block  bg-white py-3 shadow-2"
-      style="margin-top:3em;max-height: calc(100vh - 120px); min-height:200px;width:300px"
-    >
-      <div class="title fs-xl pl-2 pb-3" style="font-weight:600">目录</div>
-      <div style="overflow: hidden; overflow-y: auto;">
-        <nav
-          id="post-toc"
-          v-scroll-spy-active
-          class="nav d-flex flex-column"
-        ></nav>
+    <div id="toc">
+      <div
+        class="d-none d-lg-block  bg-white py-3 shadow-2"
+        style="margin-top:2.7em;max-height: calc(100vh - 120px); min-height:200px;width:300px"
+      >
+        <div class="title fs-xl pl-2 pb-3" style="font-weight:600">目录</div>
+        <div style="overflow: hidden; overflow-y: auto;">
+          <nav
+            id="post-toc"
+            v-scroll-spy-active
+            class="nav d-flex flex-column"
+          ></nav>
+        </div>
+      </div>
+      <div
+        class="d-none d-lg-block  bg-white mt-3 px-2 shadow-2"
+        style="max-height: calc(100vh - 120px); min-height:200px;width:300px"
+      >
+        <div class="py-2">
+          关于我
+        </div>
       </div>
     </div>
   </div>

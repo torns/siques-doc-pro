@@ -185,11 +185,7 @@ export default {
         ]
       ]
     },
-    // externals: {
-    //   'vue': 'Vue',
-    //   'vue-router': 'VueRouter',
-    //   'highlight': 'highlight',
-    // },
+
     // analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
