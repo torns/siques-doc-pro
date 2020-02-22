@@ -1,332 +1,339 @@
 <template>
-  <div :id="$route.path == '/' ? 'home' : ''">
+  <div :id="isHomepage ? 'home' : ''">
     <!-- <div> -->
     <div id="app ">
       <div style="height:3px;" class="bg-primary"></div>
-      <div>
-        <div class="shadow-1" style="z-index: 10;">
-          <el-menu
-            ref="menu"
-            default-active="/"
-            class="d-flex jc-between ai-center  container"
-            mode="horizontal"
-            style="margin:0 auto;"
-            router
-          >
-            <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
-              <img
-                @click="$router.push('/')"
-                src="~/static/banner.png"
-                style="object-fit:cover;height:70%;"
-              />
-            </el-menu-item>
 
-            <el-menu-item class="xs" index="/">
-              <span style="font-weight:600" class="text-primary fs-md" to="/">
-                <a href="/" onclick="return false">首页</a>
-              </span>
-            </el-menu-item>
+      <div
+        :style="isHomepage ? '' : 'background-color:#ffffff'"
+        :class="isHomepage ? 'menucover ' : 'shadow-1'"
+      >
+        <el-menu
+          :background-color="isHomepage ? '#00000000' : ''"
+          :text-color="isHomepage ? '#ffffff' : ''"
+          default-active="/"
+          :active-text-color="isHomepage ? '#ffffff' : ''"
+          class="d-flex jc-between ai-center container  "
+          mode="horizontal"
+          style="margin:0 auto;"
+          router
+        >
+          <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
+            <img
+              v-if="isHomepage"
+              @click="$router.push('/')"
+              src="~/static/banner.png"
+              style="object-fit:cover;height:70%;"
+            />
+            <img
+              v-else
+              @click="$router.push('/')"
+              src="~/static/banner1.png"
+              style="object-fit:cover;height:70%;"
+            />
+          </el-menu-item>
 
-            <el-menu-item class="xm" index="/q">
-              <span class="fs-md"
-                ><a href="/q" onclick="return false"> 问答</a></span
-              >
-            </el-menu-item>
+          <el-menu-item class="xs" index="/">
+            <span style="font-weight:600" class=" fs-md" to="/">
+              <a href="/" onclick="return false">首页</a>
+            </span>
+          </el-menu-item>
 
-            <el-menu-item class="xs" index="/blogs">
-              <span class="fs-md"
-                ><a href="/blogs" onclick="return false"> 专栏</a></span
-              >
-            </el-menu-item>
-
-            <el-menu-item class="xs" index="/tags">
-              <span class="fs-md"
-                ><a href="/tags" onclick="return false">标签</a></span
-              >
-            </el-menu-item>
-            <el-menu-item class="xs" index="/n">
-              <span class="fs-md"
-                ><a href="/n" onclick="return false">笔记</a></span
-              >
-            </el-menu-item>
-
-            <el-menu-item
-              v-show="this.$store.state.UserNotExist == false"
-              :show-timeout="0"
-              :hide-timeout="0"
-              class="xm "
-              style="padding-left:40px"
+          <el-menu-item class="xm" index="/q">
+            <span class="fs-md"
+              ><a href="/q" onclick="return false"> 问答</a></span
             >
-              <el-badge
-                :value="hasNewMessage ? 'new' : null"
-                class="item"
-                type="primary"
-              >
-                <el-popover
-                  :popper-class="`message`"
-                  @show="fetchUserLetter"
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <div class="d-flex flex-column h-100">
-                    <el-radio-group
-                      @change="change"
-                      v-model="topRadio"
-                      size="small"
-                    >
-                      <el-radio-button label="message">
-                        <i class="fs-sm iconfont icon-desLampidea"></i>
-                      </el-radio-button>
-                      <el-radio-button label="letter">
-                        <i class="fs-sm iconfont icon-message"></i>
-                      </el-radio-button>
-                      <el-radio-button label="follow">
-                        <i class="fs-sm iconfont icon-follow"></i>
-                      </el-radio-button>
-                    </el-radio-group>
+          </el-menu-item>
 
-                    <div
-                      v-if="topRadio == 'message'"
-                      style="width: 350px;overflow-y: auto;"
-                    >
-                      <div class="border-bottom py-1 pl-2">
-                        一些关于你的通知
-                      </div>
-                      <div v-for="(letter, index) in userLetters" :key="index">
-                        <div
-                          v-if="
-                            letter.type !== 'followuser' &&
-                              letter.content === null
-                          "
-                          :class="
-                            `d-flex py-1 pl-2 lh-2 ${
-                              letter.is_read === 1 ? '' : 'bg-2'
-                            }`
-                          "
-                        >
-                          <router-link
-                            :to="`/u/${letter.from_uid.id}`"
-                            tag="div"
+          <el-menu-item class="xs" index="/blogs">
+            <span class="fs-md"
+              ><a href="/blogs" onclick="return false"> 专栏</a></span
+            >
+          </el-menu-item>
+
+          <el-menu-item class="xs" index="/tags">
+            <span class="fs-md"
+              ><a href="/tags" onclick="return false">标签</a></span
+            >
+          </el-menu-item>
+          <el-menu-item class="xs" index="/n">
+            <span class="fs-md"
+              ><a href="/n" onclick="return false">笔记</a></span
+            >
+          </el-menu-item>
+
+          <el-menu-item
+            v-show="this.$store.state.UserNotExist == false"
+            :show-timeout="0"
+            :hide-timeout="0"
+            class="xm "
+            style="padding-left:40px"
+          >
+            <el-badge
+              :value="hasNewMessage ? 'new' : null"
+              class="item"
+              type="primary"
+            >
+              <el-popover
+                :popper-class="`message`"
+                @show="fetchUserLetter"
+                placement="bottom"
+                trigger="click"
+              >
+                <div class="d-flex flex-column h-100">
+                  <el-radio-group
+                    @change="change"
+                    v-model="topRadio"
+                    size="small"
+                  >
+                    <el-radio-button label="message">
+                      <i class="fs-sm iconfont icon-desLampidea"></i>
+                    </el-radio-button>
+                    <el-radio-button label="letter">
+                      <i class="fs-sm iconfont icon-message"></i>
+                    </el-radio-button>
+                    <el-radio-button label="follow">
+                      <i class="fs-sm iconfont icon-follow"></i>
+                    </el-radio-button>
+                  </el-radio-group>
+
+                  <div
+                    v-if="topRadio == 'message'"
+                    style="width: 350px;overflow-y: auto;"
+                  >
+                    <div class="border-bottom py-1 pl-2">
+                      一些关于你的通知
+                    </div>
+                    <div v-for="(letter, index) in userLetters" :key="index">
+                      <div
+                        v-if="
+                          letter.type !== 'followuser' &&
+                            letter.content === null
+                        "
+                        :class="
+                          `d-flex py-1 pl-2 lh-2 ${
+                            letter.is_read === 1 ? '' : 'bg-2'
+                          }`
+                        "
+                      >
+                        <router-link :to="`/u/${letter.from_uid.id}`" tag="div">
+                          <div
+                            class="hover-4 point pr-1 text-primary "
+                            style="white-space: nowrap;"
                           >
-                            <div
-                              class="hover-4 point pr-1 text-primary "
-                              style="white-space: nowrap;"
-                            >
-                              {{ letter.from_uid.name }}
-                            </div>
-                          </router-link>
-                          <div style="white-space: nowrap;" class="pr-1">
-                            {{ actionTransFomer(letter) }}
+                            {{ letter.from_uid.name }}
                           </div>
-                          <router-link
-                            :to="link(letter) + `${letter.to_Post.id}`"
-                            tag="div"
-                          >
-                            <div
-                              class="point text-primary hoverlink ellipsis-1"
-                            >
-                              {{ letter.to_Post.title }}
-                            </div>
-                          </router-link>
+                        </router-link>
+                        <div style="white-space: nowrap;" class="pr-1">
+                          {{ actionTransFomer(letter) }}
                         </div>
+                        <router-link
+                          :to="link(letter) + `${letter.to_Post.id}`"
+                          tag="div"
+                        >
+                          <div class="point text-primary hoverlink ellipsis-1">
+                            {{ letter.to_Post.title }}
+                          </div>
+                        </router-link>
                       </div>
                     </div>
+                  </div>
 
-                    <div v-if="topRadio == 'follow'">
-                      <div class="border-bottom py-1 pl-2">
-                        他们最近关注了你
+                  <div v-if="topRadio == 'follow'">
+                    <div class="border-bottom py-1 pl-2">
+                      他们最近关注了你
+                    </div>
+
+                    <div v-for="(letter, index) in userLetters" :key="index">
+                      <div
+                        v-if="letter.type == 'followuser'"
+                        :class="
+                          `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                        "
+                      >
+                        <router-link
+                          :to="`/u/${letter.from_uid.id}`"
+                          tag="span"
+                        >
+                          <span class="ml-2 hover-4 text-primary point pr-1">{{
+                            letter.from_uid.name
+                          }}</span> </router-link
+                        >关注了你
                       </div>
+                    </div>
+                  </div>
 
-                      <div v-for="(letter, index) in userLetters" :key="index">
-                        <div
-                          v-if="letter.type == 'followuser'"
-                          :class="
-                            `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                  <div v-if="topRadio == 'letter'">
+                    <div class="border-bottom py-1 pl-2">
+                      他们最近私信了你
+                    </div>
+
+                    <div v-for="(letter, index) in userLetters" :key="index">
+                      <div
+                        v-if="
+                          letter.content != null && letter.from_uid !== null
+                        "
+                        :class="
+                          `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
+                        "
+                      >
+                        <el-popover
+                          :content="
+                            ` ${letter.content +
+                              $dayjs(letter.created).format('M月D日 H:MM')}`
                           "
+                          placement="bottom"
+                          title="私信详情"
+                          width=""
+                          icon
+                          trigger="hover"
                         >
                           <router-link
+                            slot="reference"
                             :to="`/u/${letter.from_uid.id}`"
                             tag="span"
                           >
                             <span
                               class="ml-2 hover-4 text-primary point pr-1"
                               >{{ letter.from_uid.name }}</span
-                            > </router-link
-                          >关注了你
-                        </div>
+                            >
+                            私信了你
+                          </router-link>
+                        </el-popover>
                       </div>
-                    </div>
-
-                    <div v-if="topRadio == 'letter'">
-                      <div class="border-bottom py-1 pl-2">
-                        他们最近私信了你
-                      </div>
-
-                      <div v-for="(letter, index) in userLetters" :key="index">
+                      <div v-if="letter.from_uid === null">
                         <div
-                          v-if="
-                            letter.content != null && letter.from_uid !== null
-                          "
                           :class="
                             `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
                           "
                         >
-                          <el-popover
-                            :content="
-                              ` ${letter.content +
-                                $dayjs(letter.created).format('M月D日 H:MM')}`
-                            "
-                            placement="bottom"
-                            title="私信详情"
-                            width=""
-                            icon
-                            trigger="hover"
-                          >
-                            <router-link
-                              slot="reference"
-                              :to="`/u/${letter.from_uid.id}`"
-                              tag="span"
-                            >
-                              <span
-                                class="ml-2 hover-4 text-primary point pr-1"
-                                >{{ letter.from_uid.name }}</span
-                              >
-                              私信了你
-                            </router-link>
-                          </el-popover>
-                        </div>
-                        <div v-if="letter.from_uid === null">
-                          <div
-                            :class="
-                              `py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`
-                            "
-                          >
-                            <div class="pl-2">
-                              {{ letter.content }}
-                            </div>
+                          <div class="pl-2">
+                            {{ letter.content }}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="flex-1 pt-3"></div>
+                  </div>
+                  <div class="flex-1 pt-3"></div>
 
-                    <div></div>
-                    <div class=" border-top ">
-                      <div class="d-flex jc-between pt-2">
-                        <div @click="markedRead" class="point ">
-                          全部标记为已读
-                        </div>
-                        <router-link
-                          to="/notification"
-                          tag="div"
-                          class="point hover-4"
-                          >查看全部</router-link
-                        >
+                  <div></div>
+                  <div class=" border-top ">
+                    <div class="d-flex jc-between pt-2">
+                      <div @click="markedRead" class="point ">
+                        全部标记为已读
                       </div>
+                      <router-link
+                        to="/notification"
+                        tag="div"
+                        class="point hover-4"
+                        >查看全部</router-link
+                      >
                     </div>
                   </div>
-                  <i slot="reference" class="fa fa-bell-o fs-xm "> </i>
-                </el-popover>
-              </el-badge>
-            </el-menu-item>
+                </div>
+                <i slot="reference" class="fa fa-bell-o  fs-xm "> </i>
+              </el-popover>
+            </el-badge>
+          </el-menu-item>
 
-            <el-menu-item>
-              <el-input
-                v-model="search"
-                @keyup.enter.native="dataSearch"
-                size="small"
-                class="md"
-                placeholder="请输入内容"
-              >
-                <el-button slot="append" @click="dataSearch">
-                  <i class="fa fa-search"></i>
-                </el-button>
-              </el-input>
-              <div style="padding: 23px 0;">
-                <i @click="dataSearch" class="fa fa-search visible-md"></i>
-              </div>
-            </el-menu-item>
+          <!-- <el-menu-item>
+            <el-input
+              v-model="search"
+              @keyup.enter.native="dataSearch"
+              size="small"
+              class="md"
+              placeholder="请输入内容"
+            >
+              <el-button slot="append" @click="dataSearch">
+                <i class="fa fa-search"></i>
+              </el-button>
+            </el-input>
+            <div style="padding: 23px 0;">
+              <i @click="dataSearch" class="fa fa-search visible-md"></i>
+            </div>
+          </el-menu-item> -->
 
-            <!-- <el-menu-item>
+          <!-- <el-menu-item>
               <i class="fa fa-search"></i>
             </el-menu-item> -->
 
-            <el-submenu
-              :index="`person`"
-              v-if="$store.state.UserNotExist == false"
-              :show-timeout="0"
-              :hide-timeout="0"
-            >
-              <template slot="title">
-                <el-avatar
-                  v-if="this.$store.state.auth.user !== undefined"
-                  :size="35"
-                  class="shadow-1"
-                >
-                  <img
-                    v-if="this.$store.state.auth.user.avator[0].url !== null"
-                    :src="this.$store.state.auth.user.avator[0].url"
-                    style="background-color:white;"
-                  />
-
-                  <img v-else src="~/static/avator.jpg" />
-                </el-avatar>
-              </template>
-              <el-menu-item index="/u">
-                <span>
-                  <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
-                  我的主页
-                </span>
-              </el-menu-item>
-
-              <el-menu-item @click="logout">
-                <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出</el-menu-item
+          <el-submenu
+            :popper-class="isHomepage ? 'mysubmenu' : ''"
+            :index="`person`"
+            v-if="$store.state.UserNotExist == false"
+            :show-timeout="0"
+            :hide-timeout="0"
+          >
+            <template slot="title">
+              <el-avatar
+                v-if="this.$store.state.auth.user !== undefined"
+                :size="35"
+                class="shadow-1"
               >
-            </el-submenu>
+                <img
+                  v-if="this.$store.state.auth.user.avator[0].url !== null"
+                  :src="this.$store.state.auth.user.avator[0].url"
+                  style="background-color:white;"
+                />
 
-            <el-submenu
-              :index="`store`"
-              :show-timeout="0"
-              :hide-timeout="0"
-              class="xs"
+                <img v-else src="~/static/avator.jpg" />
+              </el-avatar>
+            </template>
+            <el-menu-item index="/u">
+              <span>
+                <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
+                我的主页
+              </span>
+            </el-menu-item>
+
+            <el-menu-item @click="logout">
+              <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出</el-menu-item
             >
-              <template slot="title">
-                <el-button type="text">创建</el-button>
-              </template>
+          </el-submenu>
 
-              <el-menu-item :span="4" class="write ml-3" index="/post">
-                <span to="/post">
-                  <i class="iconfont  pr-3  icon-nav2 fs-xm"></i>
-                  写文章</span
-                >
-              </el-menu-item>
-              <el-menu-item :span="4" class="write ml-3" index="/ask">
-                <span to="/ask">
-                  <i class="iconfont pr-3   icon-iconawsquestion fs-xm"></i
-                  >提问题
-                </span>
-              </el-menu-item>
-              <el-menu-item :span="4" class="write ml-3" index="/record">
-                <span to="/record">
-                  <i class="iconfont  pr-3 icon-note fs-xm"></i>记笔记
-                </span>
-              </el-menu-item>
-            </el-submenu>
+          <el-submenu
+            :popper-class="isHomepage ? 'mysubmenu' : ''"
+            :index="`store`"
+            :show-timeout="0"
+            :hide-timeout="0"
+            class="xs"
+          >
+            <template slot="title">
+              <el-button type="text">创建</el-button>
+            </template>
 
-            <el-menu-item
-              v-if="$store.state.UserNotExist"
-              @click="$store.commit('toggleLoginForm'), (isRegister = false)"
-              >立即登录</el-menu-item
-            >
-            <el-menu-item v-if="$store.state.UserNotExist" class="xm">
-              <el-button
-                @click="$store.commit('toggleLoginForm'), (isRegister = true)"
-                type="primary"
-                >免费注册</el-button
+            <el-menu-item :span="4" class="write " index="/post">
+              <span to="/post">
+                <i class="iconfont  pr-3  pl-3 icon-nav2 fs-xm"></i>
+                写文章</span
               >
             </el-menu-item>
-          </el-menu>
-        </div>
+            <el-menu-item :span="4" class="write " index="/ask">
+              <span to="/ask">
+                <i class="iconfont pr-3  pl-3 icon-iconawsquestion fs-xm"></i
+                >提问题
+              </span>
+            </el-menu-item>
+            <el-menu-item :span="4" class="write " index="/record">
+              <span to="/record">
+                <i class="iconfont  pr-3 pl-3 icon-note fs-xm"></i>记笔记
+              </span>
+            </el-menu-item>
+          </el-submenu>
+
+          <el-menu-item
+            v-if="$store.state.UserNotExist"
+            @click="$store.commit('toggleLoginForm'), (isRegister = false)"
+            >立即登录</el-menu-item
+          >
+          <el-menu-item v-if="$store.state.UserNotExist" class="xm">
+            <el-button
+              @click="$store.commit('toggleLoginForm'), (isRegister = true)"
+              type="primary"
+              >免费注册</el-button
+            >
+          </el-menu-item>
+        </el-menu>
       </div>
 
       <div class="h-100">
@@ -609,6 +616,10 @@ export default class Home extends Vue {
     }
   }
 
+  get isHomepage() {
+    return this.$route.path === '/'
+  }
+
   get hasNewMessage() {
     let hasNew = false
     this.userLetters.map((e: any) => {
@@ -884,7 +895,7 @@ export default class Home extends Vue {
   }
 
   logout() {
-    this.$store.commit('toggleBanner')
+    // this.$store.commit('toggleBanner')
     this.$store.commit('toggleUser')
     this.$notify({
       title: '成功',
@@ -893,13 +904,6 @@ export default class Home extends Vue {
     })
     this.$router.push('/')
   }
-
-  // async show() {
-  //   if (this.isUser) {
-  //     const res = await this.$http.get('/notification')
-  //     this.notifies = res.data
-  //   }
-  // }
 
   async fetchUserLetter() {
     if (this.isUser) {
@@ -919,11 +923,6 @@ export default class Home extends Vue {
         e.is_read = 1
       })
     }
-  }
-
-  dataSearch() {
-    this.$router.push(`/search/${this.search}`)
-    this.search = ''
   }
 
   change(e: any) {}

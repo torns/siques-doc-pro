@@ -165,7 +165,7 @@ export class TagService {
   async showHotTag() {
     return await this.tagRepository
       .createQueryBuilder('tag')
-      .take(24)
+      .take(16)
       .orderBy('tag.interest', 'DESC')
       .getMany();
   }

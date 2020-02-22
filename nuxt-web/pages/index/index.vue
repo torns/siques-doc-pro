@@ -5,9 +5,12 @@
     infinite-scroll-disabled="disabled"
     infinite-scroll-distance="0"
   >
-    <div v-if="$store.state.showBanner" class="bg-primary">
+    <div
+      style="height:460px;box-shadow: inset 0px -32px 38px -36px;"
+      class="cover "
+    >
       <div class="container ">
-        <el-row :gutter="0" class="d-flex">
+        <el-row :gutter="0" class="d-flex ">
           <el-col
             :xs="0"
             :sm="4"
@@ -17,18 +20,52 @@
             class="hidden-sm-and-down "
           >
           </el-col>
-          <el-col :xs="0" :sm="24" :md="14" :lg="14" :xl="14">
+          <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
             <div
-              style="height:190px"
-              class="bg-primary d-flex jc-around text-white "
+              class=" d-flex jc-around header"
+              style="position: relative;top: 77%;"
             >
-              <div class="d-flex flex-column jc-center">
-                <div class="fs-xll pb-3">在思趣，学习技能、解决问题</div>
+              <div>
+                <div
+                  class="text-white pb-3"
+                  style="font-family: cursive;font-size:40px"
+                >
+                  思趣，发现思考的深度
+                </div>
                 <div>
-                  每个月，我们帮助开发者们解决各种各样的技术问题。并助力他们在技术能力、职业生涯、影响力上获得提升。
+                  <el-input
+                    v-model="search"
+                    @keyup.enter.native="dataSearch"
+                    size="medium"
+                    placeholder="搜索你喜欢的"
+                  >
+                    <el-button slot="append" @click="dataSearch">
+                      <i class="fa fa-search"></i>
+                    </el-button>
+                  </el-input>
+
+                  <div class="text-white text-center pt-3 fs-md ">
+                    热门搜索：<span
+                      class="point hoverlink"
+                      @click="$router.push(`/search/vue`)"
+                      >Vue
+                    </span>
+                    <span
+                      class="point hoverlink"
+                      @click="$router.push(`/search/nuxtjs`)"
+                      >nuxtjs</span
+                    >
+                    <span
+                      class="point hoverlink"
+                      @click="$router.push(`/search/nestjs`)"
+                      >nestjs</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <sq-down></sq-down>
                 </div>
               </div>
-              <div class="d-flex"></div>
             </div>
           </el-col>
           <el-col
@@ -39,14 +76,15 @@
             :xl="6"
             class="hidden-sm-and-down"
           >
-            <div class="fs-xm hover-1 text-right text-white pt-2">
-              <div @click="toggleBanner" class="point">关闭</div>
-            </div>
+            <div
+              style="position: relative;top: 60%;"
+              class="fs-xm hover-1 text-right text-white pt-2"
+            ></div>
           </el-col>
         </el-row>
       </div>
     </div>
-    <div class="container" style="min-height: 100vh;">
+    <div class="container" style="min-height: 100vh;margin-top:-60px;">
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
         <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4" class=" ">
           <div class="d-flex " style="flex-direction: row-reverse;">
@@ -256,9 +294,11 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
 import indexSideBar from '~/components/SideBar/indexSideBar.vue'
+import scrolldown from '~/components/subgroup/scrolldown.vue'
 @Component({
   components: {
-    'sq-indexBar': indexSideBar
+    'sq-indexBar': indexSideBar,
+    'sq-down': scrolldown
   }
 })
 export default class MyPage extends Vue {
@@ -284,6 +324,7 @@ export default class MyPage extends Vue {
   taglist = null
   showBanner = true
   posts = []
+  search = ''
   carousel = [
     {
       img:
@@ -421,6 +462,11 @@ export default class MyPage extends Vue {
   ]
 
   mounted() {}
+
+  dataSearch() {
+    this.$router.push(`/search/${this.search}`)
+    this.search = ''
+  }
 
   load() {
     this.loading = true
