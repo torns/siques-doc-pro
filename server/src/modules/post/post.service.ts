@@ -43,7 +43,7 @@ export class PostService {
     const { tags, collection, type } = data;
 
     const entity = await this.postRepository.create(data);
-    await this.postRepository.save({
+    const res = await this.postRepository.save({
       ...entity,
       user,
       type,
@@ -53,12 +53,6 @@ export class PostService {
       await this.beforeTag(tags, entity.id);
     }
 
-    // await this.postRepository
-    //   .createQueryBuilder()
-    //   .update(Post)
-    //   .where('post.id =:id', { id })
-    //   .set({ views: () => 'views + 1' })
-    //   .execute();
     if (type === 'post') {
       await this.collectionRepository
         .createQueryBuilder()
@@ -67,7 +61,7 @@ export class PostService {
         .set({ amount: () => 'amount + 1' })
         .execute();
     }
-    return entity;
+    return res;
   }
 
   // 根据集合id查文章

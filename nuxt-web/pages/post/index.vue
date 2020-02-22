@@ -53,12 +53,12 @@
               :key="collect.id"
             >
               <el-popover
+                :close-delay="100"
                 placement="left"
                 width="200"
                 trigger="hover"
-                :close-delay="100"
               >
-                <img v-if="collect.cover" class="w-100" :src="collect.cover" />
+                <img v-if="collect.cover" :src="collect.cover" class="w-100" />
                 <div v-else>
                   暂无封面
                 </div>
@@ -135,8 +135,8 @@
       </el-aside>
       <el-aside
         id="post"
-        class="postlist"
         :width="wdith"
+        class="postlist"
         style="background-color:white;color:#333;transition: all 0.5s ease-out 0s;"
       >
         <div class="d-flex ai-center jc-between">
@@ -145,8 +145,8 @@
           </div>
           <div
             :style="!showItem ? 'margin:auto' : ''"
-            class="mr-4  point creatpost"
             @click="changeWidth"
+            class="mr-4  point creatpost"
           >
             <i class="el-icon-s-unfold"></i>
           </div>
@@ -158,12 +158,12 @@
           :class="selectedPost == post.id ? 'post-bd-left' : ''"
         >
           <el-popover
+            :disabled="showItem ? true : false"
+            :content="post.title"
             placement="left"
             title="标题"
             width="200"
             trigger="hover"
-            :disabled="showItem ? true : false"
-            :content="post.title"
           >
             <li slot="reference" @click="selectPost(post.id)" type="primary">
               <span v-if="showItem" class="d-flex jc-between hover-4">

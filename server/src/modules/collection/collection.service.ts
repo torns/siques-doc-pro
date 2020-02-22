@@ -76,8 +76,7 @@ export class CollectionService {
       data.buffer,
     );
 
-    const url = res.url;
-    // + '?x-oss-process=style/' + 'collection-picture';
+    const url = res.url + '?x-oss-process=style/' + 'collection-cover-picture';
 
     await this.CollectionRepository.createQueryBuilder('collection')
       .update(Collection)

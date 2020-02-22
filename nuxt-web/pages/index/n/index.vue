@@ -36,7 +36,15 @@
                 </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="热门笔记" name="second">热门笔记</el-tab-pane>
+            <el-pagination
+              :hide-on-single-page="maxLen < 10 ? true : false"
+              @current-change="handleCurrentChange"
+              :total="maxLen"
+              background
+              layout="prev, pager, next"
+              class="mt-4"
+            ></el-pagination>
+            <el-tab-pane label="热门笔记" name="second"></el-tab-pane>
           </el-tabs>
         </el-col>
         <el-col
@@ -60,18 +68,28 @@ import { Vue, Component } from 'nuxt-property-decorator'
   components: {}
 })
 export default class NotesIndex extends Vue {
-  async asyncData({ params }: any) {
+  async asyncData({ params, query }: any) {
     const http = Vue.prototype.$http
-
-    const res = await http.get('/posts/all?limit=20&page=1&type=note')
+    console.log(query)
+    const res = await http.get('/posts/all?limit=10&page=1&type=note')
 
     return {
-      notes: res.data[0]
+      notes: res.data[0],
+      maxLen: res.data[1]
     }
   }
 
   activeName = 'first'
   notes = ''
+  maxLen = 0
+
+  async handleCurrentChange(val: any) {
+    const res = await this.$http.get(
+      `/posts/all?limit=10&page=${val}&type=note`
+    )
+    this.notes = res.data[0]
+    this.$router.push(`/n?page=${val}`)
+  }
 
   head() {
     return {

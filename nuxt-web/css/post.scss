@@ -137,12 +137,10 @@ p code {
 nav li {
   a {
     display: block;
-    padding: 0.15rem 1.75rem;
-    font-size: 1rem;
-    font-weight: 500;
+    padding: 0.3em 1.75rem;
+    font-size: 14px;
     color: #212529;
     transition: all 0.25s ease 0ms;
-    margin: 5px 0;
 
     &:hover {
       padding-left: 10px;
@@ -154,12 +152,13 @@ nav li {
   }
 }
 .toc-h3 {
-  display: none;
+  // display: none;
+  &:hover {
+    padding-left: 2em;
+  }
+  padding-left: 3.5em;
 }
 .active .toc-h3 {
-  display: block !important;
-  padding-left: 3em;
-  font-size: 14px;
   &::before {
     content: '#3';
   }

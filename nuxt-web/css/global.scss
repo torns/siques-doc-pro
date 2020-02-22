@@ -357,6 +357,13 @@ code {
   }
 }
 
+.hover-5 {
+  transition: 1s;
+  &:hover {
+    transform: rotate(360deg);
+  }
+}
+
 //遮罩
 .hover-mask {
   &::content {

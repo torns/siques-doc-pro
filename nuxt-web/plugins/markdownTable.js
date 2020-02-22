@@ -19,14 +19,14 @@ export default () => {
     // $('body').scrollspy({ target: '#post-toc' })
   })
 
-  var toc_position =
-    $('#toc').offset() !== undefined ? $('#toc').offset().top : ''
+  var toc_position = $('#toc').offset().top
   // var toc_width = $('#toc').width()
 
   // 滚动事件，修改目录部分的 position
   $(window).scroll(function() {
     var toc = $('#toc')
-    if ($(window).scrollTop() >= toc_position + 280) {
+
+    if ($(window).scrollTop() >= toc_position + 238) {
       // toc.css('width', toc_width)
       toc.css('top', 18)
       toc.css('position', 'fixed')

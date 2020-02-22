@@ -23,7 +23,7 @@
             <div class="fs-lg">
               <div class="d-flex ">
                 <router-link
-                  :to="post.type === 'post' ? `/p/${post.id}` : `/q/${post.id}`"
+                  :to="link(post.type) + `${post.id}`"
                   target="_blank"
                   tag="a"
                   class="hoverlink mr-3 point"
@@ -87,7 +87,7 @@
                   ></el-link
                 >
               </div>
-              <div v-else class="pl-2">
+              <div v-if="post.type === 'question'" class="pl-2">
                 <el-link type="danger"
                   ><router-link :to="`/q/${post.id}`" tag="div"
                     >回答</router-link
@@ -125,6 +125,20 @@ export default class TagPanel extends Vue {
       this.$emit('refetch')
     } else {
       this.$store.commit('toggleLoginForm')
+    }
+  }
+
+  link(type: any) {
+    switch (type) {
+      case 'post':
+        return '/p/'
+      case 'note':
+        return '/n/'
+      case 'question':
+        return '/q/'
+
+      default:
+        break
     }
   }
 

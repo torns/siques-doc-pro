@@ -42,19 +42,19 @@
 
                 <ul class="icon-list d-flex jc-between   pt-2">
                   <li class="hover-1 opacity25 text-dark-1 ">
-                    <i class="iconfont icon-github fs-xl"></i>
+                    <i class="iconfont icon-github fs-xll"></i>
                   </li>
                   <li class="hover-1 opacity25 text-orange">
-                    <i class="iconfont icon-weibo fs-xl"></i>
+                    <i class="iconfont icon-weibo fs-xll"></i>
                   </li>
                   <li class="hover-1 opacity25 text-blue">
-                    <i class="iconfont icon-ins fs-xl"></i>
+                    <i class="iconfont icon-qq fs-xll"></i>
                   </li>
                   <li class="hover-1 opacity25 text-blue">
-                    <i class="iconfont icon-twitter fs-xl"></i>
+                    <i class="iconfont icon-twitter fs-xll"></i>
                   </li>
                   <li class="hover-1 opacity25 text-darkblue">
-                    <i class="iconfont icon-tian7_facebook fs-xl"></i>
+                    <i class="iconfont icon-tian7_facebook fs-xll"></i>
                   </li>
                 </ul>
               </div>

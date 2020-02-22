@@ -1,9 +1,12 @@
 <template>
   <div class="sidebar pl-2">
     <div class="bg-info border-1">
-      <div style="height:50px;margin:0 auto;" class="notice text-black fs-sm">
-        <div class="fs-xxs" style="padding: 16px 10px;">
-          抒写年度有奖征文丨一起来总结你的 2020
+      <div
+        style="margin:0 auto;"
+        class="notice d-flex ai-center text-black fs-sm"
+      >
+        <div class="fs-xxs px-2 py-2 lh-2">
+          欢迎您访问本站点！ 如果本站解决了您的问题，请给个赞！
         </div>
       </div>
     </div>

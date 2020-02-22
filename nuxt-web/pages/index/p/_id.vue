@@ -481,14 +481,13 @@ export default class Post extends Vue {
 
   mounted() {
     this.fetchpost(this.id)
-
+    mdTable()
     this.fetchComment()
     this.scrollDirection()
     this.getDierction()
   }
 
   beforeMount() {
-    mdTable()
     this.initPost()
   }
   // TS中的计算属性

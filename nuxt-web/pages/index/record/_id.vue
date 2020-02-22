@@ -2,9 +2,9 @@
   <div class="bg-light">
     <el-drawer
       :show-close="true"
-      title="所有笔记"
       :visible.sync="drawer"
       :modal="false"
+      title="所有笔记"
       size="350px"
     >
       <div v-for="note in noteList" :key="note.id">
@@ -14,8 +14,8 @@
           "
         >
           <nuxt-link
-            tag="li"
             :to="`/record/${note.id}`"
+            tag="li"
             class="ellipsis-1 px-3 py-3 "
           >
             {{ note.title }}</nuxt-link
@@ -211,12 +211,14 @@ export default class Index extends Vue {
           type: 'note',
           tags: this.dynamicTags
         }
-        await this.$http.post(`/posts/`, body)
+        const res = await this.$http.post(`/posts/`, body)
+        const { id } = res.data
         this.$notify({
           title: '成功',
           type: 'success',
           message: '发布成功'
         })
+        this.$router.push(`/record/${id}`)
         this.$store.commit('increLen', 'note')
       }
     } else {

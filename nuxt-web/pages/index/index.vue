@@ -448,12 +448,6 @@ export default class MyPage extends Vue {
     taglist: any,
     listId: any
   ) {
-    // console.log(
-    //   { 别称: alias },
-    //   { 标签: tag },
-    //   { 分类: sort },
-    //   { 标签列: taglist }
-    // )
     this.category = alias
     this.tag = tag
     this.taglist = taglist
