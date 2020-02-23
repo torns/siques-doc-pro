@@ -76,11 +76,16 @@ export class PostService {
   // 展示用户笔记
   async showUserNote(id: number) {
     const type = 'note';
-    return await this.postRepository
+    const collect = null;
+    const res = await this.postRepository
       .createQueryBuilder('post')
       .where('post.userId=:id', { id })
       .andWhere('post.type=:type', { type })
+
+      // .where('post.collection=null')
       .getMany();
+
+    return res;
   }
 
   async index(options: ListOptionsInterface, id: number) {
@@ -88,14 +93,11 @@ export class PostService {
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
     // queryBuilder.leftJoinAndSelect('post.user', 'user');
-    queryBuilder.leftJoinAndSelect('post.category', 'category');
+
     queryBuilder.leftJoinAndSelect('post.collection', 'collection');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
 
     // where筛选
-    if (categories) {
-      queryBuilder.where('category.alias IN(:...categories)', { categories });
-    }
 
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
@@ -138,16 +140,12 @@ export class PostService {
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
 
-    queryBuilder.leftJoinAndSelect('post.category', 'category');
     queryBuilder.addSelect('post.cover');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     queryBuilder.leftJoinAndSelect('tag.taglist', 'taglist');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
 
     // where筛选
-    if (categories) {
-      queryBuilder.where('category.alias IN(:...categories)', { categories });
-    }
 
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
@@ -301,12 +299,14 @@ export class PostService {
   async delete(id: string, collectionId: number) {
     await this.postRepository.delete(id);
 
-    await this.collectionRepository
-      .createQueryBuilder()
-      .update(Collection)
-      .where('collection.id=:collectionId', { collectionId })
-      .set({ amount: () => 'amount - 1' })
-      .execute();
+    if (collectionId) {
+      await this.collectionRepository
+        .createQueryBuilder()
+        .update(Collection)
+        .where('collection.id=:collectionId', { collectionId })
+        .set({ amount: () => 'amount - 1' })
+        .execute();
+    }
   }
 
   async vote(id: number, user: User) {

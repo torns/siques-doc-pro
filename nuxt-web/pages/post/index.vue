@@ -364,8 +364,11 @@ export default class index extends Vue {
     }
   }
 
-  selectCollect(id: any) {
+  selectCollect(id: any, refetch: any) {
     if (this.selectedCollection !== id) {
+      this.fetchPost(id)
+    }
+    if (refetch) {
       this.fetchPost(id)
     }
   }
@@ -414,7 +417,7 @@ export default class index extends Vue {
       setTimeout(async () => {
         await this.$http.post('/posts', data)
         this.$store.commit('increLen', 'post')
-        this.selectCollect(this.selectedCollection)
+        this.selectCollect(this.selectedCollection, 'refetch')
         loading.close()
         this.$notify({
           title: '成功',
@@ -468,7 +471,7 @@ export default class index extends Vue {
   // 刷新问题
   async fetchCollect() {
     const res = await this.$http.get(
-      `/collections/${this.$store.state.auth.user.id}/write`
+      `/collections/${this.$store.state.auth.user.id}/write?type=post`
     )
     if (res.data.length !== 0) {
       this.collections = res.data

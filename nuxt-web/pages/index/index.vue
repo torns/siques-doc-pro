@@ -84,7 +84,7 @@
         </el-row>
       </div>
     </div>
-    <div class="container" style="min-height: 100vh;margin-top:-60px;">
+    <div class="container" style="min-height: 100vh;">
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
         <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4" class=" ">
           <div class="d-flex " style="flex-direction: row-reverse;">

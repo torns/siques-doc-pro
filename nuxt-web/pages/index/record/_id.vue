@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light">
+  <div class="bg-light h-100">
     <el-drawer
       :show-close="true"
       :visible.sync="drawer"
@@ -7,19 +7,39 @@
       title="所有笔记"
       size="350px"
     >
-      <div v-for="note in noteList" :key="note.id">
+      <div class="px-3">
+        <el-button type="text" @click="open">新建笔记本</el-button>
+        <el-select v-model="selectCollection" filterable placeholder="请选择">
+          <el-option
+            v-for="(item, index) in noteCollections"
+            :key="item.id"
+            :label="item.name"
+            :value="index"
+          >
+          </el-option>
+        </el-select>
+        <el-button type="text" @click="CreateNote">新建笔记</el-button>
+      </div>
+      <div v-for="(note, index) in noteList" :key="note.id">
         <div
           :class="
-            `bg-2 hover-3 ${note.id == $route.params.id ? ' boder-x' : ''}`
+            `bg-2 d-flex ai-baseline jc-between hover-3 ${
+              note.id == $route.params.id ? ' boder-x' : ''
+            }`
           "
+          style="line-height: 35px;"
         >
           <nuxt-link
             :to="`/record/${note.id}`"
             tag="li"
-            class="ellipsis-1 px-3 py-3 "
+            class="ellipsis-1 px-3  py-2 "
           >
-            {{ note.title }}</nuxt-link
-          >
+            {{ note.title }}
+          </nuxt-link>
+          <i
+            class="el-icon-delete py-2 point pr-3"
+            @click="deleteNote(note.id, index)"
+          ></i>
         </div>
       </div>
     </el-drawer>
@@ -53,16 +73,17 @@
               <el-button
                 @click="drawer = true"
                 type="primary"
+                size="small"
                 style="margin-left: 16px;"
               >
-                切换笔记
+                我的笔记本
               </el-button>
             </div>
             <markdown
               ref="markdown"
-              @submit="submitQues"
+              @submit="submitNote"
               name="发布笔记"
-              height="600px"
+              height="70vh"
             ></markdown>
           </div>
         </el-col>
@@ -89,7 +110,8 @@ export default class Index extends Vue {
     }
 
     return {
-      noteList: res.data
+      noteList: res.data,
+      noteCollections: [{ id: -1, name: '所有笔记', posts: res.data }]
     }
   }
 
@@ -107,6 +129,8 @@ export default class Index extends Vue {
   questions: any
   noteList = []
   visible: any
+  noteCollections = []
+  selectCollection = 0
 
   @Watch('model')
   doModelChanged() {
@@ -114,6 +138,12 @@ export default class Index extends Vue {
       const ref: any = this.$refs.markdown
       ref.setContent()
     }
+  }
+
+  @Watch('selectCollection')
+  doCollectChanged() {
+    const nodelist: any = this.noteCollections[this.selectCollection]
+    this.noteList = nodelist.posts
   }
 
   @Watch('dynamicTags')
@@ -133,6 +163,15 @@ export default class Index extends Vue {
 
   mounted() {
     this.fetchQue()
+    this.fetchCollection()
+  }
+
+  async fetchCollection() {
+    const res = await this.$http.get(
+      `collections/${this.$store.state.auth.user.id}/user?type=note`
+    )
+    const r = this.noteCollections.concat(res.data)
+    this.noteCollections = r
   }
 
   async fetchQue() {
@@ -186,7 +225,52 @@ export default class Index extends Vue {
     }
   }
 
-  async submitQues(data: any) {
+  async CreateNote() {
+    const now = this.$dayjs(new Date()).format('YYYY-MM-DD')
+    const collection: any = this.noteCollections[this.selectCollection]
+
+    const body = {
+      title: now,
+      collection: collection.id === -1 ? null : collection.id,
+      type: 'note',
+      tags: this.dynamicTags
+    }
+    const res = await this.$http.post(`/posts/`, body)
+    const { id } = res.data
+    this.$notify({
+      title: '成功',
+      type: 'success',
+      message: '发布成功,可以写啦'
+    })
+
+    this.$router.push(`/record/${id}`)
+    this.$store.commit('increLen', 'note')
+  }
+
+  deleteNote(id: any, index: any) {
+    this.$confirm('此操作将永久删除该笔记, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+      .then(async () => {
+        await this.$http.delete(`/posts/${id}`)
+        this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '删除成功'
+        })
+        this.noteList.splice(index, 1)
+      })
+      .catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+  }
+
+  async submitNote(data: any) {
     if (this.title) {
       // const word = wordcounts(data)
 
@@ -204,10 +288,11 @@ export default class Index extends Vue {
           message: '更新成功'
         })
       } else {
+        const collection: any = this.noteCollections[this.selectCollection]
         const body = {
           title: this.title,
           body: data,
-
+          collection: collection.id === -1 ? null : collection.id,
           type: 'note',
           tags: this.dynamicTags
         }
@@ -228,6 +313,38 @@ export default class Index extends Vue {
         message: '标题不能为空'
       })
     }
+  }
+
+  open() {
+    this.$prompt('请输入标题', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    })
+      .then(async ({ value }: any) => {
+        if (this.isUser) {
+          if (value === '') {
+            return this.$notify({
+              title: '错误',
+              type: 'error',
+              message: '名字不能为空'
+            })
+          }
+          await this.$http.post('/collections', { name: value, type: 'note' })
+          this.$notify({
+            title: '成功',
+            type: 'success',
+            message: '添加成功'
+          })
+        } else {
+          this.$store.commit('toggleLoginForm')
+        }
+      })
+      .catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
   }
 }
 </script>

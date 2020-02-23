@@ -1,5 +1,5 @@
 <template>
-  <section class="xs hero-section">
+  <section class="xm hero-section">
     <div class="card-grid">
       <a
         :href="`/blogs/${collection.id}`"
@@ -14,11 +14,15 @@
             })`
           "
           class="card__background"
-        ></div>
-        <div class="card__content">
-          <p class="card__category">专栏</p>
-          <h3 class="card__heading">{{ collection.name }}</h3>
+        >
+          <div class="bg-white card__content">
+            <p class="card__category">专栏</p>
+            <h3 class="card__heading">{{ collection.name }}</h3>
+          </div>
         </div>
+        <!-- <div class="card__content">
+         
+        </div> -->
       </a>
     </div>
   </section>
@@ -83,11 +87,15 @@ export default class Card extends Vue {
 }
 
 .card__background {
+  // background-size: cover;
+  // background-size: auto 58%;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: top;
   background-position: center;
-  border-radius: var(--spacing-l);
+  border-radius: 5px;
   bottom: 0;
-  filter: brightness(0.75) saturate(1.2) contrast(0.85);
+  filter: brightness(1) saturate(1.2) contrast(1);
   left: 0;
   position: absolute;
   right: 0;
@@ -98,7 +106,7 @@ export default class Card extends Vue {
 }
 
 .card:hover .card__background {
-  transform: scale(1.05) translateZ(0);
+  transform: scale(1.1) translateZ(0);
 }
 
 .card-grid:hover > .card:not(:hover) .card__background {
@@ -107,21 +115,30 @@ export default class Card extends Vue {
 
 .card__content {
   left: 0;
-  padding: var(--spacing-l);
+  // padding: var(--spacing-l);
+  border-radius: 0 0 5px 5px;
   position: absolute;
-  top: 0;
+  // top: 0;
+  ////
+  width: 100%;
+  height: 80px;
+  bottom: -2px;
+  position: absolute;
 }
 
 .card__category {
-  color: var(--text-light);
+  // color: var(--text-light);
+  color: black;
+  padding: 10px 10px 0 10px;
   font-size: 0.9rem;
-  margin-bottom: var(--spacing-s);
+  margin-bottom: 4px;
   text-transform: uppercase;
 }
 
 .card__heading {
-  color: var(--text-lighter);
-  font-size: 1.9rem;
+  color: black;
+  padding: 4px 10px;
+  font-size: 16px;
   text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
   line-height: 1.4;
   word-spacing: 100vw;

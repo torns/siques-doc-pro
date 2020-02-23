@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light">
+  <div class="bg-light  h-100">
     <div class="container">
       <el-row type="flex" class="pt-4">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
@@ -55,7 +55,7 @@
               ref="markdown"
               @submit="submitQues"
               name="发布提问"
-              height="600px"
+              height="70vh"
             ></markdown>
           </div>
         </el-col>

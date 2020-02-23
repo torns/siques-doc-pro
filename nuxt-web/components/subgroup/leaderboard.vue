@@ -88,15 +88,14 @@ Leaderboard
 .leaderboard h2 {
   font-size: 18px;
   color: black;
-  padding: 12px 13px 18px;
+  padding: 8px 13px 8px;
 }
 .leaderboard h2 svg {
   width: 25px;
-  height: 26px;
+  height: 20px;
   position: relative;
   top: 3px;
   margin-right: 6px;
-  vertical-align: baseline;
 }
 .leaderboard ol {
   counter-reset: leaderboard;

@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Post } from '../post/post.entity';
+import { Posttype } from 'src/core/enums/posttype.enum';
 
 @Entity()
 export class Collection {
@@ -30,6 +31,9 @@ export class Collection {
 
   @Column({ default: 0 })
   amount: Number;
+
+  @Column({ type: 'enum', enum: Posttype })
+  type: Posttype;
 
   @Column({ nullable: true })
   cover: string;

@@ -27,13 +27,13 @@ export class ActionUser {
   @ManyToOne(type => User)
   from_uid: User;
 
-  @ManyToOne(type => User, { nullable: true })
+  @ManyToOne(type => User, { nullable: true, onDelete: 'CASCADE' })
   to_uid: User;
 
-  @ManyToOne(type => Post, { nullable: true })
+  @ManyToOne(type => Post, { nullable: true, onDelete: 'CASCADE' })
   to_Post: Post;
 
-  @ManyToOne(type => Collection, { nullable: true })
+  @ManyToOne(type => Collection, { nullable: true, onDelete: 'CASCADE' })
   to_Collection: Collection;
 
   @CreateDateColumn()

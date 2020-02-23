@@ -106,10 +106,27 @@
             </div>
           </div>
           <div class="text-dark-1 ">
-            <i class="fa fa-weixin pr-2"></i>
-            <i class="fa fa-weibo pr-2"></i>
-            <i class="fa fa-github pr-2"></i>
-            <i class="fa fa-twitter pr-2"></i>
+            <el-popover
+              :close-delay="800"
+              placement="top"
+              width="130"
+              trigger="hover"
+            >
+              <img style="width:123px" src="../../static/weixin.jpg" alt="" />
+              <i
+                slot="reference"
+                class="fa fa-weixin pr-2 text-green point"
+              ></i>
+            </el-popover>
+
+            <a
+              href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1"
+            >
+              <i class="fa fa-weibo text-red pr-2"></i
+            ></a>
+            <a href="https://github.com/ericheshenghao?tab=repositories">
+              <i class="fa fa-github pr-2"></i>
+            </a>
           </div>
         </div>
       </el-col>

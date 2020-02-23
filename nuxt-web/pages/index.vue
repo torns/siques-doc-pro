@@ -1,7 +1,14 @@
 <template>
   <div :id="isHomepage ? 'home' : ''">
     <!-- <div> -->
-    <div id="app ">
+    <div
+      id="app"
+      :style="
+        $route.path.includes('/record') || $route.path.includes('/ask')
+          ? 'overflow-y: hidden;height:100vh;'
+          : ''
+      "
+    >
       <div style="height:3px;" class="bg-primary"></div>
 
       <div
@@ -9,11 +16,11 @@
         :class="isHomepage ? 'menucover ' : 'shadow-1'"
       >
         <el-menu
-          :background-color="isHomepage ? '#00000000' : ''"
+          :background-color="isHomepage ? 'transparent' : ''"
           :text-color="isHomepage ? '#ffffff' : ''"
           default-active="/"
           :active-text-color="isHomepage ? '#ffffff' : ''"
-          class="d-flex jc-between ai-center container  "
+          class="d-flex jc-between ai-center container header-menu"
           mode="horizontal"
           style="margin:0 auto;"
           router

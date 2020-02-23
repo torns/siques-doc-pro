@@ -11,11 +11,4 @@ export class Category {
 
   @Column()
   alias: string;
-
-  //一对多，一个分类对应多个文章
-  @OneToMany(
-    type => Post,
-    post => post.category,
-  )
-  posts: Post[];
 }

@@ -2,8 +2,7 @@
   <div
     id="navigation"
     class="visible-sm visible-xs animated fadeIn"
-    style="position: fixed;
-    bottom: 0;height:50px;width:100vw"
+    style="position: fixed;z-index: 2;bottom: 0;height:50px;width:100vw"
   >
     <div
       style="height:inherit"

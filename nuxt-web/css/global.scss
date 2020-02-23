@@ -57,16 +57,6 @@ body {
   opacity: 0;
 }
 
-// .el-menu-item i {
-//   color: #ffffff !important;
-// }
-
-// .el-submenu__title i {
-//   color: #ffffff !important;
-// }
-
-//
-
 .header input {
   background-color: rgba(0, 0, 0, 0.1);
 }
@@ -77,8 +67,8 @@ body {
 }
 .cover {
   background-image: url(../static/cover.png);
-  clip-path: inset(60px 0 0 0);
-  top: -60px;
+  // clip-path: inset(60px 0 0 0);
+  // top: -60px;
   position: relative;
   background-size: auto 100%;
   background-position: center;
@@ -183,7 +173,7 @@ li {
 
 @media (max-width: 992px) {
   .xm {
-    display: none;
+    display: none !important;
   }
   .xm-flex-wrap {
     flex-wrap: wrap;

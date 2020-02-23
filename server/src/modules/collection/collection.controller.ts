@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   Put,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CollectionService } from './collection.service';
@@ -34,19 +35,25 @@ export class CollectionController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async showCollection(@User() user: UserEntity) {
-    return await this.CollectionService.showCollection(user.id);
+  async showCollection(@User() user: UserEntity, @Query('type') type: any) {
+    return await this.CollectionService.showCollection(user.id, type);
   }
 
   @Get(':id/write')
-  async fetchCollection(@Param('id', ParseIntPipe) id: number) {
-    return await this.CollectionService.showCollection(id);
+  async fetchCollection(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('type') type: any,
+  ) {
+    return await this.CollectionService.showCollection(id, type);
   }
 
   //这里传入的是用户id
   @Get(':id/user')
-  async getUserCollection(@Param('id', ParseIntPipe) id: number) {
-    return await this.CollectionService.getUserCollection(id);
+  async getUserCollection(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('type') type: any,
+  ) {
+    return await this.CollectionService.getUserCollection(id, type);
   }
 
   // 展示推荐专栏

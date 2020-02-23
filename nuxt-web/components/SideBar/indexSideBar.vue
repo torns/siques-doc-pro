@@ -1,14 +1,16 @@
 <template>
   <div class="sidebar pl-2">
-    <div class="bg-info border-1">
-      <div
-        style="margin:0 auto;"
-        class="notice d-flex ai-center text-black fs-sm"
-      >
-        <div class="fs-xxs px-2 py-2 lh-2">
-          欢迎您访问本站点！ 如果本站解决了您的问题，请给个赞！
+    <div class="bg-info border-1"></div>
+    <div>
+      <label>
+        <input type="checkbox" />
+        <div class="card shadow-1">
+          <div class="front">
+            欢迎您访问本站点！如果解决了您的问题的话，请一定给个赞哦！
+          </div>
+          <div class="back">球球:943452349</div>
         </div>
-      </div>
+      </label>
     </div>
 
     <div class="hotTag">
@@ -161,7 +163,7 @@ export default class SideBar extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tiles {
   //   top: 50%;
   //   left: 50%;
@@ -271,7 +273,7 @@ export default class SideBar extends Vue {
     }
   }
   &:nth-child(1) .box:before {
-    content: '\f09a';
+    content: '\f198';
     background: #3f51b5;
   }
   &:nth-child(1) .box:after {
@@ -375,5 +377,76 @@ export default class SideBar extends Vue {
   &:nth-child(15) .box:after {
     background: #cc0f15;
   }
+  &:nth-child(16) .box:before {
+    content: '\f179';
+    background: #000000;
+  }
+  &:nth-child(16) .box:after {
+    background: #000000;
+  }
+}
+////
+
+label {
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  display: block;
+  width: 265px;
+  height: 130px;
+  cursor: pointer;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: all 600ms;
+  transition: all 600ms;
+  z-index: 20;
+}
+
+.card div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #fcf8e3;
+  text-align: center;
+  line-height: 30px;
+  padding: 37px 10px 0 10px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 2px;
+}
+
+.card .back {
+  background: #222;
+  color: #fff;
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+
+label:hover .card {
+  -webkit-transform: rotateX(20deg);
+  transform: rotateX(20deg);
+  box-shadow: 0 20px 20px rgba(50, 50, 50, 0.2);
+}
+
+input {
+  display: none;
+}
+
+:checked + .card {
+  transform: rotateX(180deg);
+  -webkit-transform: rotateX(180deg);
+}
+
+label:hover :checked + .card {
+  transform: rotateX(160deg);
+  -webkit-transform: rotateX(160deg);
+  box-shadow: 0 20px 20px rgba(255, 255, 255, 0.2);
 }
 </style>

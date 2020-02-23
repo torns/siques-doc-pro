@@ -79,13 +79,6 @@ export class Post {
   )
   user: User;
 
-  //多个文章对应一个分类
-  @ManyToOne(
-    type => Category,
-    category => category.posts,
-  )
-  category: Category;
-
   // 多个文章对应一个标签
   @ManyToMany(
     type => Tag,

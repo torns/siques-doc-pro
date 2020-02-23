@@ -96,11 +96,11 @@ export default class PageComponent extends Vue {
 
   async fetchCollect() {
     if (this.id) {
-      const res = await this.$http.get(`/collections/${this.id}/user`)
+      const res = await this.$http.get(`/collections/${this.id}/user?type=post`)
       this.collections = res.data
     } else {
       const res = await this.$http.get(
-        `/collections/${this.$store.state.auth.user.id}/user`
+        `/collections/${this.$store.state.auth.user.id}/user?type=post`
       )
       this.collections = res.data
     }

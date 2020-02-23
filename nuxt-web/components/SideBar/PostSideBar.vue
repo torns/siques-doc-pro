@@ -67,7 +67,7 @@
     <div id="toc">
       <div
         class="d-none d-lg-block  bg-white py-3 shadow-2"
-        style="margin-top:2.7em;max-height: calc(100vh - 120px); min-height:100px;width:300px"
+        style="margin-top:1.9em;max-height: calc(100vh - 120px); min-height:100px;width:300px"
       >
         <div class="title fs-xl pl-2 pb-2" style="font-weight:600">目录</div>
         <div style="overflow: hidden; overflow-y: auto;">

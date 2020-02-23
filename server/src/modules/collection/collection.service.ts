@@ -21,12 +21,14 @@ export class CollectionService {
       ...data,
     });
   }
-  async showCollection(id: number) {
+  async showCollection(id: number, type: any) {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('userId=:id', { id })
+      .andWhere('collection.type=:type', { type })
       .getMany();
   }
 
+  // 推荐集合
   async getRecommend() {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .limit(4)
@@ -34,9 +36,10 @@ export class CollectionService {
       .getMany();
   }
 
-  async getUserCollection(id: number) {
+  async getUserCollection(id: number, type: any) {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('collection.userId=:id', { id })
+      .andWhere('collection.type=:type', { type })
       .leftJoinAndSelect('collection.posts', 'posts')
       .getMany();
   }

@@ -71,7 +71,7 @@ export class PostController {
     return await this.postService.showPost(id);
   }
 
-  // 获取用户所有笔记
+  // 获取用户所有未分类的笔记
   @Get(':id/note')
   async showUserNote(@Param('id', ParseIntPipe) id: number) {
     return await this.postService.showUserNote(id);
@@ -108,6 +108,7 @@ export class PostController {
   @UseGuards(AuthGuard())
   async delete(@Param() id: string, @Query() data: any) {
     const { collectionId } = data;
+    console.log(data);
     await this.postService.delete(id, parseInt(collectionId));
   }
 

@@ -39,7 +39,7 @@ export class Notification {
   from_uid: User;
 
   // from_uid评论to_Post
-  @ManyToOne(type => Post, { nullable: true })
+  @ManyToOne(type => Post, { nullable: true, onDelete: 'CASCADE' })
   to_Post: Post;
 
   @Column('tinyint', { default: 0 })

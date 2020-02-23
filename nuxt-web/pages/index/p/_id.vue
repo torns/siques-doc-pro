@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition
+    <!-- <transition
       enter-active-class="animated slideInDown"
       leave-active-class="animated slideOutUp"
     >
@@ -11,7 +11,7 @@
       >
         <div class="font-bold ">{{ post.title }}</div>
       </div>
-    </transition>
+    </transition> -->
     <div class="bg-light">
       <sq-bookmark ref="bookmark"></sq-bookmark>
       <div class="container pt-4 pb-3 animated fadeIn">
