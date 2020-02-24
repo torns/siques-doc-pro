@@ -337,7 +337,7 @@ export default class MyPage extends Vue {
       link: '/blogs'
     }
   ]
-  category: string = 'hot'
+  category: string = 'new'
   // 轮播图跳转
   linkTo() {
     const ref: any = this.$refs.carousel
@@ -363,10 +363,10 @@ export default class MyPage extends Vue {
 
   links = [
     {
-      name: '近期热门',
-      alias: 'hot',
-      sort: 'liked',
-      icon: 'thumbs-up',
+      name: '最近更新',
+      alias: 'new',
+      sort: 'created',
+      icon: 'compass',
       color: 'dark'
     },
     {
@@ -378,10 +378,10 @@ export default class MyPage extends Vue {
       color: 'dark'
     },
     {
-      name: '最近更新',
-      alias: 'new',
-      sort: 'created',
-      icon: 'compass',
+      name: '近期热门',
+      alias: 'hot',
+      sort: 'liked',
+      icon: 'thumbs-up',
       color: 'dark'
     }
   ]

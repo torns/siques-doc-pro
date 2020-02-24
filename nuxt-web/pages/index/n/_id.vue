@@ -99,7 +99,9 @@ export default class Note extends Vue {
     const http = Vue.prototype.$http
 
     const res = await http.get(`/posts/${params.id}`)
-    res.data.body = md.render(res.data.body)
+    if (res.data.body !== null) {
+      res.data.body = md.render(res.data.body)
+    }
 
     return {
       note: res.data

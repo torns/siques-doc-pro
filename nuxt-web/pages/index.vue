@@ -309,19 +309,22 @@
               <el-button type="text">创建</el-button>
             </template>
 
-            <el-menu-item :span="4" class="write " index="/post">
+            <el-menu-item class="write " index="/post">
               <span to="/post">
-                <i class="iconfont  pr-3  pl-3 icon-nav2 fs-xm"></i>
+                <i
+                  class="iconfont pl-3 icon-nav2 fs-xm"
+                  style="padding-right:11px"
+                ></i>
                 写文章</span
               >
             </el-menu-item>
-            <el-menu-item :span="4" class="write " index="/ask">
+            <el-menu-item class="write " index="/ask">
               <span to="/ask">
                 <i class="iconfont pr-3  pl-3 icon-iconawsquestion fs-xm"></i
                 >提问题
               </span>
             </el-menu-item>
-            <el-menu-item :span="4" class="write " index="/record">
+            <el-menu-item class="write " index="/record">
               <span to="/record">
                 <i class="iconfont  pr-3 pl-3 icon-note fs-xm"></i>记笔记
               </span>

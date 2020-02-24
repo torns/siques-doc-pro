@@ -81,7 +81,10 @@ export default class PageComponent extends Vue {
   async fetch(page?: any, limit?: any) {
     this.page = page
     if (this.id) {
-      const res = await this.$http.get(`/posts/${this.id}/user?type=post`)
+      const res = await this.$http.get(
+        `/posts/${this.id}/user?type=post&page=${page || ''}`
+      )
+      this.len = res.data[1]
       this.posts = res.data[0]
     } else {
       const link = `/posts/${

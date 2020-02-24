@@ -17,7 +17,7 @@
             >{{ post.title }}</router-link
           >
           <div v-if="collection" class="mr-4 hover-4 text-primary point">
-            {{ post.collection.name }}
+            {{ post.collection ? post.collection.name : '' }}
           </div>
           <div>{{ $dayjs(post.created).format('YYYY-MM-DD') }}</div>
         </div>
@@ -82,18 +82,6 @@ export default class ListPanel extends Vue {
     }
   }
 
-  // get PostLen(): any {
-  //   return this.posts
-  // }
-
-  // @Watch('posts')
-  // isShow(newVal: any) {
-  //   if (newVal.length === 0) {
-  //     this.show = true
-  //   } else {
-  //     this.show = false
-  //   }
-  // }
   handleCurrentChange(val: any) {
     const page = val
     this.$emit('pageChange', page)
