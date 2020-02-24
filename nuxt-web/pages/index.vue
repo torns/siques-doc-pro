@@ -347,7 +347,15 @@
       </div>
 
       <div class="h-100">
-        <router-view :key="$route.path"></router-view>
+        <transition
+          appear
+          mode="out-in"
+          :duration="{ enter: 500, leave: 500 }"
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+        >
+          <router-view :key="$route.path"></router-view>
+        </transition>
       </div>
     </div>
 
