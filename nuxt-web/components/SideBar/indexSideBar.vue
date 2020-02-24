@@ -21,10 +21,12 @@
         </div>
       </div>
 
-      <div v-if="hotTags != []" class="tiles">
+      <div class="tiles">
         <div>
           <div v-for="(item, index) in hotTags" :key="index" class="col">
-            <a :href="`/t/${item.id}`"></a>
+            <a :href="`/t/${item.id}`"
+              ><span style="opacity: 0;">{{ item.name }}</span></a
+            >
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
@@ -95,7 +97,7 @@
                 评:
                 <router-link
                   :to="`/p/${comment.post.id}`"
-                  tag="span"
+                  tag="a"
                   class="hoverlink point"
                   >{{ comment.post.title }}</router-link
                 >
@@ -128,7 +130,7 @@ import hover from './hover.js'
 @Component({})
 export default class SideBar extends Vue {
   hotComments: any = this.$attrs.hotComments
-  hotTags = this.tags
+  hotTags = this.$attrs.hotTags
   allSiteData: any = {}
   siteDatas = [
     { title: '文章总数:', alias: 'post', classifier: '篇' },
@@ -141,19 +143,9 @@ export default class SideBar extends Vue {
     { title: '注册用户:', alias: 'user', classifier: '人' }
   ]
 
-  get tags() {
-    return this.$attrs.hotTags
-  }
-
   mounted() {
-    this.fetchHotComment()
     this.fetchAll()
     hover(this.hotTags)
-  }
-
-  async fetchHotComment() {
-    const res = await this.$http.get('comments')
-    this.hotComments = res.data
   }
 
   async fetchAll() {

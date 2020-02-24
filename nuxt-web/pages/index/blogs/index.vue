@@ -54,7 +54,7 @@
           :lg="6"
           :xl="6"
           class="hidden-sm-and-down pl-2"
-          >123</el-col
+          >还没修改的侧边栏</el-col
         >
       </el-row>
     </div>
@@ -86,7 +86,7 @@ export default class index extends Vue {
     const link =
       `/posts/all?limit=10&page=1&sort=views` +
       (Taglist ? `&taglist=${List}` : '') +
-      `&listId=true&collection=true`
+      `&listId=true&collection=true&type=post`
     const res = await http.get(link)
 
     return {
@@ -118,7 +118,7 @@ export default class index extends Vue {
   handleCurrentChange(val: any) {
     // currentPage =val
     this.page = val
-    this.fetchPost()
+
     window.scrollTo(0, 0)
   }
 

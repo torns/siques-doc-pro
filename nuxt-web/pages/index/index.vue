@@ -205,7 +205,7 @@
                           type="primary"
                           class="mt-2 mr-2 hover-4 hover-2 point "
                         >
-                          <router-link :to="`/t/${tag.id}`">{{
+                          <router-link tag="a" :to="`/t/${tag.id}`">{{
                             tag.name
                           }}</router-link>
                         </el-tag>

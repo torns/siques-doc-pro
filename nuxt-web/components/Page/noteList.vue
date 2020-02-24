@@ -11,7 +11,7 @@
           :key="index"
           class="py-2"
         >
-          <nuxt-link :to="`/blogs/${collection.id}`" tag="div">
+          <nuxt-link :to="`/blogs/${collection.id}`" tag="a">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
             </div></nuxt-link
@@ -19,7 +19,6 @@
 
           <div class="d-flex fs-xm ">
             <div class="pr-2">{{ collection.interest }} 人关注</div>
-            <div>{{ collection.amount }}篇文章</div>
           </div>
         </div>
       </ul>
