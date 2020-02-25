@@ -118,7 +118,7 @@ export default class index extends Vue {
   handleCurrentChange(val: any) {
     // currentPage =val
     this.page = val
-
+    this.fetchPost()
     window.scrollTo(0, 0)
   }
 

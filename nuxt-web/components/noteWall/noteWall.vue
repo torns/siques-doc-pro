@@ -7,9 +7,7 @@
         v-for="(note, index) in hotNotebooks"
         :to="`blogs/${note.id}`"
         :key="index"
-        :style="
-          `--image: url('http://www.jq22.com/demo/jqueryCorner201709040902/images/01.png'); --angle: -5deg; --x: 5%; --y: 15%; --caption: '${note.name}`
-        "
+        :style="`${link[index].style} --caption: '${note.name}`"
       ></router-link>
     </div>
   </div>
@@ -20,6 +18,20 @@ import { Vue, Component } from 'nuxt-property-decorator'
 @Component({})
 export default class noteWall extends Vue {
   hotNotebooks = this.$attrs.hotNotebooks
+  link = [
+    {
+      style:
+        "--image: url('http://www.jq22.com/demo/jqueryCorner201709040902/images/01.png'); --angle: -5deg; --x: 5%; --y: 15%;"
+    },
+    {
+      style:
+        "--image: url('http://www.jq22.com/demo/jqueryCorner201709040902/images/02.png'); --angle: -1deg; --x: -10%; --y: -20%;"
+    },
+    {
+      style:
+        "--image: url('http://www.jq22.com/demo/jqueryCorner201709040902/images/03.png'); --angle: -4deg; --x: -20%; --y: 5%;"
+    }
+  ]
 }
 </script>
 
