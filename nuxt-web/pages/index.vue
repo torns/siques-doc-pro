@@ -18,8 +18,8 @@
         <el-menu
           :background-color="isHomepage ? 'transparent' : ''"
           :text-color="isHomepage ? '#ffffff' : ''"
-          default-active="/"
           :active-text-color="isHomepage ? '#ffffff' : ''"
+          default-active="/"
           class="d-flex jc-between ai-center container header-menu"
           mode="horizontal"
           style="margin:0 auto;"
@@ -348,9 +348,9 @@
 
       <div class="h-100">
         <transition
+          :duration="{ enter: 500, leave: 500 }"
           appear
           mode="out-in"
-          :duration="{ enter: 500, leave: 500 }"
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
@@ -869,7 +869,6 @@ export default class Home extends Vue {
         this.$store.commit('UserExist')
         this.$store.commit('closeLoginForm')
         this.LoginDto.account = ''
-        // this.fetchNotify()
       } else {
         // eslint-disable-next-line
         console.log('error submit!!')

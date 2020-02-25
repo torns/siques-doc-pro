@@ -8,7 +8,7 @@
       size="350px"
     >
       <div class="px-3">
-        <el-button type="text" @click="open">新建笔记本</el-button>
+        <el-button @click="open" type="text">新建笔记本</el-button>
         <el-select v-model="selectCollection" filterable placeholder="请选择">
           <el-option
             v-for="(item, index) in noteCollections"
@@ -18,7 +18,7 @@
           >
           </el-option>
         </el-select>
-        <el-button type="text" @click="CreateNote">新建笔记</el-button>
+        <el-button @click="CreateNote" type="text">新建笔记</el-button>
       </div>
       <div v-for="(note, index) in noteList" :key="note.id">
         <div
@@ -37,8 +37,8 @@
             {{ note.title }}
           </nuxt-link>
           <i
-            class="el-icon-delete py-2 point pr-3"
             @click="deleteNote(note.id, index)"
+            class="el-icon-delete py-2 point pr-3"
           ></i>
         </div>
       </div>

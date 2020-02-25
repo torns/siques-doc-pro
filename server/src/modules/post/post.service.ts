@@ -362,16 +362,6 @@ export class PostService {
     return res;
   }
 
-  // async liked_posts(id: number) {
-
-  //   return await this.postRepository
-  //     .createQueryBuilder("post")
-  //     .where('post.id = :id', { id })
-  //     .leftJoinAndSelect("post.likes", "likes")
-  //     .innerJoinAndSelect("post.user", "user")
-  //     .getMany()
-
-  // }
   async getbody() {
     const querryBuilder = await this.postRepository.createQueryBuilder('post');
 

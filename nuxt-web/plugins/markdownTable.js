@@ -15,8 +15,6 @@ export default () => {
       post_toc.append(new_a)
     }
     $('nav a').wrap('<li></li>')
-    // 绑定滚动监听
-    // $('body').scrollspy({ target: '#post-toc' })
   })
 
   var toc_position = $('#toc').offset().top

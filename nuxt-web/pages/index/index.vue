@@ -46,18 +46,18 @@
 
                   <div class="text-white text-center pt-3 fs-md ">
                     热门搜索：<span
-                      class="point hoverlink"
                       @click="$router.push(`/search/vue`)"
+                      class="point hoverlink"
                       >Vue
                     </span>
                     <span
-                      class="point hoverlink"
                       @click="$router.push(`/search/nuxtjs`)"
+                      class="point hoverlink"
                       >nuxtjs</span
                     >
                     <span
-                      class="point hoverlink"
                       @click="$router.push(`/search/nestjs`)"
+                      class="point hoverlink"
                       >nestjs</span
                     >
                   </div>
@@ -205,7 +205,7 @@
                           type="primary"
                           class="mt-2 mr-2 hover-4 hover-2 point "
                         >
-                          <router-link tag="a" :to="`/t/${tag.id}`">{{
+                          <router-link :to="`/t/${tag.id}`" tag="a">{{
                             tag.name
                           }}</router-link>
                         </el-tag>
@@ -305,7 +305,9 @@ export default class MyPage extends Vue {
   async asyncData() {
     // 在 @component 中不可以写 this.$http //
     const http = Vue.prototype.$http
-    const res = await http.get('/posts/all?limit=10&page=1&type=post')
+    const res = await http.get(
+      '/posts/all?limit=20&page=1&type=post&sort=created'
+    )
     const res1 = await http.get('tags/1/hot')
     const res2 = await http.get('comments')
     return {
@@ -316,7 +318,7 @@ export default class MyPage extends Vue {
     }
   }
   page = 1
-  count = 10
+  count = 20
   maxcount: number = 0
   loading = false
   sort = 'liked'
@@ -475,7 +477,7 @@ export default class MyPage extends Vue {
     list = listIntercep(this.taglist)
 
     const link =
-      `/posts/all?limit=10&page=${this.page}&sort=${this.sort}` +
+      `/posts/all?limit=20&page=${this.page}&sort=${this.sort}` +
       (this.tag ? `&tags=${this.tag}` : '') +
       (this.taglist ? `&taglist=${list}` : '') +
       `&type=post`
@@ -499,13 +501,13 @@ export default class MyPage extends Vue {
     this.taglist = taglist
     this.sort = sort
     this.page = 1
-    this.count = 10
+    this.count = 20
     let list = ''
     list = listIntercep(this.taglist)
 
     // console.log(list)
     const link =
-      `/posts/all?limit=10&page=${this.page}` +
+      `/posts/all?limit=20&page=${this.page}` +
       (sort ? `&sort=${sort}` : '') +
       (tag ? `&tags=${tag}` : '') +
       (taglist ? `&taglist=${list}` : '') +
@@ -514,10 +516,6 @@ export default class MyPage extends Vue {
     const res = await this.$http.get(link)
     this.maxcount = res.data[1]
     this.posts = res.data[0]
-  }
-
-  toggleBanner() {
-    this.$store.commit('toggleBanner')
   }
 }
 </script>

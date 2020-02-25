@@ -1,17 +1,5 @@
 <template>
   <div>
-    <!-- <transition
-      enter-active-class="animated slideInDown"
-      leave-active-class="animated slideOutUp"
-    >
-      <div
-        v-if="!direction"
-        class="bg-white w-100 d-flex ai-center jc-center shadow-1"
-        style="position: fixed;top: 0;height:60px;z-index:1"
-      >
-        <div class="font-bold ">{{ post.title }}</div>
-      </div>
-    </transition> -->
     <div class="bg-light">
       <sq-bookmark ref="bookmark"></sq-bookmark>
       <div class="container pt-4 pb-3">
@@ -642,9 +630,6 @@ export default class Post extends Vue {
   // 当前用户id
   // 被回复用户id:from_uid
   async sendReply(commentId: any, fromUid: any) {
-    // console.log(commentId);
-    // console.log(this.$store.state.auth.user.id);
-    // console.log(from_uid);
     if (this.isUser) {
       const data = {
         parent_id: commentId,
