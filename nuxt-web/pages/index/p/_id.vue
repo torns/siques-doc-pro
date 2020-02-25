@@ -414,6 +414,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 import mediumZoom from 'medium-zoom'
 import mdTable from '../../../plugins/markdownTable'
+import copyRight from '../../../plugins/copyright'
 import { clock, getDirection, hljs } from '../../../plugins/utils.js'
 
 import md from '../../../plugins/markdown'
@@ -482,6 +483,7 @@ export default class Post extends Vue {
   mounted() {
     this.fetchpost(this.id)
     mdTable()
+    copyRight(this.post.user.name)
     this.fetchComment()
     this.scrollDirection()
     this.getDierction()
