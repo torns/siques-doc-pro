@@ -30,13 +30,24 @@
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
-            <div class="box"></div>
+            <div class="box" :style="`--card: '${item.name}`"></div>
           </div>
         </div>
       </div>
     </div>
-
     <div>
+      <div class="d-flex jc-between py-3" style="margin-bottom:-37px">
+        <div>
+          <i class="el-icon-s-management fs-lg text-green pr-2 "></i>笔记本本
+        </div>
+        <div class="text-primary">
+          <router-link :to="`/tags`" tag="li">更多</router-link>
+        </div>
+      </div>
+      <noteWall :hotNotebooks="hotNotebooks"></noteWall>
+    </div>
+
+    <div style="margin-top:-37px">
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-fire text-orange pr-2 fs-lg"></i> 精彩评论</div>
         <div class="text-primary">更多</div>
@@ -126,11 +137,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import hover from './hover.js'
-@Component({})
+import noteWall from '../noteWall/noteWall.vue'
+// import hover from './hover.js'
+
+@Component({
+  components: { noteWall }
+})
 export default class SideBar extends Vue {
   hotComments: any = this.$attrs.hotComments
   hotTags = this.$attrs.hotTags
+  hotNotebooks = this.$attrs.hotNotebooks
   allSiteData: any = {}
   siteDatas = [
     { title: '文章总数:', alias: 'post', classifier: '篇' },
@@ -145,7 +161,7 @@ export default class SideBar extends Vue {
 
   mounted() {
     this.fetchAll()
-    hover(this.hotTags)
+    // hover(this.hotTags)
   }
 
   async fetchAll() {
@@ -247,7 +263,7 @@ export default class SideBar extends Vue {
       backface-visibility: hidden;
     }
     &:after {
-      content: attr(data-afterContent);
+      content: var(--card);
       position: absolute;
       width: 100%;
       height: 100%;

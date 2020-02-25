@@ -36,6 +36,15 @@ export class CollectionService {
       .getMany();
   }
 
+  // 推荐笔记本
+  async getNote(type: any, limit: any) {
+    return await this.CollectionRepository.createQueryBuilder('collection')
+      .limit(limit)
+      .orderBy('collection.interest', 'DESC')
+      .where('collection.type=:type', { type })
+      .getMany();
+  }
+
   async getUserCollection(id: number, type: any) {
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('collection.userId=:id', { id })

@@ -282,6 +282,7 @@
           <sq-indexBar
             :hotTags="hotTags"
             :hotComments="hotComments"
+            :hotNotebooks="hotNotebooks"
           ></sq-indexBar>
         </el-col>
       </el-row>
@@ -310,11 +311,13 @@ export default class MyPage extends Vue {
     )
     const res1 = await http.get('tags/1/hot')
     const res2 = await http.get('comments')
+    const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
       posts: res.data[0],
       maxcount: res.data[1],
       hotTags: res1.data,
-      hotComments: res2.data
+      hotComments: res2.data,
+      hotNotebooks: res3.data
     }
   }
   page = 1

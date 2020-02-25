@@ -62,6 +62,15 @@ export class CollectionController {
     return await this.CollectionService.getRecommend();
   }
 
+  // 展示推荐笔记本
+  @Get(':id/note')
+  async getNote(
+    @Query('type') type: any,
+    @Query('limit', ParseIntPipe) limit: number,
+  ) {
+    return await this.CollectionService.getNote(type, limit);
+  }
+
   //上传封面
   @Post(':id/cover')
   @UseInterceptors(FileInterceptor('cover'))
