@@ -34,10 +34,10 @@ import { Vue, Component } from 'nuxt-property-decorator'
 export default class Card extends Vue {
   collections = this.$attrs.data
   imgLink = [
-    { link: 'https://picsum.photos/id/200/282/423' },
-    { link: 'https://picsum.photos/id/201/282/423' },
-    { link: 'https://picsum.photos/id/202/282/423' },
-    { link: 'https://picsum.photos/id/203/282/423' }
+    { link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/4.jpg' },
+    { link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/6.jpg' },
+    { link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/7.jpg' },
+    { link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/8.jpg' }
   ]
 }
 </script>
