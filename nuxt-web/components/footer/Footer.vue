@@ -120,6 +120,12 @@
             </el-popover>
 
             <a
+              href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes"
+            >
+              <i class="fa fa-qq text-blue pr-2"></i
+            ></a>
+
+            <a
               href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1"
             >
               <i class="fa fa-weibo text-red pr-2"></i

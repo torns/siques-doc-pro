@@ -276,6 +276,15 @@ import tinymce from '~/components/Tinymce/Tinymce.vue'
   components: { tinymce, 'sq-tag': Tag }
 })
 export default class index extends Vue {
+  asyncData({ store }: any) {
+    // 在 @component 中不可以写 this.$http //
+
+    return {
+      selectedCollection: store.state.selectedCollection || '',
+      selectedPost: store.state.selectedPost || ''
+    }
+  }
+
   head() {
     return {
       title: '写文章'
@@ -366,6 +375,7 @@ export default class index extends Vue {
 
   selectCollect(id: any, refetch: any) {
     if (this.selectedCollection !== id) {
+      this.$store.commit('setCollection', id)
       this.fetchPost(id)
     }
     if (refetch) {
@@ -373,9 +383,11 @@ export default class index extends Vue {
     }
   }
 
-  async selectPost(id: any) {
-    if (this.selectedPost !== id) {
+  async selectPost(id: any, init?: any) {
+    if (this.selectedPost !== id || init) {
       this.selectedPost = id
+
+      this.$store.commit('setPost', id)
       const res = await this.$http.get(`/posts/${id}?type=edit`)
       this.dynamicTags = res.data.tags
       this.selectEditor = res.data.editor
@@ -475,7 +487,15 @@ export default class index extends Vue {
     )
     if (res.data.length !== 0) {
       this.collections = res.data
-      this.selectedCollection = res.data[0].id
+
+      if (this.selectedCollection === null) {
+        this.selectedCollection = res.data[0].id
+      }
+
+      if (this.selectedPost !== '') {
+        this.selectPost(this.selectedPost, true)
+      }
+
       // 根据集合id拿到post的id
       this.fetchPost(this.selectedCollection)
     }

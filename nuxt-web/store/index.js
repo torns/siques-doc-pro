@@ -1,18 +1,23 @@
-// const cookieparser = process.server ? require('cookieparser') : undefined
-
 export const state = () => ({
   UserNotExist: true,
   loginFormVisible: false,
   isValid: '',
+  selectedCollection: '',
+  selectedPost: '',
   time: 0,
   tags: [],
-  showBanner: true,
   bakendCode: ''
 })
 
 export const mutations = {
   setCode(state, data) {
     state.bakendCode = data
+  },
+  setCollection(state, data) {
+    state.selectedCollection = data
+  },
+  setPost(state, data) {
+    state.selectedPost = data
   },
   setTime(state, data) {
     state.time = data
@@ -94,11 +99,7 @@ export const mutations = {
   }
 }
 
-export const getters = {
-  getPostLen(state) {
-    return state.user.postLength
-  }
-}
+export const getters = {}
 
 // 验证
 

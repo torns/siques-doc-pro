@@ -78,7 +78,7 @@ Leaderboard
   left: 0px;
   //   -webkit-transform: translate(-50%, -50%);
   //   transform: translate(-50%, -50%);
-  z-index: 1;
+
   width: 300px;
   max-height: 308px;
   background: linear-gradient(to bottom, #ffffff, #c5c5c5);
@@ -102,7 +102,7 @@ Leaderboard
 }
 .leaderboard ol li {
   position: relative;
-  z-index: 1;
+
   font-size: 14px;
   counter-increment: leaderboard;
   padding: 18px 10px 18px 50px;
