@@ -18,6 +18,12 @@ export default {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content:
+          '思趣,开发者社区,技术新闻资讯,技术问答社区,技术博客专栏,技术笔记,技术号,技术圈,技术直播,在线编程,开源社区,开源项目,程序员,云计算,AI,区块链,前端,后端,小程序,安全,运维,软件开发,编程,cto,javascript,php,python,java,ios,android'
       }
     ],
 
