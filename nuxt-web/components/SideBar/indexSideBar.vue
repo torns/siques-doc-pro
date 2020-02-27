@@ -30,7 +30,7 @@
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
             <a :href="`/t/${item.id}`"></a>
-            <div class="box" :style="`--card: '${item.name}`"></div>
+            <div :style="`--card: '${item.name}`" class="box"></div>
           </div>
         </div>
       </div>

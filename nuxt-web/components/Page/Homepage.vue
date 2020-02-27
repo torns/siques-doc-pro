@@ -282,7 +282,7 @@ export default class MyHomepage extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .el-avatar--circle {
   background-color: white !important;
 }

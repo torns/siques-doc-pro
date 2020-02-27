@@ -94,15 +94,7 @@
     display: flex;"
             >
               <li
-                @click="
-                  handleCategory(
-                    link.alias,
-                    link.sort,
-                    link.tag,
-                    link.taglist,
-                    link.listId
-                  )
-                "
+                @click="handleCategory(link)"
                 v-for="link in links"
                 :key="link.alias"
                 :class="
@@ -122,9 +114,7 @@
               </li>
               <div class="pl-3 py-2 xm ">技术频道</div>
               <li
-                @click="
-                  handleCategory(link.alias, link.sort, link.tag, link.taglist)
-                "
+                @click="handleCategory(link)"
                 v-for="link in techChanel"
                 :key="link.alias"
                 :class="
@@ -159,7 +149,7 @@
                 @click.native="linkTo"
                 height="150px"
                 style="border-radius: 5px;"
-                class="point"
+                class="point xm"
               >
                 <el-carousel-item
                   v-for="(item, index) in carousel"
@@ -175,7 +165,7 @@
                 </el-carousel-item>
               </el-carousel>
 
-              <div class="pt-3">为你推荐</div>
+              <div class="pt-3">{{ name }}</div>
 
               <el-divider></el-divider>
 
@@ -343,6 +333,7 @@ export default class MyPage extends Vue {
     }
   ]
   category: string = 'new'
+  name: string = '最近更新'
   // 轮播图跳转
   linkTo() {
     const ref: any = this.$refs.carousel
@@ -442,16 +433,16 @@ export default class MyPage extends Vue {
     },
     {
       name: 'Nuxt',
-      alias: 'nuxtjs',
-      tag: 'nuxtjs',
+      alias: 'nuxt.js',
+      tag: 'nuxt.js',
       sort: 'created',
       icon: 'nuxt-dot-js',
       color: 'green'
     },
     {
       name: 'Nest',
-      alias: 'nestjs',
-      tag: 'nestjs',
+      alias: 'nest.js',
+      tag: 'nest.js',
       sort: 'created',
       icon: 'file_type_nestjs',
       color: 'red'
@@ -492,14 +483,10 @@ export default class MyPage extends Vue {
     }, 500)
   }
 
-  async handleCategory(
-    alias: any,
-    sort: any,
-    tag: any,
-    taglist: any,
-    listId: any
-  ) {
+  async handleCategory(links: any) {
+    const { alias, name, listId, tag, taglist, sort } = links
     this.category = alias
+    this.name = name
     this.tag = tag
     this.taglist = taglist
     this.sort = sort

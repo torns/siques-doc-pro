@@ -2,12 +2,12 @@
   <div>
     <div class="card-container">
       <router-link
-        class="card point"
-        tag="a"
         v-for="(note, index) in hotNotebooks"
         :to="`blogs/${note.id}`"
         :key="index"
         :style="`${link[index].style} --caption: '${note.name}`"
+        class="card point"
+        tag="a"
       ></router-link>
     </div>
   </div>
