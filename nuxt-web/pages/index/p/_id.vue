@@ -105,7 +105,9 @@
                         </router-link>
                       </li>
                     </ul>
-                    <div class="text-gray fs-xm">阅读约2分钟</div>
+                    <div class="text-gray fs-xm">
+                      阅读约{{ Math.ceil(post.counts / 275) }}分钟
+                    </div>
                   </div>
 
                   <div

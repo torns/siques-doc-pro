@@ -33,9 +33,9 @@ export class FileService {
     const now = new Date();
     const date = dayjs(now).format('YYYY-MM-DD');
 
-    //上传图片
+    //文章上传图片
     const res = await client.put(
-      id + '/' + date + '/' + file.originalname,
+      'post/' + id + '/' + date + '/' + file.originalname,
       file.buffer,
     );
     return res;

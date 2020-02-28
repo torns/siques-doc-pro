@@ -67,16 +67,33 @@ export default class MarkDown extends Vue {
       headers: { 'Content-Type': 'multipart/form-data' }
     }
 
-    const res = await this.$http.post('/files/ali', params, config)
-    let url
-    if (file.type !== 'image/gif') {
-      url = res.data.url + '?x-oss-process=style/' + 'post-picture'
-    } else {
-      url = res.data.url
-    }
+    const loading = this.$loading({
+      target: '#editorSection',
+      lock: true,
+      text: '上传中',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+    let res
+    await setTimeout(async () => {
+      res = await this.$http.post('/files/ali', params, config)
 
-    this.addImgToMd(url)
-    target.value = '' // 这个地方清除一下不然会有问题
+      let url
+      if (file.type !== 'image/gif') {
+        url = res.data.url + '?x-oss-process=style/' + 'post-picture'
+      } else {
+        url = res.data.url
+      }
+
+      this.addImgToMd(url)
+      target.value = '' // 这个地方清除一下不然会有问题
+      loading.close()
+      this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '上传成功'
+      })
+    }, 1500)
   }
 
   addImgToMd(url: any) {
