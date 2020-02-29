@@ -83,8 +83,6 @@ export function clock(interval) {
 }
 
 export function hljs() {
-  // 代码前数字
-
   $('pre code').each(function() {
     $(this).html(
       '<ul><li>' +
@@ -93,6 +91,7 @@ export function hljs() {
           .replace(/\n/g, '</li><li>') +
         '\n</li></ul>'
     )
+    // console.log($(this).html())
     // 给指定行增加样式
     try {
       var line = $(this)
@@ -111,4 +110,61 @@ export function hljs() {
   })
   // 去掉最后一行的空行
   $('code ul li:last-child').remove()
+  $('pre code ').each(function() {
+    if (
+      $(this)
+        .html()
+        .includes('~开始~')
+    ) {
+      let el = $(this)
+        .html()
+        .match(/(?<=~开始~<\/li>)[\s\S]*?(?=<li>~结束~)/g)
+
+      for (let index = 0; index < el.length; index++) {
+        let brief = el[index].match(/(?<=<li>)[\s\S]*?(?=<\/li>)/g)[0]
+        let el1 = `
+        ${`<details><summary class="point hover-2" style="color:grey">${brief}</summary>` +
+          el[index] +
+          '</details>'}`
+
+        $(this).html(
+          $(this)
+            .html()
+            .replace(el[index], el1)
+        )
+      }
+
+      let el1 = $(this)
+        .html()
+        .match(/(<li>~开始~<\/li>)/g)
+
+      for (let index = 0; index < el1.length; index++) {
+        $(this).html(
+          $(this)
+            .html()
+            .replace(el1[index], '')
+        )
+      }
+
+      let el2 = $(this)
+        .html()
+        .match(/(<li>~结束~<\/li>)/g)
+
+      for (let index = 0; index < el2.length; index++) {
+        $(this).html(
+          $(this)
+            .html()
+            .replace(el2[index], '')
+        )
+      }
+    }
+  })
+
+  $('summary').click(function() {
+    if (!$(this)[0].parentNode.attributes.open) {
+      $(this).css({ opacity: 0.2, '-webkit-text-security': 'disc' })
+    } else {
+      $(this).css({ opacity: 1, '-webkit-text-security': 'inherit' })
+    }
+  })
 }

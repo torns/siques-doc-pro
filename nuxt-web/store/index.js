@@ -4,6 +4,8 @@ export const state = () => ({
   isValid: '',
   selectedCollection: '',
   selectedPost: '',
+  selectedNoteList: '',
+  selectedNote: '',
   time: 0,
   tags: [],
   bakendCode: ''
@@ -18,6 +20,12 @@ export const mutations = {
   },
   setPost(state, data) {
     state.selectedPost = data
+  },
+  setNoteList(state, data) {
+    state.selectedNoteList = data
+  },
+  setNote(state, data) {
+    state.selectedNote = data
   },
   setTime(state, data) {
     state.time = data

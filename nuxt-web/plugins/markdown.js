@@ -18,4 +18,15 @@ const md = require('markdown-it')({
   })
   .use(markdownItFootnote)
 
+// const defaultRender = md.renderer.rules.fence
+
+// console.log(defaultRender)
+// md.renderer.rules.fence = function(tokens, idx, options, env, self) {
+//   const token = tokens[idx]
+
+//   console.log(token)
+
+//   return defaultRender(tokens, idx, options, env, self)
+// }
+
 export default md

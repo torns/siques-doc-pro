@@ -101,7 +101,7 @@ import Tag from '@/components/dialog/tag.vue'
   components: { 'sq-tag': Tag }
 })
 export default class Index extends Vue {
-  async asyncData({ store }: any) {
+  async asyncData({ store, params }: any) {
     const http = Vue.prototype.$http
 
     let res
@@ -109,8 +109,15 @@ export default class Index extends Vue {
       res = await http.get(`posts/${store.state.auth.user.id}/note`)
     }
 
+    let SelectCollection = 0
+    if (store.state.selectedNoteList) {
+      SelectCollection = store.state.selectedNoteList
+    }
+
     return {
+      selectCollection: SelectCollection,
       noteList: res.data,
+      // 默认所有的笔记(需要完善)
       noteCollections: [{ id: -1, name: '所有笔记', posts: res.data }]
     }
   }
@@ -124,25 +131,19 @@ export default class Index extends Vue {
   title = ''
   dynamicTags: Array<any> = []
   content = [{ development: '' }]
-  model = ''
+
   tagLen: number = 5
-  questions: any
+
   noteList = []
   visible: any
   noteCollections = []
+  // 这是一个序号，不是id
   selectCollection = 0
 
-  @Watch('model')
-  doModelChanged() {
-    if (this.model === 'development') {
-      const ref: any = this.$refs.markdown
-      ref.setContent()
-    }
-  }
-
   @Watch('selectCollection')
-  doCollectChanged() {
+  doCollectChanged(newval: any, oldval: any) {
     const nodelist: any = this.noteCollections[this.selectCollection]
+    this.$store.commit('setNoteList', this.selectCollection)
     this.noteList = nodelist.posts
   }
 
@@ -172,12 +173,22 @@ export default class Index extends Vue {
     )
     const r = this.noteCollections.concat(res.data)
     this.noteCollections = r
+
+    if (this.selectCollection !== 0) {
+      const nodelist: any = this.noteCollections[this.selectCollection]
+
+      this.noteList = nodelist.posts
+    }
   }
 
   async fetchQue() {
+    if (!this.id && this.$store.state.selectedNote) {
+      this.$router.push(`/record/${this.$store.state.selectedNote}`)
+    }
+
     if (this.id) {
       const res = await this.$http.get(`posts/${this.id}?type=edit`)
-      this.questions = res.data
+      this.$store.commit('setNote', this.id)
       const ref: any = this.$refs.markdown
       ref.setContent(res.data.body)
       this.title = res.data.title

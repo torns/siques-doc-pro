@@ -39,7 +39,9 @@ export default {
         src:
           'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
       },
-
+      {
+        src: 'https://cdn.bootcss.com/highlight.js/9.18.1/languages/dart.min.js'
+      },
       {
         src:
           'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
