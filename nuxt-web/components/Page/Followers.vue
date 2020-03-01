@@ -48,7 +48,7 @@
         </div>
         <div v-if="item.alias === 'follow'">
           <div v-if="follows.length !== 0">
-            <div v-for="(follow, index) in follows" :key="follow.id">
+            <div v-for="(follow, i) in follows" :key="follow.id">
               <div class="d-flex  jc-between">
                 <div class="d-flex ai-center">
                   <el-avatar
@@ -69,7 +69,7 @@
                     {{ follow.followedBy }}关注
                   </div>
                   <el-button
-                    @click="deleteUserfollow(follow.id, index)"
+                    @click="deleteUserfollow(follow.id, i)"
                     size="mini"
                     type="plain"
                     >取消关注</el-button

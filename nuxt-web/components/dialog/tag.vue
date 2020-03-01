@@ -34,13 +34,13 @@
         <div v-else>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane
-              v-for="(tags, index) in taglist"
-              :key="index"
+              v-for="(tags, index1) in taglist"
+              :key="index1"
               :label="tags.name"
               :name="tags.name"
               class="d-flex flex-wrap"
             >
-              <div v-for="(tag, index) in tags.tags" :key="index">
+              <div v-for="(tag, index2) in tags.tags" :key="index2">
                 <ul>
                   <li
                     @click="addTag(tag.name, tag.id)"

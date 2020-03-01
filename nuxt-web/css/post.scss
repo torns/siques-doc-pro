@@ -74,7 +74,7 @@ h1 {
     border-bottom: 1px solid #e9ecef;
   }
   img {
-    max-width: -webkit-fill-available;
+    max-width: 100%;
     justify-content: center;
 
     display: flex;
@@ -137,7 +137,7 @@ p code {
 nav li {
   a {
     display: block;
-    padding: 0.3em 1.75rem;
+    padding: 0.2em 1.75rem;
     font-size: 14px;
     color: #212529;
     transition: all 0.25s ease 0ms;

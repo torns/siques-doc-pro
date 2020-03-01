@@ -537,10 +537,11 @@ export default class Post extends Vue {
   initPost() {
     this.$nextTick(() => {
       hljs()
-    })
-    setTimeout(() => {
       mediumzoom()
-    }, 500)
+    })
+    // setTimeout(() => {
+
+    // }, 500)
   }
 
   async fetchpost(id: any) {

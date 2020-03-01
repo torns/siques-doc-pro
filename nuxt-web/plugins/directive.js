@@ -13,10 +13,10 @@ Vue.directive('highlight', {
   inserted(el) {
     /* eslint-disable */
 
-    // const blocks = el.querySelectorAll('pre code')
-
+    const blocks = el.querySelectorAll('pre code')
+    blocks.forEach((block) => {
+      hljs.highlightBlock(block)
+    })
     // eslint-disable-next-line
-
-    hljs.initHighlighting()
   }
 })

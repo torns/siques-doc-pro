@@ -1,4 +1,5 @@
 // 数字统计
+import { Browser } from './browserInfo'
 export function wordcounts(body) {
   const W = []
   let iNumwords = 0
@@ -116,22 +117,25 @@ export function hljs() {
         .html()
         .includes('~开始~')
     ) {
-      let el = $(this)
-        .html()
-        .match(/(?<=~开始~<\/li>)[\s\S]*?(?=<li>~结束~)/g)
+      if (Browser[0].includes('chrome')) {
+        let el = $(this)
+          .html()
+          .match(/<li>~开始~([\s\S]*?)~结束~<\/li>/g)
 
-      for (let index = 0; index < el.length; index++) {
-        let brief = el[index].match(/(?<=<li>)[\s\S]*?(?=<\/li>)/g)[0]
-        let el1 = `
-        ${`<details><summary class="point hover-2" style="color:grey">${brief}</summary>` +
-          el[index] +
-          '</details>'}`
-
-        $(this).html(
-          $(this)
-            .html()
-            .replace(el[index], el1)
-        )
+        for (let index = 0; index < el.length; index++) {
+          let brief = el[index].match(/(?=<span)[\s\S]*?(?=<\/li>)/g)[0]
+          let el1 = `
+      ${`<details><summary class="point hover-2" style="color:grey">${brief}</summary>` +
+        el[index] +
+        '</details>'}`
+          $(this).html(
+            $(this)
+              .html()
+              .replace(el[index], el1)
+          )
+        }
+      } else {
+        console.log('┗|｀O′|┛ 嗷~~,浏览器好像不支持')
       }
 
       let el1 = $(this)

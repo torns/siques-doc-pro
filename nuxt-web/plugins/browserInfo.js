@@ -6,9 +6,14 @@ function getBrowserInfo() {
     const regStrff = /firefox\/[\d.]+/gi
     const regStrchrome = /chrome\/[\d.]+/gi
     const regStrsaf = /safari\/[\d.]+/gi
+    const regStredge = /edge\/[\d.]+/gi
     // IE
     if (agent.includes('msie') > 0) {
       return agent.match(regStrie)
+    }
+    // EDGE
+    if (agent.includes('edge') > 0) {
+      return agent.match(regStredge)
     }
     // firefox
     if (agent.includes('firefox') > 0) {
