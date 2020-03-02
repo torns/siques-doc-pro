@@ -137,7 +137,7 @@ p code {
 nav li {
   a {
     display: block;
-    padding: 0.2em 1.75rem;
+    padding: 0.25em 1.75rem;
     font-size: 14px;
     color: #212529;
     transition: all 0.25s ease 0ms;
@@ -157,6 +157,7 @@ nav li {
     padding-left: 2em;
   }
   padding-left: 3.5em;
+  color: #868686a3;
 }
 .active .toc-h3 {
   &::before {

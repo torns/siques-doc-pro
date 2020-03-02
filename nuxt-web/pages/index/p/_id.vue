@@ -126,11 +126,7 @@
                     }}
                     <span>.</span>
                     <span class="pr-2">字数：{{ post.counts }}</span>
-                    {{
-                      $dayjs(
-                        Date.now() - new Date(post.created).getTime()
-                      ).format('发布于DD天 HH小时 MM分钟前')
-                    }}
+                    {{ '发布于 ' + $dayjs(post.created).fromNow() }}
                   </div>
                   <div class="d-flex jc-center my-4">
                     <el-button @click="like" class="hover-3" type="plain">

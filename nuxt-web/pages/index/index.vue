@@ -244,7 +244,7 @@
                           :src="post.cover"
                           style="width: 140px; height: 90px"
                           class="border-radius shadow-1 border-dash"
-                          fit="contain"
+                          fit="cover"
                         ></el-image
                       ></router-link>
                     </div>
