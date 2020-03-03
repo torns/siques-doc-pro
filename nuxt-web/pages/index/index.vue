@@ -537,4 +537,7 @@ export default class MyPage extends Vue {
   margin-left: 5px;
   margin-top: 8px;
 }
+.header .el-input__inner {
+  color: white;
+}
 </style>

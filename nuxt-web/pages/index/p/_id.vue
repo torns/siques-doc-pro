@@ -467,12 +467,13 @@ export default class Post extends Vue {
 
   mounted() {
     this.fetchpost(this.id)
-    mdTable()
 
     copyRight(this.post.user.name)
     this.fetchComment()
     this.scrollDirection()
     this.getDierction()
+
+    mdTable()
   }
 
   beforeMount() {

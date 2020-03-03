@@ -380,7 +380,7 @@ export class PostService {
         param: '%' + searchKey + '%',
       })
       .orderBy('post.liked', 'ASC')
-      .getManyAndCount();
+      .getMany();
 
     const res2 = await this.postRepository
       .createQueryBuilder('post')
@@ -390,8 +390,25 @@ export class PostService {
         param: '%' + searchKey + '%',
       })
       .orderBy('post.liked', 'ASC')
-      .getManyAndCount();
+      .getMany();
 
-    return { ...res1, ...res2 };
+    function arrayNonRepeatfy(arr) {
+      let map = new Map();
+      let array = new Array(); // 数组用于返回结果
+      for (let i = 0; i < arr.length; i++) {
+        if (map.has(arr[i].id)) {
+          // 如果有该key值,说明前面已经遇到过
+          map.set(arr[i].id, true);
+        } else {
+          map.set(arr[i].id, false); // 如果没有该key值，可以把他push进去
+          array.push(arr[i]);
+        }
+      }
+
+      return array;
+    }
+    let res = arrayNonRepeatfy([...res1, ...res2]);
+    res = [res, res.length];
+    return res;
   }
 }
