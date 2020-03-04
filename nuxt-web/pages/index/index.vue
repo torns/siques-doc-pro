@@ -157,6 +157,7 @@
                 >
                   <img
                     :src="item.img"
+                    alt="轮播图"
                     class="w-100"
                     style="min-height:150px;object-fit: cover;"
                   />

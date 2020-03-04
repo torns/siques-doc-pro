@@ -5,11 +5,11 @@
       <el-divider></el-divider>
     </div>
     <div>
-      <ul class="pb-2">
+      <ul class="pb-2 d-flex flex-wrap">
         <div
           v-for="(collection, index) in collections"
           :key="index"
-          class="py-2"
+          class="py-2 pr-2"
         >
           <nuxt-link :to="`/blogs/${collection.id}`" tag="a">
             <div class="text-primary point pb-2 hoverlink">

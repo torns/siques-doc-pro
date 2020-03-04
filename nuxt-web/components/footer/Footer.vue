@@ -6,50 +6,69 @@
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">工具</div>
           <li>
-            <a target="_blank" href="https://typeorm.io/#/connection"
+            <a
+              rel="nofollow"
+              target="_blank"
+              href="https://typeorm.io/#/connection"
               >TypeOrm</a
             >
           </li>
 
           <li>
-            <a target="_blank" href="https://www.nuxtjs.cn/">Nuxt</a>
+            <a rel="nofollow" target="_blank" href="https://www.nuxtjs.cn/"
+              >Nuxt</a
+            >
           </li>
           <li>
-            <a target="_blank" href="https://element.eleme.cn/#/zh-CN"
+            <a
+              rel="nofollow"
+              target="_blank"
+              href="https://element.eleme.cn/#/zh-CN"
               >Element</a
             >
           </li>
           <li>
-            <a target="_blank" href="www.nestjs.com/">Nest.js</a>
+            <a rel="nofollow" target="_blank" href="www.nestjs.com/">Nest.js</a>
           </li>
           <li>
-            <a href="https://www.nuxtjs.cn/guide">Nuxt.js</a>
+            <a rel="nofollow" href="https://www.nuxtjs.cn/guide">Nuxt.js</a>
           </li>
         </el-col>
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">常用</div>
-          <li><a target="_blank" href="https://www.bootcdn.cn/">BootCDN</a></li>
           <li>
-            <a target="_blank" href="https://www.jq22.com/">Jquery 插件库</a>
+            <a rel="nofollow" target="_blank" href="https://www.bootcdn.cn/"
+              >BootCDN</a
+            >
+          </li>
+          <li>
+            <a rel="nofollow" target="_blank" href="https://www.jq22.com/"
+              >Jquery 插件库</a
+            >
           </li>
           <li>
             <a
               target="_blank"
+              rel="nofollow"
               href="http://fa5.dashgame.com/#/%E5%9B%BE%E6%A0%87"
               >Font Awesome</a
             >
           </li>
           <li>
-            <a target="_blank" href="https://www.iconfont.cn/">矢量图标库</a>
+            <a rel="nofollow" target="_blank" href="https://www.iconfont.cn/"
+              >矢量图标库</a
+            >
           </li>
         </el-col>
         <el-col :xs="0" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">资源</div>
           <li>
-            <a target="_blank" href="https://www.canva.cn/">创意设计</a>
+            <a rel="nofollow" target="_blank" href="https://www.canva.cn/"
+              >创意设计</a
+            >
           </li>
           <li>
-            <a href="https://www.bookstack.cn/">书栈网</a>
+            <a rel="nofollow" href="https://www.bookstack.cn/">书栈网</a>
           </li>
           <li>帮助中心</li>
           <li>声望与权限</li>
@@ -98,9 +117,12 @@
               用到的技术
               <span>
                 <span v-for="(item, index) in techs" :key="index" class="pr-2">
-                  <a :href="item.link" class="text-primary hover-1 hoverlink">{{
-                    item.name
-                  }}</a>
+                  <a
+                    rel="nofollow"
+                    :href="item.link"
+                    class="text-primary hover-1 hoverlink"
+                    >{{ item.name }}</a
+                  >
                 </span>
               </span>
             </div>

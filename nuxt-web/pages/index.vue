@@ -30,12 +30,14 @@
               v-if="isHomepage"
               @click="$router.push('/')"
               src="~/static/banner.png"
+              alt="Logo"
               style="object-fit:cover;height:70%;"
             />
             <img
               v-else
               @click="$router.push('/')"
               src="~/static/banner1.png"
+              alt="Logo"
               style="object-fit:cover;height:70%;"
             />
           </el-menu-item>

@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!isHomepage"
     id="navigation"
     class="visible-sm visible-xs animated fadeIn"
     style="position: fixed;z-index: 2;bottom: 0;height:50px;width:100vw"
@@ -36,6 +37,10 @@ export default class navigation extends Vue {
     { name: '标签', icon: 'tags', link: '/tags' },
     { name: '更多', icon: 'ellipsis-h', link: '/' }
   ]
+
+  get isHomepage() {
+    return this.$route.path === '/'
+  }
 
   get link() {
     return this.$route.path

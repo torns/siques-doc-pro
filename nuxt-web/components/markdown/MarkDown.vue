@@ -9,9 +9,13 @@
       accept="image/*"
     />
     <div class="mt-2">
-      <el-button @click="submit" size="mini" type="primary">{{
-        $attrs.name
-      }}</el-button>
+      <el-button
+        :loading="loading"
+        @click="submit"
+        size="mini"
+        type="primary"
+        >{{ $attrs.name }}</el-button
+      >
     </div>
   </div>
 </template>
@@ -33,10 +37,22 @@ export default class MarkDown extends Vue {
   height: any
   body: any = ''
   editor: any
+  loading = false
 
   mounted() {
     this.initEditor()
   }
+
+  submit() {
+    this.loading = true
+    setTimeout(() => {
+      this.body = this.getContent()
+
+      this.$emit('submit', this.body)
+      this.loading = false
+    }, 1000)
+  }
+
   initEditor() {
     this.editor = md(this.height)
     plugin(this.editor)
@@ -49,11 +65,6 @@ export default class MarkDown extends Vue {
       // console.log('按下按钮')
       // Do some other thing...
     })
-  }
-  submit() {
-    this.body = this.getContent()
-
-    this.$emit('submit', this.body)
   }
 
   async uploadFile(e: any) {

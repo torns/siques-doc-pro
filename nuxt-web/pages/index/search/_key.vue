@@ -42,11 +42,11 @@
 
               <div>
                 <div v-for="post in data[0]" :key="post.id" class="text-gray-1">
-                  <div class="text-primary point pt-4">
+                  <div class="point pt-4">
                     <router-link
                       :to="`${link(post)}`"
-                      tag="div"
-                      class="hoverlink"
+                      tag="a"
+                      class="hoverlink text-primary "
                       >{{ post.title }}</router-link
                     >
                   </div>
@@ -67,12 +67,28 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component({
   components: {}
 })
 export default class Index extends Vue {
+  async asyncData({ params }: any) {
+    const Search = params.key
+    const http = Vue.prototype.$http
+    let res
+    if (Search) {
+      res = await http.get(`/posts/${Search}/search`)
+    } else {
+      res = ''
+    }
+
+    return {
+      data: res.data || '',
+      search: Search
+    }
+  }
+
   head() {
     return {
       title: '来愉快的搜索吧'
@@ -107,17 +123,6 @@ export default class Index extends Vue {
     }
   ]
 
-  get key() {
-    this.search = this.$route.params.key
-    return this.$route.params.key
-  }
-
-  mounted() {
-    if (this.key) {
-      this.doSearch()
-    }
-  }
-
   link(post: any) {
     if (post.type === 'post') {
       return `/p/${post.id}`
@@ -138,11 +143,6 @@ export default class Index extends Vue {
 
   changeRoute() {
     this.$router.push(`/search/${this.search}`)
-  }
-
-  async doSearch() {
-    const res = await this.$http.get(`/posts/${this.search}/search`)
-    this.data = res.data
   }
 }
 </script>
