@@ -118,8 +118,8 @@
               <span>
                 <span v-for="(item, index) in techs" :key="index" class="pr-2">
                   <a
-                    rel="nofollow"
                     :href="item.link"
+                    rel="nofollow"
                     class="text-primary hover-1 hoverlink"
                     >{{ item.name }}</a
                   >

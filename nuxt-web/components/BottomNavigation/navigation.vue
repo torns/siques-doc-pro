@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isHomepage"
     id="navigation"
+    v-if="!isHomepage"
     class="visible-sm visible-xs animated fadeIn"
     style="position: fixed;z-index: 2;bottom: 0;height:50px;width:100vw"
   >

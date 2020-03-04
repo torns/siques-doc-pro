@@ -123,6 +123,7 @@ export default {
     { src: '@/plugins/components.js', ssr: true },
     '@/plugins/nullSSRComponents.js',
     '@/plugins/axios',
+    { src: '@plugins/push', ssr: false },
     { src: '@plugins/router', ssr: false },
     { src: '@/plugins/mixin.js', ssr: false },
     { src: '@plugins/localStorage', ssr: false }

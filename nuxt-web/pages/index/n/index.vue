@@ -29,7 +29,7 @@
                     </div>
                     <div>
                       <div class="pt-1 hoverlink">
-                        <router-link class="ellipsis-1" :to="`/n/${note.id}`">{{
+                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{
                           note.title
                         }}</router-link>
                         <div></div>
@@ -39,10 +39,10 @@
                 </div>
               </div>
               <el-pagination
+                ref="reference1"
                 :hide-on-single-page="maxLen < 10 ? true : false"
                 @current-change="handleCurrentChange"
                 :total="maxLen"
-                ref="reference1"
                 background
                 layout="prev, pager, next"
                 class="mt-4"
@@ -74,7 +74,7 @@
                     </div>
                     <div>
                       <div class="pt-1 hoverlink">
-                        <router-link class="ellipsis-1" :to="`/n/${note.id}`">{{
+                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{
                           note.title
                         }}</router-link>
                         <div></div>
@@ -84,11 +84,11 @@
                 </div>
               </div>
               <el-pagination
+                ref="reference2"
                 :hide-on-single-page="maxLen < 10 ? true : false"
                 @current-change="handleCurrentChange"
                 :total="maxLen"
                 background
-                ref="reference2"
                 layout="prev, pager, next"
                 class="mt-4"
               ></el-pagination>
