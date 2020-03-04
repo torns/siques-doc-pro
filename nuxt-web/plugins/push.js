@@ -9,9 +9,6 @@ export default async () => {
     window.location.href.includes('record')
   ) {
   } else {
-    await http.post(
-      'http://data.zz.baidu.com/urls?site=siques.cn&token=RshbyPPuO3v3ojbt',
-      location.href
-    )
+    await http.post('/auth/bdpush', { link: location.href })
   }
 }

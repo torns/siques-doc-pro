@@ -28,6 +28,11 @@ export class AuthController {
     return await this.authService.login(data);
   }
 
+  @Post('bdpush')
+  async push(@Body() data: any) {
+    return await this.authService.push(data);
+  }
+
   @Get('url')
   async fetchUrl() {
     return await this.authService.fetchUrl();

@@ -234,4 +234,17 @@ export class AuthService {
   signToken(data: JwtPayload) {
     return this.jwtService.sign(data);
   }
+
+  async push(data: any) {
+    const { link } = data;
+
+    const url =
+      'http://data.zz.baidu.com/urls?site=siques.cn&token=RshbyPPuO3v3ojbt';
+    const res = await axios.post(url, link, {
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    });
+    return res.data;
+  }
 }
