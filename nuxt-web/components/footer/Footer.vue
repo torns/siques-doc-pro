@@ -72,24 +72,20 @@
           </li>
           <li>帮助中心</li>
           <li>声望与权限</li>
-          <li>社区服务中心</li>
+          <li>服务中心</li>
         </el-col>
         <el-col :xs="0" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">合作</div>
-          <li>关于我们</li>
+          <li>关于我</li>
           <li>广告投放</li>
           <li>职位发布</li>
-          <li>讲师招募</li>
+
           <li>联系我们</li>
-          <li>合作伙伴</li>
         </el-col>
         <el-col :xs="0" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">关注</div>
-          <li>产品技术日志</li>
-          <li>社区运营日志</li>
-          <li>市场运营日志</li>
-          <li>团队日志</li>
-          <li>社区访谈</li>
+          <li>技术日志</li>
+          <li>运营日志</li>
         </el-col>
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">条款</div>
@@ -111,7 +107,11 @@
       >
         <div class="text-center py-5 mb-2">
           <div class="fs-xm pb-3">
-            <div>浙ICP备19035817号</div>
+            <div>
+              <a rel="nofollow" href="http://beian.miit.gov.cn"
+                >浙ICP备19035817号</a
+              >
+            </div>
             <div class="py-1">Copyright © 2018-2019 Siques .</div>
             <div>
               用到的技术
