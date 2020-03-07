@@ -61,7 +61,7 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css'
+          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
       },
 
       // {

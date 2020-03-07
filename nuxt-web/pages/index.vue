@@ -546,7 +546,7 @@ import navigation from '~/components/BottomNavigation/navigation.vue'
 export default class Home extends Vue {
   head() {
     return {
-      title: '思趣————分享自由的趣味-yahoo'
+      title: '思趣———分享自由的趣味-yahoo'
     }
   }
   isRegister: boolean = false
