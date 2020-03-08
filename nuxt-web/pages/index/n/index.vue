@@ -2,7 +2,7 @@
   <div>
     <div class="container h-100">
       <el-row style="min-height:60vh" type="flex" class="pt-4">
-        <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
+        <el-col class="px-2" :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
           <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="最新笔记" name="first">
               <div
@@ -38,6 +38,7 @@
                   </div>
                 </div>
               </div>
+              <sq-holder :count="10" :show="show"></sq-holder>
               <el-pagination
                 ref="reference1"
                 :hide-on-single-page="maxLen < 10 ? true : false"
@@ -83,6 +84,7 @@
                   </div>
                 </div>
               </div>
+              <sq-holder :count="10" :show="show"></sq-holder>
               <el-pagination
                 ref="reference2"
                 :hide-on-single-page="maxLen < 10 ? true : false"
@@ -102,7 +104,7 @@
           :lg="6"
           :xl="6"
           class="hidden-sm-and-down pl-2"
-          >123</el-col
+          >侧边栏</el-col
         >
       </el-row>
     </div>
@@ -132,6 +134,7 @@ export default class NotesIndex extends Vue {
   activeName = 'first'
   notes = ''
   maxLen = 0
+  show = false
 
   @Watch('activeName')
   isActiveNameChanged(newVal: any, oldVal: any) {
@@ -143,19 +146,24 @@ export default class NotesIndex extends Vue {
   }
 
   async handleCurrentChange(val: any) {
+    this.notes = ''
+    this.show = true
+    let res: any
     if (this.activeName === 'first') {
-      const res = await this.$http.get(
+      res = await this.$http.get(
         `/posts/all?limit=10&page=${val}&type=note&sort=created`
       )
-      this.notes = res.data[0]
-      this.$router.push(`/n?page=${val}`)
     } else {
-      const res = await this.$http.get(
+      res = await this.$http.get(
         `/posts/all?limit=10&page=${val}&type=note&sort=views`
       )
-      this.notes = res.data[0]
-      this.$router.push(`/n?page=${val}`)
     }
+
+    setTimeout(() => {
+      this.notes = res.data[0]
+      this.show = false
+    }, 400)
+    this.$router.push(`/n?page=${val}`)
   }
 
   head() {

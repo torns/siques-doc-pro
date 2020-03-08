@@ -81,7 +81,7 @@ export default class noteWall extends Vue {
   content: '';
   display: block;
   width: 90%;
-  height: 80%;
+  height: 73%;
   margin: 5%;
   background: var(--image) center center no-repeat;
   background-size: cover;

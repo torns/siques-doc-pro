@@ -36,21 +36,24 @@
       </div>
     </div>
     <div>
-      <div class="d-flex jc-between py-3" style="margin-bottom:-37px">
+      <div class="d-flex jc-between py-3 " style="margin-bottom:-12px">
         <div>
           <i class="el-icon-s-management fs-lg text-green pr-2 "></i>笔记本本
         </div>
-        <div class="text-primary">
-          <router-link :to="`/tags`" tag="li">更多</router-link>
-        </div>
+
+        <nuxt-link :to="`/n`" class="point text-primary" tag="a"
+          >更多
+        </nuxt-link>
       </div>
-      <noteWall :hotNotebooks="hotNotebooks"></noteWall>
+      <div>
+        <noteWall :hotNotebooks="hotNotebooks"></noteWall>
+      </div>
     </div>
 
-    <div style="margin-top:-37px">
+    <div style="margin-top:-12px">
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-fire text-orange pr-2 fs-lg"></i> 精彩评论</div>
-        <div class="text-primary">更多</div>
+        <!-- <div class="text-primary">更多</div> -->
       </div>
       <div>
         <div v-for="comment in hotComments" :key="comment.id" class="py-2">
@@ -161,7 +164,6 @@ export default class SideBar extends Vue {
 
   mounted() {
     this.fetchAll()
-    // hover(this.hotTags)
   }
 
   async fetchAll() {

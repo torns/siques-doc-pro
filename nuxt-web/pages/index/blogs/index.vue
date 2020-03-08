@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="container h-100">
-      <el-row type="flex" class="pt-4 px-3">
+      <el-row type="flex" class="pt-4 px-2">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
           <el-tabs
-            v-if="posts !== null"
+            v-if="posts !== []"
             v-model="activeName"
             @tab-click="handleClick"
             type="card"
@@ -12,7 +12,9 @@
             <el-tab-pane label="推荐文章" name="first">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
+                <sq-holder :count="10" :show="show"></sq-holder>
               </div>
+
               <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page="page"
@@ -24,6 +26,7 @@
             <el-tab-pane label="热门文章" name="second">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
+                <sq-holder :count="10" :show="show"></sq-holder>
               </div>
               <el-pagination
                 @current-change="handleCurrentChange"
@@ -36,6 +39,7 @@
             <el-tab-pane label="最新文章" name="third">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
+                <sq-holder :count="10" :show="show"></sq-holder>
               </div>
               <el-pagination
                 @current-change="handleCurrentChange"
@@ -109,15 +113,18 @@ export default class index extends Vue {
   listId = true
   page = 1
   total: any
-  posts = null
+  posts = []
   list: any
   taglist = []
+  show = false
 
   mounted() {}
 
   handleCurrentChange(val: any) {
     // currentPage =val
     this.page = val
+    this.posts = []
+    this.show = true
     this.fetchPost()
     window.scrollTo(0, 0)
   }
@@ -129,13 +136,19 @@ export default class index extends Vue {
       (this.taglist ? `&taglist=${this.list}` : '') +
       (this.listId ? `&listId=${this.listId}` : '') +
       `&collection=true`
-    const res = await this.$http.get(link)
-    this.total = res.data[1]
 
-    this.posts = res.data[0]
+    const res = await this.$http.get(link)
+
+    setTimeout(() => {
+      this.total = res.data[1]
+      this.posts = res.data[0]
+      this.show = false
+    }, 400)
   }
 
   handleClick(tab: any, event: any) {
+    this.posts = []
+    this.show = true
     if (tab.name === 'second') {
       this.sort = 'liked'
       this.fetchPost()

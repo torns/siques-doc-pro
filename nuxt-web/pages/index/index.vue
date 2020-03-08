@@ -251,8 +251,9 @@
                     </div>
                   </div>
                 </div>
+
                 <div v-if="loading" class="my-3 text-primary fs-xl">
-                  <i class="el-icon-loading"></i> Loading
+                  <sq-holder :count="8" :show="true"></sq-holder>
                 </div>
                 <div v-if="noMore" class="my-3 text-primary fs-sm">
                   (ﾟ∀ﾟ )没有更多内容了
@@ -265,7 +266,7 @@
         <el-col
           :xs="0"
           :sm="6"
-          :md="6"
+          :md="7"
           :lg="6"
           :xl="6"
           class="hidden-sm-and-down"

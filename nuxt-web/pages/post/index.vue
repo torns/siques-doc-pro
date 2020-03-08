@@ -67,7 +67,7 @@
                   @click="selectCollect(collect.id)"
                   class="d-flex jc-between "
                 >
-                  <div class="text-ellipsis">
+                  <div class="ellipsis-1">
                     {{ collect.name }}
                   </div>
 
