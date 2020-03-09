@@ -405,7 +405,7 @@ import { clock, getDirection, hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
-import likebutton from '~/components/subgroup/likebutton.vue'
+import likebutton from '~/components/miniComponents/likebutton.vue'
 import share from '~/components/dialog/share.vue'
 import card from '~/components/Card/card.vue'
 

@@ -2,7 +2,7 @@
   <div>
     <div class="container h-100">
       <el-row style="min-height:60vh" type="flex" class="pt-4">
-        <el-col class="px-2" :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
+        <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
           <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="最新笔记" name="first">
               <div

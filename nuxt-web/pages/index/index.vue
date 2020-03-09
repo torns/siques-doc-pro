@@ -284,13 +284,15 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
 import { Vue, Component } from 'nuxt-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
-import indexSideBar from '~/components/SideBar/indexSideBar.vue'
-import scrolldown from '~/components/subgroup/scrolldown.vue'
+import fetchdata from '../../plugins/fetchdata'
+import homeSideBar from '~/components/SideBar/homeSideBar.vue'
+import scrolldown from '~/components/miniComponents/scrolldown.vue'
 @Component({
   components: {
-    'sq-indexBar': indexSideBar,
+    'sq-indexBar': homeSideBar,
     'sq-down': scrolldown
   }
 })
@@ -306,7 +308,7 @@ export default class MyPage extends Vue {
     const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
       posts: res.data[0],
-      maxcount: res.data[1],
+      total: res.data[1],
       hotTags: res1.data,
       hotComments: res2.data,
       hotNotebooks: res3.data
@@ -314,12 +316,11 @@ export default class MyPage extends Vue {
   }
   page = 1
   count = 20
-  maxcount: number = 0
+  total: number = 0
   loading = false
   sort = 'liked'
   tag = null
   taglist = null
-  showBanner = true
   posts = []
   search = ''
   carousel = [
@@ -344,7 +345,7 @@ export default class MyPage extends Vue {
   }
 
   get noMore(): any {
-    return this.count >= this.maxcount
+    return this.count >= this.total
   }
 
   get disabled(): any {
@@ -459,11 +460,17 @@ export default class MyPage extends Vue {
     }
   ]
 
-  mounted() {}
-
   dataSearch() {
     this.$router.push(`/search/${this.search}`)
     this.search = ''
+  }
+
+  fetchDataSuccess(res: any) {
+    setTimeout(async () => {
+      this.posts = this.posts.concat(res.data[0])
+      this.count += res.data[0].length
+      this.loading = false
+    }, 500)
   }
 
   load() {
@@ -472,17 +479,16 @@ export default class MyPage extends Vue {
     let list = ''
     list = listIntercep(this.taglist)
 
-    const link =
-      `/posts/all?limit=20&page=${this.page}&sort=${this.sort}` +
-      (this.tag ? `&tags=${this.tag}` : '') +
-      (this.taglist ? `&taglist=${list}` : '') +
-      `&type=post`
-    setTimeout(async () => {
-      const res = await this.$http.get(link)
-      this.posts = this.posts.concat(res.data[0])
-      this.count += res.data[0].length
-      this.loading = false
-    }, 500)
+    fetchdata({
+      resource: `/posts/all`,
+      page: this.page,
+      pageSize: '20',
+      sort: this.sort,
+      tags: this.tag,
+      taglist: list,
+      type: 'post',
+      success: this.fetchDataSuccess
+    })
   }
 
   async handleCategory(links: any) {
@@ -506,7 +512,7 @@ export default class MyPage extends Vue {
       (listId ? `&listId=${listId}` : '') +
       `&type=post`
     const res = await this.$http.get(link)
-    this.maxcount = res.data[1]
+    this.total = res.data[1]
     this.posts = res.data[0]
   }
 }
