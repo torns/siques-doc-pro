@@ -7,7 +7,8 @@ const install = (Vue, options) => {
 
   const bodyScrollEl = {}
 
-  // For ff, ie
+  // 对象定义属性
+  // 滚动距离顶部的高度
   Object.defineProperty(bodyScrollEl, 'scrollTop', {
     get() {
       return document.body.scrollTop || document.documentElement.scrollTop
@@ -18,12 +19,13 @@ const install = (Vue, options) => {
     }
   })
 
+  // 文档最大高度
   Object.defineProperty(bodyScrollEl, 'scrollHeight', {
     get() {
       return document.body.scrollHeight || document.documentElement.scrollHeight
     }
   })
-
+  // 可视区高度
   Object.defineProperty(bodyScrollEl, 'offsetHeight', {
     get() {
       return window.innerHeight
@@ -37,12 +39,13 @@ const install = (Vue, options) => {
   const activableElements = {}
   const currentIndex = {}
 
+  // 赋值初始化
   options = Object.assign(
     {
       allowNoActive: false,
       sectionSelector: 'h2,h3',
       data: null,
-      offset: 0,
+      offset: 20,
       time: 500,
       steps: 30,
       easing: null,
@@ -54,6 +57,7 @@ const install = (Vue, options) => {
         selector: 'a'
       }
     },
+    // 传入的options合并
     options || {}
   )
 
@@ -73,7 +77,7 @@ const install = (Vue, options) => {
         elements.push(el)
       }
     }
-
+    // console.log(elements)
     return elements
   }
 
@@ -102,9 +106,15 @@ const install = (Vue, options) => {
     return 'default'
   }
 
+  // sectionSelector=h2,h3
   function initScrollSections(el, sectionSelector) {
     const id = scrollSpyId(el)
+    // el被监听的内容范围
+    // sectionSelector=h2,h3
+    // id =default
+    // scrollSpyContext = '@@scrollSpyContext'
     const scrollSpyContextEl = el[scrollSpyContext]
+    // console.log(scrollSpyContextEl)
     const idScrollSections = findElements(el, sectionSelector)
     scrollSpySections[id] = idScrollSections
 
@@ -119,53 +129,63 @@ const install = (Vue, options) => {
     do {
       if (!isNaN(elem.offsetTop)) {
         offsetTop += elem.offsetTop
+        // console.log(offsetTop)
       }
       elem = elem.offsetParent
+      // console.log(elem)
     } while (elem && elem !== untilParent)
     return offsetTop
   }
 
-  function scrollTo(el, index) {
-    const id = scrollSpyId(el)
-    const idScrollSections = scrollSpySections[id]
+  // function scrollTo(el, index) {
+  //   const id = scrollSpyId(el)
+  //   const idScrollSections = scrollSpySections[id]
 
-    const { scrollEl, options } = el[scrollSpyContext]
-    const current = scrollEl.scrollTop
+  //   const { scrollEl, options } = el[scrollSpyContext]
+  //   const current = scrollEl.scrollTop
 
-    if (idScrollSections[index]) {
-      const target = getOffsetTop(idScrollSections[index]) - options.offset
-      if (options.easing) {
-        // scrollWithAnimation(
-        //   scrollEl,
-        //   current,
-        //   target,
-        //   options.time,
-        //   options.easing
-        // )
-        return
-      }
+  //   if (idScrollSections[index]) {
+  //     const target = getOffsetTop(idScrollSections[index]) - options.offset
+  //     if (options.easing) {
+  //       // scrollWithAnimation(
+  //       //   scrollEl,
+  //       //   current,
+  //       //   target,
+  //       //   options.time,
+  //       //   options.easing
+  //       // )
+  //       return
+  //     }
 
-      const time = options.time
-      const steps = options.steps
-      const timems = parseInt(time / steps)
-      const gap = target - current
-      for (let i = 0; i <= steps; i++) {
-        const pos = current + (gap / steps) * i
-        setTimeout(() => {
-          scrollEl.scrollTop = pos
-        }, timems * i)
-      }
-    }
-  }
+  //     const time = options.time
+  //     const steps = options.steps
+  //     const timems = parseInt(time / steps)
+  //     const gap = target - current
+  //     for (let i = 0; i <= steps; i++) {
+  //       const pos = current + (gap / steps) * i
+  //       setTimeout(() => {
+  //         scrollEl.scrollTop = pos
+  //         console.log(scrollEl)
+  //       }, timems * i)
+  //     }
+  //   }
+  // }
 
   Vue.directive('scroll-spy', {
+    // 钩子
+    // el：指令所绑定的元素，可以用来直接操作 DOM。
+
     bind(el, binding, vnode) {
       function onScroll() {
+        // id= default
         const id = scrollSpyId(el)
-        // console.log(id)
+
+        // initScrollSections函数中拿到
+        // console.log(scrollSpySections)
         const idScrollSections = scrollSpySections[id]
 
         const { scrollEl, options } = el[scrollSpyContext]
+
         // console.log(scrollEl)
         let index
 
@@ -185,9 +205,13 @@ const install = (Vue, options) => {
           }
         }
 
+        // 当前的index
         index = index - 1
-        // console.log(idScrollSections)
+
+        // console.log(index)
         if (index < 0) {
+          // 小于零就归零
+          currentIndex.default = -1
           index = options.allowNoActive ? null : 0
         } else if (
           options.allowNoActive &&
@@ -198,7 +222,9 @@ const install = (Vue, options) => {
         ) {
           index = null
         }
-        // console.log(index)
+        // console.log(activeElement)
+        // console.log(index, currentIndex)
+        // 添加active类的方法
         if (index !== currentIndex[id]) {
           let idActiveElement = activeElement[id]
           if (idActiveElement) {
@@ -210,6 +236,8 @@ const install = (Vue, options) => {
             activeElement[id] = null
           }
 
+          // console.log(currentIndex)
+
           currentIndex[id] = index
           if (
             typeof currentIndex !== 'undefined' &&
@@ -220,6 +248,7 @@ const install = (Vue, options) => {
             if (idActiveElement) {
               const activeClasses =
                 idActiveElement[scrollSpyContext].options.class
+
               activeClasses.forEach(function(element) {
                 idActiveElement.classList.add(element)
               })
@@ -232,7 +261,7 @@ const install = (Vue, options) => {
         }
       }
 
-      vnode.context.$scrollTo = scrollTo.bind(null, el)
+      // vnode.context.$scrollTo = scrollTo.bind(null, el)
 
       const id = scrollSpyId(el)
 
@@ -245,6 +274,7 @@ const install = (Vue, options) => {
       }
 
       scrollSpyElements[id] = el
+      // console.log(scrollSpyElements)
       delete currentIndex[id]
     },
     inserted(el) {
@@ -285,6 +315,7 @@ const install = (Vue, options) => {
 
     activableElements[id] = findElements(el, activeOptions.selector)
     const arr = [...activableElements[id]]
+    // console.log(arr)
     arr.map((el) => {
       el[scrollSpyContext] = {
         options: activeOptions

@@ -318,7 +318,7 @@ export default class MyPage extends Vue {
   count = 20
   total: number = 0
   loading = false
-  sort = 'liked'
+  sort = 'created'
   tag = null
   taglist = null
   posts = []

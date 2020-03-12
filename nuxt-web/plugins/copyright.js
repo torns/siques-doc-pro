@@ -3,6 +3,8 @@ export default (name) => {
   $(document).on('copy', function(e) {
     if (
       document.location.href !== 'https://siques.cn/post' &&
+      document.location.href !== 'https://siques.cn/ask' &&
+      document.location.href !== 'https://siques.cn/record' &&
       document.location.href !== 'http://localhost:3000/post'
     ) {
       const selected = window.getSelection()

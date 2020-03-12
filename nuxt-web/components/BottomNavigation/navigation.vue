@@ -35,7 +35,7 @@ export default class navigation extends Vue {
     { name: '问答', icon: 'question', link: '/q' },
     { name: '专栏', icon: 'wpexplorer ', link: '/blogs' },
     { name: '标签', icon: 'tags', link: '/tags' },
-    { name: '更多', icon: 'ellipsis-h', link: '/' }
+    { name: '回顶部', icon: 'level-up', link: 'top' }
   ]
 
   get isHomepage() {
@@ -47,7 +47,11 @@ export default class navigation extends Vue {
   }
 
   btnClick(link: any) {
-    this.$router.push(link)
+    if (link === 'top') {
+      window.scrollTo(0, 0)
+    } else {
+      this.$router.push(link)
+    }
   }
 }
 </script>

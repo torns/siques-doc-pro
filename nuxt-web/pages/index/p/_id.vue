@@ -390,7 +390,7 @@
       </div>
       <div></div>
     </div>
-    <sq-backbtn :direction="direction"></sq-backbtn>
+    <sq-backbtn></sq-backbtn>
     <sq-footer></sq-footer>
   </div>
 </template>
@@ -401,7 +401,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 import mdTable from '../../../plugins/markdownTable'
 import copyRight from '../../../plugins/copyright'
-import { clock, getDirection, hljs } from '../../../plugins/utils.js'
+import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import { Browser, OS } from '../../../plugins/browserInfo.js'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
@@ -461,17 +461,12 @@ export default class Post extends Vue {
   checkList = []
   browser: any = Browser[0] || ''
   os = OS || ''
-  timer: any
-  timer2: any
-  direction = ''
 
   mounted() {
     this.fetchpost(this.id)
 
     copyRight(this.post.user.name)
     this.fetchComment()
-    this.scrollDirection()
-    this.getDierction()
 
     mdTable()
   }
@@ -480,26 +475,6 @@ export default class Post extends Vue {
     this.initPost()
   }
   // TS中的计算属性
-  beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
-    if (this.timer2) {
-      clearInterval(this.timer2)
-    }
-  }
-
-  scrollDirection() {
-    this.timer = clock(800)
-
-    // eslint-disable-next-line
-  }
-
-  getDierction() {
-    this.timer2 = setInterval(() => {
-      this.direction = getDirection()
-    }, 800)
-  }
 
   get id(): any {
     return this.$route.params.id

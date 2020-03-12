@@ -99,8 +99,8 @@ h1 {
     margin: 1.667em auto;
   }
   pre {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 }
 
@@ -114,35 +114,23 @@ h1 {
   }
   p {
     margin-bottom: 16px;
+    font-size: 15px;
     code {
       color: #c7254e;
-      padding: 3px 7px;
+      padding: 0.065em 0.4em;
+      font-size: 14px;
+      margin: 0 1px;
       border-radius: 3px;
       background-color: rgba(0, 0, 0, 0.04);
     }
   }
 }
 
-p code {
-  font-family: 'EB Garamond';
-
-  // background-color: #eeeeee;
-
-  border-radius: 5px;
-
-  padding: 0 0 3px 3px;
-
-  margin: 0 3px;
-
-  color: #e83e8c;
-  font-size: 16px;
-}
-
 .active {
   color: #1abc9c;
   text-decoration: none;
   background-color: rgba(26, 186, 154, 0.05);
-  border-left: 3px solid #1abc9c;
+  border-left: 4px solid #1abc9c;
 
   a {
     color: #1abc9c;
@@ -164,6 +152,7 @@ nav li {
       padding-left: 10px;
       color: #1abc9c;
       text-decoration: none;
+
       background-color: rgba(26, 186, 154, 0.05);
       // border-left: 2px solid #1abc9c;
     }

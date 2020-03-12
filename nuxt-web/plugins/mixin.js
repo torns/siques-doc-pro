@@ -57,8 +57,6 @@ Vue.mixin({
           // console.log(t, p)
 
           if (t >= p) {
-            this.scrollDirection = true
-
             try {
               if (
                 $('#navigation')
@@ -72,8 +70,6 @@ Vue.mixin({
               return
             }
           } else {
-            this.scrollDirection = false
-
             try {
               if (
                 $('#navigation')

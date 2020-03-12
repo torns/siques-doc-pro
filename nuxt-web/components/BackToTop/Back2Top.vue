@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <transition
-      enter-active-class="animated flipInY"
-      leave-active-class="animated slideOutUp"
+  <div class="xs btn-group">
+    <section @click="btnTop" class="point d-flex jc-between ai-center shadow-1">
+      <i class="el-icon-caret-top text-primary" style="margin: 0 auto;"></i>
+    </section>
+    <section
+      @click="btnbottom"
+      class="point d-flex jc-between ai-center shadow-1"
     >
-      <section
-        id="section04"
-        v-if="$attrs.direction"
-        @click="btnTop"
-        class="point d-flex jc-between ai-center shadow-1"
-      >
-        <i class="el-icon-caret-top text-primary" style="margin: 0 auto;"></i>
-      </section>
-    </transition>
+      <i class="el-icon-caret-bottom text-primary" style="margin: 0 auto;"></i>
+    </section>
   </div>
 </template>
 
@@ -23,18 +19,25 @@ export default class Back2Top extends Vue {
   btnTop() {
     window.scrollTo(0, 0)
   }
+
+  btnbottom() {
+    const height = document.body.scrollHeight
+    window.scrollTo(0, height)
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 section {
-  position: fixed;
   width: 40px;
   height: 40px;
   background-color: white;
-  border-radius: 50%;
-  bottom: 5%;
-  right: 5%;
-  z-index: 20;
+  // border-radius: 50%;
+}
+.btn-group {
+  position: fixed;
+  bottom: 10%;
+  right: 0%;
+  z-index: 0;
 }
 </style>

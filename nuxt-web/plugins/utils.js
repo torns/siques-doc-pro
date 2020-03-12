@@ -72,17 +72,6 @@ export function listIntercep(taglist) {
   return list
 }
 
-export function getDirection() {
-  return window.direction
-}
-
-export function clock(interval) {
-  return setInterval(() => {
-    // console.log(document['scrollDirection'])
-    window.direction = document['scrollDirection']
-  }, interval)
-}
-
 export function hljs() {
   $('pre code').each(function() {
     $(this).html(
@@ -125,7 +114,7 @@ export function hljs() {
         for (let index = 0; index < el.length; index++) {
           let brief = el[index].match(/(?=<span)[\s\S]*?(?=<\/li>)/g)[0]
           let el1 = `
-      ${`<details><summary class="point hover-2" style="color:grey">${brief}</summary>` +
+      ${`<details><summary class="point hover-2" >${brief}</summary>` +
         el[index] +
         '</details>'}`
           $(this).html(
