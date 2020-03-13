@@ -106,7 +106,11 @@ export function hljs() {
         .html()
         .includes('~开始~')
     ) {
-      if (!Browser[0].includes('edge') && !Browser[0].includes('msie')) {
+      if (
+        Browser &&
+        !Browser[0].includes('edge') &&
+        !Browser[0].includes('msie')
+      ) {
         let el = $(this)
           .html()
           .match(/<li>~开始~([\s\S]*?)~结束~<\/li>/g)

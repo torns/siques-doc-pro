@@ -61,7 +61,7 @@
             <div>
               <el-avatar
                 :src="comment.user.avator[0] ? comment.user.avator[0].url : ''"
-                shape="square"
+                class="bg-white"
               >
                 <img src="~/static/avator.jpg" alt="" />
               </el-avatar>
@@ -74,7 +74,7 @@
                       comment.user.avator[0] ? comment.user.avator[0].url : ''
                     "
                     style="position:absolute;bottom:81%"
-                    class="shadow-1"
+                    class="shadow-1 bg-white"
                     shape="circle"
                   >
                     <img src="~/static/avator.jpg" alt="" />

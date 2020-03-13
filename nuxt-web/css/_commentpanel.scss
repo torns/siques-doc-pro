@@ -1,0 +1,10 @@
+.commentPanel {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100vw;
+  background-color: #f1f1f1;
+  &__markdown {
+    padding: 1em 10vw 0.3em 10vw;
+  }
+}

@@ -1,6 +1,7 @@
 @import './variables';
 
 @import 'placeholder';
+@import 'commentpanel';
 // reset
 // 防止自己撑大
 * {
@@ -250,7 +251,7 @@ code {
     color: $color;
   }
   .bg-#{$colorkey} {
-    background-color: $color;
+    background-color: $color !important;
   }
 }
 
@@ -272,6 +273,13 @@ code {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 
@@ -412,7 +420,7 @@ code {
 
 // text align
 //第一个参数为变量 第二个为集合
-@each $var in (left, center, right) {
+@each $var in (left, center, right, end) {
   .text-#{$var} {
     text-align: $var !important;
   }

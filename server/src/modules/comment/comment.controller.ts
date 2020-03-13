@@ -39,18 +39,17 @@ export class CommentController {
     return await this.commentService.storePostComment(id, user, data);
   }
 
-  // 跟楼回复
-  // @Post("posts/:id/reply")
-  // @UseGuards(AuthGuard())
-  // async storePostReply(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body("parentid") parentid: CommentDto,
-  //   @User() user: UserEntity,
-  //   @Body() data: CommentDto
-  // ) {
-  //   console.log(data)
-  //   return await this.commentService.storePostReply(id, user, data, parentid)
-  // }
+  @Get('comment/:id')
+  @UseGuards(AuthGuard())
+  async showComment(@Param('id', ParseIntPipe) id: number) {
+    return await this.commentService.showComment(id);
+  }
+
+  @Get('reply/:id')
+  @UseGuards(AuthGuard())
+  async showReply(@Param('id', ParseIntPipe) id: number) {
+    return await this.commentService.showReply(id);
+  }
 
   @Post('posts/:id/reply')
   @UseGuards(AuthGuard())
@@ -82,9 +81,22 @@ export class CommentController {
     return this.commentService.update(id, data);
   }
 
+  @Put('reply/:id')
+  async updateReply(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: CommentDto,
+  ) {
+    return this.commentService.updateReply(id, data);
+  }
+
   @Delete('comments/:id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.commentService.delete(id);
+  }
+
+  @Delete('reply/:id')
+  async deleteReply(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.deleteReply(id);
   }
 
   //统计一篇文章的评论

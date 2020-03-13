@@ -115,8 +115,16 @@ export class CommentService {
     return await this.commentRepository.update(id, data);
   }
 
+  async updateReply(id: number, data: CommentDto) {
+    return await this.replyRepository.update(id, data);
+  }
+
   async delete(id: number) {
     return await this.commentRepository.delete(id);
+  }
+
+  async deleteReply(id: number) {
+    return await this.replyRepository.delete(id);
   }
 
   //展示评论以及子评论
@@ -154,6 +162,14 @@ export class CommentService {
   //     .getMany()
 
   // }
+
+  async showComment(id: number) {
+    return await this.commentRepository.findOne(id);
+  }
+
+  async showReply(id: number) {
+    return await this.replyRepository.findOne(id);
+  }
 
   async showUserComments(id: number) {
     return await this.commentRepository

@@ -9,21 +9,28 @@
       accept="image/*"
     />
     <div class="mt-2">
+      <el-button :loading="loading" @click="submit" size="mini" type="primary"
+        ><i v-if="$attrs.icon" :class="$attrs.icon + ' fs-xs'"></i>
+        <span class="pl-1">{{ $attrs.name }}</span></el-button
+      >
+
       <el-button
-        :loading="loading"
-        @click="submit"
+        v-if="$attrs.cancle !== undefined"
+        @click="cancle"
         size="mini"
-        type="primary"
-        >{{ $attrs.name }}</el-button
+        type="text"
+      >
+        <span class="pl-1 text-gray">取消</span></el-button
       >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import md from './md.js'
 import plugin from './plugin.js'
+// import { dragUpload } from './plugin.js'
 // import Editor from 'tui-editor'
 // import defalutConfig from './defalut-config'
 // import 'codemirror/lib/codemirror.css'
@@ -35,13 +42,34 @@ import plugin from './plugin.js'
 export default class MarkDown extends Vue {
   @Prop()
   height: any
+  @Prop()
+  allowPasteImg: any
   body: any = ''
   editor: any
   loading = false
+  paste: any
 
   mounted() {
     this.initEditor()
   }
+
+  @Watch('allowPasteImg')
+  isShow() {
+    if (this.allowPasteImg) {
+      this.dragUpload()
+    } else {
+      document.removeEventListener('paste', this.paste)
+    }
+  }
+
+  // @Watch('path')
+  // isAllowed() {
+  //   if (this.path) {
+  //     this.dragUpload()
+  //   } else {
+  //     document.removeEventListener('paste', this.paste)
+  //   }
+  // }
 
   submit() {
     this.loading = true
@@ -51,6 +79,51 @@ export default class MarkDown extends Vue {
       this.$emit('submit', this.body)
       this.loading = false
     }, 1000)
+  }
+  cancle() {
+    this.$emit('cancle')
+  }
+
+  dragUpload() {
+    /* eslint-disable */
+
+    document.addEventListener(
+      'paste',
+      (this.paste = (event: any): any => {
+        // console.log(event)
+
+        if (event.clipboardData) {
+          // not for ie11  某些chrome版本使用的是event.originalEvent
+          const clipboardData = event.clipboardData
+          if (clipboardData.items) {
+            // for chrome
+            const items = clipboardData.items
+            const len = items.length
+            let blob = null
+
+            // event.preventDefault()
+
+            // 在items里找粘贴的image,据上面分析,需要循环
+            for (let i = 0; i < len; i++) {
+              if (items[i].type.includes('image')) {
+                blob = items[i].getAsFile()
+              }
+            }
+
+            if (blob !== null) {
+              // const reader = new FileReader()
+              // reader.onload = (event) => {
+              //   // event.target.result 即为图片的Base64编码字符串
+              //   this.uploadFile(event.target.result, 'paste')
+              //   console.log(event)
+              // }
+              // reader.readAsDataURL(blob)
+              this.uploadFile(blob, 'paste')
+            }
+          }
+        }
+      })
+    )
   }
 
   initEditor() {
@@ -67,9 +140,15 @@ export default class MarkDown extends Vue {
     })
   }
 
-  async uploadFile(e: any) {
-    const target = e.target
-    const file = target.files[0]
+  async uploadFile(e: any, type?: any) {
+    let file: any
+    let target: any
+    if (type === 'paste') {
+      file = e
+    } else {
+      target = e.target
+      file = target.files[0]
+    }
     const params = new FormData()
 
     params.append('file', file)
@@ -97,7 +176,10 @@ export default class MarkDown extends Vue {
       }
 
       this.addImgToMd(url)
-      target.value = '' // 这个地方清除一下不然会有问题
+      if (!type) {
+        target.value = '' // 这个地方清除一下不然会有问题
+      }
+
       loading.close()
       this.$notify({
         title: '成功',
