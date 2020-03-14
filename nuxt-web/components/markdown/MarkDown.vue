@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import md from './md.js'
 import plugin from './plugin.js'
 // import { dragUpload } from './plugin.js'
@@ -42,8 +42,6 @@ import plugin from './plugin.js'
 export default class MarkDown extends Vue {
   @Prop()
   height: any
-  @Prop()
-  allowPasteImg: any
   body: any = ''
   editor: any
   loading = false
@@ -51,25 +49,9 @@ export default class MarkDown extends Vue {
 
   mounted() {
     this.initEditor()
+    this.dropUpload()
+    this.pasteUpload()
   }
-
-  @Watch('allowPasteImg')
-  isShow() {
-    if (this.allowPasteImg) {
-      this.dragUpload()
-    } else {
-      document.removeEventListener('paste', this.paste)
-    }
-  }
-
-  // @Watch('path')
-  // isAllowed() {
-  //   if (this.path) {
-  //     this.dragUpload()
-  //   } else {
-  //     document.removeEventListener('paste', this.paste)
-  //   }
-  // }
 
   submit() {
     this.loading = true
@@ -84,9 +66,10 @@ export default class MarkDown extends Vue {
     this.$emit('cancle')
   }
 
-  dragUpload() {
+  pasteUpload() {
     /* eslint-disable */
-    document.addEventListener(
+    var dp: any = document.getElementById('editorSection')
+    dp.addEventListener(
       'paste',
       (this.paste = (event: any): any => {
         if (event.clipboardData) {
@@ -122,6 +105,27 @@ export default class MarkDown extends Vue {
     )
   }
 
+  dropUpload() {
+    var dp: any = document.getElementById('editorSection')
+    dp.addEventListener('dragover', (e: any) => {
+      e.stopPropagation()
+      //阻止浏览器默认打开文件的操作
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'copy'
+    })
+
+    //单图上传
+    dp.addEventListener('drop', (e: any) => {
+      e.stopPropagation()
+      //阻止浏览器默认打开文件的操作
+      e.preventDefault()
+      var files = e.dataTransfer.files
+      var file = files[0]
+
+      this.uploadFile(file, 'drop')
+    })
+  }
+
   initEditor() {
     this.editor = md(this.height)
     plugin(this.editor)
@@ -139,7 +143,7 @@ export default class MarkDown extends Vue {
   async uploadFile(e: any, type?: any) {
     let file: any
     let target: any
-    if (type === 'paste') {
+    if (type === 'paste' || type === 'drop') {
       file = e
     } else {
       target = e.target

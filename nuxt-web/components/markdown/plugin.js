@@ -4,6 +4,7 @@ export default (editor) => {
   const toolbar = editor.getUI().getToolbar()
   // 移除掉这个，自定义粘贴事件
   editor.eventManager.removeEventHandler('paste')
+  editor.eventManager.removeEventHandler('drop')
   // 添加自定义按钮 第二个参数代表位置，不传默认放在最后
   toolbar.addButton(
     {

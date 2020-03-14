@@ -22,7 +22,6 @@
           ref="markdown"
           @submit="handleSend"
           @cancle="cancle"
-          :allowPasteImg="$attrs.show"
           cancle
           name="回复"
           icon="iconfont icon-comments"
