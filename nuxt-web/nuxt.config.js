@@ -106,7 +106,6 @@ export default {
     // 'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
     '~/css/global.scss',
-    '~/css/post.scss',
     '~/css/tag.scss'
   ],
   /*

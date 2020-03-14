@@ -10,7 +10,7 @@ export default () => {
 
       new_a.addClass('toc-' + header.localName)
       new_a.attr('href', '#' + header.getAttribute('id'))
-      new_a.text(header.innerText.split('#')[1])
+      new_a.text(header.innerText.split('#')[0])
 
       post_toc.append(new_a)
     }

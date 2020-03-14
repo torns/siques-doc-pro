@@ -221,3 +221,33 @@ details {
     width: 100%;
   }
 }
+
+// 锚点样式
+
+h2:hover,
+h3:hover,
+h4:hover {
+  .header-anchor {
+    color: $color-primary;
+
+    opacity: 1;
+
+    text-decoration: none;
+
+    transition: all 0.5s;
+  }
+}
+
+.header-anchor {
+  position: absolute;
+
+  transform: translate(50%);
+
+  opacity: 0;
+
+  text-decoration: none;
+
+  transition: all 1s;
+
+  line-height: 1.4;
+}
