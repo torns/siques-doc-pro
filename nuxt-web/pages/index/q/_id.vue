@@ -337,14 +337,12 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 // import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
-import footer from '~/components/footer/Footer.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 
 import share from '~/components/dialog/share.vue'
 
 @Component({
   components: {
-    'el-footer': footer,
     'sq-postbar': PostSideBar,
     'share-dialog': share
   }
@@ -357,9 +355,9 @@ export default class Question extends Vue {
   }
   showCommentPanel = false
   question: any = ''
-  recommendPost = []
+
   liked: number = 0
-  followLen: number = 0
+
   comment = ''
   replyData: string = ''
   fetchedComment = ''
@@ -440,9 +438,8 @@ export default class Question extends Vue {
 
   async replyLike() {}
 
-  // 关注
+  // 关注用户id
   async follow(id: any) {
-    // 提供用户id
     await this.$http.get(`/users/${id}/follow`)
   }
 

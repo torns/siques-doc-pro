@@ -1,0 +1,128 @@
+.btn-group {
+  position: fixed;
+  bottom: 10%;
+  right: 0%;
+  z-index: 0;
+  background-color: white;
+}
+
+.flip {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  -webkit-perspective: 500px;
+  -moz-perspective: 500px;
+  -ms-perspective: 500px;
+  perspective: 500px;
+  top: 50%;
+  left: 50%;
+  margin: -24px 0 0 -80px;
+}
+.flip section {
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(-25px);
+  -moz-transform: translateZ(-25px);
+  -o-transform: translateZ(-25px);
+  -ms-transform: translateZ(-25px);
+  transform: translateZ(-25px);
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  -o-transition: -o-transform 0.3s;
+  -ms-transition: -ms-transform 0.3s;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+.flip section .front,
+.flip section .back {
+  margin: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  text-align: center;
+}
+.flip section .front {
+  background-color: $color-primary;
+  color: #fff;
+  -webkit-transform: rotateY(0) translateZ(24px);
+  -moz-transform: rotateY(0) translateZ(24px);
+  -o-transform: rotateY(0) translateZ(24px);
+  -ms-transform: rotateY(0) translateZ(24px);
+  transform: rotateY(0) translateZ(24px);
+}
+.flip section .back {
+  background-color: rgba(255, 255, 255, 0);
+  color: rgba(34, 34, 34, 0);
+  -webkit-transform: rotateX(90deg) translateZ(24px);
+  -moz-transform: rotateX(90deg) translateZ(24px);
+  -o-transform: rotateX(90deg) translateZ(24px);
+  -ms-transform: rotateX(90deg) translateZ(24px);
+  transform: rotateX(90deg) translateZ(24px);
+  overflow: hidden;
+}
+.flip section .back:after {
+  content: '';
+  position: absolute;
+  top: -32%;
+  left: -10%;
+  width: 120%;
+  height: 50%;
+  background: $color-primary;
+  -webkit-transform: rotate(8deg);
+  -moz-transform: rotate(8deg);
+  -o-transform: rotate(8deg);
+  -ms-transform: rotate(8deg);
+  transform: rotate(8deg);
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  -webkit-transition-delay: 0.15s;
+  -moz-transition-delay: 0.15s;
+  -o-transition-delay: 0.15s;
+  -ms-transition-delay: 0.15s;
+  transition-delay: 0.15s;
+}
+.flip section:hover {
+  -webkit-transform: translateZ(-24px) rotateX(-90deg);
+  -moz-transform: translateZ(-24px) rotateX(-90deg);
+  -o-transform: translateZ(-24px) rotateX(-90deg);
+  -ms-transform: translateZ(-24px) rotateX(-90deg);
+  transform: translateZ(-24px) rotateX(-90deg);
+}
+.flip section:hover .front {
+  background: $color-primary;
+  -webkit-transition: all 0.8s ease;
+  -moz-transition: all 0.8s ease;
+  -o-transition: all 0.8s ease;
+  -ms-transition: all 0.8s ease;
+  transition: all 0.8s ease;
+}
+.flip section:hover .back {
+  color: $color-primary;
+  -webkit-transition: color 0.4s linear;
+  -moz-transition: color 0.4s linear;
+  -o-transition: color 0.4s linear;
+  -ms-transition: color 0.4s linear;
+  transition: color 0.4s linear;
+  background: #fff;
+}
+.flip section:hover .back:after {
+  -webkit-transform: rotate(6deg) translate(100px, -18px);
+  -moz-transform: rotate(6deg) translate(100px, -18px);
+  -o-transform: rotate(6deg) translate(100px, -18px);
+  -ms-transform: rotate(6deg) translate(100px, -18px);
+  transform: rotate(6deg) translate(100px, -18px);
+}

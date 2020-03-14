@@ -86,12 +86,9 @@ export default class MarkDown extends Vue {
 
   dragUpload() {
     /* eslint-disable */
-
     document.addEventListener(
       'paste',
       (this.paste = (event: any): any => {
-        // console.log(event)
-
         if (event.clipboardData) {
           // not for ie11  某些chrome版本使用的是event.originalEvent
           const clipboardData = event.clipboardData
@@ -100,7 +97,6 @@ export default class MarkDown extends Vue {
             const items = clipboardData.items
             const len = items.length
             let blob = null
-
             // event.preventDefault()
 
             // 在items里找粘贴的image,据上面分析,需要循环

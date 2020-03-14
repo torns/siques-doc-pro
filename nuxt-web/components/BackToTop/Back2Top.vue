@@ -1,14 +1,13 @@
 <template>
   <div class="xs btn-group">
-    <section @click="btnTop" class="point d-flex jc-between ai-center shadow-1">
-      <i class="el-icon-caret-top text-primary" style="margin: 0 auto;"></i>
-    </section>
-    <section
-      @click="btnbottom"
-      class="point d-flex jc-between ai-center shadow-1"
-    >
-      <i class="el-icon-caret-bottom text-primary" style="margin: 0 auto;"></i>
-    </section>
+    <div class="flip" @click="btnTop">
+      <section>
+        <div class="front">
+          <i class="el-icon-caret-top "></i>
+        </div>
+        <div class="back">顶</div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -27,17 +26,4 @@ export default class Back2Top extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-section {
-  width: 40px;
-  height: 40px;
-  background-color: white;
-  // border-radius: 50%;
-}
-.btn-group {
-  position: fixed;
-  bottom: 10%;
-  right: 0%;
-  z-index: 0;
-}
-</style>
+<style lang="scss"></style>
