@@ -99,8 +99,7 @@ h1 {
     margin: 1.667em auto;
   }
   pre {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
 }
 
@@ -216,9 +215,14 @@ details {
   margin-top: -3em;
 }
 
-#comment p {
-  img {
-    width: 100%;
+#comment {
+  pre {
+    margin-bottom: 15px;
+  }
+  p {
+    img {
+      width: 100%;
+    }
   }
 }
 

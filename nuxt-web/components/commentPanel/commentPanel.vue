@@ -47,20 +47,42 @@ export default class commentPanel extends Vue {
   }
 
   @Watch('edit')
-  async isEdit() {
+  isEdit() {
     if (this.edit === true) {
-      if (this.$attrs.type === 'editReply') {
-        const res = await this.$http.get(`reply/${this.$attrs.commentId}`)
-        this.ref.setContent(res.data.body)
+      const res = this.ref.getContent()
+      if (res) {
+        this.$confirm('确定要放弃编辑?', '提示', {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'info'
+        })
+          .then(() => {
+            this.setContent()
+          })
+          .catch(() => {
+            this.$emit('edit')
+          })
       } else {
-        const res = await this.$http.get(`comment/${this.$attrs.commentId}`)
-        this.ref.setContent(res.data.body)
+        this.setContent()
       }
     }
   }
 
+  async setContent() {
+    if (this.$attrs.type === 'editReply') {
+      const res = await this.$http.get(`reply/${this.$attrs.commentId}`)
+      this.ref.setContent(res.data.body)
+    } else {
+      const res = await this.$http.get(`comment/${this.$attrs.commentId}`)
+      this.ref.setContent(res.data.body)
+    }
+  }
+
   panelOff() {
-    this.ref.setContent('')
+    // this.ref.setContent('')
+    if (this.$attrs.type === 'editReply' || this.$attrs.type === 'edit') {
+      this.ref.setContent('')
+    }
     this.$emit('showoff')
   }
 
@@ -132,26 +154,22 @@ export default class commentPanel extends Vue {
   }
 
   async handle(data: any, Method: any, Url: any) {
-    if (this.isUser) {
-      if (data.body) {
-        await this.$http({
-          method: Method,
-          url: Url,
-          data
-        })
+    if (data.body) {
+      await this.$http({
+        method: Method,
+        url: Url,
+        data
+      })
+      this.$emit('showoff')
+      this.ref.setContent('')
 
-        this.ref.setContent('')
-        this.$emit('showoff')
-        this.$emit('refresh')
-      } else {
-        this.$notify({
-          type: 'error',
-          message: '内容不能为空',
-          title: '评论失败'
-        })
-      }
+      this.$emit('refresh')
     } else {
-      this.$store.commit('toggleLoginForm')
+      this.$notify({
+        type: 'error',
+        message: '内容不能为空',
+        title: '评论失败'
+      })
     }
   }
 }

@@ -253,7 +253,14 @@
                             >
                               <el-tooltip content="编辑" effect="dark">
                                 <div
-                                  @click="showCommentPanel('edit', comment.id)"
+                                  @click="
+                                    showCommentPanel(
+                                      'edit',
+                                      comment.id,
+                                      '',
+                                      comment.user.name
+                                    )
+                                  "
                                   class="opacity40 px-2 point"
                                 >
                                   <i class=" fa fa-pencil-square-o"></i>
@@ -415,6 +422,7 @@
       :userId="post.user.id"
       :commentId="commentId"
       :toUid="toUid"
+      @edit="edit = false"
       @showoff=";(show = false), (edit = false)"
       @refresh="fetchComment"
       :show="show"
@@ -466,20 +474,25 @@ export default class Post extends Vue {
     const res3 = await http.get(`posts/${params.id}/comments`)
 
     res3.data.map((item: any) => {
-      if (store.state.auth.user.id === item.user.id) {
-        item.user.owner = true
+      if (!store.state.UserNotExist) {
+        if (store.state.auth.user.id === item.user.id) {
+          item.user.owner = true
+        }
       }
       item.body = md.render(item.body)
 
       if (item.reply.length > 0) {
         item.reply.map((el: any) => {
-          if (store.state.auth.user.id === el.from_uid.id) {
-            el.owner = true
+          if (!store.state.UserNotExist) {
+            if (store.state.auth.user.id === el.from_uid.id) {
+              el.owner = true
+            }
           }
           el.body = md.render(el.body)
         })
       }
     })
+
     return {
       post: res.data,
       recommendPost: res1.data[0],
@@ -557,19 +570,23 @@ export default class Post extends Vue {
   }
 
   showCommentPanel(type: any, commentId?: any, toUid?: any, username?: any) {
-    if (username) {
-      this.name = username
+    if (!this.$store.state.UserNotExist) {
+      this.edit = false
+      if (type === 'edit' || type === 'editReply') {
+        this.edit = true
+        this.name = '编辑 ' + username + ' 的回复'
+      } else if (username) {
+        this.name = '回复 ' + username
+      } else {
+        this.name = this.post.title
+      }
+      this.show = true
+      this.type = type
+      this.commentId = commentId
+      this.toUid = toUid
     } else {
-      this.name = this.post.title
+      this.$store.commit('toggleLoginForm')
     }
-
-    if (type === 'edit' || type === 'editReply') {
-      this.edit = true
-    }
-    this.show = true
-    this.type = type
-    this.commentId = commentId
-    this.toUid = toUid
   }
 
   async fetchpost(id: any) {
@@ -587,6 +604,15 @@ export default class Post extends Vue {
         item.user.owner = true
       }
       item.body = md.render(item.body)
+
+      if (item.reply.length > 0) {
+        item.reply.map((el: any) => {
+          if (this.$store.state.auth.user.id === el.from_uid.id) {
+            el.owner = true
+          }
+          el.body = md.render(el.body)
+        })
+      }
     })
     this.fetchedComment = res.data
   }
