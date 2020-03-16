@@ -133,8 +133,8 @@
                   </div>
                   <div class="d-flex jc-center my-4">
                     <el-button
-                      size="small"
                       @click="like"
+                      size="small"
                       class="hover-2"
                       type="plain"
                     >
@@ -143,8 +143,8 @@
                     </el-button>
 
                     <el-button
-                      size="small"
                       @click="showBookmarkDialog(post.id)"
+                      size="small"
                       class="hover-2"
                       type="plain"
                     >
@@ -182,7 +182,7 @@
             <div id="card">
               <sq-card :data="recommendCollection"></sq-card>
             </div>
-            <div v-if="fetchedComment.length !== 0" id="comment" class="pt-3">
+            <div id="comment" v-if="fetchedComment.length !== 0" class="pt-3">
               <div class="font-bold fs-xl py-1">
                 {{ fetchedComment.length }}条评论
               </div>
@@ -229,9 +229,9 @@
                             </div>
                           </div>
                           <div
-                            class="py-2"
                             v-highlight
                             v-html="comment.body"
+                            class="py-2"
                           ></div>
                           <div
                             class="d-flex fs-sm ai-baseline"
@@ -248,8 +248,8 @@
                             </el-button>
 
                             <div
-                              class="d-flex ai-center"
                               v-if="comment.user.owner"
+                              class="d-flex ai-center"
                             >
                               <el-tooltip content="编辑" effect="dark">
                                 <div
@@ -331,7 +331,7 @@
                               <i class="text-gray iconfont icon-Thumbsup"></i>
                             </el-button>
 
-                            <div class="d-flex" v-if="reply.owner">
+                            <div v-if="reply.owner" class="d-flex">
                               <el-tooltip content="编辑" effect="dark">
                                 <div
                                   @click="

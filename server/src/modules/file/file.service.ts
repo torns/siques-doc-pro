@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UploadFileDto } from './file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -35,7 +35,7 @@ export class FileService {
 
     //文章上传图片
     const res = await client.put(
-      'post/' + id + '/' + date + '/' + file.originalname,
+      'post/' + id + '/' + date + '/' + file.originalname + file.size,
       file.buffer,
     );
     return res;

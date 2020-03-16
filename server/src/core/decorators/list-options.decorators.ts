@@ -16,12 +16,12 @@ export const ListOptions = createParamDecorator(
       order,
     } = req.query;
     console.log(req.query);
-    console.log(data); //后台的默认值
+    // console.log(data); //后台的默认值
     if (categories) {
       categories = categories.split('-');
     }
 
-    console.log(taglist, tags);
+    // console.log(taglist, tags);
     if (taglist) {
       taglist = taglist.split('-');
     }

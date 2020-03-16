@@ -83,7 +83,7 @@ export class NotificationService {
 
   // 用户所有通知标记已读
   async markedRead(userId: number) {
-    console.log(userId);
+    // console.log(userId);
     const entity = await this.NotificationRepository.createQueryBuilder(
       'notification',
     )

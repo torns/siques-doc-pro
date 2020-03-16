@@ -1,6 +1,6 @@
 <template>
   <div class="xs btn-group">
-    <div class="flip" @click="btnTop">
+    <div @click="btnTop" class="flip">
       <section>
         <div class="front">
           <i class="el-icon-caret-top "></i>

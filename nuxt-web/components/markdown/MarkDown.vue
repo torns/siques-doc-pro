@@ -119,6 +119,8 @@ export default class MarkDown extends Vue {
       e.stopPropagation()
       //阻止浏览器默认打开文件的操作
       e.preventDefault()
+
+      console.log(e.dataTransfer.files)
       var files = e.dataTransfer.files
       var file = files[0]
 
@@ -148,6 +150,14 @@ export default class MarkDown extends Vue {
     } else {
       target = e.target
       file = target.files[0]
+    }
+    if (!file) {
+      this.$notify({
+        title: '失败',
+        type: 'error',
+        message: '不允许的格式'
+      })
+      return
     }
     const params = new FormData()
 

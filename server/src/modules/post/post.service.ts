@@ -136,7 +136,7 @@ export class PostService {
       sort,
       order,
     } = options;
-    console.log(sort, tags, categories, taglist, type);
+    // console.log(sort, tags, categories, taglist, type);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
     // 添加两个关系relation
 
@@ -193,7 +193,7 @@ export class PostService {
 
   async show(id: string, query: any) {
     const concern = await this.calcuConcern(id);
-    console.log({ concern: concern });
+    // console.log({ concern: concern });
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.addSelect('post.body');

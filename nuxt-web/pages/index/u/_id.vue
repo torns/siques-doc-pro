@@ -5,9 +5,9 @@
         <div class="container">
           <el-row :gutter="15" type="flex">
             <el-col :xs="6" :sm="4" :md="4" :lg="4" :xl="4" class="mr-6">
-              <div style="width:157.5px;height:157.5">
+              <div style="width:157.5px;height:157.5px">
                 <div class="point">
-                  <el-avatar :size="157.5" style="width:auto" class="shadow-1">
+                  <el-avatar :size="157.5" class="shadow-1">
                     <img
                       v-if="
                         id
