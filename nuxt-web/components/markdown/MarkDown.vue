@@ -120,7 +120,6 @@ export default class MarkDown extends Vue {
       //阻止浏览器默认打开文件的操作
       e.preventDefault()
 
-      console.log(e.dataTransfer.files)
       var files = e.dataTransfer.files
       var file = files[0]
 

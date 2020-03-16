@@ -34,7 +34,7 @@ dotenv.config();
       host: process.env.TYPEORM_HOST,
       port: 3306,
       username: 'nest',
-      password: 'password',
+      password: process.env.TYPEORM_PASSWORD,
       database: 'nest',
       // logging: 'all',
       synchronize: true,
