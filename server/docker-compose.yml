@@ -17,7 +17,7 @@ services:
   myadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
-    ports: 
+    ports:
       - 8080:80
     environment:
       PMA_HOST: mysql
