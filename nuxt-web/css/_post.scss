@@ -125,16 +125,31 @@ h1 {
   }
 }
 
-.active {
+nav .active {
   color: #1abc9c;
   text-decoration: none;
   background-color: rgba(26, 186, 154, 0.05);
-  border-left: 4px solid #1abc9c;
 
+  &::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 27px;
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      from(#04c0c6),
+      color-stop(51%, #2ba3de),
+      to(#835be3)
+    );
+    background-image: linear-gradient(0deg, #04c0c6, #2ba3de 51%, #835be3);
+  }
   a {
     color: #1abc9c;
+
     &::before {
-      content: '#2';
+      content: '#2 ';
     }
   }
 }

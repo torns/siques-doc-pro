@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: sueRimn
+ * @Date: 2020-02-02 12:13:51
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-03-21 01:32:10
+ */
 import Vue from 'vue'
 import dayjs from 'dayjs'
 
@@ -13,6 +21,7 @@ import leaderboard from '~/components/miniComponents/leaderboard.vue'
 import likebutton from '~/components/miniComponents/likebutton.vue'
 import backbutton from '~/components/BackToTop/Back2Top.vue'
 import placeholder from '~/components/placeholder/placeholder.vue'
+import mouseclick from '~/components/MouseClick/click.vue'
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
@@ -24,4 +33,5 @@ Vue.component('sq-leaderboard', leaderboard)
 Vue.component('sq-likebtn', likebutton)
 Vue.component('sq-backbtn', backbutton)
 Vue.component('sq-holder', placeholder)
+Vue.component('sq-click', mouseclick)
 Vue.use(SocialSharing)

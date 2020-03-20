@@ -429,6 +429,7 @@
     ></sq-comment>
     <sq-backbtn></sq-backbtn>
     <sq-footer></sq-footer>
+    <sq-click></sq-click>
   </div>
 </template>
 

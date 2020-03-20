@@ -32,6 +32,7 @@ dotenv.config();
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.TYPEORM_HOST,
+      charset: 'utf8mb4',
       port: 3306,
       username: 'nest',
       password: process.env.TYPEORM_PASSWORD,
