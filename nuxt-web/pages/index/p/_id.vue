@@ -5,7 +5,7 @@
       <div class="container pt-4 pb-3">
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-            <article class="bg-white shadow-1 border-radius">
+            <article id="article" class=" bg-white shadow-1 border-radius">
               <div class="pt-5 ">
                 <h1
                   class="bg-light-green boder-x"

@@ -87,6 +87,11 @@ export function hljs() {
       var line = $(this)
         .attr('class')
         .match(/\d+/g)
+
+      // var line2 = $(this)
+      //   .attr('class')
+      //   .split('hljs ')[1]
+      // console.log(line2)
       for (let i in line) {
         $(this)
           .children()
@@ -164,4 +169,6 @@ export function hljs() {
       $(this).css({ opacity: 1, '-webkit-text-security': 'inherit' })
     }
   })
+
+  $('pre code ul').before('<a id="copy"></a>')
 }

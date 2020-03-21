@@ -8,7 +8,7 @@
     }"
   >
     <i
-      v-for="(i, index) in 50"
+      v-for="(i, index) in 20"
       :style="{
         '--x': x() + 'px',
         '--y': y() + 'px',
@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import click from './click'
 @Component({})
 export default class MouseClick extends Vue {
   clickEvent = false
@@ -42,10 +43,15 @@ export default class MouseClick extends Vue {
 
   mounted() {
     this.initState()
+
+    setTimeout(() => {
+      click()
+    }, 1000)
   }
 
   initState() {
-    document.addEventListener('click', (e) => {
+    const el: any = document.getElementById('article')
+    el.addEventListener('click', (e: any) => {
       if (!this.clickEvent) {
         this.clickEvent = true
         this.active = true
@@ -60,17 +66,18 @@ export default class MouseClick extends Vue {
     this.timer = setTimeout(() => {
       this.clickEvent = false
       this.active = false
-    }, 800)
+    }, 500)
   }
 
   random(min: any, max: any) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
+
   x() {
     return this.random(-260, 260)
   }
   y() {
-    return this.random(-20, 160)
+    return this.random(-20, 1080)
   }
   degree() {
     return this.random(0, 360)
@@ -96,6 +103,7 @@ i {
   margin: -2px 0 0 -2px;
   opacity: var(--o, 0);
   background: var(--b);
+  border-radius: 4px;
   -webkit-transform: translate(var(--x), var(--y)) scale(var(--s, 1));
   transform: translate(var(--x), var(--y)) scale(var(--s, 1));
   -webkit-animation: confetti 0.8s ease-out forwards;
@@ -123,6 +131,7 @@ section {
   from {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
+
     opacity: 1;
   }
 }
