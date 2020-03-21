@@ -294,3 +294,17 @@ h4:hover {
 
   transition: all 1s;
 }
+
+hr {
+  /*透明渐变水平线*/
+  width: 80%;
+  margin: 3em auto;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+}

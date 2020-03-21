@@ -2,10 +2,10 @@ export default (name) => {
   /* eslint-disable */
   $(document).on('copy', function(e) {
     if (
-      document.location.href.indexOf('https://siques.cn/post') == -1 &&
-      document.location.href.indexOf('https://siques.cn/ask') == -1 &&
-      document.location.href.indexOf('https://siques.cn/record') == -1 &&
-      document.location.href.indexOf('http://localhost:3000/post') == -1
+      document.location.href.indexOf('siques.cn/post') == -1 &&
+      document.location.href.indexOf('siques.cn/ask') == -1 &&
+      document.location.href.indexOf('siques.cn/record') == -1 &&
+      document.location.href.indexOf('localhost:3000/post') == -1
     ) {
       const selected = window.getSelection()
       const selectedText = selected.toString().replace(/\n/g, '<br>') // Solve the line breaks conversion issue
