@@ -10,7 +10,7 @@
           :lg="18"
           :xl="18"
         >
-          <div>
+          <div id="article">
             <div class="fs-xll d-flex ai-baseline mb-2">
               <div class="text-primary note-title mr-2">记</div>
               <div>{{ note.title }}</div>
@@ -82,6 +82,7 @@
         </el-col>
       </el-row>
       <sq-bookmark ref="reference"></sq-bookmark>
+      <sq-click></sq-click>
     </div>
     <sq-footer top-border="true"></sq-footer>
   </div>
@@ -89,8 +90,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import mediumZoom from 'medium-zoom'
 import md from '../../../plugins/markdown'
 import { hljs } from '../../../plugins/utils.js'
+
+const mediumzoom = () => {
+  mediumZoom(document.querySelectorAll('p img'))
+}
 @Component({
   components: {}
 })
@@ -143,6 +149,7 @@ export default class Note extends Vue {
   initNote() {
     this.$nextTick(() => {
       hljs()
+      mediumzoom()
     })
   }
 

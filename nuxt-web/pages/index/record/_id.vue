@@ -239,12 +239,11 @@ export default class Index extends Vue {
   async CreateNote() {
     const now = this.$dayjs(new Date()).format('YYYY-MM-DD')
     const collection: any = this.noteCollections[this.selectCollection]
-
+    this.dynamicTags = []
     const body = {
       title: now,
       collection: collection.id === -1 ? null : collection.id,
-      type: 'note',
-      tags: this.dynamicTags
+      type: 'note'
     }
     const res = await this.$http.post(`/posts/`, body)
     const { id } = res.data

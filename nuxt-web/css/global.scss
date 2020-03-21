@@ -573,3 +573,9 @@ a {
 .te-preview {
   background-color: #f6f6f6;
 }
+
+.el-menu::before,
+.el-menu::after {
+  display: table;
+  content: none !important;
+}
