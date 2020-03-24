@@ -102,6 +102,14 @@ h1 {
   }
 }
 
+// h2 {
+//   counter-increment: section;
+
+//   &:before {
+//     content: counter(section, bengali) ' ';
+//   }
+// }
+
 .article {
   h3,
   h4,

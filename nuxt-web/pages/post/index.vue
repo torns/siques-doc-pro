@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="collections" width="15%">
+      <el-aside id="collections" class="collections" width="200px">
         <div class="d-flex flex-column mt-4">
           <div class="lh-2 point backBtn fs-xs">
             <router-link tag="div" to="/">回首页</router-link>
@@ -135,74 +135,99 @@
       </el-aside>
       <el-aside
         id="post"
-        :width="wdith"
-        class="postlist"
-        style="background-color:white;color:#333;transition: all 0.5s ease-out 0s;"
+        :width="width"
+        ref="content"
+        v-draggable="`drag`"
+        :class="`postlist ${canHover ? 'expand' : ''}`"
+        style="background-color:white;color:#333;z-index: 4;"
       >
         <div class="d-flex ai-center jc-between">
-          <div v-if="showItem" @click="creatPost" class="creatpost point pl-4 ">
-            <i class="el-icon-circle-plus pr-2"></i>新建文章
-          </div>
-          <div
-            :style="!showItem ? 'margin:auto' : ''"
-            @click="changeWidth"
-            class="mr-4  point creatpost"
-          >
-            <i class="el-icon-s-unfold"></i>
+          <div @click="creatPost" class="creatpost point pl-4 ellipsis-1">
+            <i class="el-icon-circle-plus pr-2"></i>
+            新建文章
           </div>
         </div>
 
-        <ul
-          v-for="post in posts"
-          :key="post.id"
-          :class="selectedPost == post.id ? 'post-bd-left' : ''"
-        >
-          <el-popover
-            :disabled="showItem ? true : false"
-            :content="post.title"
-            placement="left"
-            title="标题"
-            width="200"
-            trigger="hover"
+        <div>
+          <li
+            v-for="post in posts"
+            :key="post.id"
+            style="min-width:200px"
+            :class="selectedPost == post.id ? 'post-bd-left' : ''"
           >
-            <li slot="reference" @click="selectPost(post.id)" type="primary">
-              <span v-if="showItem" class="d-flex jc-between hover-4">
-                <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
+            <el-popover
+              :disabled="!canHover ? true : false"
+              :content="post.title"
+              placement="left"
+              title="标题"
+              width="200"
+              trigger="hover"
+            >
+              <li slot="reference" @click="selectPost(post.id)" type="primary">
+                <span class="d-flex jc-between hover-4">
+                  <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
 
-                <div class="ellipsis-1">
-                  <div class="pl-2">{{ post.title }}</div>
-                </div>
+                  <div class="ellipsis-1">
+                    <div class="pl-2">{{ post.title }}</div>
+                  </div>
 
-                <el-dropdown
-                  @command="handlePost"
-                  placement="bottom-start"
-                  class="pr-3"
-                  trigger="click"
-                >
-                  <span>
-                    <i class="el-icon-s-tools el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      :command="'a.' + post.id + '.' + post.title"
-                      icon="el-icon-chat-dot-round"
-                      >修改文章标题</el-dropdown-item
-                    >
-                    <el-dropdown-item icon="el-icon-edit-outline"
-                      >移动文章</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      :command="'c.' + post.id"
-                      icon="el-icon-delete"
-                      >删除文章</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </span>
-            </li>
-          </el-popover>
-        </ul>
+                  <el-dropdown
+                    @command="handlePost"
+                    placement="bottom-start"
+                    class="pr-3"
+                    trigger="click"
+                  >
+                    <span>
+                      <i class="el-icon-s-tools el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item
+                        :command="'a.' + post.id + '.' + post.title"
+                        icon="el-icon-chat-dot-round"
+                        >修改文章标题</el-dropdown-item
+                      >
+                      <el-dropdown-item icon="el-icon-edit-outline"
+                        >移动文章</el-dropdown-item
+                      >
+                      <el-dropdown-item
+                        :command="'c.' + post.id"
+                        icon="el-icon-delete"
+                        >删除文章</el-dropdown-item
+                      >
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </span>
+              </li>
+            </el-popover>
+          </li>
+          <span
+            :style="
+              canHover
+                ? 'margin:auto;position: absolute;right: 10px;top: 16px;z-index:4;'
+                : 'position: absolute;right: 10px;top: 16px;z-index:4;'
+            "
+            @click="changeWidth"
+            class="point "
+          >
+            <el-tooltip
+              :content="canHover ? '展开' : '收起'"
+              placement="right"
+              effect="dark"
+            >
+              <el-button
+                size="mini"
+                :icon="canHover ? 'el-icon-caret-right' : 'el-icon-caret-left'"
+                circle
+              ></el-button>
+            </el-tooltip>
+          </span>
+        </div>
       </el-aside>
+
+      <div ref="drag" class="resize">
+        <div class="resize-bar"></div>
+      </div>
+
       <el-main
         :style="
           !selectedPost
@@ -210,56 +235,58 @@
             : ''
         "
       >
-        <div v-if="selectedPost">
-          <div class="my-3">
-            <el-input
-              v-focus
-              v-model="title"
-              size="medium"
-              placeholder
-            ></el-input>
-          </div>
-          <div class="d-flex tags text-left my-3">
-            <el-tag
-              :key="tag.name"
-              v-for="tag in dynamicTags"
-              :disable-transitions="false"
-              @close="handleClose(tag.name, tag.id)"
-              class="mr-2"
-              effect="plain"
-              closable
-              >{{ tag.name }}</el-tag
-            >
-
-            <sq-tag
-              ref="tag"
-              :ishow="showtag"
-              :position="`bottom`"
-              @add="addTag"
-            >
-              <el-button
-                @click="showtag = true"
-                class="button-new-tag"
-                size="small"
-                >+ 添加标签</el-button
+        <div class="pr-2 mr-1">
+          <div v-if="selectedPost">
+            <div class="my-2 pt-1">
+              <el-input
+                v-focus
+                v-model="title"
+                size="medium"
+                placeholder
+              ></el-input>
+            </div>
+            <div class="d-flex tags text-left my-3">
+              <el-tag
+                :key="tag.name"
+                v-for="tag in dynamicTags"
+                :disable-transitions="false"
+                @close="handleClose(tag.name, tag.id)"
+                class="mr-2"
+                effect="plain"
+                closable
+                >{{ tag.name }}</el-tag
               >
-            </sq-tag>
-          </div>
-          <tinymce
-            ref="tinymce"
-            v-show="selectEditor"
-            @submit="updatePost"
-          ></tinymce>
 
-          <markdown
-            ref="markdown"
-            v-show="!selectEditor"
-            @submit="updatePost"
-            height="70vh"
-            name="发布文章"
-          ></markdown>
+              <sq-tag
+                ref="tag"
+                :ishow="showtag"
+                :position="`bottom`"
+                @add="addTag"
+              >
+                <el-button
+                  @click="showtag = true"
+                  class="button-new-tag"
+                  size="small"
+                  >+ 添加标签</el-button
+                >
+              </sq-tag>
+            </div>
+            <tinymce
+              ref="tinymce"
+              v-show="selectEditor"
+              @submit="updatePost"
+            ></tinymce>
+
+            <markdown
+              ref="markdown"
+              v-show="!selectEditor"
+              @submit="updatePost"
+              height="70vh"
+              name="发布文章"
+            ></markdown>
+          </div>
+          <div v-else class="bg" style="flex:1">思趣</div>
         </div>
-        <div v-else class="bg" style="flex:1">思趣</div>
       </el-main>
     </el-container>
   </div>
@@ -301,9 +328,8 @@ export default class index extends Vue {
   tagLen: number = 0
   showtag: boolean = false
   visible: any
-  wdith = '22%'
-  leftwdith = '16%'
-  showItem = true
+  width = '300px'
+  canHover = false
 
   // 标签
   dynamicTags: Array<any> = []
@@ -312,15 +338,12 @@ export default class index extends Vue {
   inputValue = ''
   // true是tinymce
   changeWidth() {
-    this.wdith === '22%' ? (this.wdith = '2%') : (this.wdith = '22%')
-  }
-
-  @Watch('wdith')
-  isWidthChanged(newVal: any, oldVal: any) {
-    if (newVal === '2%') {
-      this.showItem = false
+    if (this.width.split('px')[0] >= '300') {
+      this.width = '10px'
+      this.canHover = true
     } else {
-      this.showItem = true
+      this.width = '300px'
+      this.canHover = false
     }
   }
 
@@ -427,8 +450,10 @@ export default class index extends Vue {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       setTimeout(async () => {
-        await this.$http.post('/posts', data)
+        const res = await this.$http.post('/posts', data)
+
         this.$store.commit('increLen', 'post')
+        this.selectPost(res.data.id)
         this.selectCollect(this.selectedCollection, 'refetch')
         loading.close()
         this.$notify({
@@ -678,6 +703,46 @@ export default class index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 0px;
+  height: 5px;
+}
+
+#collections:hover + .expand {
+  width: 200px !important;
+
+  transition: 0.4s cubic-bezier(0.68, -0.01, 0.29, 1.06);
+}
+
+.expand {
+  &:hover {
+    width: 200px !important;
+  }
+  transition: 0.4s cubic-bezier(0.68, -0.01, 0.29, 1.06);
+}
+
+.resize {
+  background-color: #e9eef3;
+  transform: translateZ(0px);
+  width: 15px;
+  z-index: 3;
+  position: relative;
+  cursor: e-resize;
+  &-bar {
+    background-color: rgb(76, 154, 255);
+    opacity: 0;
+    height: 100%;
+    width: 2px;
+    transition: opacity 200ms ease 0s;
+  }
+
+  &:hover {
+    .resize-bar {
+      opacity: 1;
+    }
+  }
+}
+
 .backBtn {
   margin-top: 100px;
   border: 1px solid #009a61;
@@ -686,11 +751,11 @@ export default class index extends Vue {
   border-radius: 20px;
   color: #009a61;
 }
-.postlist ul {
+.postlist li {
   position: relative;
   margin-bottom: 0;
   cursor: pointer;
-  border-top: 1px solid #d9d9d9;
+  border-top: 1px solid #ececec;
 
   li {
     height: 80px;
