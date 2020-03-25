@@ -265,12 +265,22 @@ export class PostService {
       let reg1 = /(?<=\!\[.*\]\()(.+)(?=\))/;
 
       let reg2 = /^[^?]+/;
-      let url: string;
+      let url: any;
       try {
-        url =
-          data.body.match(reg1)[1].match(reg2) +
-          '?x-oss-process=style/' +
-          'cover-picture';
+        if (
+          data.body
+            .match(reg1)[1]
+            .match(reg2)
+            .toString()
+            .includes('gif')
+        ) {
+          url = data.body.match(reg1)[1].match(reg2);
+        } else {
+          url =
+            data.body.match(reg1)[1].match(reg2) +
+            '?x-oss-process=style/' +
+            'cover-picture';
+        }
       } catch {
         url = null;
       }

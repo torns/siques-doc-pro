@@ -176,7 +176,7 @@
                   :key="$index"
                   class="infinite-list-item pb-3"
                 >
-                  <div class="d-flex ai-center">
+                  <div class="d-flex ai-center jc-between">
                     <div class=" ">
                       <div>
                         <router-link
@@ -241,13 +241,26 @@
                     </div>
                     <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
                       <router-link :to="`/p/${post.id}`">
-                        <el-image
-                          :src="post.cover"
-                          style="width: 140px; height: 90px"
-                          class="border-radius shadow-1 border-dash"
-                          fit="cover"
-                        ></el-image
-                      ></router-link>
+                        <el-popover
+                          :close-delay="100"
+                          placement="top-start"
+                          trigger="hover"
+                        >
+                          <el-image
+                            :src="post.cover"
+                            style="width: 540px; height: 360px"
+                            class="border-radius shadow-1"
+                            fit="cover"
+                          ></el-image>
+                          <el-image
+                            slot="reference"
+                            :src="post.cover"
+                            style="width: 140px; height: 90px"
+                            class="border-radius shadow-1 border-dash"
+                            fit="cover"
+                          ></el-image>
+                        </el-popover>
+                      </router-link>
                     </div>
                   </div>
                 </div>
