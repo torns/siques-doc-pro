@@ -148,15 +148,16 @@ h1 {
   p {
     margin-bottom: 16px;
     font-size: 15px;
-    code {
-      color: #c7254e;
-      padding: 0.065em 0.4em;
-      font-size: 14px;
-      margin: 0 1px;
-      border-radius: 3px;
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
+}
+
+code {
+  color: #c7254e;
+  padding: 0.065em 0.4em;
+  font-size: 14px;
+  margin: 0 1px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 nav .active {
