@@ -3,6 +3,7 @@
     <div class="container h-100 pb-4">
       <el-row type="flex" class="pt-4">
         <el-col
+          class="px-2"
           v-if="note != null"
           :xs="24"
           :sm="24"
@@ -50,6 +51,8 @@
               </el-tag>
             </div>
             <div
+              id="post-content"
+              v-scroll-spy
               v-highlight
               v-html="note.body"
               class="article lh-3 "
@@ -79,6 +82,21 @@
           :xl="6"
           class="hidden-sm-and-down pl-2"
         >
+          <div id="toc">
+            <div
+              class="d-none d-lg-block  bg-white py-3 "
+              style="overflow-y: auto;margin-top:1.9em;max-height: calc(100vh - 330px); min-height:100px;width:300px"
+            >
+              <div class="title fs-xl pl-2 pb-2" style="font-weight:600"></div>
+              <div>
+                <nav
+                  id="post-toc"
+                  v-scroll-spy-active
+                  class="nav d-flex flex-column"
+                ></nav>
+              </div>
+            </div>
+          </div>
         </el-col>
       </el-row>
       <sq-bookmark ref="reference"></sq-bookmark>
@@ -93,6 +111,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 import md from '../../../plugins/markdown'
 import { hljs } from '../../../plugins/utils.js'
+import mdTable from '../../../plugins/markdownTable'
 
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
@@ -126,6 +145,7 @@ export default class Note extends Vue {
 
   mounted() {
     this.initNote()
+    mdTable()
   }
 
   get hasAccess(): any {

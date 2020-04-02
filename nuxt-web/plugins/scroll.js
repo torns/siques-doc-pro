@@ -208,7 +208,6 @@ const install = (Vue, options) => {
         // 当前的index
         index = index - 1
 
-        // console.log(index)
         if (index < 0) {
           // 小于零就归零
           currentIndex.default = -1
@@ -227,33 +226,41 @@ const install = (Vue, options) => {
         // 添加active类的方法
         if (index !== currentIndex[id]) {
           let idActiveElement = activeElement[id]
-          if (idActiveElement) {
-            const activeClasses =
-              idActiveElement[scrollSpyContext].options.class
-            activeClasses.forEach(function(element) {
-              idActiveElement.classList.remove(element)
-            })
-            activeElement[id] = null
-          }
 
-          // console.log(currentIndex)
-
-          currentIndex[id] = index
-          if (
-            typeof currentIndex !== 'undefined' &&
-            Object.keys(activableElements).length > 0
-          ) {
-            idActiveElement = activableElements[id][currentIndex[id]]
-            activeElement[id] = idActiveElement
+          try {
             if (idActiveElement) {
               const activeClasses =
                 idActiveElement[scrollSpyContext].options.class
 
               activeClasses.forEach(function(element) {
-                idActiveElement.classList.add(element)
+                idActiveElement.classList.remove(element)
               })
+              activeElement[id] = null
             }
-          }
+          } catch (error) {}
+
+          // console.log(currentIndex)
+
+          currentIndex[id] = index
+
+          try {
+            if (
+              typeof currentIndex !== 'undefined' &&
+              Object.keys(activableElements).length > 0
+            ) {
+              idActiveElement = activableElements[id][currentIndex[id]]
+              activeElement[id] = idActiveElement
+              if (idActiveElement) {
+                // console.log(idActiveElement[scrollSpyContext])
+                const activeClasses =
+                  idActiveElement[scrollSpyContext].options.class
+
+                activeClasses.forEach(function(element) {
+                  idActiveElement.classList.add(element)
+                })
+              }
+            }
+          } catch (error) {}
 
           if (options.data) {
             Vue.set(vnode.context, options.data, index)
@@ -311,16 +318,21 @@ const install = (Vue, options) => {
 
   // 初始化激活的元素
   function initScrollActiveElement(el, activeOptions) {
-    const id = scrollSpyId(el)
+    setTimeout(() => {
+      const id = scrollSpyId(el)
 
-    activableElements[id] = findElements(el, activeOptions.selector)
-    const arr = [...activableElements[id]]
-    // console.log(arr)
-    arr.map((el) => {
-      el[scrollSpyContext] = {
-        options: activeOptions
-      }
-    })
+      activableElements[id] = findElements(el, activeOptions.selector)
+      const arr = [...activableElements[id]]
+      // const arr1 = Object.keys(activableElements[id])
+
+      // alert(arr1.length === 0)
+      // console.log(activableElements[id])
+      arr.map((el) => {
+        el[scrollSpyContext] = {
+          options: activeOptions
+        }
+      })
+    }, 200)
   }
 
   Vue.directive('scroll-spy-active', {

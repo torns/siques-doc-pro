@@ -93,7 +93,7 @@ Vue.mixin({
           var top = $(document).scrollTop()
           var viewH = $(window).height()
 
-          if ((top / (max - viewH)) * 100 > 90) {
+          if ((top / (max - viewH)) * 100 > 95) {
             $('#toc').addClass('showoff')
           } else {
             $('#toc').removeClass('showoff')
