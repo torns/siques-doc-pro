@@ -135,7 +135,15 @@ export default class Note extends Vue {
 
   head() {
     return {
-      title: `笔记_${this.note.title ? this.note.title : ''}`
+      title: `笔记_${this.note.title ? this.note.title : ''}`,
+      meta: [
+        {
+          hid: 'og:description',
+          name: 'description',
+          content: this.note.alias
+        },
+        { hid: 'description', name: 'description', content: this.note.alias }
+      ]
     }
   }
   name: string = ''

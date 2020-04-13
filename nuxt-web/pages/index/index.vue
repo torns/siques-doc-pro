@@ -410,7 +410,7 @@ export default class MyPage extends Vue {
     {
       name: '后端',
       alias: 'backEnd',
-      taglist: ['cloudcomputing', 'database', 'server'],
+      taglist: ['cloudcomputing', 'database', 'server', 'JavaDev', 'backEnd'],
       sort: 'created',
       icon: 'storage',
       color: 'blue-1'

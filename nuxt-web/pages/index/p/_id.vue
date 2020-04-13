@@ -504,7 +504,15 @@ export default class Post extends Vue {
 
   head() {
     return {
-      title: this.post.title + '_文章_思趣'
+      title: this.post.title + '_文章_思趣',
+      meta: [
+        {
+          hid: 'og:description',
+          name: 'description',
+          content: this.post.alias
+        },
+        { hid: 'description', name: 'description', content: this.post.alias }
+      ]
     }
   }
 
