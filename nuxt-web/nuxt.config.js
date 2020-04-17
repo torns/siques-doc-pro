@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+const axios = require('axios')
 dotenv.config()
 export default {
   mode: 'universal',
@@ -148,9 +149,21 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
+    '@nuxtjs/sitemap',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
+  sitemap: {
+    hostname: 'https://siques.cn',
+    gzip: true,
+    exclude: ['/ask', '/post', 'record'],
+    routes: async () => {
+      const res = await axios.get('http://localhost:3001/api/posts/all/sitemap')
+
+      return res.data.map((list) => `/${list.type}/${list.id}`)
+    }
+  },
+
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

@@ -421,4 +421,29 @@ export class PostService {
     res = [res, res.length];
     return res;
   }
+
+  async getSitemap() {
+    const type = 'post';
+    const type1 = 'note';
+    const post = await this.postRepository
+      .createQueryBuilder('post')
+      .where('post.type=:type', { type })
+      .getMany();
+
+    const note = await this.postRepository
+      .createQueryBuilder('post')
+      .where('post.type=:type1', { type1 })
+      .getMany();
+
+    let idList = [];
+
+    post.map(e => {
+      idList.push({ type: 'p', id: e.id });
+    });
+    note.map(e => {
+      idList.push({ type: 'n', id: e.id });
+    });
+
+    return idList;
+  }
 }

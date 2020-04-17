@@ -180,4 +180,9 @@ export class PostController {
 
   //   return await this.postService.liked_posts(user.id)
   // }
+  // 返回所有文章或者笔记的序列
+  @Get('seo/sitemap')
+  async getSitemap() {
+    return this.postService.getSitemap();
+  }
 }
