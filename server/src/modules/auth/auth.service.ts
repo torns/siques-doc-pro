@@ -3,13 +3,15 @@ import { UserService } from '../user/user.service';
 import { LoginDto } from './auth.dto';
 import { JwtPayload } from './auth.interface';
 import { JwtService } from '@nestjs/jwt';
-import { urlencoded } from 'express';
+import e, { urlencoded } from 'express';
 import axios from 'axios';
 import { User } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from '../user/user.dto';
 import { ThirdPart } from '../thirdpart/third.entity';
+import { Push } from '../push/push.entity';
+import { PushService } from '../push/push.service';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +22,8 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(ThirdPart)
     private readonly thirdRepository: Repository<ThirdPart>,
+
+    private readonly pushService: PushService,
   ) {}
 
   async login(data: LoginDto) {
@@ -237,14 +241,24 @@ export class AuthService {
 
   async push(data: any) {
     const { link } = data;
+    let res = null;
 
-    const url =
-      'http://data.zz.baidu.com/urls?site=siques.cn&token=RshbyPPuO3v3ojbt';
-    const res = await axios.post(url, link, {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    });
-    return res.data;
+    const canPush = await this.pushService.push(link);
+
+    if (canPush) {
+      try {
+        const url =
+          'http://data.zz.baidu.com/urls?site=https://siques.cn&token=RshbyPPuO3v3ojbt';
+        res = await axios.post(url, link, {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        });
+      } catch (error) {
+        // throw error;
+      }
+    }
+
+    return res;
   }
 }

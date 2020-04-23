@@ -86,6 +86,16 @@
           <div class="title">关注</div>
           <li>技术日志</li>
           <li>运营日志</li>
+          <li>
+            {{
+              '❤ ' +
+                Math.ceil(
+                  (new Date() - Date.parse('2018-12-15')) /
+                    (1 * 24 * 60 * 60 * 1000)
+                ) +
+                ' 天'
+            }}
+          </li>
         </el-col>
         <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4">
           <div class="title">条款</div>
@@ -106,7 +116,7 @@
         class="hidden-xs-and-down text-gray fs-sm"
       >
         <div class="text-center py-5 mb-2">
-          <div class="fs-xm pb-3">
+          <div class="fs-xm pb-2">
             <div>
               <a rel="nofollow" href="http://beian.miit.gov.cn"
                 >浙ICP备19035817号</a

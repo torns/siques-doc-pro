@@ -8,6 +8,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/user.entity';
 import { ThirdPart } from '../thirdpart/third.entity';
+import { Push } from '../push/push.entity';
+import { PushService } from '../push/push.service';
+import { PushModule } from '../push/push.module';
 
 @Module({
   imports: [
@@ -16,6 +19,7 @@ import { ThirdPart } from '../thirdpart/third.entity';
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
+    PushModule,
     JwtModule.register({
       secret: 'sadjyunbng-0=hrnasdasdlghzxhc',
       signOptions: {

@@ -24,6 +24,7 @@ import { ActionMiddleware } from './core/middleware/action.middleware';
 import { PostController } from './modules/post/post.controller';
 import { UserController } from './modules/user/user.controller';
 import { ThirdpartModule } from './modules/thirdpart/thirdpart.module';
+import { PushModule } from './modules/push/push.module';
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ dotenv.config();
     ContentModule,
     ActionModule,
     ThirdpartModule,
+    PushModule,
   ],
   controllers: [AppController],
   providers: [AppService],

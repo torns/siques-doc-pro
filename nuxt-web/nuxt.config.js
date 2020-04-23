@@ -158,7 +158,7 @@ export default {
     gzip: true,
     exclude: ['/ask', '/post', 'record'],
     routes: async () => {
-      const res = await axios.get('http://localhost:3001/api/posts/all/sitemap')
+      const res = await axios.get('http://siques.cn/api/posts/seo/sitemap')
 
       return res.data.map((list) => `/${list.type}/${list.id}`)
     }
