@@ -12,9 +12,16 @@ export class PushService {
   ) {}
 
   async push(url: any) {
+    if (url.indexOf('#') != -1) {
+      return false;
+    }
+
     const res = await this.pushRepository
       .createQueryBuilder('push')
-      .where('push.url=:url', { url })
+      .where('push.url Like :url')
+      .setParameters({
+        url: '%' + url + '%',
+      })
       .execute();
 
     if (res.length == 0) {

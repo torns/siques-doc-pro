@@ -114,20 +114,16 @@ export default {
    */
   plugins: [
     { src: '@/plugins/element-ui', ssr: true },
-    '@/plugins/fontawesome',
     '@/plugins/directive',
-    '@/plugins/http',
     '@/plugins/global.ts',
-    '@/plugins/filter',
-    '@/plugins/nuxt-client-init.client.js',
+    { src: '@/plugins/http', ssr: true },
+    // '@/plugins/nuxt-client-init.client.js',
     { src: '@/plugins/components.js', ssr: true },
     '@/plugins/nullSSRComponents.js',
     '@/plugins/axios',
     { src: '@plugins/push', ssr: false },
-    { src: '@plugins/router', ssr: false },
     { src: '@/plugins/mixin.js', ssr: false },
     { src: '@plugins/localStorage', ssr: false }
-    // { src: '@plugins/markdown', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -140,9 +136,9 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  render: {
-    resourceHints: false
-  },
+  // render: {
+  //   resourceHints: false
+  // },
 
   modules: [
     // Doc: https://axios.nuxtjs.org/usage

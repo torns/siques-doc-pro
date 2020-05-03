@@ -1,11 +1,3 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: sueRimn
- * @Date: 2020-02-02 12:13:51
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-03-21 01:32:10
- */
 import Vue from 'vue'
 import dayjs from 'dayjs'
 

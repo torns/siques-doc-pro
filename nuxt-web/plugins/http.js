@@ -5,12 +5,13 @@ const http = axios.create({
   baseURL: process.env.BASE_URL
 })
 
-export default ({ store }) => {
+if (process.client) {
   http.interceptors.request.use(
     (config) => {
-      if (store.state.auth['auth._token.local']) {
-        config.headers.Authorization =
-          store.state.auth['auth._token.local'] || ''
+      if (window.localStorage.state) {
+        const date = JSON.parse(window.localStorage.state)
+
+        config.headers.Authorization = date.auth['auth._token.local'] || ''
       }
       return config
     },
@@ -34,9 +35,10 @@ export default ({ store }) => {
         })
 
         if (err.response.status === 401) {
-          // 赋值store.states
-          store.commit('toggleLoginForm')
-          store.commit('toggleUser')
+          Vue.prototype.$notify({
+            type: 'error',
+            message: '授权失败，请重新登录'
+          })
         }
       }
 
