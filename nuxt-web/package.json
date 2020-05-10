@@ -25,7 +25,6 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sitemap": "^2.2.0",
     "@nuxtjs/style-resources": "^1.0.0",
-    "@sophosoft/vue-meta-decorator": "^0.1.1",
     "build-url": "^2.0.0",
     "cookieparser": "^0.1.0",
     "dayjs": "^1.8.19",

@@ -1,6 +1,6 @@
 export default () => {
   /* eslint-disable */
-  $(document).ready(function() {
+  $(document).ready(function () {
     var headers = $('#post-content').find('h1, h2, h3')
     var post_toc = $('#post-toc')
     // var header_level = 'h1'
@@ -20,16 +20,36 @@ export default () => {
   var toc_position = $('#toc').offset().top
   // var toc_width = $('#toc').width()
 
+
+
+
+
   // 滚动事件，修改目录部分的 position
-  $(window).scroll(function() {
+  $(window).scroll(function () {
     var toc = $('#toc')
 
+    var max = $(document).height()
+    var top = $(document).scrollTop()
+    var viewH = $(window).height()
+
+
     if ($(window).scrollTop() >= toc_position + 238) {
-      // toc.css('width', toc_width)
-      toc.css('top', 18)
-      toc.css('position', 'fixed')
+
+
+      if ((top / (max - viewH)) * 100 > 96) {
+
+        toc.css('top', 0.96 * (max - viewH) - top)
+
+        toc.css('position', "fixed")
+      } else {
+
+        toc.css('top', 0)
+        toc.css('position', 'fixed')
+      }
+
     } else {
-      // toc.css('width', '')
+
+
       toc.css('top', '')
       toc.css('position', '')
     }

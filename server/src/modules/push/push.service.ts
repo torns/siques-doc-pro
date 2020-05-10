@@ -12,7 +12,7 @@ export class PushService {
   ) {}
 
   async push(url: any) {
-    if (url.indexOf('#') != -1) {
+    if (url.indexOf('#') != -1 || url.indexOf('?') != -1) {
       return false;
     }
 

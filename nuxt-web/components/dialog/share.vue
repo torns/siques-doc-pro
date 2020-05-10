@@ -3,12 +3,12 @@
     <el-popover v-model="visible" placement="top" width="160">
       <!-- // 连接需要修改 -->
       <social-sharing
-        :url="`http://localhost:3000/p/${description.id}`"
+        :url="`https://siques.cn/p/${description.id}`"
         :title="description.title"
         :description="description.alias"
         :quote="description.alias"
         hashtags="vuejs,javascript,framework"
-        twitter-user="shuxie"
+        twitter-user="siques"
         inline-template
       >
         <div class="fs-lg d-flex flex-column">

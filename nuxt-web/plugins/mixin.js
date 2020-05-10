@@ -1,12 +1,12 @@
 import Vue from 'vue'
 /* eslint-disable */
 Vue.mixin({
-  created: function() {
+  created: function () {
     this.listenScrollBehave()
   },
 
   watch: {
-    $route: function() {
+    $route: function () {
       window.scrollTo(0, 0)
     }
   },
@@ -45,14 +45,14 @@ Vue.mixin({
         }
       }
     },
-    listenScrollBehave: function() {
+    listenScrollBehave: function () {
       window.onscroll = this.throttle2()
     },
-    handleScroll: function() {
+    handleScroll: function () {
       var p = 0,
         t = 0
-      $(document).ready(function() {
-        $(document).scroll(function() {
+      $(document).ready(function () {
+        $(document).scroll(function () {
           p = $(this).scrollTop()
           // console.log(t, p)
 
@@ -84,7 +84,7 @@ Vue.mixin({
             }
           }
           // console.log(this)
-          setTimeout(function() {
+          setTimeout(function () {
             t = p
           }, 0)
           //开始监听滚动条
@@ -93,11 +93,11 @@ Vue.mixin({
           var top = $(document).scrollTop()
           var viewH = $(window).height()
 
-          if ((top / (max - viewH)) * 100 > 95) {
-            $('#toc').addClass('showoff')
-          } else {
-            $('#toc').removeClass('showoff')
-          }
+          // if ((top / (max - viewH)) * 100 > 95) {
+          //   $('#toc').addClass('showoff')
+          // } else {
+          //   $('#toc').removeClass('showoff')
+          // }
         })
       })
     }
