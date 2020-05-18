@@ -144,7 +144,11 @@
               width="130"
               trigger="hover"
             >
-              <img style="width:123px" src="../../static/weixin.jpg" alt="" />
+              <img
+                style="width:123px"
+                src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/weixin.jpg"
+                alt=""
+              />
               <i
                 slot="reference"
                 class="fa fa-weixin pr-2 text-green point"

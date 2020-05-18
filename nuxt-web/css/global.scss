@@ -71,7 +71,7 @@ body {
   color: white;
 }
 .cover {
-  background-image: url(../static/cover.png);
+  background-image: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/cover.png);
   // clip-path: inset(60px 0 0 0);
   // top: -60px;
   position: relative;
@@ -79,7 +79,8 @@ body {
   background-position: center;
 }
 .menucover {
-  background-image: url(../static/cover.png);
+  background-color: #131313;
+  // background-image: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/cover.png);
 }
 
 ::-webkit-scrollbar {

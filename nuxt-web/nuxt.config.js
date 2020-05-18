@@ -32,6 +32,8 @@ export default {
       {
         src:
           'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+        ,
+        async: 'async'
       },
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
@@ -150,11 +152,11 @@ export default {
     '@nuxtjs/dotenv'
   ],
   sitemap: {
-    hostname: 'https://siques.cn',
+    hostname: 'https://www.siques.cn',
     gzip: true,
     exclude: ['/ask', '/post', 'record'],
     routes: async () => {
-      const res = await axios.get('http://siques.cn/api/posts/seo/sitemap')
+      const res = await axios.get('http://www.siques.cn/api/posts/seo/sitemap')
 
       return res.data.map((list) => `/${list.type}/${list.id}`)
     }
@@ -199,11 +201,11 @@ export default {
       ]
     },
 
-    // analyze: true,
+    analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
     // },
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'

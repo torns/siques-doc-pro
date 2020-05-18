@@ -242,21 +242,22 @@ export class AuthService {
   async push(data: any) {
     const { link } = data;
     let res = null;
-
     const canPush = await this.pushService.push(link);
-
     if (canPush) {
-      try {
-        const url =
-          'http://data.zz.baidu.com/urls?site=https://siques.cn&token=RshbyPPuO3v3ojbt';
-        res = await axios.post(url, link, {
+      const url =
+        'http://data.zz.baidu.com/urls?site=https://www.siques.cn&token=RshbyPPuO3v3ojbt';
+      await axios
+        .post(url, link, {
           headers: {
             'Content-Type': 'text/plain',
           },
+        })
+        .then(re => {
+          res = re.data;
+        })
+        .catch(error => {
+          return error;
         });
-      } catch (error) {
-        // throw error;
-      }
     }
 
     return res;
