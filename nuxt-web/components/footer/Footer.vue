@@ -122,7 +122,9 @@
                 >浙ICP备19035817号</a
               >
             </div>
-            <div class="py-1">Copyright © 2018-2019 Siques .</div>
+            <div class="py-1">
+              Copyright © 2018-{{ new Date().getFullYear() }} Siques
+            </div>
             <div>
               用到的技术
               <span>

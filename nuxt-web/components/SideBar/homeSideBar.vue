@@ -125,6 +125,7 @@
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-bar-chart text-blue-1 pr-2 "></i>站点统计</div>
       </div>
+      <statics></statics>
       <div class="d-flex flex-wrap jc-between">
         <div
           v-for="(data, index) in siteDatas"
@@ -141,6 +142,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import noteWall from '../noteWall/noteWall.vue'
+
 // import hover from './hover.js'
 
 @Component({

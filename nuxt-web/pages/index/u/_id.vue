@@ -164,9 +164,10 @@
           </el-row>
         </div>
       </div>
+
       <div class="container" style="min-height:100vh">
         <el-row
-          :gutter="20"
+          :gutter="25"
           type="flex"
           style="flex-wrap:wrap"
           class="h-100 pt-4"
@@ -177,7 +178,8 @@
             :md="4"
             :lg="4"
             :xl="4"
-            class="hidden-xs-and-down pb-3"
+            class="hidden-xs-and-down pb-3 "
+            style="padding-top:10px"
           >
             <div>
               <div class="d-flex flex-column jc-around">
@@ -269,7 +271,6 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
 import Homepage from '~/components/Page/Homepage.vue'
 import PostList from '~/components/Page/PostList.vue'
 import Fans from '~/components/Page/Fans.vue'
