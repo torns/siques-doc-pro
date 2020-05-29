@@ -28,7 +28,7 @@
             </el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">还没修改的侧边栏</el-col>
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">内容还在路上</el-col>
       </el-row>
     </div>
     <sq-footer top-border="true" class="pt-5"></sq-footer>

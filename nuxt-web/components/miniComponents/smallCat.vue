@@ -25,7 +25,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 export default class smallCat extends Vue {
   /* eslint-disable */
 
-  get pupils() {
+  get pupils(): any {
     return document.getElementsByClassName('pupil')
   }
 
@@ -33,17 +33,23 @@ export default class smallCat extends Vue {
     this.init(this.pupils)
   }
 
-  init = (pupils: any) => {
-    document.onmousemove = function(event) {
-      var x = (event.clientX * 8) / window.innerWidth + '%'
-      var y = (event.clientY * 8) / window.innerHeight + '%'
+  init(pupils: any) {
+    document.addEventListener('mousemove', this.active)
+  }
 
-      for (var i = 0; i < 2; i++) {
-        pupils[i].style.left = x
-        pupils[i].style.top = y
-        pupils[i].style.transform = 'translate(' + x + ',' + y + ')'
-      }
+  active(event) {
+    var x = (event.clientX * 8) / window.innerWidth + '%'
+    var y = (event.clientY * 8) / window.innerHeight + '%'
+
+    for (var i = 0; i < 2; i++) {
+      this.pupils[i].style.left = x
+      this.pupils[i].style.top = y
+      this.pupils[i].style.transform = 'translate(' + x + ',' + y + ')'
     }
+  }
+
+  destroyed() {
+    document.removeEventListener('mousemove', this.active)
   }
 }
 </script>

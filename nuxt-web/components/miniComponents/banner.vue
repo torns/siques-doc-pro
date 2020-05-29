@@ -31,7 +31,7 @@ export default class banner extends Vue {
   //   ctx: any
   // Configuration, Play with these
   config = {
-    particleNumber: 400,
+    particleNumber: 800,
     maxParticleSize: 10,
     maxSpeed: 40,
     colorVariation: 50
@@ -152,14 +152,14 @@ export default class banner extends Vue {
   //   Click listener
   resizeCanvas() {
     this.canvas.width = window.innerWidth
-    this.canvas.height = window.innerHeight
+    this.canvas.height = window.innerHeight - 200
   }
 
   init() {
     window.onresize = this.resizeCanvas
     // Set Canvas to be window size
     this.canvas.width = window.innerWidth
-    this.canvas.height = window.innerHeight
+    this.canvas.height = window.innerHeight - 200
     // That thing
     this.window.requestAnimFrame = ((): any => {
       return (

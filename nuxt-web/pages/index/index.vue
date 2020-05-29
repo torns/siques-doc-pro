@@ -4,15 +4,15 @@
     <div>
       <sq-banner
         ><div class="containerrelative" style="height:0">
-          <el-row :gutter="0" class="d-flex ">
-            <el-col :xs="0" :sm="4" :md="5" :lg="4" :xl="4" class="hidden-sm-and-down "> </el-col>
-            <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-              <div class=" d-flex jc-around header" style="position: relative;top: 77%;">
+          <el-row :gutter="0" class="d-flex jc-center">
+            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down "> </el-col>
+            <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
+              <div class=" d-flex jc-around header" style="position: relative;top: 80%;">
                 <div>
-                  <div class="text-white pb-3" style="font-family: cursive;font-size:40px">
+                  <div class="text-white pb-3 text-center" style="font-family: cursive;font-size:40px">
                     思趣，发现思考的深度
                   </div>
-                  <div>
+                  <div @click.stop>
                     <el-input v-model="search" @keyup.enter.native="dataSearch" size="medium" placeholder="搜索你喜欢的">
                       <el-button slot="append" @click="dataSearch">
                         <i class="fa fa-search"></i>
@@ -26,12 +26,12 @@
                     </div>
                   </div>
                   <div>
-                    <sq-down class="pt-5"></sq-down>
+                    <sq-down></sq-down>
                   </div>
                 </div>
               </div>
             </el-col>
-            <el-col :xs="0" :sm="6" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down">
+            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down">
               <div style="position: relative;top: 60%;" class="fs-xm hover-1 text-right text-white pt-2"></div>
             </el-col>
           </el-row></div
@@ -39,7 +39,7 @@
     </div>
     <div class="container" style="min-height: 100vh;">
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
-        <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4" class=" ">
+        <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
           <div class="d-flex " style="flex-direction: row-reverse;">
             <ul
               class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
@@ -65,7 +65,7 @@
             </ul>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
+        <el-col :xs="24" :sm="24" :md="15" :lg="15" :xl="15" class="px-2 mx-1">
           <sq-typer></sq-typer>
           <div>
             <div>
@@ -132,7 +132,7 @@
           </div>
         </el-col>
 
-        <el-col :xs="0" :sm="6" :md="7" :lg="6" :xl="6" class="hidden-sm-and-down">
+        <el-col :xs="0" :sm="6" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
           <sq-indexBar :hotTags="hotTags" :hotComments="hotComments" :hotNotebooks="hotNotebooks"></sq-indexBar>
         </el-col>
       </el-row>

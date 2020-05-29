@@ -50,17 +50,19 @@ export default class typer extends Vue {
   }
 
   init() {
-    document.addEventListener(
-      'click',
-      () => {
-        // On DOM Load initiate the effect
-
-        setTimeout(this.type, this.newTextDelay + 250)
-      },
-      { once: true }
-    )
+    document.addEventListener('pointerover', this.active, { once: true })
   }
-  mounted() {
+
+  active() {
+    // On DOM Load initiate the effect
+    // console.log(123)
+    setTimeout(this.type, this.newTextDelay + 250)
+  }
+
+  destroyed() {
+    document.removeEventListener('DOMContentLoaded', this.active, true)
+  }
+  beforeMount() {
     this.init()
   }
 }

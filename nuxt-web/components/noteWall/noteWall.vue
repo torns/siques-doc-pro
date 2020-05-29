@@ -13,13 +13,13 @@ export default class noteWall extends Vue {
   hotNotebooks = this.$attrs.hotNotebooks
   link = [
     {
-      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/01.png'); --angle: -5deg; --x: 5%; --y: 15%;"
+      style: "--image: url('https://cdn.siques.cn/public/01.png'); --angle: -5deg; --x: 5%; --y: 15%;"
     },
     {
-      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/02.png'); --angle: -1deg; --x: -10%; --y: -20%;"
+      style: "--image: url('https://cdn.siques.cn/public/02.png'); --angle: -1deg; --x: -10%; --y: -20%;"
     },
     {
-      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/03.png'); --angle: -4deg; --x: -20%; --y: 5%;"
+      style: "--image: url('https://cdn.siques.cn/public/03.png'); --angle: -4deg; --x: -20%; --y: 5%;"
     }
   ]
 }
@@ -36,8 +36,8 @@ export default class noteWall extends Vue {
 
 .card-container {
   position: relative;
-  width: 277px;
-  height: 280px;
+  // width: 277px;
+  height: 230px;
 }
 
 .card {

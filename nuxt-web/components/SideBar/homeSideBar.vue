@@ -4,16 +4,21 @@
     <div>
       <label>
         <input type="checkbox" />
-        <div class="card shadow-1">
+        <div class=" card shadow-1 text-center">
           <div class="front">
-            欢迎您访问本站点！如果解决了您的问题的话，请一定给个赞哦！
+            <div class="d-flex  ai-center jc-center">
+              <p>Welcome to this site !<br /></p>
+            </div>
           </div>
-          <div class="back">球球:943452349</div>
+
+          <div class="back">
+            <p class="pt-5">球球:943452349</p>
+          </div>
         </div>
       </label>
     </div>
 
-    <div class="hotTag">
+    <!-- <div class="hotTag">
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-tags text-blue pr-2 "></i>热门标签</div>
         <div class="text-primary">
@@ -34,7 +39,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div>
       <div class="d-flex jc-between py-3 " style="margin-bottom:-12px">
         <div><i class="el-icon-s-management fs-lg text-green pr-2 "></i>笔记本本</div>
@@ -92,13 +97,11 @@
       </div>
     </div>
     <div class="statistics">
-      <div class="d-flex jc-between py-3">
+      <div class="d-flex jc-between pt-3">
         <div><i class="fa fa-bar-chart text-blue-1 pr-2 "></i>站点统计</div>
       </div>
 
-      <div class="d-flex flex-wrap jc-between">
-        <div v-for="(data, index) in siteDatas" :key="index" class="fs-xm col-50 text-darkblue py-1 ">{{ data.title }} {{ allSiteData[data.alias] }} {{ data.classifier }}</div>
-      </div>
+      <sq-piechart :data="allSiteData"></sq-piechart>
     </div>
   </div>
 </template>
@@ -106,27 +109,27 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import noteWall from '../noteWall/noteWall.vue'
-
+import piechart from '~/components/minicomponents/piechart.vue'
 // import hover from './hover.js'
 
 @Component({
-  components: { noteWall }
+  components: { noteWall, 'sq-piechart': piechart }
 })
 export default class SideBar extends Vue {
   hotComments: any = this.$attrs.hotComments
   hotTags = this.$attrs.hotTags
   hotNotebooks = this.$attrs.hotNotebooks
   allSiteData: any = {}
-  siteDatas = [
-    { title: '文章总数:', alias: 'post', classifier: '篇' },
-    { title: '提问总数:', alias: 'question', classifier: '条' },
-    { title: '笔记总数:', alias: 'note', classifier: '个' },
-    { title: '专栏总数:', alias: 'collection', classifier: '个' },
-    { title: '评论总数:', alias: 'comment', classifier: '条' },
-    { title: '回答总数:', alias: 'answer', classifier: '条' },
-    { title: '标签总数:', alias: 'tag', classifier: '个' },
-    { title: '注册用户:', alias: 'user', classifier: '人' }
-  ]
+  // siteDatas = [
+  //   { title: '文章总数:', alias: 'post', classifier: '篇' },
+  //   { title: '提问总数:', alias: 'question', classifier: '条' },
+  //   { title: '笔记总数:', alias: 'note', classifier: '个' },
+  //   { title: '专栏总数:', alias: 'collection', classifier: '个' },
+  //   { title: '评论总数:', alias: 'comment', classifier: '条' },
+  //   { title: '回答总数:', alias: 'answer', classifier: '条' },
+  //   { title: '标签总数:', alias: 'tag', classifier: '个' },
+  //   { title: '注册用户:', alias: 'user', classifier: '人' }
+  // ]
 
   mounted() {
     this.fetchAll()
@@ -144,7 +147,7 @@ export default class SideBar extends Vue {
   //   top: 50%;
   //   left: 50%;
   //   transform: translateX(-50%) translateY(-50%);
-  width: 300px;
+  // width: 300px;
   height: 270px;
   perspective: 1000px;
 }
@@ -153,8 +156,9 @@ export default class SideBar extends Vue {
   position: relative;
   float: left;
   margin: 6px;
-  width: calc(150px - 95px);
-  height: calc(150px - 95px);
+  min-width: 45px;
+  width: calc(150px - 105px);
+  height: calc(150px - 105px);
   a {
     position: absolute;
     width: 100%;
@@ -368,7 +372,7 @@ label {
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   display: block;
-  width: 265px;
+  // width: 265px;
   height: 130px;
   cursor: pointer;
 }
@@ -391,7 +395,7 @@ label {
   background: #fcf8e3;
   text-align: center;
   line-height: 30px;
-  padding: 37px 10px 0 10px;
+  // padding: 20px 10px 0 10px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border-radius: 2px;

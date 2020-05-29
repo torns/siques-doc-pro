@@ -185,7 +185,9 @@
     </div>
 
     <sq-navigation></sq-navigation>
-    <sq-login ref="login"></sq-login>
+    <div @click.stop>
+      <sq-login @click.stop ref="login"></sq-login>
+    </div>
   </div>
 </template>
 

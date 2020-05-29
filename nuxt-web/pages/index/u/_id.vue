@@ -393,11 +393,11 @@ export default class Page extends Vue {
         alias: 'PostList',
         nick: 'post'
       },
-      {
-        name: `${this.id ? '他' : '我'}的回答`,
-        alias: 'Answer',
-        nick: ''
-      },
+      // {
+      //   name: `${this.id ? '他' : '我'}的回答`,
+      //   alias: 'Answer',
+      //   nick: ''
+      // },
       {
         name: `${this.id ? '他' : '我'}的提问`,
         alias: 'questionList',
