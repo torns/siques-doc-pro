@@ -3,11 +3,11 @@
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
       <sq-banner
-        ><div class="containerrelative" style="height:0">
+        ><div class="container" style="height:0">
           <el-row :gutter="0" class="d-flex jc-center">
             <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down "> </el-col>
             <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
-              <div class=" d-flex jc-around header" style="position: relative;top: 80%;">
+              <div class=" d-flex jc-around header reTop" style="position: relative;">
                 <div>
                   <div class="text-white pb-3 text-center" style="font-family: cursive;font-size:40px">
                     思趣，发现思考的深度

@@ -121,6 +121,9 @@ li {
   }
   @media (min-width: 1200px) {
     width: 1140px;
+    .reTop {
+      top: 100%;
+    }
   }
 }
 
@@ -159,11 +162,18 @@ li {
   .xs-flex-wrap {
     flex-wrap: wrap;
   }
+
+  .reTop {
+    top: 40% !important;
+  }
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
   .visible-sm {
     display: block !important;
+  }
+  .reTop {
+    top: 80%;
   }
 }
 
@@ -177,11 +187,18 @@ li {
   .visible-md {
     display: block !important;
   }
+
+  .reTop {
+    top: 80%;
+  }
 }
 
 @media (max-width: 1200px) {
   .md {
     display: none !important;
+  }
+  .reTop {
+    top: 80%;
   }
 }
 

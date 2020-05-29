@@ -109,7 +109,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import noteWall from '../noteWall/noteWall.vue'
-import piechart from '~/components/minicomponents/piechart.vue'
+import piechart from '~/components/miniComponents/piechart.vue'
 // import hover from './hover.js'
 
 @Component({
