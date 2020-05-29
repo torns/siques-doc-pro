@@ -1,5 +1,5 @@
 // 数字统计
-import { Browser } from './browserInfo'
+
 export function wordcounts(body) {
   const W = []
   let iNumwords = 0
@@ -73,13 +73,13 @@ export function listIntercep(taglist) {
 }
 
 export function hljs() {
-  $('pre code').each(function() {
+  $('pre code').each(function () {
     $(this).html(
       '<ul><li>' +
-        $(this)
-          .html()
-          .replace(/\n/g, '</li><li>') +
-        '\n</li></ul>'
+      $(this)
+        .html()
+        .replace(/\n/g, '</li><li>') +
+      '\n</li></ul>'
     )
     // console.log($(this).html())
     // 给指定行增加样式
@@ -105,16 +105,14 @@ export function hljs() {
   })
   // 去掉最后一行的空行
   $('code ul li:last-child').remove()
-  $('pre code ').each(function() {
+  $('pre code ').each(function () {
     if (
       $(this)
         .html()
         .includes('~开始~')
     ) {
       if (
-        Browser &&
-        !Browser[0].includes('edge') &&
-        !Browser[0].includes('msie')
+        true
       ) {
         let el = $(this)
           .html()
@@ -124,8 +122,8 @@ export function hljs() {
           let brief = el[index].match(/(?=<span)[\s\S]*?(?=<\/li>)/g)[0]
           let el1 = `
       ${`<details><summary class="point hover-2" >${brief}</summary>` +
-        el[index] +
-        '</details>'}`
+            el[index] +
+            '</details>'}`
           $(this).html(
             $(this)
               .html()
@@ -162,7 +160,7 @@ export function hljs() {
     }
   })
 
-  $('summary').click(function() {
+  $('summary').click(function () {
     if (!$(this)[0].parentNode.attributes.open) {
       $(this).css({ opacity: 0.2, '-webkit-text-security': 'disc' })
     } else {

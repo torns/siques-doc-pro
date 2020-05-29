@@ -20,9 +20,7 @@
             </network>
           </div>
           <div class="hover-2  w-100 text-center point py-2">
-            <network network="weibo">
-              <i class="iconfont icon-weibo"></i> 新浪微博
-            </network>
+            <network network="weibo"> <i class="iconfont icon-weibo"></i> 新浪微博 </network>
           </div>
         </div>
       </social-sharing>

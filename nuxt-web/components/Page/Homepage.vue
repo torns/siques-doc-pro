@@ -14,12 +14,7 @@
     </div>
     <div style="min-height:200px" class="body border-solid">
       <div v-if="posts !== '' && posts.length !== 0" class="px-3 pb-3">
-        <list-panel
-          :collection="false"
-          :posts="posts"
-          :pagination="false"
-          type
-        ></list-panel>
+        <list-panel :collection="false" :posts="posts" :pagination="false" type></list-panel>
         <div class="text-right fs-xm">
           查看全部<span class="text-primary point hoverlink">文章</span>
           、提问、回答
@@ -27,32 +22,19 @@
       </div>
 
       <div v-else style="height:200px" class="d-flex ai-center">
-        <div
-          class="d-flex bg-light-1 ai-center jc-center border-dash border-radius"
-          style="height:80%;width:80%;margin:0 auto;"
-        >
+        <div class="d-flex bg-light-1 ai-center jc-center border-dash border-radius" style="height:80%;width:80%;margin:0 auto;">
           (ﾟ∀ﾟ ) 暂时没有任何数据
         </div>
       </div>
     </div>
 
-    <div
-      class="mt-4 d-flex jc-between header bg-light-1 border-solid py-1 px-3"
-    >
+    <div class="mt-4 d-flex jc-between header bg-light-1 border-solid py-1 px-3">
       <div style="line-height:28px">个人动态</div>
     </div>
     <div class="body border-solid">
       <div style="min-height:200px">
-        <div
-          v-for="action in actions"
-          :key="action.id"
-          style="width: -webkit-fill-available;"
-          class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2"
-        >
-          <div
-            v-if="action.type != 'followuser' && action.type != 'privateletter'"
-            class="d-flex jc-between"
-          >
+        <div v-for="action in actions" :key="action.id" style="width: -webkit-fill-available;" class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2">
+          <div v-if="action.type != 'followuser' && action.type != 'privateletter'" class="d-flex jc-between">
             <div>
               <div class="text-gray fs-xm ">
                 <span class="text-primary">
@@ -62,28 +44,15 @@
                 {{ $dayjs(action.created).format('M月D日 H:mm') }}
               </div>
               <div class="text-primary py-1 hoverlink point">
-                <router-link
-                  :to="`${link(action) + action.to_Post.id}`"
-                  tag="div"
-                >
-                  {{ action.to_Post.title }}</router-link
-                >
+                <router-link :to="`${link(action) + action.to_Post.id}`" tag="div"> {{ action.to_Post.title }}</router-link>
               </div>
               <div class="d-flex ">
-                <div class="fs-xm text-gray pr-3">
-                  关注 {{ action.to_Post.concerned }}
-                </div>
-                <div class="fs-xm text-gray">
-                  收藏 {{ action.to_Post.bookmarked }}
-                </div>
+                <div class="fs-xm text-gray pr-3">关注 {{ action.to_Post.concerned }}</div>
+                <div class="fs-xm text-gray">收藏 {{ action.to_Post.bookmarked }}</div>
               </div>
             </div>
             <div v-if="action.to_Post.cover !== null" class="xs pr-3">
-              <el-image
-                :src="action.to_Post.cover"
-                style="width: 80px; height: 60px"
-                fit="cover"
-              ></el-image>
+              <el-image :src="action.to_Post.cover" style="width: 80px; height: 60px" fit="cover"></el-image>
             </div>
           </div>
           <div v-else>
@@ -96,40 +65,21 @@
             </div>
             <div class="d-flex text-primary py-1 ">
               <div class="pr-3">
-                <el-avatar
-                  :size="40"
-                  :src="
-                    `${
-                      action.to_uid.avator[0] ? action.to_uid.avator[0].url : ''
-                    }`
-                  "
-                >
+                <el-avatar :size="40" :src="`${action.to_uid.avator[0] ? action.to_uid.avator[0].url : ''}`">
                   <img src="~/static/avator.jpg" />
                 </el-avatar>
               </div>
 
               <div>
-                <router-link
-                  :to="`/u/${action.to_uid.id}`"
-                  class="point hoverlink"
-                  tag="div"
-                >
-                  {{ action.to_uid.name }}</router-link
-                >
+                <router-link :to="`/u/${action.to_uid.id}`" class="point hoverlink" tag="div"> {{ action.to_uid.name }}</router-link>
                 <div class="fs-xs text-gray py-1">
-                  {{
-                    action.to_uid.introduction || '这个用户太懒,什么都没有留下'
-                  }}
+                  {{ action.to_uid.introduction || '这个用户太懒,什么都没有留下' }}
                 </div>
-                <div v-if="action.content && !id" class="fs-xs">
-                  消息内容：{{ action.content }}
-                </div>
+                <div v-if="action.content && !id" class="fs-xs">消息内容：{{ action.content }}</div>
               </div>
             </div>
             <div class="d-flex ">
-              <div class="fs-xm text-gray pr-3 ">
-                粉丝 {{ action.to_uid.followedBy }}
-              </div>
+              <div class="fs-xm text-gray pr-3 ">粉丝 {{ action.to_uid.followedBy }}</div>
             </div>
           </div>
         </div>
@@ -181,11 +131,7 @@ export default class MyHomepage extends Vue {
   }
 
   actionTransFomer(action: any) {
-    if (
-      action.to_Post !== null &&
-      action.to_Post.type === 'question' &&
-      action.type === 'commentpost'
-    ) {
+    if (action.to_Post !== null && action.to_Post.type === 'question' && action.type === 'commentpost') {
       return '评论了问题'
     } else if (action.to_Post !== null && action.to_Post.type === 'note') {
       return '发布了笔记'
@@ -247,14 +193,10 @@ export default class MyHomepage extends Vue {
 
   async fetchUserPost(type?: any) {
     if (this.id) {
-      const res = await this.$http.get(
-        `/posts/${this.id}/user?type=${type || ''}`
-      )
+      const res = await this.$http.get(`/posts/${this.id}/user?type=${type || ''}`)
       this.posts = res.data[0]
     } else {
-      const res = await this.$http.get(
-        `/posts/${this.$store.state.auth.user.id}/user?type=${type || ''}`
-      )
+      const res = await this.$http.get(`/posts/${this.$store.state.auth.user.id}/user?type=${type || ''}`)
       this.posts = res.data[0]
     }
   }
@@ -264,9 +206,7 @@ export default class MyHomepage extends Vue {
       const res = await this.$http.get(`/users/${this.id}/answer`)
       this.posts = res.data
     } else {
-      const res = await this.$http.get(
-        `/users/${this.$store.state.auth.user.id}/answer`
-      )
+      const res = await this.$http.get(`/users/${this.$store.state.auth.user.id}/answer`)
       this.posts = res.data
     }
   }
@@ -276,9 +216,7 @@ export default class MyHomepage extends Vue {
       const res = await this.$http.get(`/actions/${this.id}`)
       this.actions = res.data
     } else {
-      const res = await this.$http.get(
-        `/actions/${this.$store.state.auth.user.id}`
-      )
+      const res = await this.$http.get(`/actions/${this.$store.state.auth.user.id}`)
       this.actions = res.data
     }
   }

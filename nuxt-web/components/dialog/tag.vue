@@ -1,22 +1,12 @@
 <template>
   <div>
-    <el-popover
-      @hide="hide"
-      v-model="visible"
-      :placement="position"
-      :popper-class="cunstom"
-      width="450"
-    >
+    <el-popover @hide="hide" v-model="visible" :placement="position" :popper-class="cunstom" width="450">
       <div class="px-3 py-2" style="height:300px;">
         <div class="d-flex jc-between gray-1 fs-sm" style="font-weight:600;">
           <div>还可添加{{ taglen }}个标签</div>
           <div>找不到标签?</div>
         </div>
-        <el-input
-          v-model="state"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="输入内容搜索标签"
-        ></el-input>
+        <el-input v-model="state" :fetch-suggestions="querySearchAsync" placeholder="输入内容搜索标签"></el-input>
 
         <div v-if="state !== ''">
           <li
@@ -33,19 +23,10 @@
 
         <div v-else>
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane
-              v-for="(tags, index1) in taglist"
-              :key="index1"
-              :label="tags.name"
-              :name="tags.name"
-              class="d-flex flex-wrap"
-            >
+            <el-tab-pane v-for="(tags, index1) in taglist" :key="index1" :label="tags.name" :name="tags.name" class="d-flex flex-wrap">
               <div v-for="(tag, index2) in tags.tags" :key="index2">
                 <ul>
-                  <li
-                    @click="addTag(tag.name, tag.id)"
-                    class="bg-3 px-2 mx-1 py-1 my-2 hover-3"
-                  >
+                  <li @click="addTag(tag.name, tag.id)" class="bg-3 px-2 mx-1 py-1 my-2 hover-3">
                     <i :class="` fs-xm fa fa-${tag.name} pr-1`"></i>
                     <span class="pr-2">{{ tag.name }}</span>
                   </li>
@@ -103,17 +84,13 @@ export default class Tag extends Vue {
   @Watch('state')
   onStateChanged(newvalue: any, oldvalue: any) {
     const taglist = this.tags
-    const results = newvalue
-      ? taglist.filter(this.createStateFilter(newvalue))
-      : ''
+    const results = newvalue ? taglist.filter(this.createStateFilter(newvalue)) : ''
 
     this.results = results
   }
   querySearchAsync(queryString: any) {
     const taglist = this.tags
-    const results = queryString
-      ? taglist.filter(this.createStateFilter(queryString))
-      : taglist
+    const results = queryString ? taglist.filter(this.createStateFilter(queryString)) : taglist
 
     this.results = results
   }

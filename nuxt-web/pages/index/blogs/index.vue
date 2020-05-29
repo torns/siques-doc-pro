@@ -3,63 +3,32 @@
     <div class="container h-100">
       <el-row type="flex" class="pt-4 px-2">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
-          <el-tabs
-            v-if="posts !== []"
-            v-model="activeName"
-            @tab-click="handleClick"
-            type="card"
-          >
+          <el-tabs v-if="posts !== []" v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="推荐文章" name="first">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
                 <sq-holder :count="10" :show="show"></sq-holder>
               </div>
 
-              <el-pagination
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :total="total"
-                background
-                layout="prev, pager, next"
-              ></el-pagination>
+              <el-pagination @current-change="handleCurrentChange" :current-page="page" :total="total" background layout="prev, pager, next"></el-pagination>
             </el-tab-pane>
             <el-tab-pane label="热门文章" name="second">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
                 <sq-holder :count="10" :show="show"></sq-holder>
               </div>
-              <el-pagination
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :total="total"
-                background
-                layout="prev, pager, next"
-              ></el-pagination>
+              <el-pagination @current-change="handleCurrentChange" :current-page="page" :total="total" background layout="prev, pager, next"></el-pagination>
             </el-tab-pane>
             <el-tab-pane label="最新文章" name="third">
               <div style="min-height:70vh">
                 <sq-panel :data="posts"></sq-panel>
                 <sq-holder :count="10" :show="show"></sq-holder>
               </div>
-              <el-pagination
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :total="total"
-                background
-                layout="prev, pager, next"
-              ></el-pagination>
+              <el-pagination @current-change="handleCurrentChange" :current-page="page" :total="total" background layout="prev, pager, next"></el-pagination>
             </el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="6"
-          :lg="6"
-          :xl="6"
-          class="hidden-sm-and-down pl-2"
-          >还没修改的侧边栏</el-col
-        >
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">还没修改的侧边栏</el-col>
       </el-row>
     </div>
     <sq-footer top-border="true" class="pt-5"></sq-footer>
@@ -77,20 +46,11 @@ import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 })
 export default class index extends Vue {
   async asyncData({ params, store }: any) {
-    const Taglist = store.state.auth
-      ? store.state.auth.user
-        ? store.state.auth.user.tags
-          ? store.state.auth.user.tags
-          : null
-        : null
-      : null
+    const Taglist = store.state.auth ? (store.state.auth.user ? (store.state.auth.user.tags ? store.state.auth.user.tags : null) : null) : null
     const List = listIntercep(Taglist)
     const http = Vue.prototype.$http
 
-    const link =
-      `/posts/all?limit=10&page=1&sort=views` +
-      (Taglist ? `&taglist=${List}` : '') +
-      `&listId=true&collection=true&type=post`
+    const link = `/posts/all?limit=10&page=1&sort=views` + (Taglist ? `&taglist=${List}` : '') + `&listId=true&collection=true&type=post`
     const res = await http.get(link)
 
     return {

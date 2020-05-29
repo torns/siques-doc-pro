@@ -1,26 +1,14 @@
 <template>
   <div class="px-2 follow">
     <el-tabs v-model="activeName" stretch>
-      <el-tab-pane
-        v-for="(item, index) in items"
-        :key="index"
-        :label="item.label"
-        :name="item.alias"
-      >
+      <el-tab-pane v-for="(item, index) in items" :key="index" :label="item.label" :name="item.alias">
         <div v-if="item.alias === 'tags'">
           <div v-if="userTags !== ''">
             <div v-for="tag in userTags" :key="tag.id">
               <div class="d-flex ai-between jc-between">
                 <div class="ellipsis-1">
-                  <el-tag
-                    size="mini"
-                    type="primary"
-                    effect="light"
-                    class="hover-3 point mb-2"
-                  >
-                    <router-link :to="`/t/${tag.id}`" tag="div"
-                      >{{ tag.name }}
-                    </router-link>
+                  <el-tag size="mini" type="primary" effect="light" class="hover-3 point mb-2">
+                    <router-link :to="`/t/${tag.id}`" tag="div">{{ tag.name }} </router-link>
                   </el-tag>
 
                   <div class="pr-6  fs-xm">
@@ -30,15 +18,8 @@
 
                 <div>
                   <div class="d-flex ai-baseline">
-                    <div class="mr-3 text-gray fs-xm">
-                      {{ tag.interest }}关注
-                    </div>
-                    <el-button
-                      @click="deleteUserTag(tag.id)"
-                      size="mini"
-                      type="plain"
-                      >取消关注</el-button
-                    >
+                    <div class="mr-3 text-gray fs-xm">{{ tag.interest }}关注</div>
+                    <el-button @click="deleteUserTag(tag.id)" size="mini" type="plain">取消关注</el-button>
                   </div>
                 </div>
               </div>
@@ -51,29 +32,15 @@
             <div v-for="(follow, i) in follows" :key="follow.id">
               <div class="d-flex  jc-between">
                 <div class="d-flex ai-center">
-                  <el-avatar
-                    :size="35"
-                    :src="follow.avator[0] ? follow.avator[0].url : ''"
-                    class="mr-3 "
-                    ><img src="~/static/avator.jpg" alt=""
-                  /></el-avatar>
+                  <el-avatar :size="35" :src="follow.avator[0] ? follow.avator[0].url : ''" class="mr-3 "><img src="~/static/avator.jpg" alt=""/></el-avatar>
                   <div class="text-primary point hoverlink">
-                    <router-link :to="`/u/${follow.id}`" tag="li">
-                      {{ follow.name }}</router-link
-                    >
+                    <router-link :to="`/u/${follow.id}`" tag="li"> {{ follow.name }}</router-link>
                   </div>
                 </div>
 
                 <div class="d-flex ai-baseline">
-                  <div class="text-gray pr-3 fs-xm">
-                    {{ follow.followedBy }}关注
-                  </div>
-                  <el-button
-                    @click="deleteUserfollow(follow.id, i)"
-                    size="mini"
-                    type="plain"
-                    >取消关注</el-button
-                  >
+                  <div class="text-gray pr-3 fs-xm">{{ follow.followedBy }}关注</div>
+                  <el-button @click="deleteUserfollow(follow.id, i)" size="mini" type="plain">取消关注</el-button>
                 </div>
               </div>
               <el-divider></el-divider>
@@ -91,18 +58,12 @@
               <div class="d-flex jc-between">
                 <div>
                   <li class="fs-xm text-primary hoverlink">
-                    <router-link :to="`/blogs/${collection.id}`" tag="div">{{
-                      collection.name
-                    }}</router-link>
+                    <router-link :to="`/blogs/${collection.id}`" tag="div">{{ collection.name }}</router-link>
                   </li>
-                  <div class="text-gray fs-sm">
-                    {{ collection.amount }}篇文章
-                  </div>
+                  <div class="text-gray fs-sm">{{ collection.amount }}篇文章</div>
                 </div>
                 <div class="d-flex ai-center">
-                  <div class="text-gray mr-3 fs-sm">
-                    {{ collection.interest }}关注
-                  </div>
+                  <div class="text-gray mr-3 fs-sm">{{ collection.interest }}关注</div>
                   <div>
                     <el-button size="mini" type="plain">取消关注</el-button>
                   </div>
@@ -166,9 +127,7 @@ export default class Follows extends Vue {
       const res = await this.$http.get(`tags/user/${this.id}`)
       this.userTags = res.data
     } else {
-      const res = await this.$http.get(
-        `tags/user/${this.$store.state.auth.user.id}`
-      )
+      const res = await this.$http.get(`tags/user/${this.$store.state.auth.user.id}`)
       this.userTags = res.data
     }
   }
@@ -199,9 +158,7 @@ export default class Follows extends Vue {
       const res = await this.$http.get(`users/${this.id}/follows`)
       this.follows = res.data[0].follows
     } else {
-      const res = await this.$http.get(
-        `users/${this.$store.state.auth.user.id}/follows`
-      )
+      const res = await this.$http.get(`users/${this.$store.state.auth.user.id}/follows`)
       this.follows = res.data[0].follows
     }
   }
@@ -211,20 +168,14 @@ export default class Follows extends Vue {
       const res = await this.$http.get(`users/${this.id}/concerned`)
       this.questions = res.data
     } else {
-      const res = await this.$http.get(
-        `users/${this.$store.state.auth.user.id}/concerned`
-      )
+      const res = await this.$http.get(`users/${this.$store.state.auth.user.id}/concerned`)
       this.questions = res.data
     }
   }
 
   async fetchInterestColletion() {
     let res
-    this.id
-      ? (res = await this.$http.get(`users/${this.id}/collection`))
-      : (res = await this.$http.get(
-          `users/${this.$store.state.auth.user.id}/collection`
-        ))
+    this.id ? (res = await this.$http.get(`users/${this.id}/collection`)) : (res = await this.$http.get(`users/${this.$store.state.auth.user.id}/collection`))
     this.collections = res.data
   }
 }

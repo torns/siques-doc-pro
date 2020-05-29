@@ -13,13 +13,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel
-      @pageChange="fetchUserQue"
-      :len="len"
-      :collection="false"
-      :posts="questions"
-      question
-    ></list-panel>
+    <list-panel @pageChange="fetchUserQue" :len="len" :collection="false" :posts="questions" question></list-panel>
   </div>
 </template>
 
@@ -44,9 +38,7 @@ export default class QuestionList extends Vue {
       const res = await this.$http.get(`/posts/${this.id}/user?type=question`)
       this.questions = res.data[0]
     } else {
-      const res = await this.$http.get(
-        `/posts/${this.$store.state.auth.user.id}/user?type=question`
-      )
+      const res = await this.$http.get(`/posts/${this.$store.state.auth.user.id}/user?type=question`)
       this.len = res.data[1]
       this.questions = res.data[0]
     }

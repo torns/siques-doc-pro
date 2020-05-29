@@ -4,17 +4,11 @@
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
           <el-tab-pane label="我创建的收藏夹" name="first">
-            <el-button @click="showDialog" type="info" size="mini"
-              >创建收藏夹</el-button
-            >
+            <el-button @click="showDialog" type="info" size="mini">创建收藏夹</el-button>
             <el-divider></el-divider>
             <div>
               <ul>
-                <li
-                  v-for="(book, index) in bookmarks"
-                  :key="index"
-                  class="text-primary  "
-                >
+                <li v-for="(book, index) in bookmarks" :key="index" class="text-primary  ">
                   <div class="d-flex jc-between">
                     <router-link
                       :to="{
@@ -33,21 +27,11 @@
               </ul>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="我关注的收藏夹" name="second"
-            >关注的收藏夹</el-tab-pane
-          >
+          <el-tab-pane label="我关注的收藏夹" name="second">关注的收藏夹</el-tab-pane>
         </el-tabs>
         <bookmark-dialog ref="dialog"></bookmark-dialog>
       </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="6"
-        :lg="6"
-        :xl="6"
-        class="hidden-sm-and-down pl-2"
-        >123</el-col
-      >
+      <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">123</el-col>
     </el-row>
   </div>
 </template>
@@ -71,9 +55,7 @@ export default class Bookmark extends Vue {
   }
 
   async fetchBookmark() {
-    const res = await this.$http.get(
-      `/bookmarks/${this.$store.state.auth.user.id}/user`
-    )
+    const res = await this.$http.get(`/bookmarks/${this.$store.state.auth.user.id}/user`)
     this.bookmarks = res.data
   }
   showDialog() {

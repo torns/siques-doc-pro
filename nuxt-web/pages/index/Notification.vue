@@ -11,15 +11,7 @@
           <el-tab-pane label="私信消息" name="second">私信消息</el-tab-pane>
         </el-tabs>
       </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="6"
-        :lg="6"
-        :xl="6"
-        class="hidden-sm-and-down pl-2"
-        >123</el-col
-      >
+      <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">123</el-col>
     </el-row>
   </div>
 </template>

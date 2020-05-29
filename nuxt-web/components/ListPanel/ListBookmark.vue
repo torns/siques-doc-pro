@@ -3,12 +3,7 @@
     <ul>
       <li v-for="bookmark in bookmarks" :key="bookmark.id" class="text-dark">
         <div class="d-flex fs-xm">
-          <router-link
-            :to="`/bookmark/${bookmark.id}`"
-            tag="div"
-            class="flex-1 hoverlink"
-            >{{ bookmark.title }}
-          </router-link>
+          <router-link :to="`/bookmark/${bookmark.id}`" tag="div" class="flex-1 hoverlink">{{ bookmark.title }} </router-link>
           <div>{{ bookmark.posts.length }}条目</div>
         </div>
         <div class="py-3">

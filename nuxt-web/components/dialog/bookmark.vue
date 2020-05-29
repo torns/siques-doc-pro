@@ -1,45 +1,18 @@
 <template>
   <div>
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      width="500px"
-      title="创建收藏夹"
-      class="border-radius"
-    >
+    <el-dialog :visible.sync="dialogFormVisible" width="500px" title="创建收藏夹" class="border-radius">
       <div>
         <el-form :model="bookmark">
-          <el-form-item
-            style="font-weight:600"
-            label="名称*"
-            label-position="top"
-          >
-            <el-input
-              v-model="bookmark.title"
-              placeholder="最多输入32个字"
-              autocomplete="off"
-            ></el-input>
+          <el-form-item style="font-weight:600" label="名称*" label-position="top">
+            <el-input v-model="bookmark.title" placeholder="最多输入32个字" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item
-            style="font-weight:600"
-            label="描述"
-            label-position="top"
-          >
-            <el-input
-              v-model="bookmark.description"
-              :rows="2"
-              placeholder="最多输入256个字"
-              type="textarea"
-              autocomplete="off"
-            ></el-input>
+          <el-form-item style="font-weight:600" label="描述" label-position="top">
+            <el-input v-model="bookmark.description" :rows="2" placeholder="最多输入256个字" type="textarea" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div class="text-right pt-5">
-          <el-button @click="dialogFormVisible = false" size="mini"
-            >取 消</el-button
-          >
-          <el-button @click="createBookmark" size="mini" type="primary"
-            >确 定</el-button
-          >
+          <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+          <el-button @click="createBookmark" size="mini" type="primary">确 定</el-button>
         </div>
       </div>
     </el-dialog>

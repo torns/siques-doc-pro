@@ -4,59 +4,24 @@
       <el-row type="flex" class="pt-4">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div>
-            <el-input
-              v-model="title"
-              placeholder="请输入标题，用号码结尾"
-            ></el-input>
+            <el-input v-model="title" placeholder="请输入标题，用号码结尾"></el-input>
             <div class="d-flex jc-between tags text-left my-3">
               <div>
                 <div class="d-flex">
-                  <el-tag
-                    :key="tag.name"
-                    v-for="tag in dynamicTags"
-                    :disable-transitions="false"
-                    @close="handleClose(tag.name, tag.id)"
-                    class="mr-2"
-                    effect="plain"
-                    closable
-                    >{{ tag.name }}</el-tag
-                  >
+                  <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
 
                   <sq-tag ref="tag" :position="`bottom`" @add="addTag">
-                    <el-button
-                      @click="showtagDialog"
-                      class="button-new-tag"
-                      size="small"
-                      >+ 添加标签</el-button
-                    >
+                    <el-button @click="showtagDialog" class="button-new-tag" size="small">+ 添加标签</el-button>
                   </sq-tag>
                 </div>
               </div>
-              <el-select
-                v-model="model"
-                size="mini"
-                placeholder="提问模板(可选)"
-              >
-                <el-option-group
-                  v-for="group in options"
-                  :key="group.label"
-                  :label="group.label"
-                >
-                  <el-option
-                    v-for="item in group.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+              <el-select v-model="model" size="mini" placeholder="提问模板(可选)">
+                <el-option-group v-for="group in options" :key="group.label" :label="group.label">
+                  <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-option-group>
               </el-select>
             </div>
-            <markdown
-              ref="markdown"
-              @submit="submitQues"
-              name="发布提问"
-              height="70vh"
-            ></markdown>
+            <markdown ref="markdown" @submit="submitQues" name="发布提问" height="70vh"></markdown>
           </div>
         </el-col>
       </el-row>

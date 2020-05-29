@@ -4,15 +4,8 @@
       <li v-for="(post, index) in data" :key="index">
         <div class="d-flex">
           <div class="pr-3">
-            <el-button
-              @click="like(post.id, index)"
-              style="padding-left:18px;padding-right:18px;width:10px;height:45px"
-              type="plain"
-            >
-              <div
-                class="d-flex flex-column ai-center"
-                style="position: relative;top: -6px;"
-              >
+            <el-button @click="like(post.id, index)" style="padding-left:18px;padding-right:18px;width:10px;height:45px" type="plain">
+              <div class="d-flex flex-column ai-center" style="position: relative;top: -6px;">
                 <i class="el-icon-caret-top"></i>
                 <div>{{ post.liked }}</div>
               </div></el-button
@@ -20,37 +13,19 @@
           </div>
           <div>
             <div class="fs-lg">
-              <router-link
-                :to="`/p/${post.id}`"
-                target="_blank"
-                tag="a"
-                class="hoverlink"
-              >
+              <router-link :to="`/p/${post.id}`" target="_blank" tag="a" class="hoverlink">
                 {{ post.title }}
               </router-link>
             </div>
             <div class="d-flex ai-baseline py-2 fs-xm">
               <div class="text-primary pr-2">
-                <router-link
-                  :to="`/u/${post.user.id}`"
-                  class="hoverlink"
-                  tag="div"
-                  >{{ post.user.name }}</router-link
-                >
+                <router-link :to="`/u/${post.user.id}`" class="hoverlink" tag="div">{{ post.user.name }}</router-link>
               </div>
               <div class="pr-2 text-gray">发布于</div>
               <div class="pr-2">
-                <router-link
-                  :to="`/blogs/${post.collection.id}`"
-                  class="text-primary hoverlink"
-                >
-                  {{ post.collection.name }}</router-link
-                >
+                <router-link :to="`/blogs/${post.collection.id}`" class="text-primary hoverlink"> {{ post.collection.name }}</router-link>
               </div>
-              <div
-                @click="showBookmark(post.id)"
-                class="text-gray hoverlink fs-xm "
-              >
+              <div @click="showBookmark(post.id)" class="text-gray hoverlink fs-xm ">
                 <i class="iconfont icon-book-mark pr-1"></i>
                 <span>{{ post.bookmarked }}</span>
                 收藏

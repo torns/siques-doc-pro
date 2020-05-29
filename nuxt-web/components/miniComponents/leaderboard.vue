@@ -21,16 +21,7 @@
     </div>
 
     <svg style="display: none;">
-      <symbol
-        id="cup"
-        x="0px"
-        y="0px"
-        width="25px"
-        height="26px"
-        viewBox="0 0 25 26"
-        enable-background="new 0 0 25 26"
-        xml:space="preserve"
-      >
+      <symbol id="cup" x="0px" y="0px" width="25px" height="26px" viewBox="0 0 25 26" enable-background="new 0 0 25 26" xml:space="preserve">
         <path
           fill="#00bc6d"
           d="M21.215,1.428c-0.744,0-1.438,0.213-2.024,0.579V0.865c0-0.478-0.394-0.865-0.88-0.865H6.69

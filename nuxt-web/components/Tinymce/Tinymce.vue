@@ -1,10 +1,6 @@
 <template>
   <div>
-    <textarea
-      v-model="model.content"
-      :id="tinymceId"
-      class="tinymce-textarea"
-    />
+    <textarea v-model="model.content" :id="tinymceId" class="tinymce-textarea" />
     <el-button @click="submit" class="mt-3" type="primary">发布文章</el-button>
   </div>
 </template>
@@ -25,8 +21,7 @@ export default class Tinymce extends Vue {
   body: any = ''
   win: any = window
 
-  tinymceId =
-    'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+  tinymceId = 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
   mounted() {
     // if (typeof window !== 'undefined') {
 
@@ -61,11 +56,7 @@ export default class Tinymce extends Vue {
       advlist_bullet_styles: 'square',
       advlist_number_styles: 'default',
 
-      images_upload_handler: async (
-        blobInfo: any,
-        success: any,
-        failure: any
-      ) => {
+      images_upload_handler: async (blobInfo: any, success: any, failure: any) => {
         const params = new FormData()
         const filename = blobInfo.blob().name
 

@@ -9,13 +9,7 @@
               <div v-if="question.title" style="padding:25px">
                 <div class="d-flex flex-column menu-button">
                   <div class="mb-2 text-center">{{ liked }}</div>
-                  <el-button
-                    @click="like"
-                    class="hover-3"
-                    type="plain"
-                    circle
-                    style="width:fit-content;"
-                  >
+                  <el-button @click="like" class="hover-3" type="plain" circle style="width:fit-content;">
                     <i class="iconfont icon-thumbs-up"></i>
                   </el-button>
                   <i></i>
@@ -40,38 +34,19 @@
                 <div class="d-flex py-3">
                   <router-link :to="`/u/${question.user.id}`">
                     <div v-if="question.user.avator[0].url !== null">
-                      <img
-                        :src="question.user.avator[0].url"
-                        class="avator shadow-1 contain"
-                      />
+                      <img :src="question.user.avator[0].url" class="avator shadow-1 contain" />
                     </div>
-                    <img
-                      v-else
-                      src="~/static/avator.jpg"
-                      class="avator shadow-1 contain"
-                    />
+                    <img v-else src="~/static/avator.jpg" class="avator shadow-1 contain" />
                   </router-link>
                   <div class="pl-2">
                     <div class="d-flex ai-baseline">
                       <div class="pr-2">{{ question.user.name }}</div>
-                      <el-button
-                        @click="follow(question.user.id)"
-                        type="text"
-                        class="btn"
-                        >关注</el-button
-                      >
-                      <el-button
-                        v-if="isowner"
-                        @click="$router.push(`/ask/${question.id}`)"
-                        type="text"
-                        >编辑</el-button
-                      >
+                      <el-button @click="follow(question.user.id)" type="text" class="btn">关注</el-button>
+                      <el-button v-if="isowner" @click="$router.push(`/ask/${question.id}`)" type="text">编辑</el-button>
                     </div>
                     <div class="d-flex fs-xm">
                       <div class="pr-2">
-                        {{
-                          $dayjs(question.created).format('YYYY.MM.DD HH:MM:ss')
-                        }}
+                        {{ $dayjs(question.created).format('YYYY.MM.DD HH:MM:ss') }}
                       </div>
                       <div class="pr-2">字数：{{ question.counts }}</div>
                       <div>阅读：{{ question.views }}</div>
@@ -82,11 +57,7 @@
                   <ul class="d-flex">
                     <li v-for="tag in question.tags" :key="tag.id">
                       <router-link :to="`/t/${tag.id}`"
-                        ><el-tag
-                          class="bg-2 hover-3 mr-2"
-                          effect="light"
-                          size="small"
-                        >
+                        ><el-tag class="bg-2 hover-3 mr-2" effect="light" size="small">
                           <span class="fs-sm">{{ tag.name }}</span>
                         </el-tag>
                       </router-link>
@@ -95,42 +66,22 @@
                   <div class="text-gray fs-xm">阅读约2分钟</div>
                 </div>
 
-                <div
-                  v-if="question.body"
-                  v-html="question.body"
-                  v-highlight
-                  class="article lh-3 pt-3"
-                ></div>
-                <div class="text-primary mt-3 text-gray-1 fs-xm">
-                  阅读：{{ question.views }}
-                </div>
+                <div v-if="question.body" v-html="question.body" v-highlight class="article lh-3 pt-3"></div>
+                <div class="text-primary mt-3 text-gray-1 fs-xm">阅读：{{ question.views }}</div>
                 <div class="d-flex ai-baseline flex-wrap jc-left my-4">
                   <el-button @click="like" class="hover-3" type="plain">
                     <i class="pr-2 iconfont icon-Thumbsup"></i>
                     {{ liked }} 赞
                   </el-button>
 
-                  <el-button @click="showBookmark" class="hover-3" type="plain">
-                    <i class="pr-2 iconfont icon-bookmark"></i>收藏
-                  </el-button>
+                  <el-button @click="showBookmark" class="hover-3" type="plain"> <i class="pr-2 iconfont icon-bookmark"></i>收藏 </el-button>
 
-                  <el-button @click="followQue" class="hover-3" type="plain">
-                    <i class="pr-2  iconfont icon-note"></i
-                    >{{ question.concerned }}关注
-                  </el-button>
-                  <el-button
-                    @click="showCommentPanel = !showCommentPanel"
-                    type="text"
-                    >评论</el-button
-                  >
+                  <el-button @click="followQue" class="hover-3" type="plain"> <i class="pr-2  iconfont icon-note"></i>{{ question.concerned }}关注 </el-button>
+                  <el-button @click="showCommentPanel = !showCommentPanel" type="text">评论</el-button>
                   <span class="px-2">·</span>
 
                   <div class="fs-sm text-primary mt-3">
-                    {{
-                      $dayjs(
-                        Date.now() - new Date(question.created).getTime()
-                      ).format('发布于DD天 HH小时 MM分钟前')
-                    }}
+                    {{ $dayjs(Date.now() - new Date(question.created).getTime()).format('发布于DD天 HH小时 MM分钟前') }}
                   </div>
                 </div>
 
@@ -139,49 +90,22 @@
             </div>
           </div>
 
-          <div
-            v-if="fetchedComment && fetchedComment.length !== 0"
-            class="answerPanel pt-5"
-          >
-            <div class="font-bold fs-xl py-1">
-              {{ fetchedComment.length }}条回答
-            </div>
-            <div
-              v-for="answer in fetchedComment"
-              :key="answer.id"
-              style="min-height:200px"
-              class="bg-white mb-3"
-            >
+          <div v-if="fetchedComment && fetchedComment.length !== 0" class="answerPanel pt-5">
+            <div class="font-bold fs-xl py-1">{{ fetchedComment.length }}条回答</div>
+            <div v-for="answer in fetchedComment" :key="answer.id" style="min-height:200px" class="bg-white mb-3">
               <div class="px-4 py-3">
                 <div class="d-flex ai-center">
-                  <el-avatar
-                    :size="35"
-                    class="mr-2"
-                    src="https://empty"
-                    style="background-color:white"
-                  >
-                    <img
-                      v-if="answer.user.avator[0].url"
-                      :src="answer.user.avator[0].url"
-                    />
+                  <el-avatar :size="35" class="mr-2" src="https://empty" style="background-color:white">
+                    <img v-if="answer.user.avator[0].url" :src="answer.user.avator[0].url" />
                     <img v-else src="/static/avator" />
                   </el-avatar>
-                  <div
-                    style="font-weight:600"
-                    class="hover-4 text-primary fs-lg"
-                  >
-                    <router-link :to="`/u/${answer.user.id}`" tag="li">
-                      {{ answer.user.name }}</router-link
-                    >
+                  <div style="font-weight:600" class="hover-4 text-primary fs-lg">
+                    <router-link :to="`/u/${answer.user.id}`" tag="li"> {{ answer.user.name }}</router-link>
                   </div>
                 </div>
                 <div v-highlight v-html="answer.body" class="pt-3"></div>
                 <div class="d-flex ai-baseline pt-3">
-                  <el-button
-                    @click="commentLike(answer.id)"
-                    size="small"
-                    type="plain"
-                  >
+                  <el-button @click="commentLike(answer.id)" size="small" type="plain">
                     <i class="fa fa-thumbs-o-up  pr-2"> </i>
                     {{ answer.liked }} 赞
                   </el-button>
@@ -189,21 +113,14 @@
                   <div class="px-2">
                     <el-popconfirm
                       @onConfirm="adoptAnswer(answer.id)"
-                      v-if="
-                        question.adoptAnswer === null &&
-                          isowner &&
-                          adoptAnswerId === ''
-                      "
+                      v-if="question.adoptAnswer === null && isowner && adoptAnswerId === ''"
                       confirm-button-text="好的"
                       cancel-button-text="取消"
                       icon="el-icon-info"
                       icon-color="red"
                       title="确定要采纳此答案？(不可修改)"
                     >
-                      <el-button slot="reference" size="small" type="plain">
-                        <i class="fa fa-check-square-o pr-2"> </i
-                        >采纳回答</el-button
-                      >
+                      <el-button slot="reference" size="small" type="plain"> <i class="fa fa-check-square-o pr-2"> </i>采纳回答</el-button>
                     </el-popconfirm>
                     <div v-else>
                       <div v-if="adoptAnswerId === answer.id">
@@ -213,9 +130,7 @@
                   </div>
                   <el-button
                     @click="
-                      showComment == answer.id
-                        ? (showComment = '')
-                        : (showComment = answer.id)
+                      showComment == answer.id ? (showComment = '') : (showComment = answer.id)
                       showReply = ''
                       replyData = ''
                     "
@@ -226,23 +141,11 @@
                     {{ $dayjs(answer.created).format('M月D号') }}
                   </div>
                 </div>
-                <div
-                  v-if="showComment == answer.id"
-                  class="pt-3 mt-2 bg-light-1"
-                >
+                <div v-if="showComment == answer.id" class="pt-3 mt-2 bg-light-1">
                   <div class="mx-3" style="min-width:0;">
-                    <el-input
-                      v-model="replyData"
-                      size="mini"
-                      placeholder="撰写评论"
-                    ></el-input>
+                    <el-input v-model="replyData" size="mini" placeholder="撰写评论"></el-input>
                     <div class="text-right mt-2">
-                      <el-button
-                        @click="sendReply(answer.id, answer.user.id)"
-                        size="mini"
-                        type="primary"
-                        >提交评论</el-button
-                      >
+                      <el-button @click="sendReply(answer.id, answer.user.id)" size="mini" type="primary">提交评论</el-button>
                     </div>
                   </div>
                 </div>
@@ -250,12 +153,7 @@
                   <div class="mx-3 pt-3 ">
                     <div v-for="reply in answer.reply" :key="reply.id">
                       <span class="text-primary font-bold">
-                        <router-link
-                          :to="`/u/${reply.from_uid.id}`"
-                          tag="span"
-                          class="point hoverlink"
-                          >{{ reply.from_uid.name }}</router-link
-                        >
+                        <router-link :to="`/u/${reply.from_uid.id}`" tag="span" class="point hoverlink">{{ reply.from_uid.name }}</router-link>
                         <span style="font-weight:400" class="fs-xm">
                           :@
                           {{ reply.to_uid.name }}</span
@@ -263,38 +161,23 @@
                       </span>
                       <span> {{ reply.body }}</span>
                       <div class="py-1">
-                        <el-link @click="replyLike" type="text"
-                          ><i class="fa fa-thumbs-o-up"></i> {{ reply.liked }}
-                        </el-link>
+                        <el-link @click="replyLike" type="text"><i class="fa fa-thumbs-o-up"></i> {{ reply.liked }} </el-link>
                         <span>·</span>
                         <el-button
                           @click="
-                            showReply == reply.id
-                              ? (showReply = '')
-                              : (showReply = reply.id)
+                            showReply == reply.id ? (showReply = '') : (showReply = reply.id)
                             replyData = ''
                             showComment = ''
                           "
                           type="text"
                           >回复</el-button
                         >
-                        <span class="fs-xm text-gray">{{
-                          $dayjs(reply.created).format('M月D日 H:MM')
-                        }}</span>
+                        <span class="fs-xm text-gray">{{ $dayjs(reply.created).format('M月D日 H:MM') }}</span>
                       </div>
                       <div v-if="showReply == reply.id">
-                        <el-input
-                          v-model="replyData"
-                          size="mini"
-                          placeholder="回复内容"
-                        ></el-input>
+                        <el-input v-model="replyData" size="mini" placeholder="回复内容"></el-input>
                         <div class="text-right mt-3">
-                          <el-button
-                            @click="sendReply(answer.id, reply.from_uid.id)"
-                            size="mini"
-                            type="primary"
-                            >提交评论</el-button
-                          >
+                          <el-button @click="sendReply(answer.id, reply.from_uid.id)" size="mini" type="primary">提交评论</el-button>
                         </div>
                       </div>
                     </div>
@@ -306,23 +189,11 @@
           <div class="font-bold pt-5 fs-xl">撰写回答</div>
           <div class="pt-1">
             <div>
-              <markdown
-                ref="markdown"
-                @submit="sendAnswer"
-                name="提交回答"
-                height="400px"
-              ></markdown>
+              <markdown ref="markdown" @submit="sendAnswer" name="提交回答" height="400px"></markdown>
             </div>
           </div>
         </el-col>
-        <el-col
-          :xs="0"
-          :sm="6"
-          :md="8"
-          :lg="6"
-          :xl="6"
-          class="hidden-md-and-down pl-2"
-        >
+        <el-col :xs="0" :sm="6" :md="8" :lg="6" :xl="6" class="hidden-md-and-down pl-2">
           <div class="pl-3"></div>
         </el-col>
       </el-row>

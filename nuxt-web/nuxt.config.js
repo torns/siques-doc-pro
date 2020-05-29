@@ -12,8 +12,7 @@ export default {
       { charset: 'utf-8' },
       {
         name: 'viewport',
-        content:
-          'width=device-width,maximum-scale=1,user-scalable=no, initial-scale=1'
+        content: 'width=device-width,maximum-scale=1,user-scalable=no, initial-scale=1'
       },
       {
         hid: 'description',
@@ -23,30 +22,26 @@ export default {
       {
         hid: 'keywords',
         name: 'keywords',
-        content:
-          '思趣,开发者社区,技术新闻资讯,技术笔记,技术号,技术圈,开源社区,程序员,云计算,AI,区块链,前端,后端,小程序,软件开发,编程,nuxtjs,flutter,nestjs,javascript,php,python,java,ios,android'
+        content: '思趣,开发者社区,技术新闻资讯,技术笔记,技术号,技术圈,开源社区,程序员,云计算,AI,区块链,前端,后端,小程序,软件开发,编程,nuxtjs,flutter,nestjs,javascript,php,python,java,ios,android'
       }
     ],
 
     script: [
       {
-        src:
-          'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
-        , async: 'async'
+        src: 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js',
+        async: 'async'
       },
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
       },
       {
-        src:
-          'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
+        src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
       },
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.18.1/languages/dart.min.js'
       },
       {
-        src:
-          'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
+        src: 'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
         async: 'async'
       },
       {
@@ -62,8 +57,7 @@ export default {
       },
       {
         rel: 'stylesheet',
-        href:
-          'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
+        href: 'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
       },
 
       // {
@@ -72,13 +66,11 @@ export default {
       // },
       {
         rel: 'stylesheet',
-        href:
-          'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
+        href: 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
       },
       {
         rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css'
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css'
       },
       {
         rel: 'stylesheet',
@@ -86,15 +78,8 @@ export default {
       },
       {
         rel: 'stylesheet',
-        href:
-          'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css'
+        href: 'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css'
       }
-
-      // {
-      //   rel: 'stylesheet',
-      //   href:
-      //     'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css'
-      // }
     ]
   },
   /*
@@ -118,7 +103,7 @@ export default {
     '@/plugins/directive',
     '@/plugins/global.ts',
     { src: '@/plugins/http', ssr: true },
-    // '@/plugins/nuxt-client-init.client.js',
+
     { src: '@/plugins/components.js', ssr: true },
     '@/plugins/nullSSRComponents.js',
     '@/plugins/axios',
@@ -192,19 +177,14 @@ export default {
      */
     // 开启打包分析
     babel: {
-      plugins: [
-        [
-          'component',
-          { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }
-        ]
-      ]
+      plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
     },
 
     // analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
     // },
-    extend(config, ctx) { }
+    extend(config, ctx) {}
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'

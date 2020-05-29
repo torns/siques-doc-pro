@@ -4,32 +4,14 @@
       <div class="page__current-date"></div>
       <ul class="page__grid grid">
         <div class="grid__head grid-head">
-          <span
-            v-for="(i, index) in gridHead"
-            :key="index"
-            class="grid-head__cell"
-            >{{ i }}</span
-          >
+          <span v-for="(i, index) in gridHead" :key="index" class="grid-head__cell">{{ i }}</span>
         </div>
         <div class="grid__cols grid-cols">
-          <span
-            v-for="(j, index) in gridCol"
-            :key="index"
-            class="grid-cols__cell"
-            >{{ j }}</span
-          >
+          <span v-for="(j, index) in gridCol" :key="index" class="grid-cols__cell">{{ j }}</span>
         </div>
         <div class="grid__body">
           <div v-for="i in 371" :key="i">
-            <el-tooltip
-              :offset="10"
-              :hide-after="2000"
-              placement="top-start"
-              :content="
-                getContributionsObj(i, true).str + ' ' + getDateString(i)
-              "
-              effect="dark"
-            >
+            <el-tooltip :offset="10" :hide-after="2000" :content="getContributionsObj(i, true).str + ' ' + getDateString(i)" placement="top-start" effect="dark">
               <li class="grid__cell"></li>
             </el-tooltip>
           </div>

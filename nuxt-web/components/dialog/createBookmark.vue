@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      width="500px"
-      title="收藏"
-      class="border-radius"
-    >
+    <el-dialog :visible.sync="dialogFormVisible" width="500px" title="收藏" class="border-radius">
       <div>
         <div>添加到收藏夹:</div>
         <div>
@@ -27,12 +22,8 @@
           <el-button @click="showCreatDialog" type="text">创建收藏夹</el-button>
         </div>
         <div class="text-right pt-5">
-          <el-button @click="dialogFormVisible = false" size="mini"
-            >取 消</el-button
-          >
-          <el-button @click="bookmarkPost" size="mini" type="primary"
-            >确 定</el-button
-          >
+          <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+          <el-button @click="bookmarkPost" size="mini" type="primary">确 定</el-button>
         </div>
       </div>
     </el-dialog>
@@ -75,16 +66,12 @@ export default class createBookmark extends Vue {
   async fetchBookmark() {
     // 依赖用户id
     if (this.isUser) {
-      const res = await this.$http.get(
-        `/bookmarks/${this.$store.state.auth.user.id}/user`
-      )
+      const res = await this.$http.get(`/bookmarks/${this.$store.state.auth.user.id}/user`)
       this.bookmarks = res.data
     }
   }
   async bookmarkPost() {
-    await this.$http.get(
-      `/bookmarks/${this.postId}/post?bookmarkId=${this.checkList}`
-    )
+    await this.$http.get(`/bookmarks/${this.postId}/post?bookmarkId=${this.checkList}`)
     this.$notify({
       type: 'success',
       message: '收藏成功',

@@ -1,111 +1,37 @@
 <template>
-  <el-dialog
-    :title="isRegister ? '注册' : '登录'"
-    :visible="$store.state.loginFormVisible"
-    @close="closeLoginForm"
-    custom-class="login"
-    style="margin: 0 auto"
-    width="90%"
-  >
+  <el-dialog :title="isRegister ? '注册' : '登录'" :visible="$store.state.loginFormVisible" @close="closeLoginForm" custom-class="login" style="margin: 0 auto" width="90%">
     <div>
-      <el-form
-        ref="RegisterDto"
-        v-show="isRegister"
-        :model="RegisterDto"
-        :rules="rules"
-        status-icon
-      >
-        <el-form-item
-          :label-width="formLabelWidth"
-          class="pb-2"
-          label="你的名字"
-          prop="name"
-        >
-          <el-input
-            v-model="RegisterDto.name"
-            height="10"
-            placeholder="常用昵称"
-            autocomplete="off"
-            clearable
-          >
+      <el-form ref="RegisterDto" v-show="isRegister" :model="RegisterDto" :rules="rules" status-icon>
+        <el-form-item :label-width="formLabelWidth" class="pb-2" label="你的名字" prop="name">
+          <el-input v-model="RegisterDto.name" height="10" placeholder="常用昵称" autocomplete="off" clearable>
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item
-          :label-width="formLabelWidth"
-          class="pb-2"
-          label="手机号"
-          prop="phonenumber"
-        >
-          <el-input
-            v-model.number="RegisterDto.phonenumber"
-            :maxlength="11"
-            height="10"
-            placeholder="11位手机号"
-            autocomplete="off"
-          >
+        <el-form-item :label-width="formLabelWidth" class="pb-2" label="手机号" prop="phonenumber">
+          <el-input v-model.number="RegisterDto.phonenumber" :maxlength="11" height="10" placeholder="11位手机号" autocomplete="off">
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item
-          :label-width="formLabelWidth"
-          class="pb-2"
-          label="密码"
-          prop="password"
-        >
-          <el-input
-            v-model="RegisterDto.password"
-            show-password
-            placeholder="不少于7位"
-            autocomplete="off"
-          >
+        <el-form-item :label-width="formLabelWidth" class="pb-2" label="密码" prop="password">
+          <el-input v-model="RegisterDto.password" show-password placeholder="不少于7位" autocomplete="off">
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item
-          :label-width="formLabelWidth"
-          class="pt-2"
-          label="验证码"
-          prop="verification"
-        >
-          <el-input
-            v-model="RegisterDto.verification"
-            placeholder="验证码"
-            autocomplete="off"
-          >
-            <el-button slot="append" @click="getCode" type="primary">{{
-              this.$store.state.time !== 0
-                ? this.$store.state.time + 's后再次获取'
-                : '获取验证码'
-            }}</el-button>
+        <el-form-item :label-width="formLabelWidth" class="pt-2" label="验证码" prop="verification">
+          <el-input v-model="RegisterDto.verification" placeholder="验证码" autocomplete="off">
+            <el-button slot="append" @click="getCode" type="primary">{{ this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码' }}</el-button>
           </el-input>
         </el-form-item>
       </el-form>
 
-      <el-form
-        ref="LoginDto"
-        :model="LoginDto"
-        :rules="rules"
-        v-show="!isRegister"
-        status-icon
-      >
+      <el-form ref="LoginDto" :model="LoginDto" :rules="rules" v-show="!isRegister" status-icon>
         <el-form-item :label-width="formLabelWidth" label="账号">
-          <el-input
-            v-model="LoginDto.account"
-            height="10"
-            placeholder="手机号/昵称"
-            autocomplete="off"
-          >
+          <el-input v-model="LoginDto.account" height="10" placeholder="手机号/昵称" autocomplete="off">
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
-          <el-input
-            v-model="LoginDto.password"
-            show-password
-            placeholder="请输入密码"
-            autocomplete="off"
-          >
+          <el-input v-model="LoginDto.password" show-password placeholder="请输入密码" autocomplete="off">
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
         </el-form-item>
@@ -114,9 +40,7 @@
 
     <div class="pt-2 el-form">
       <div class="dialog-footer pb-2">
-        <el-button @click="register" v-if="isRegister" type="success"
-          >注册</el-button
-        >
+        <el-button @click="register" v-if="isRegister" type="success">注册</el-button>
         <el-button @click="login" v-else type="success">登录</el-button>
       </div>
 
@@ -124,41 +48,19 @@
         <div class="py-4">
           <el-divider content-position="center">更多登录方式</el-divider>
           <div class="text-center">
-            <el-tooltip
-              class="item "
-              effect="dark"
-              content="微博登录"
-              placement="bottom"
-            >
+            <el-tooltip class="item " effect="dark" content="微博登录" placement="bottom">
               <a :href="url.weibo_url" class="fs-lg fa fa-weibo text-red"></a>
             </el-tooltip>
-            <el-tooltip
-              class="item px-2"
-              effect="dark"
-              content="QQ登录(暂时不可用)"
-              placement="bottom"
-            >
+            <el-tooltip class="item px-2" effect="dark" content="QQ登录(暂时不可用)" placement="bottom">
               <a :href="url.weibo_url" class=" fa fa-qq text-blue"></a>
             </el-tooltip>
-            <el-tooltip
-              class="item "
-              effect="dark"
-              content="Github登录"
-              placement="bottom"
-            >
-              <a
-                :href="url.github_url"
-                class="fs-lg fa fa-github text-dark"
-              ></a>
+            <el-tooltip class="item " effect="dark" content="Github登录" placement="bottom">
+              <a :href="url.github_url" class="fs-lg fa fa-github text-dark"></a>
             </el-tooltip>
           </div>
         </div>
-        <el-button v-if="isRegister" @click="isRegister = false" type="message"
-          >已有账号登录</el-button
-        >
-        <el-button v-else @click="isRegister = true" type="message"
-          >注册新账号</el-button
-        >
+        <el-button v-if="isRegister" @click="isRegister = false" type="message">已有账号登录</el-button>
+        <el-button v-else @click="isRegister = true" type="message">注册新账号</el-button>
       </div>
       <div class="pt-2 text-center" style="margin-bottom:-10px">
         继续即表示同意
@@ -298,15 +200,9 @@ export default class Login extends Vue {
         trigger: 'blur'
       }
     ],
-    phonenumber: [
-      { required: true, validator: this.validatePhone, trigger: 'blur' }
-    ],
-    password: [
-      { required: true, validator: this.validatePass, trigger: 'blur' }
-    ],
-    verification: [
-      { required: true, validator: this.validateCode, trigger: 'blur' }
-    ]
+    phonenumber: [{ required: true, validator: this.validatePhone, trigger: 'blur' }],
+    password: [{ required: true, validator: this.validatePass, trigger: 'blur' }],
+    verification: [{ required: true, validator: this.validateCode, trigger: 'blur' }]
   }
 
   mounted() {

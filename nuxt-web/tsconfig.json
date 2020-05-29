@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitThis": true,
     "target": "es2018",
     "skipLibCheck": true,
     "module": "esnext",
@@ -9,7 +11,7 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {

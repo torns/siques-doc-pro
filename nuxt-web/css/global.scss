@@ -36,9 +36,7 @@
 html,
 body {
   // height: 100%;
-  font-family: Helvetica Neue, NotoSansHans-Regular, AvenirNext-Regular, arial,
-    Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica,
-    sans-serif;
+  font-family: Helvetica Neue, NotoSansHans-Regular, AvenirNext-Regular, arial, Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica, sans-serif;
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -70,17 +68,9 @@ body {
   background-color: rgb(105, 105, 105);
   color: white;
 }
-.cover {
-  background-image: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/cover.png);
-  // clip-path: inset(60px 0 0 0);
-  // top: -60px;
-  position: relative;
-  background-size: auto 100%;
-  background-position: center;
-}
+
 .menucover {
-  background-color: #131313;
-  // background-image: url(https://shuxie.oss-cn-hangzhou.aliyuncs.com/cover.png);
+  background-color: #0c091d;
 }
 
 ::-webkit-scrollbar {
@@ -334,11 +324,7 @@ code {
   color: #017e66;
 }
 .bg-4 {
-  background: linear-gradient(
-    60deg,
-    rgba(84, 58, 183, 1) 0%,
-    rgba(0, 172, 193, 1) 100%
-  );
+  background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
   color: white;
 }
 //去阴影

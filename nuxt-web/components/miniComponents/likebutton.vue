@@ -38,15 +38,15 @@ export default class LikeButtton extends Vue {
 }
 
 .like-button {
-  font-size: 5vmin;
+  // font-size: 5vmin;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   border: none;
   border-radius: 50%;
   background: white;
-  width: 1em;
-  height: 1em;
+  width: 42px;
+  height: 42px;
   padding: 0;
   margin: 0;
   outline: none;
@@ -54,8 +54,7 @@ export default class LikeButtton extends Vue {
   -webkit-transition: -webkit-transform var(--duration) var(--easing);
   transition: -webkit-transform var(--duration) var(--easing);
   transition: transform var(--duration) var(--easing);
-  transition: transform var(--duration) var(--easing),
-    -webkit-transform var(--duration) var(--easing);
+  transition: transform var(--duration) var(--easing), -webkit-transform var(--duration) var(--easing);
   cursor: pointer;
 }
 .like-button:before {
@@ -201,6 +200,7 @@ export default class LikeButtton extends Vue {
 }
 
 .particle {
+  font-size: 5vmin;
   position: absolute;
   top: 0;
   left: 0;
@@ -210,15 +210,13 @@ export default class LikeButtton extends Vue {
   background-color: var(--color);
   --percentage: calc(var(--i) / var(--total-particles));
   --Θ: calc(var(--percentage) * 1turn);
-  -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0)
-    scaleY(0);
+  -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0) scaleY(0);
   transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0) scaleY(0);
   -webkit-transition: all var(--duration) var(--easing);
   transition: all var(--duration) var(--easing);
 }
 .like-button:focus .particle {
-  -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing)
-    forwards;
+  -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
   animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
 }
 @-webkit-keyframes particles-out {
@@ -228,16 +226,14 @@ export default class LikeButtton extends Vue {
   50%,
   60% {
     height: 0.3em;
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em)
-      scale(1);
+    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
     transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
   }
   60% {
     height: 0.2em;
   }
   100% {
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em)
-      scale(0);
+    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
     transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
   }
 }
@@ -248,16 +244,14 @@ export default class LikeButtton extends Vue {
   50%,
   60% {
     height: 0.3em;
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em)
-      scale(1);
+    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
     transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
   }
   60% {
     height: 0.2em;
   }
   100% {
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em)
-      scale(0);
+    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
     transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
   }
 }

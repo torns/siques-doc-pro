@@ -7,12 +7,7 @@
             <el-tab-pane label="最新问答" name="first">
               <div>
                 <ul>
-                  <li
-                    v-for="(question, index) in questions"
-                    :key="index"
-                    class="d-flex ai-center bg-light-1 "
-                    style="height:70px"
-                  >
+                  <li v-for="(question, index) in questions" :key="index" class="d-flex ai-center bg-light-1 " style="height:70px">
                     <div class="d-flex ai-center px-2 ">
                       <div class="pr-3 text-gray">
                         <div class="px-2 fs-xs">{{ question.liked }}</div>
@@ -32,9 +27,7 @@
                         </div>
                         <div>
                           <div class="pt-1 hoverlink">
-                            <router-link :to="`/q/${question.id}`">{{
-                              question.title
-                            }}</router-link>
+                            <router-link :to="`/q/${question.id}`">{{ question.title }}</router-link>
                             <div></div>
                           </div>
                         </div>
@@ -47,15 +40,7 @@
             <el-tab-pane label="等待回答" name="second">等待回答</el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="6"
-          :lg="6"
-          :xl="6"
-          class="hidden-sm-and-down pl-2"
-          >123</el-col
-        >
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2"></el-col>
       </el-row>
     </div>
     <sq-footer :topBorder="true"></sq-footer>

@@ -1,8 +1,5 @@
 <template>
-  <transition
-    enter-active-class="animated slideInUp"
-    leave-active-class="animated slideOutDown"
-  >
+  <transition enter-active-class="animated slideInUp" leave-active-class="animated slideOutDown">
     <div v-show="$attrs.show" class="commentPanel">
       <div class="commentPanel__markdown">
         <div class="d-flex jc-between pb-2 text-green">
@@ -12,21 +9,9 @@
           <div v-if="edit" class="text-gray-1 ">
             编辑模式
           </div>
-          <div
-            @click="panelOff"
-            class="fa fs-xl  fa-angle-double-down hover-1 point col-33"
-            style="text-align:end"
-          ></div>
+          <div @click="panelOff" class="fa fs-xl  fa-angle-double-down hover-1 point col-33" style="text-align:end"></div>
         </div>
-        <markdown
-          ref="markdown"
-          @submit="handleSend"
-          @cancle="cancle"
-          cancle
-          name="回复"
-          icon="iconfont icon-comments"
-          height="40vh"
-        ></markdown>
+        <markdown ref="markdown" @submit="handleSend" @cancle="cancle" cancle name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
       </div>
     </div>
   </transition>

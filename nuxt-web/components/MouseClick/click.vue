@@ -32,14 +32,7 @@ export default class MouseClick extends Vue {
   layery = 0
   timer: any
 
-  confettiColors = [
-    '#7d32f5',
-    '#f6e434',
-    '#63fdf1',
-    '#e672da',
-    '#295dfe',
-    '#6e57ff'
-  ]
+  confettiColors = ['#7d32f5', '#f6e434', '#63fdf1', '#e672da', '#295dfe', '#6e57ff']
 
   mounted() {
     this.initState()

@@ -6,11 +6,7 @@
     </div>
     <div>
       <ul class="pb-2 d-flex flex-wrap">
-        <div
-          v-for="(collection, index) in collections"
-          :key="index"
-          class="py-2 pr-2"
-        >
+        <div v-for="(collection, index) in collections" :key="index" class="py-2 pr-2">
           <nuxt-link :to="`/blogs/${collection.id}`" tag="div">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
@@ -37,13 +33,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel
-      @pageChange="fetch"
-      :posts="posts"
-      :len="len"
-      post
-      collection="true"
-    ></list-panel>
+    <list-panel @pageChange="fetch" :posts="posts" :len="len" post collection="true"></list-panel>
   </div>
 </template>
 
@@ -81,15 +71,11 @@ export default class PageComponent extends Vue {
   async fetch(page?: any, limit?: any) {
     this.page = page
     if (this.id) {
-      const res = await this.$http.get(
-        `/posts/${this.id}/user?type=post&page=${page || ''}`
-      )
+      const res = await this.$http.get(`/posts/${this.id}/user?type=post&page=${page || ''}`)
       this.len = res.data[1]
       this.posts = res.data[0]
     } else {
-      const link = `/posts/${
-        this.$store.state.auth.user.id
-      }/user?type=post&page=${page || ''}&sort=${this.sorts}`
+      const link = `/posts/${this.$store.state.auth.user.id}/user?type=post&page=${page || ''}&sort=${this.sorts}`
 
       const res = await this.$http.get(link)
       this.len = res.data[1]
@@ -102,9 +88,7 @@ export default class PageComponent extends Vue {
       const res = await this.$http.get(`/collections/${this.id}/user?type=post`)
       this.collections = res.data
     } else {
-      const res = await this.$http.get(
-        `/collections/${this.$store.state.auth.user.id}/user?type=post`
-      )
+      const res = await this.$http.get(`/collections/${this.$store.state.auth.user.id}/user?type=post`)
       this.collections = res.data
     }
   }

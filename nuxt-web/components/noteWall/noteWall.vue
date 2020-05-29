@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="card-container">
-      <router-link
-        v-for="(note, index) in hotNotebooks"
-        :to="`blogs/${note.id}`"
-        :key="index"
-        :style="`${link[index].style} --caption: '${note.name}`"
-        class="card point"
-        tag="a"
-      ></router-link>
+      <router-link v-for="(note, index) in hotNotebooks" :to="`blogs/${note.id}`" :key="index" :style="`${link[index].style} --caption: '${note.name}`" class="card point" tag="a"></router-link>
     </div>
   </div>
 </template>
@@ -20,16 +13,13 @@ export default class noteWall extends Vue {
   hotNotebooks = this.$attrs.hotNotebooks
   link = [
     {
-      style:
-        "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/01.png'); --angle: -5deg; --x: 5%; --y: 15%;"
+      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/01.png'); --angle: -5deg; --x: 5%; --y: 15%;"
     },
     {
-      style:
-        "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/02.png'); --angle: -1deg; --x: -10%; --y: -20%;"
+      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/02.png'); --angle: -1deg; --x: -10%; --y: -20%;"
     },
     {
-      style:
-        "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/03.png'); --angle: -4deg; --x: -20%; --y: 5%;"
+      style: "--image: url('https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/03.png'); --angle: -4deg; --x: -20%; --y: 5%;"
     }
   ]
 }
@@ -63,8 +53,7 @@ export default class noteWall extends Vue {
   transition: -webkit-transform 0.35s ease-out;
   transition: transform 0.35s ease-out;
   transition: transform 0.35s ease-out, -webkit-transform 0.35s ease-out;
-  -webkit-transform: translate(var(--x), var(--y)) scale(0.35)
-    rotate(var(--angle));
+  -webkit-transform: translate(var(--x), var(--y)) scale(0.35) rotate(var(--angle));
   transform: translate(var(--x), var(--y)) scale(0.35) rotate(var(--angle));
   will-change: transform;
 }

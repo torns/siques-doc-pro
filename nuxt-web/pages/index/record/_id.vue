@@ -1,45 +1,19 @@
 <template>
   <div class="bg-light h-100">
-    <el-drawer
-      :show-close="true"
-      :visible.sync="drawer"
-      :modal="false"
-      title="所有笔记"
-      size="350px"
-    >
+    <el-drawer :show-close="true" :visible.sync="drawer" :modal="false" title="所有笔记" size="350px">
       <div class="px-3">
         <el-button @click="open" type="text">新建笔记本</el-button>
         <el-select v-model="selectCollection" filterable placeholder="请选择">
-          <el-option
-            v-for="(item, index) in noteCollections"
-            :key="item.id"
-            :label="item.name"
-            :value="index"
-          >
-          </el-option>
+          <el-option v-for="(item, index) in noteCollections" :key="item.id" :label="item.name" :value="index"> </el-option>
         </el-select>
         <el-button @click="CreateNote" type="text">新建笔记</el-button>
       </div>
       <div v-for="(note, index) in noteList" :key="note.id">
-        <div
-          :class="
-            `bg-2 d-flex ai-baseline jc-between hover-3 ${
-              note.id == $route.params.id ? ' boder-x' : ''
-            }`
-          "
-          style="line-height: 35px;"
-        >
-          <nuxt-link
-            :to="`/record/${note.id}`"
-            tag="li"
-            class="ellipsis-1 px-3  py-2 "
-          >
+        <div :class="`bg-2 d-flex ai-baseline jc-between hover-3 ${note.id == $route.params.id ? ' boder-x' : ''}`" style="line-height: 35px;">
+          <nuxt-link :to="`/record/${note.id}`" tag="li" class="ellipsis-1 px-3  py-2 ">
             {{ note.title }}
           </nuxt-link>
-          <i
-            @click="deleteNote(note.id, index)"
-            class="el-icon-delete py-2 point pr-3"
-          ></i>
+          <i @click="deleteNote(note.id, index)" class="el-icon-delete py-2 point pr-3"></i>
         </div>
       </div>
     </el-drawer>
@@ -50,41 +24,17 @@
             <el-input v-model="title" placeholder="请输入标题"></el-input>
             <div class="d-flex jc-between tags text-left my-3">
               <div class="d-flex">
-                <el-tag
-                  :key="tag.name"
-                  v-for="tag in dynamicTags"
-                  :disable-transitions="false"
-                  @close="handleClose(tag.name, tag.id)"
-                  class="mr-2"
-                  effect="plain"
-                  closable
-                  >{{ tag.name }}</el-tag
-                >
+                <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
 
                 <sq-tag ref="tag" :position="`bottom`" @add="addTag">
-                  <el-button
-                    @click="showtagDialog"
-                    class="button-new-tag"
-                    size="small"
-                    >+ 添加标签</el-button
-                  >
+                  <el-button @click="showtagDialog" class="button-new-tag" size="small">+ 添加标签</el-button>
                 </sq-tag>
               </div>
-              <el-button
-                @click="drawer = true"
-                type="primary"
-                size="small"
-                style="margin-left: 16px;"
-              >
+              <el-button @click="drawer = true" type="primary" size="small" style="margin-left: 16px;">
                 我的笔记本
               </el-button>
             </div>
-            <markdown
-              ref="markdown"
-              @submit="submitNote"
-              name="发布笔记"
-              height="70vh"
-            ></markdown>
+            <markdown ref="markdown" @submit="submitNote" name="发布笔记" height="70vh"></markdown>
           </div>
         </el-col>
       </el-row>
@@ -168,9 +118,7 @@ export default class Index extends Vue {
   }
 
   async fetchCollection() {
-    const res = await this.$http.get(
-      `collections/${this.$store.state.auth.user.id}/user?type=note`
-    )
+    const res = await this.$http.get(`collections/${this.$store.state.auth.user.id}/user?type=note`)
     const r = this.noteCollections.concat(res.data)
     this.noteCollections = r
 

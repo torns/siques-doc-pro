@@ -5,16 +5,8 @@
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
           <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="最新笔记" name="first">
-              <div
-                v-for="(note, index) in notes"
-                :key="index"
-                :class="`d-flex ai-center bg-${color(note.views)} hover-2`"
-                style="height:70px"
-              >
-                <div
-                  class="d-flex ai-center px-2 "
-                  style="white-space: nowrap;"
-                >
+              <div v-for="(note, index) in notes" :key="index" :class="`d-flex ai-center bg-${color(note.views)} hover-2`" style="height:70px">
+                <div class="d-flex ai-center px-2 " style="white-space: nowrap;">
                   <div class="pr-3 text-gray">
                     <div class="px-2 fs-xs">{{ note.liked }}</div>
                     <div>得票</div>
@@ -29,9 +21,7 @@
                     </div>
                     <div>
                       <div class="pt-1 hoverlink">
-                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{
-                          note.title
-                        }}</router-link>
+                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{ note.title }}</router-link>
                         <div></div>
                       </div>
                     </div>
@@ -51,16 +41,8 @@
             </el-tab-pane>
 
             <el-tab-pane label="热门笔记" name="second">
-              <div
-                v-for="(note, index) in notes"
-                :key="index"
-                :class="`d-flex ai-center bg-${color(note.views)} hover-2`"
-                style="height:70px"
-              >
-                <div
-                  class="d-flex ai-center px-2 "
-                  style="white-space: nowrap;"
-                >
+              <div v-for="(note, index) in notes" :key="index" :class="`d-flex ai-center bg-${color(note.views)} hover-2`" style="height:70px">
+                <div class="d-flex ai-center px-2 " style="white-space: nowrap;">
                   <div class="pr-3 text-gray">
                     <div class="px-2 fs-xs">{{ note.liked }}</div>
                     <div>得票</div>
@@ -75,9 +57,7 @@
                     </div>
                     <div>
                       <div class="pt-1 hoverlink">
-                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{
-                          note.title
-                        }}</router-link>
+                        <router-link :to="`/n/${note.id}`" class="ellipsis-1">{{ note.title }}</router-link>
                         <div></div>
                       </div>
                     </div>
@@ -97,15 +77,7 @@
             </el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="6"
-          :lg="6"
-          :xl="6"
-          class="hidden-sm-and-down pl-2"
-          >侧边栏</el-col
-        >
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">侧边栏</el-col>
       </el-row>
     </div>
     <sq-footer :topBorder="true"></sq-footer>
@@ -121,9 +93,7 @@ export default class NotesIndex extends Vue {
   async asyncData({ params, query }: any) {
     const http = Vue.prototype.$http
 
-    const res = await http.get(
-      '/posts/all?limit=10&page=1&type=note&sort=created'
-    )
+    const res = await http.get('/posts/all?limit=10&page=1&type=note&sort=created')
 
     return {
       notes: res.data[0],
@@ -150,13 +120,9 @@ export default class NotesIndex extends Vue {
     this.show = true
     let res: any
     if (this.activeName === 'first') {
-      res = await this.$http.get(
-        `/posts/all?limit=10&page=${val}&type=note&sort=created`
-      )
+      res = await this.$http.get(`/posts/all?limit=10&page=${val}&type=note&sort=created`)
     } else {
-      res = await this.$http.get(
-        `/posts/all?limit=10&page=${val}&type=note&sort=views`
-      )
+      res = await this.$http.get(`/posts/all?limit=10&page=${val}&type=note&sort=views`)
     }
 
     setTimeout(() => {

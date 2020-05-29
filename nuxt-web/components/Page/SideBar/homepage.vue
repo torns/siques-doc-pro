@@ -23,28 +23,10 @@
             <el-button @click="show" type="text">编辑</el-button>
           </div>
         </div>
-        <sq-tag
-          ref="reference"
-          @add="addTag"
-          cunstom="sq-tag"
-          positon="left-start"
-        ></sq-tag>
-        <div
-          v-if="!isInputShow"
-          class="bg-light-1 ai-center jc-center d-flex mt-3"
-          style="height:110px;border:1px dashed #DDDDDD;"
-        >
+        <sq-tag ref="reference" @add="addTag" cunstom="sq-tag" positon="left-start"></sq-tag>
+        <div v-if="!isInputShow" class="bg-light-1 ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
           <div v-if="originTag != ''" class="flex-wrap">
-            <el-tag
-              v-for="tag in originTag"
-              :key="tag.id"
-              :closable="id ? false : true"
-              @close="handleClose(tag)"
-              class="mx-1 my-2"
-              type="primary"
-              size="small"
-              >{{ tag.name }}</el-tag
-            >
+            <el-tag v-for="tag in originTag" :key="tag.id" :closable="id ? false : true" @close="handleClose(tag)" class="mx-1 my-2" type="primary" size="small">{{ tag.name }}</el-tag>
           </div>
           <div v-else class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
@@ -53,26 +35,12 @@
           </div>
         </div>
         <div v-else>
-          <el-select
-            v-model="skillTag"
-            multiple
-            filterable
-            placeholder="多个用逗号分隔，最多十个"
-          >
-            <el-option
-              v-for="item in this.$refs.reference.tags"
-              :key="item.name"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
+          <el-select v-model="skillTag" multiple filterable placeholder="多个用逗号分隔，最多十个">
+            <el-option v-for="item in this.$refs.reference.tags" :key="item.name" :label="item.name" :value="item.id"></el-option>
           </el-select>
           <div class="text-left pt-3">
-            <el-button @click="isInputShow = false" size="mini" type="plain"
-              >取消</el-button
-            >
-            <el-button @click="storeUserTag" size="mini" type="primary"
-              >保存</el-button
-            >
+            <el-button @click="isInputShow = false" size="mini" type="plain">取消</el-button>
+            <el-button @click="storeUserTag" size="mini" type="primary">保存</el-button>
           </div>
         </div>
       </div>
@@ -88,10 +56,7 @@
           </div>
         </div>
 
-        <div
-          class="bg-light-1 ai-center jc-center d-flex mt-3"
-          style="height:110px;border:1px dashed #DDDDDD;"
-        >
+        <div class="bg-light-1 ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
           <div class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
             <el-button v-if="!id" type="text">立即添加</el-button>
@@ -123,9 +88,7 @@ export default class MySideBar extends Vue {
 
   get userCreated() {
     try {
-      return this.$dayjs(this.$store.state.auth.user.created).format(
-        'YYYY-MM-DD & HH:MM'
-      )
+      return this.$dayjs(this.$store.state.auth.user.created).format('YYYY-MM-DD & HH:MM')
     } catch {
       return ''
     }
@@ -136,9 +99,7 @@ export default class MySideBar extends Vue {
     if (this.id) {
       res = await this.$http.get(`/users/${this.id}/skill`)
     } else {
-      res = await this.$http.get(
-        `/users/${this.$store.state.auth.user.id}/skill`
-      )
+      res = await this.$http.get(`/users/${this.$store.state.auth.user.id}/skill`)
     }
 
     this.originTag = res.data
@@ -154,10 +115,7 @@ export default class MySideBar extends Vue {
   async storeUserTag() {
     // console.log(this.skillTag)
 
-    await this.$http.post(
-      `/users/${this.$store.state.auth.user.id}/skill`,
-      this.skillTag
-    )
+    await this.$http.post(`/users/${this.$store.state.auth.user.id}/skill`, this.skillTag)
     this.isInputShow = false
     this.fetchUserTag()
   }

@@ -1,27 +1,13 @@
 <template>
   <div>
     <div id="editorSection" class="text-left" />
-    <input
-      ref="files"
-      @change="uploadFile"
-      style="display: none"
-      type="file"
-      accept="image/*"
-    />
+    <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
     <div class="mt-2">
       <el-button :loading="loading" @click="submit" size="mini" type="primary"
-        ><i v-if="$attrs.icon" :class="$attrs.icon + ' fs-xs'"></i>
-        <span class="pl-1">{{ $attrs.name }}</span></el-button
+        ><i v-if="$attrs.icon" :class="$attrs.icon + ' fs-xs'"></i> <span class="pl-1">{{ $attrs.name }}</span></el-button
       >
 
-      <el-button
-        v-if="$attrs.cancle !== undefined"
-        @click="cancle"
-        size="mini"
-        type="text"
-      >
-        <span class="pl-1 text-gray">取消</span></el-button
-      >
+      <el-button v-if="$attrs.cancle !== undefined" @click="cancle" size="mini" type="text"> <span class="pl-1 text-gray">取消</span></el-button>
     </div>
   </div>
 </template>

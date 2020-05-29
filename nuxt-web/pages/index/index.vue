@@ -1,88 +1,41 @@
 <template>
-  <div
-    v-infinite-scroll="load"
-    class="infinite-list "
-    infinite-scroll-disabled="disabled"
-    infinite-scroll-distance="0"
-  >
-    <div
-      style="height:460px;box-shadow: inset 0px -32px 38px -36px;"
-      class="cover "
-    >
-      <div class="container ">
-        <el-row :gutter="0" class="d-flex ">
-          <el-col
-            :xs="0"
-            :sm="4"
-            :md="5"
-            :lg="4"
-            :xl="4"
-            class="hidden-sm-and-down "
-          >
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-            <div
-              class=" d-flex jc-around header"
-              style="position: relative;top: 77%;"
-            >
-              <div>
-                <div
-                  class="text-white pb-3"
-                  style="font-family: cursive;font-size:40px"
-                >
-                  思趣，发现思考的深度
-                </div>
+  <div v-infinite-scroll="load" class="infinite-list " infinite-scroll-disabled="disabled" infinite-scroll-distance="0">
+    <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
+    <div>
+      <sq-banner
+        ><div class="containerrelative" style="height:0">
+          <el-row :gutter="0" class="d-flex ">
+            <el-col :xs="0" :sm="4" :md="5" :lg="4" :xl="4" class="hidden-sm-and-down "> </el-col>
+            <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+              <div class=" d-flex jc-around header" style="position: relative;top: 77%;">
                 <div>
-                  <el-input
-                    v-model="search"
-                    @keyup.enter.native="dataSearch"
-                    size="medium"
-                    placeholder="搜索你喜欢的"
-                  >
-                    <el-button slot="append" @click="dataSearch">
-                      <i class="fa fa-search"></i>
-                    </el-button>
-                  </el-input>
+                  <div class="text-white pb-3" style="font-family: cursive;font-size:40px">
+                    思趣，发现思考的深度
+                  </div>
+                  <div>
+                    <el-input v-model="search" @keyup.enter.native="dataSearch" size="medium" placeholder="搜索你喜欢的">
+                      <el-button slot="append" @click="dataSearch">
+                        <i class="fa fa-search"></i>
+                      </el-button>
+                    </el-input>
 
-                  <div class="text-white text-center pt-3 fs-md ">
-                    热门搜索：<span
-                      @click="$router.push(`/search/vue`)"
-                      class="point hoverlink"
-                      >Vue
-                    </span>
-                    <span
-                      @click="$router.push(`/search/nuxtjs`)"
-                      class="point hoverlink"
-                      >nuxtjs</span
-                    >
-                    <span
-                      @click="$router.push(`/search/nestjs`)"
-                      class="point hoverlink"
-                      >nestjs</span
-                    >
+                    <div class="text-white text-center pt-3 fs-md ">
+                      热门搜索：<span @click="$router.push(`/search/vue`)" class="point hoverlink">Vue </span>
+                      <span @click="$router.push(`/search/nuxtjs`)" class="point hoverlink">nuxtjs</span>
+                      <span @click="$router.push(`/search/nestjs`)" class="point hoverlink">nestjs</span>
+                    </div>
+                  </div>
+                  <div>
+                    <sq-down class="pt-5"></sq-down>
                   </div>
                 </div>
-                <div>
-                  <sq-down></sq-down>
-                </div>
               </div>
-            </div>
-          </el-col>
-          <el-col
-            :xs="0"
-            :sm="6"
-            :md="6"
-            :lg="6"
-            :xl="6"
-            class="hidden-sm-and-down"
-          >
-            <div
-              style="position: relative;top: 60%;"
-              class="fs-xm hover-1 text-right text-white pt-2"
-            ></div>
-          </el-col>
-        </el-row>
-      </div>
+            </el-col>
+            <el-col :xs="0" :sm="6" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down">
+              <div style="position: relative;top: 60%;" class="fs-xm hover-1 text-right text-white pt-2"></div>
+            </el-col>
+          </el-row></div
+      ></sq-banner>
     </div>
     <div class="container" style="min-height: 100vh;">
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
@@ -93,43 +46,14 @@
               style="
     display: flex;"
             >
-              <li
-                @click="handleCategory(link)"
-                v-for="link in links"
-                :key="link.alias"
-                :class="
-                  (link.alias == category ? 'bg-1 ' : 'hover-2 ') +
-                    `w-100  pl-3 py-2`
-                "
-              >
-                <i
-                  :class="
-                    (link.alias == category
-                      ? `text-white `
-                      : `text-${link.color} `) + `fa pr-1  fa-${link.icon}`
-                  "
-                ></i>
+              <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
+                <i :class="(link.alias == category ? `text-white ` : `text-${link.color} `) + `fa pr-1  fa-${link.icon}`"></i>
 
                 {{ link.name }}
               </li>
               <div class="pl-3 py-2 xm ">技术频道</div>
-              <li
-                @click="handleCategory(link)"
-                v-for="link in techChanel"
-                :key="link.alias"
-                :class="
-                  (link.alias == category ? `bg-1 ` : 'hover-2 ') +
-                    `w-100  pl-3 py-2 `
-                "
-              >
-                <i
-                  :class="
-                    (link.alias == category
-                      ? `text-white `
-                      : `text-${link.color} `) +
-                      `fs-md pr-1 iconfont   icon-${link.icon}`
-                  "
-                ></i>
+              <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
+                <i :class="(link.alias == category ? `text-white ` : `text-${link.color} `) + `fs-md pr-1 iconfont   icon-${link.icon}`"></i>
                 {{ link.name }}
               </li>
               <router-link :to="`/tags`" class="w-100 " tag="li">
@@ -142,63 +66,23 @@
           </div>
         </el-col>
         <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
+          <sq-typer></sq-typer>
           <div>
             <div>
-              <el-carousel
-                ref="carousel"
-                @click.native="linkTo"
-                height="150px"
-                style="border-radius: 5px;"
-                class="point xm"
-              >
-                <el-carousel-item
-                  v-for="(item, index) in carousel"
-                  :key="index"
-                >
-                  <img
-                    :src="item.img"
-                    alt="轮播图"
-                    class="w-100"
-                    style="min-height:150px;object-fit: cover;"
-                  />
-
-                  <div class="mask"></div>
-                </el-carousel-item>
-              </el-carousel>
-
               <div class="pt-3">{{ name }}</div>
 
               <el-divider></el-divider>
 
               <ul style="overflow: auto;">
-                <div
-                  v-for="(post, $index) in posts"
-                  :key="$index"
-                  class="infinite-list-item pb-3"
-                >
+                <div v-for="(post, $index) in posts" :key="$index" class="infinite-list-item pb-3">
                   <div class="d-flex ai-center jc-between">
                     <div class=" ">
                       <div>
-                        <router-link
-                          :to="`/p/${post.id}`"
-                          target="_blank"
-                          tag="a"
-                          class="text-dark-1 hoverlink point   fs-lg"
-                          >{{ post.title }}</router-link
-                        >
+                        <router-link :to="`/p/${post.id}`" target="_blank" tag="a" class="text-dark-1 hoverlink point   fs-lg">{{ post.title }}</router-link>
                       </div>
                       <div>
-                        <el-tag
-                          v-for="tag in post.tags"
-                          :key="tag.id"
-                          effect="plain"
-                          size="mini"
-                          type="primary"
-                          class="mt-2 mr-2 hover-4 hover-2 point "
-                        >
-                          <router-link :to="`/t/${tag.id}`" tag="a">{{
-                            tag.name
-                          }}</router-link>
+                        <el-tag v-for="tag in post.tags" :key="tag.id" effect="plain" size="mini" type="primary" class="mt-2 mr-2 hover-4 hover-2 point ">
+                          <router-link :to="`/t/${tag.id}`" tag="a">{{ tag.name }}</router-link>
                         </el-tag>
                       </div>
                       <div>
@@ -210,56 +94,28 @@
 
                       <div class="d-flex mb-4 pt-2 ai-center fs-xm">
                         <div class="d-flex point ai-center">
-                          <i
-                            class="fs-xl el-icon-success hover-1  text-primary"
-                          ></i>
+                          <i class="fs-xl el-icon-success hover-1  text-primary"></i>
 
                           <div class="pl-1 pr-3 ">
                             <div>
-                              <span class="text-primary hoverlink font-bold"
-                                >× {{ post.liked }}
-                              </span>
+                              <span class="text-primary hoverlink font-bold">× {{ post.liked }} </span>
                               <span>· 赞</span>
                             </div>
                           </div>
                         </div>
                         <nuxt-link :to="`u/${post.user.id}`" tag="div"
-                          ><div class="pr-2 point hoverlink text-gray-1">
-                            {{ post.user.name }} ·
-                          </div>
+                          ><div class="pr-2 point hoverlink text-gray-1">{{ post.user.name }} ·</div>
                         </nuxt-link>
 
                         <div>
                           <i class="fa fa-calendar-check-o text-blue"></i>
-                          {{
-                            $dayjs(post.created).format(
-                              'YYYY年MM月DD日 HH:MM:ss'
-                            )
-                          }}
+                          {{ $dayjs(post.created).format('YYYY年MM月DD日 HH:MM:ss') }}
                         </div>
                       </div>
                     </div>
                     <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
                       <router-link :to="`/p/${post.id}`">
-                        <el-popover
-                          :close-delay="100"
-                          placement="top-start"
-                          trigger="hover"
-                        >
-                          <el-image
-                            :src="post.cover"
-                            style="width: 540px; height: 360px"
-                            class="border-radius shadow-1"
-                            fit="cover"
-                          ></el-image>
-                          <el-image
-                            slot="reference"
-                            :src="post.cover"
-                            style="width: 140px; height: 90px"
-                            class="border-radius shadow-1 border-dash"
-                            fit="cover"
-                          ></el-image>
-                        </el-popover>
+                        <el-image :src="post.cover" style="width: 140px; height: 90px" class="border-radius shadow-1 border-dash" fit="cover"></el-image>
                       </router-link>
                     </div>
                   </div>
@@ -276,19 +132,8 @@
           </div>
         </el-col>
 
-        <el-col
-          :xs="0"
-          :sm="6"
-          :md="7"
-          :lg="6"
-          :xl="6"
-          class="hidden-sm-and-down"
-        >
-          <sq-indexBar
-            :hotTags="hotTags"
-            :hotComments="hotComments"
-            :hotNotebooks="hotNotebooks"
-          ></sq-indexBar>
+        <el-col :xs="0" :sm="6" :md="7" :lg="6" :xl="6" class="hidden-sm-and-down">
+          <sq-indexBar :hotTags="hotTags" :hotComments="hotComments" :hotNotebooks="hotNotebooks"></sq-indexBar>
         </el-col>
       </el-row>
     </div>
@@ -303,19 +148,21 @@ import { listIntercep } from '../../plugins/utils.js'
 import fetchdata from '../../plugins/fetchdata'
 import homeSideBar from '~/components/SideBar/homeSideBar.vue'
 import scrolldown from '~/components/miniComponents/scrolldown.vue'
+import banner from '~/components/miniComponents/banner.vue'
+import typer from '~/components/miniComponents/typer.vue'
 @Component({
   components: {
     'sq-indexBar': homeSideBar,
-    'sq-down': scrolldown
+    'sq-down': scrolldown,
+    'sq-banner': banner,
+    'sq-typer': typer
   }
 })
 export default class MyPage extends Vue {
   async asyncData() {
     // 在 @component 中不可以写 this.$http //
     const http = Vue.prototype.$http
-    const res = await http.get(
-      '/posts/all?limit=20&page=1&type=post&sort=created'
-    )
+    const res = await http.get('/posts/all?limit=20&page=1&type=post&sort=created')
     const res1 = await http.get('tags/1/hot')
     const res2 = await http.get('comments')
     const res3 = await http.get('collections/1/note?type=note&limit=3')
@@ -336,26 +183,24 @@ export default class MyPage extends Vue {
   taglist = null
   posts = []
   search = ''
-  carousel = [
-    {
-      img:
-        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png',
-      link: '/blogs'
-    },
-    {
-      img:
-        'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E9%BB%91%E8%89%B2%E5%9C%B0%E7%90%83LinkedIn%20Banner.png',
-      link: '/blogs'
-    }
-  ]
+  // carousel = [
+  //   {
+  //     img: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png',
+  //     link: '/blogs'
+  //   },
+  //   {
+  //     img: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E9%BB%91%E8%89%B2%E5%9C%B0%E7%90%83LinkedIn%20Banner.png',
+  //     link: '/blogs'
+  //   }
+  // ]
   category: string = 'new'
   name: string = '最近更新'
   // 轮播图跳转
-  linkTo() {
-    const ref: any = this.$refs.carousel
-    const activeIndex = ref.activeIndex
-    this.$router.push(this.carousel[activeIndex].link)
-  }
+  // linkTo() {
+  //   const ref: any = this.$refs.carousel
+  //   const activeIndex = ref.activeIndex
+  //   this.$router.push(this.carousel[activeIndex].link)
+  // }
 
   get noMore(): any {
     return this.count >= this.total
@@ -518,12 +363,7 @@ export default class MyPage extends Vue {
 
     // console.log(list)
     const link =
-      `/posts/all?limit=20&page=${this.page}` +
-      (sort ? `&sort=${sort}` : '') +
-      (tag ? `&tags=${tag}` : '') +
-      (taglist ? `&taglist=${list}` : '') +
-      (listId ? `&listId=${listId}` : '') +
-      `&type=post`
+      `/posts/all?limit=20&page=${this.page}` + (sort ? `&sort=${sort}` : '') + (tag ? `&tags=${tag}` : '') + (taglist ? `&taglist=${list}` : '') + (listId ? `&listId=${listId}` : '') + `&type=post`
     const res = await this.$http.get(link)
     this.total = res.data[1]
     this.posts = res.data[0]

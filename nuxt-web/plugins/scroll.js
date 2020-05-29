@@ -82,18 +82,11 @@ const install = (Vue, options) => {
   }
 
   function scrollSpyId(el) {
-    return (
-      el.getAttribute('data-scroll-spy-id') ||
-      el.getAttribute('scroll-spy-id') ||
-      'default'
-    )
+    return el.getAttribute('data-scroll-spy-id') || el.getAttribute('scroll-spy-id') || 'default'
   }
 
   function scrollSpyIdDefined(el) {
-    return (
-      !!el.getAttribute('data-scroll-spy-id') ||
-      !!el.getAttribute('scroll-spy-id')
-    )
+    return !!el.getAttribute('data-scroll-spy-id') || !!el.getAttribute('scroll-spy-id')
   }
 
   function scrollSpyIdFromAncestors(el) {
@@ -189,17 +182,11 @@ const install = (Vue, options) => {
         // console.log(scrollEl)
         let index
 
-        if (
-          scrollEl.offsetHeight + scrollEl.scrollTop >=
-          scrollEl.scrollHeight - 10
-        ) {
+        if (scrollEl.offsetHeight + scrollEl.scrollTop >= scrollEl.scrollHeight - 10) {
           index = idScrollSections.length
         } else {
           for (index = 0; index < idScrollSections.length; index++) {
-            if (
-              getOffsetTop(idScrollSections[index], scrollEl) - options.offset >
-              scrollEl.scrollTop
-            ) {
+            if (getOffsetTop(idScrollSections[index], scrollEl) - options.offset > scrollEl.scrollTop) {
               break
             }
           }
@@ -212,13 +199,7 @@ const install = (Vue, options) => {
           // 小于零就归零
           currentIndex.default = -1
           index = options.allowNoActive ? null : 0
-        } else if (
-          options.allowNoActive &&
-          index >= idScrollSections.length - 1 &&
-          getOffsetTop(idScrollSections[index]) +
-            idScrollSections[index].offsetHeight <
-            scrollEl.scrollTop
-        ) {
+        } else if (options.allowNoActive && index >= idScrollSections.length - 1 && getOffsetTop(idScrollSections[index]) + idScrollSections[index].offsetHeight < scrollEl.scrollTop) {
           index = null
         }
         // console.log(activeElement)
@@ -229,8 +210,7 @@ const install = (Vue, options) => {
 
           try {
             if (idActiveElement) {
-              const activeClasses =
-                idActiveElement[scrollSpyContext].options.class
+              const activeClasses = idActiveElement[scrollSpyContext].options.class
 
               activeClasses.forEach(function(element) {
                 idActiveElement.classList.remove(element)
@@ -244,16 +224,12 @@ const install = (Vue, options) => {
           currentIndex[id] = index
 
           try {
-            if (
-              typeof currentIndex !== 'undefined' &&
-              Object.keys(activableElements).length > 0
-            ) {
+            if (typeof currentIndex !== 'undefined' && Object.keys(activableElements).length > 0) {
               idActiveElement = activableElements[id][currentIndex[id]]
               activeElement[id] = idActiveElement
               if (idActiveElement) {
                 // console.log(idActiveElement[scrollSpyContext])
-                const activeClasses =
-                  idActiveElement[scrollSpyContext].options.class
+                const activeClasses = idActiveElement[scrollSpyContext].options.class
 
                 activeClasses.forEach(function(element) {
                   idActiveElement.classList.add(element)

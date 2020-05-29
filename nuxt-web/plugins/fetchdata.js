@@ -3,19 +3,7 @@ import vue from 'vue'
 
 const http = vue.prototype.$http
 
-async function fetchData({
-  resource = '',
-  page = 0,
-  pageSize = '',
-  search = '',
-  sort = '',
-  tags = null,
-  taglist = '',
-  type = '',
-  success = (res) => {},
-  fail = () => {},
-  complete = () => {}
-}) {
+async function fetchData({ resource = '', page = 0, pageSize = '', search = '', sort = '', tags = null, taglist = '', type = '', success = (res) => {}, fail = () => {}, complete = () => {} }) {
   const queryParams = {}
 
   if (page) queryParams.page = page

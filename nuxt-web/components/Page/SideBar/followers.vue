@@ -5,11 +5,7 @@
       <el-button @click="fetchRecomendFollow" type="text">换一批</el-button>
     </div>
     <div class="body">
-      <div
-        v-for="data in datas[0]"
-        :key="data.id"
-        class="border-solid border-radius mb-3 "
-      >
+      <div v-for="data in datas[0]" :key="data.id" class="border-solid border-radius mb-3 ">
         <div class="d-flex jc-between py-4 px-3">
           <div>
             <router-link :to="`/t/${data.id}`" tag="div">
@@ -26,20 +22,14 @@
         </div>
       </div>
 
-      <div
-        v-for="data in datas[1]"
-        :key="data.id"
-        class="border-solid border-radius mb-3 "
-      >
+      <div v-for="data in datas[1]" :key="data.id" class="border-solid border-radius mb-3 ">
         <div class="d-flex jc-between py-4 px-3">
           <div class="d-flex ai-center">
             <el-avatar :size="35" :src="data.avator.url">
               <img src="~/static/avator.jpg" />
             </el-avatar>
             <div class="pl-2 text-primary fs-xm point">
-              <router-link :to="`/u/${data.id}`" tag="div">
-                {{ data.name }}</router-link
-              >
+              <router-link :to="`/u/${data.id}`" tag="div"> {{ data.name }}</router-link>
             </div>
           </div>
           <div>
@@ -70,9 +60,7 @@ export default class FollowSideBar extends Vue {
       const res = await this.$http.get(`users/${this.id}/recomend`)
       this.datas = res.data
     } else {
-      const res = await this.$http.get(
-        `users/${this.$store.state.auth.user.id}/recomend`
-      )
+      const res = await this.$http.get(`users/${this.$store.state.auth.user.id}/recomend`)
       this.datas = res.data
     }
   }

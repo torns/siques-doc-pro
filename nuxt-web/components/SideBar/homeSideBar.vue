@@ -37,13 +37,9 @@
     </div>
     <div>
       <div class="d-flex jc-between py-3 " style="margin-bottom:-12px">
-        <div>
-          <i class="el-icon-s-management fs-lg text-green pr-2 "></i>笔记本本
-        </div>
+        <div><i class="el-icon-s-management fs-lg text-green pr-2 "></i>笔记本本</div>
 
-        <nuxt-link :to="`/n`" class="point text-primary" tag="a"
-          >更多
-        </nuxt-link>
+        <nuxt-link :to="`/n`" class="point text-primary" tag="a">更多 </nuxt-link>
       </div>
       <div>
         <noteWall :hotNotebooks="hotNotebooks"></noteWall>
@@ -59,62 +55,36 @@
         <div v-for="comment in hotComments" :key="comment.id" class="py-2">
           <div class="d-flex">
             <div>
-              <el-avatar
-                :src="comment.user.avator[0] ? comment.user.avator[0].url : ''"
-                class="bg-white"
-              >
+              <el-avatar :src="comment.user.avator[0] ? comment.user.avator[0].url : ''" class="bg-white">
                 <img src="~/static/avator.jpg" alt="" />
               </el-avatar>
             </div>
             <div class="pl-2 text-gray-1 fs-xs">
               <div>
                 <el-popover placement="top-start" width="200" trigger="hover">
-                  <el-avatar
-                    :src="
-                      comment.user.avator[0] ? comment.user.avator[0].url : ''
-                    "
-                    style="position:absolute;bottom:81%"
-                    class="shadow-1 bg-white"
-                    shape="circle"
-                  >
+                  <el-avatar :src="comment.user.avator[0] ? comment.user.avator[0].url : ''" style="position:absolute;bottom:81%" class="shadow-1 bg-white" shape="circle">
                     <img src="~/static/avator.jpg" alt="" />
                   </el-avatar>
                   <div class="pt-3 text-primary">{{ comment.user.name }}</div>
                   <div class="fs-xm py-2 ellipsis-1">
-                    {{
-                      comment.user.introduction === null
-                        ? '这个用户很懒没有留下足迹'
-                        : comment.user.introduction
-                    }}
+                    {{ comment.user.introduction === null ? '这个用户很懒没有留下足迹' : comment.user.introduction }}
                   </div>
                   <div class="fs-xs">
                     <span class="text-blue-1">加入于</span>
                     {{ $dayjs(comment.user.created).format('YYYY年M月D日') }}
                   </div>
 
-                  <span slot="reference" class="text-blue-1">
-                    {{ comment.user.name }}</span
-                  >
+                  <span slot="reference" class="text-blue-1"> {{ comment.user.name }}</span>
                 </el-popover>
 
-                <span>
-                  {{
-                    $dayjs(comment.created).fromNow() +
-                      $dayjs(comment.created).format('(M月D号)')
-                  }}</span
-                >
+                <span> {{ $dayjs(comment.created).fromNow() + $dayjs(comment.created).format('(M月D号)') }}</span>
               </div>
               <div class="ellipsis-1 my-1">
                 {{ comment.body }}
               </div>
               <div class="ellipsis-1 text-primary">
                 评:
-                <router-link
-                  :to="`/p/${comment.post.id}`"
-                  tag="a"
-                  class="hoverlink point"
-                  >{{ comment.post.title }}</router-link
-                >
+                <router-link :to="`/p/${comment.post.id}`" tag="a" class="hoverlink point">{{ comment.post.title }}</router-link>
               </div>
             </div>
           </div>
@@ -125,15 +95,9 @@
       <div class="d-flex jc-between py-3">
         <div><i class="fa fa-bar-chart text-blue-1 pr-2 "></i>站点统计</div>
       </div>
-      <statics></statics>
+
       <div class="d-flex flex-wrap jc-between">
-        <div
-          v-for="(data, index) in siteDatas"
-          :key="index"
-          class="fs-xm col-50 text-darkblue py-1 "
-        >
-          {{ data.title }} {{ allSiteData[data.alias] }} {{ data.classifier }}
-        </div>
+        <div v-for="(data, index) in siteDatas" :key="index" class="fs-xm col-50 text-darkblue py-1 ">{{ data.title }} {{ allSiteData[data.alias] }} {{ data.classifier }}</div>
       </div>
     </div>
   </div>
@@ -243,8 +207,7 @@ export default class SideBar extends Vue {
     width: 100%;
     height: 100%;
     font-family: 'Open Sans', sans-serif;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-      0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     transform-style: preserve-3d;
     transition: transform 0.3s ease-in-out;
 

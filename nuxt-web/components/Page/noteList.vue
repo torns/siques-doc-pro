@@ -6,11 +6,7 @@
     </div>
     <div>
       <ul class="pb-2 d-flex flex-wrap">
-        <div
-          v-for="(collection, index) in collections"
-          :key="index"
-          class="py-2 pr-2"
-        >
+        <div v-for="(collection, index) in collections" :key="index" class="py-2 pr-2">
           <nuxt-link :to="`/blogs/${collection.id}`" tag="a">
             <div class="text-primary point pb-2 hoverlink">
               {{ collection.name }}
@@ -36,13 +32,7 @@
     </div>
     <el-divider></el-divider>
 
-    <list-panel
-      @pageChange="fetchUserNote"
-      :len="len"
-      :posts="notes"
-      collection="true"
-      note
-    ></list-panel>
+    <list-panel @pageChange="fetchUserNote" :len="len" :posts="notes" collection="true" note></list-panel>
   </div>
 </template>
 
@@ -71,10 +61,7 @@ export default class QuestionList extends Vue {
       const res = await this.$http.get(`/posts/${this.id}/user?type=note`)
       this.notes = res.data[0]
     } else {
-      const res = await this.$http.get(
-        `/posts/${this.$store.state.auth.user.id}/user?type=note&page=${page ||
-          ''}`
-      )
+      const res = await this.$http.get(`/posts/${this.$store.state.auth.user.id}/user?type=note&page=${page || ''}`)
       this.len = res.data[1]
       this.notes = res.data[0]
     }
@@ -85,9 +72,7 @@ export default class QuestionList extends Vue {
       const res = await this.$http.get(`/collections/${this.id}/user?type=note`)
       this.collections = res.data
     } else {
-      const res = await this.$http.get(
-        `/collections/${this.$store.state.auth.user.id}/user?type=note`
-      )
+      const res = await this.$http.get(`/collections/${this.$store.state.auth.user.id}/user?type=note`)
       this.collections = res.data
     }
   }

@@ -1,20 +1,8 @@
 <template>
   <section class="xm hero-section">
     <div class="card-grid">
-      <a
-        :href="`/blogs/${collection.id}`"
-        v-for="(collection, index) in collections"
-        :key="index"
-        class="card"
-      >
-        <div
-          :style="
-            `background-image: url(${
-              collection.cover ? collection.cover : imgLink[index].link
-            })`
-          "
-          class="card__background"
-        >
+      <a :href="`/blogs/${collection.id}`" v-for="(collection, index) in collections" :key="index" class="card">
+        <div :style="`background-image: url(${collection.cover ? collection.cover : imgLink[index].link})`" class="card__background">
           <div class="bg-white card__content">
             <p class="card__category">专栏</p>
             <h3 class="card__heading">{{ collection.name }}</h3>
