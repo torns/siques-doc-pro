@@ -32,16 +32,16 @@ export default {
         async: 'async'
       },
       {
-        src: 'https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js'
+        src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
       {
-        src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/typescript.min.js'
+        src: 'https://cdn.siques.cn/libs/js/typescript.min.js'
       },
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.18.1/languages/dart.min.js'
       },
       {
-        src: 'https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js',
+        src: 'https://cdn.siques.cn/libs/js/tui-editor-Editor-full.min.js',
         async: 'async'
       },
       {
@@ -70,15 +70,15 @@ export default {
       },
       {
         rel: 'stylesheet',
-        href: 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css'
+        href: 'https://cdn.siques.cn/libs/css/codemirror.css'
       },
       {
         rel: 'stylesheet',
-        href: 'https://uicdn.toast.com/tui-editor/latest/tui-editor.css'
+        href: 'https://cdn.siques.cn/libs/css/tui-editor.css'
       },
       {
         rel: 'stylesheet',
-        href: 'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css'
+        href: 'https://cdn.siques.cn/libs/css/tui-editor-contents.css'
       }
     ]
   },

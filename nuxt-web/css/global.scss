@@ -122,7 +122,7 @@ li {
   @media (min-width: 1200px) {
     width: 1140px;
     .reTop {
-      top: 100%;
+      top: 80%;
     }
   }
 }
@@ -171,9 +171,6 @@ li {
 @media (max-width: 991px) and (min-width: 768px) {
   .visible-sm {
     display: block !important;
-  }
-  .reTop {
-    top: 80%;
   }
 }
 
