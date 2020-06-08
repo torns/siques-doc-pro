@@ -2,7 +2,7 @@
   <div>
     <div class="container h-100 pb-4">
       <el-row type="flex" class="pt-4">
-        <el-col v-if="note != null" :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
+        <el-col v-show="note != null" :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
           <div id="article">
             <div class="fs-xll d-flex ai-baseline mb-2">
               <div class="text-primary note-title mr-2">记</div>
@@ -13,7 +13,7 @@
                 <router-link :to="`/u/${note.user.id}`" tag="div" class="point hoverlink">{{ note.user.name }}</router-link>
               </div>
               <div class="text-gray pr-2">{{ $dayjs(note.created).format('M月D日') }}发布</div>
-              <div v-if="hasAccess" class="d-flex ai-baseline ">
+              <div v-show="hasAccess" class="d-flex ai-baseline ">
                 <el-button @click="$router.push(`/record/${note.id}`)" type="text">编辑</el-button>
                 <el-button @click="delNote" type="text">删除</el-button>
               </div>
@@ -27,7 +27,7 @@
           </div>
           <div>
             <el-button type="text">链接</el-button>
-            <el-button v-if="hasAccess" @click="$router.push(`/record/${note.id}`)" type="text">编辑</el-button>
+            <el-button v-show="hasAccess" @click="$router.push(`/record/${note.id}`)" type="text">编辑</el-button>
           </div>
           <div class="text-center">
             <el-button @click="showBookmark(note.id)" type="plain">收藏</el-button>
