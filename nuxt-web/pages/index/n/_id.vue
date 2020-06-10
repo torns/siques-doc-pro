@@ -35,8 +35,8 @@
         </el-col>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">
           <div id="toc">
-            <div class="d-none d-lg-block  bg-white py-3 " style="overflow-y: auto;margin-top:1.9em;max-height: calc(100vh - 330px); min-height:100px;width:300px">
-              <div class="title fs-xl pl-2 pb-2" style="font-weight:600"></div>
+            <div class="d-none d-lg-block  bg-white py-3 " style="overflow-y: auto;margin-top:1.9em;max-height: 85vh ; min-height:100px;width:300px">
+              <div class="title fs-xl pl-2 pb-2"></div>
               <div>
                 <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
               </div>

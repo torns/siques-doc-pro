@@ -34,7 +34,7 @@
                 我的笔记本
               </el-button>
             </div>
-            <markdown ref="markdown" @submit="submitNote" name="发布笔记" height="70vh"></markdown>
+            <markdown ref="markdown" @submit="submitNote" name="发布笔记" height="60vh"></markdown>
           </div>
         </el-col>
       </el-row>

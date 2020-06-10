@@ -65,7 +65,7 @@
             </ul>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="15" :lg="15" :xl="15" class="px-2 mx-1">
+        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
           <sq-typer></sq-typer>
           <div>
             <div>

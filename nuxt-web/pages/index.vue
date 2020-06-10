@@ -178,7 +178,7 @@
       </div>
 
       <div class="h-100">
-        <transition :duration="{ enter: 500, leave: 500 }" appear mode="out-in" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+        <transition :duration="{ enter: 800, leave: 500 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight">
           <router-view :key="$route.path"></router-view>
         </transition>
       </div>

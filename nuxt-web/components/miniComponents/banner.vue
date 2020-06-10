@@ -171,16 +171,20 @@ export default class banner extends Vue {
         }
       )
     })()
+
+    const originTitle = document.title
     document.body.addEventListener('click', this.clickEvent, false)
     // 监听用户离开页面
     document.addEventListener('visibilitychange', () => {
       // 页面变为不可见时触发
       if (document.visibilityState === 'hidden') {
-        clearInterval(this.random)
+        // clearInterval(this.random)
+
+        document.title = '404 Not Found'
       }
       // 页面变为可见时触发
       if (document.visibilityState === 'visible') {
-        this.randomClick()
+        document.title = originTitle
       }
     })
   }
@@ -203,7 +207,7 @@ export default class banner extends Vue {
       this.frame()
       this.initParticles(this.config.particleNumber, 0, 0)
     }, 200)
-    this.randomClick()
+    // this.randomClick()
   }
 
   destroyed() {

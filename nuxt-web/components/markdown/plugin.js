@@ -14,24 +14,22 @@ export default (editor) => {
       tooltip: '插入图片',
       /* eslint-disable */
       // eslint-disable-next-line
-      $el: $(
-        '<button class="custom-button fa fa-image" style="font-size: 14px;color: #000"></button>'
-      )
+      $el: $('<button class="custom-button fa fa-image" style="font-size: 14px;color: #000"></button>')
     },
     15
   )
 
-  toolbar.addButton(
-    {
-      name: 'customize',
-      event: 'annotation',
-      tooltip: '插入代码注解',
-      /* eslint-disable */
-      // eslint-disable-next-line
-      $el: $(
-        '<button class="custom-button fa fa-dot-circle-o " style="font-size: 14px;color: #000"></button>'
-      )
-    },
-    16
-  )
+  // toolbar.addButton(
+  //   {
+  //     name: 'customize',
+  //     event: 'annotation',
+  //     tooltip: '插入代码注解',
+  //     /* eslint-disable */
+  //     // eslint-disable-next-line
+  //     $el: $(
+  //       '<button class="custom-button fa fa-dot-circle-o " style="font-size: 14px;color: #000"></button>'
+  //     )
+  //   },
+  //   16
+  // )
 }
