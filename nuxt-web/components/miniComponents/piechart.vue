@@ -48,7 +48,7 @@ export default class piechart extends Vue {
     })
     return total
   }
-
+  timer: any = null
   init() {
     var maxSize = 179
 
@@ -64,21 +64,18 @@ export default class piechart extends Vue {
         this.offset.push(this.sliceSizes[i - 1])
       }
     }
+    document.getElementById('home').removeEventListener('scroll', this.doTimer())
+    document.getElementById('home').addEventListener('scroll', this.doTimer(), true)
+  }
 
-    var timer = null
-    document.getElementById('home').addEventListener(
-      'scroll',
-      () => {
-        if (typeof timer === 'number') {
-          clearTimeout(timer)
-        }
-        timer = setTimeout(() => {
-          //添加业务逻辑
-          this.scrollBehave()
-        }, 200)
-      },
-      false
-    )
+  doTimer(): any {
+    if (typeof this.timer == 'number') {
+      clearTimeout(this.timer)
+    }
+    this.timer = setTimeout(() => {
+      //添加业务逻辑
+      this.scrollBehave()
+    }, 200)
   }
 
   scrollBehave() {

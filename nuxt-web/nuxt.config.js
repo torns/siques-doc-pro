@@ -122,9 +122,9 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  // render: {
-  //   resourceHints: false
-  // },
+  render: {
+    resourceHints: false
+  },
 
   modules: [
     // Doc: https://axios.nuxtjs.org/usage

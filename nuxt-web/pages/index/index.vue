@@ -1,5 +1,5 @@
 <template>
-  <div v-infinite-scroll="load" class="infinite-list " infinite-scroll-disabled="disabled" infinite-scroll-distance="0">
+  <div v-if="isHomepage" v-infinite-scroll="load" class="infinite-list " infinite-scroll-disabled="disabled" infinite-scroll-distance="0">
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
       <sq-banner
@@ -183,24 +183,13 @@ export default class MyPage extends Vue {
   taglist = null
   posts = []
   search = ''
-  // carousel = [
-  //   {
-  //     img: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E6%B7%B1%E5%A4%9C%E3%81%AE%E4%BB%A3%E7%A0%81.png',
-  //     link: '/blogs'
-  //   },
-  //   {
-  //     img: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/%E9%BB%91%E8%89%B2%E5%9C%B0%E7%90%83LinkedIn%20Banner.png',
-  //     link: '/blogs'
-  //   }
-  // ]
+
   category: string = 'new'
   name: string = '最近更新'
-  // 轮播图跳转
-  // linkTo() {
-  //   const ref: any = this.$refs.carousel
-  //   const activeIndex = ref.activeIndex
-  //   this.$router.push(this.carousel[activeIndex].link)
-  // }
+
+  get isHomepage() {
+    return this.$route.path === '/'
+  }
 
   get noMore(): any {
     return this.count >= this.total

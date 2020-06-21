@@ -178,9 +178,9 @@
       </div>
 
       <div class="h-100">
-        <transition :duration="{ enter: 800, leave: 500 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight">
-          <router-view :key="$route.path"></router-view>
-        </transition>
+        <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
+        <router-view :key="$route.path"></router-view>
+        <!-- </transition> -->
       </div>
     </div>
 
@@ -298,10 +298,8 @@ export default class Home extends Vue {
   }
 
   async fetchUserLetter() {
-    if (this.isUser) {
-      const res = await this.$http.get(`/notification/${this.$store.state.auth.user.id}`)
-      this.userLetters = res.data
-    }
+    const res = await this.$http.get(`/notification/${this.$store.state.auth.user.id}`)
+    this.userLetters = res.data
   }
 
   async markedRead() {

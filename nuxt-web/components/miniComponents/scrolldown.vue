@@ -1,5 +1,5 @@
 <template>
-  <div class="opacity20">
+  <div class="opacity40">
     <div class="container">
       <div class="chevron"></div>
       <div class="chevron"></div>
@@ -13,7 +13,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component({})
-export default class leaderboard extends Vue {}
+export default class scrollDown extends Vue {}
 </script>
 
 <style lang="scss" scoped>

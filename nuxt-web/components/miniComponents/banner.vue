@@ -138,6 +138,7 @@ export default class banner extends Vue {
       })
       // Play the same song? Ok!
       const window: any = this.window
+
       window.requestAnimFrame(this.frame)
     }
   }
@@ -156,16 +157,18 @@ export default class banner extends Vue {
   }
 
   init() {
+    const window: any = this.window
     window.onresize = this.resizeCanvas
     // Set Canvas to be window size
     this.canvas.width = window.innerWidth
     this.canvas.height = window.innerHeight - 200
     // That thing
-    this.window.requestAnimFrame = ((): any => {
+
+    window.requestAnimFrame = ((): any => {
       return (
         window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
-        this.window.mozRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
         function(callback: any) {
           window.setTimeout(callback, 1000 / 60)
         }
@@ -213,6 +216,7 @@ export default class banner extends Vue {
   destroyed() {
     document.body.removeEventListener('click', this.clickEvent, false)
     clearInterval(this.random)
+    this.window.requestAnimFrame = null
   }
   // First particle explosion
 }

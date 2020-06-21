@@ -50,6 +50,7 @@ export default class typer extends Vue {
   }
 
   init() {
+    document.removeEventListener('pointerover', this.active, true)
     document.addEventListener('pointerover', this.active, { once: true })
   }
 
@@ -60,7 +61,7 @@ export default class typer extends Vue {
   }
 
   destroyed() {
-    document.removeEventListener('DOMContentLoaded', this.active, true)
+    document.removeEventListener('pointerover', this.active, true)
   }
   beforeMount() {
     this.init()

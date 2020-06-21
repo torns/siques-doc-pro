@@ -38,6 +38,7 @@ export default class smallCat extends Vue {
   }
 
   active(event) {
+    // console.log('do')
     var x = (event.clientX * 8) / window.innerWidth + '%'
     var y = (event.clientY * 8) / window.innerHeight + '%'
 
