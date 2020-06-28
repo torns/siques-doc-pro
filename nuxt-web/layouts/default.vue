@@ -1,9 +1,44 @@
 <template>
   <div>
+    <transition leave-active-class="animated fadeOut">
+      <sq-indicator v-if="show"></sq-indicator>
+    </transition>
+
     <nuxt />
   </div>
 </template>
+<script lang="ts">
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
+export default {
+  /* eslint-disable */
+
+  data() {
+    return {
+      show: true
+    }
+  },
+
+  watch: {
+    $route(to, from) {
+      if (to.path !== from.path) {
+        var that: any = this
+        that.show = true
+        setTimeout(() => {
+          that.show = false
+        }, 800)
+      }
+    }
+  },
+
+  mounted() {
+    setTimeout(() => {
+      var that: any = this
+      that.show = false
+    }, 1500)
+  }
+}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

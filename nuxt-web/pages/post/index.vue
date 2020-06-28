@@ -162,6 +162,20 @@ export default class index extends Vue {
     }
   }
 
+  // validate({ params, query, store }) {
+  //   const isuser = !store.state.UserNotExist
+
+  //   return isuser // 参数无效，Nuxt.js 停止渲染当前页面并显示错误页面
+  // }
+
+  middleware({ store, redirect }) {
+    // If the user is not authenticated
+    if (store.state.UserNotExist) {
+      store.commit('toggleLoginForm')
+      return redirect('/')
+    }
+  }
+
   head() {
     return {
       title: '写文章'

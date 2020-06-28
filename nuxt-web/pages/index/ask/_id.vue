@@ -44,6 +44,15 @@ export default class Index extends Vue {
       title: '提问题'
     }
   }
+
+  middleware({ store, redirect }) {
+    // If the user is not authenticated
+    if (store.state.UserNotExist) {
+      store.commit('toggleLoginForm')
+      return redirect('/')
+    }
+  }
+
   title = ''
   dynamicTags: Array<any> = []
   content = [{ development: '' }]

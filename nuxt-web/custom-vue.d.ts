@@ -26,6 +26,7 @@ declare module 'vue/types/vue' {
     $auth: any
     $dayjs: any
     hljs: any
+    $nuxt: any
     $loading: (options: LoadingServiceOptions) => ElLoadingComponent
   }
 }

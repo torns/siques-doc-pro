@@ -14,6 +14,7 @@ import likebutton from '~/components/miniComponents/likebutton.vue'
 import backbutton from '~/components/BackToTop/Back2Top.vue'
 import placeholder from '~/components/placeholder/placeholder.vue'
 import mouseclick from '~/components/MouseClick/click.vue'
+import indicator from '~/components/miniComponents/indicator.vue'
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
@@ -26,4 +27,5 @@ Vue.component('sq-likebtn', likebutton)
 Vue.component('sq-backbtn', backbutton)
 Vue.component('sq-holder', placeholder)
 Vue.component('sq-click', mouseclick)
+Vue.component('sq-indicator', indicator)
 Vue.use(SocialSharing)

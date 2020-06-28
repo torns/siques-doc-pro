@@ -1,12 +1,11 @@
 <template>
   <div :id="isHomepage ? 'home' : ''">
-    <!-- <div> -->
     <div id="app" :style="$route.path.includes('/record') || $route.path.includes('/ask') ? 'overflow-y: hidden;height:100vh;' : ''">
       <div style="height:3px;" class="bg-primary"></div>
-      <div :style="isHomepage ? '' : 'background-color:#ffffff'" :class="isHomepage ? 'menucover ' : 'shadow-1'">
+      <div @click.stop :style="isHomepage ? '' : 'background-color:#ffffff'" :class="isHomepage ? 'menucover ' : 'shadow-1'">
         <el-menu
+          ref="menu"
           :background-color="isHomepage ? 'transparent' : ''"
-          :text-color="isHomepage ? '#ffffff' : ''"
           :active-text-color="isHomepage ? '#ffffff' : ''"
           default-active="/"
           class="d-flex jc-between ai-center container header-menu"
@@ -14,6 +13,7 @@
           style="margin:0 auto;"
           router
         >
+          <!--  :text-color="isHomepage ? '#ffffff' : ''" -->
           <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
             <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:70%;" />
             <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:70%;" />
@@ -151,29 +151,22 @@
             <el-menu-item @click="logout"> <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出</el-menu-item>
           </el-submenu>
 
-          <el-submenu :popper-class="isHomepage ? 'mysubmenu' : ''" :index="`store`" :show-timeout="0" :hide-timeout="0" class="xs">
-            <template slot="title">
-              <el-button type="text">创建</el-button>
-            </template>
-
-            <el-menu-item class="write " index="/post">
-              <span to="/post">
-                <i class="iconfont pl-3 icon-nav2 fs-xm" style="padding-right:11px"></i>
-                写文章</span
-              >
-            </el-menu-item>
-            <el-menu-item class="write " index="/ask">
-              <span to="/ask"> <i class="iconfont pr-3  pl-3 icon-iconawsquestion fs-xm"></i>提问题 </span>
-            </el-menu-item>
-            <el-menu-item class="write " index="/record">
-              <span to="/record"> <i class="iconfont  pr-3 pl-3 icon-note fs-xm"></i>记笔记 </span>
-            </el-menu-item>
-          </el-submenu>
-
-          <el-menu-item v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = false)">立即登录</el-menu-item>
-          <el-menu-item v-if="$store.state.UserNotExist" class="xm">
-            <el-button @click="$store.commit('toggleLoginForm'), (isRegister = true)" type="primary">免费注册</el-button>
+          <el-menu-item v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = false)">
+            <el-link :underline="false"> 立即登录</el-link>
           </el-menu-item>
+          <!-- 
+          <el-menu-item > -->
+          <el-button v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = true)" class="xm" type="primary">免费注册</el-button>
+          <!-- </el-menu-item> -->
+
+          <el-dropdown :show-timeout="0" :hide-timeout="1000" @command="handleCommand" class="xs">
+            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;"> 写稿<i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="/post">写文章</el-dropdown-item>
+              <el-dropdown-item command="/record">记笔记</el-dropdown-item>
+              <el-dropdown-item command="/ask">提问题</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-menu>
       </div>
 
@@ -186,14 +179,14 @@
 
     <sq-navigation></sq-navigation>
     <div @click.stop>
-      <sq-login @click.stop ref="login"></sq-login>
+      <sq-login ref="login" @click.stop></sq-login>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import navigation from '~/components/BottomNavigation/navigation.vue'
 import login from '~/components/dialog/login.vue'
 @Component({
@@ -205,10 +198,21 @@ export default class Home extends Vue {
       title: '思趣——分享自由的趣味-yahoo'
     }
   }
+
   isRegister: boolean = false
   topRadio = 'message'
   search = ''
   userLetters = []
+
+  @Watch('isRegister')
+  isStatuChnanged(newval: any, oldval: any) {
+    const login: any = this.$refs.login
+    if (newval) {
+      login.isRegister = true
+    } else {
+      login.isRegister = false
+    }
+  }
 
   actionTransFomer(action: any) {
     if (action.to_Post !== null && action.to_Post.type === 'question' && action.type === 'commentpost') {
@@ -295,6 +299,16 @@ export default class Home extends Vue {
         this.fetchUserLetter()
       }
     }, 300)
+    this.changeMenu()
+  }
+
+  changeMenu() {
+    const ref: any = this.$refs.menu
+    ref._computedWatchers.hoverBackground = null
+  }
+
+  handleCommand(command) {
+    this.$router.push(command)
   }
 
   async fetchUserLetter() {
@@ -335,6 +349,20 @@ export default class Home extends Vue {
 }
 .el-menu-item:nth-child(1) {
   padding-left: 10px !important;
+}
+
+#home .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+#home .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  color: #009a61;
+}
+
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  color: #009a61;
+}
+
+#home .el-menu--horizontal > .el-menu-item {
+  color: #ffffff;
 }
 
 .el-popover {

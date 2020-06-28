@@ -77,6 +77,16 @@ export default class Index extends Vue {
       title: '记笔记'
     }
   }
+
+  middleware({ store, redirect, route }) {
+    // If the user is not authenticated
+
+    if (store.state.UserNotExist) {
+      store.commit('toggleLoginForm')
+      return redirect('/')
+    }
+  }
+
   drawer = false
   title = ''
   dynamicTags: Array<any> = []

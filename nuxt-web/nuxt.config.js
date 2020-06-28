@@ -6,6 +6,11 @@ export default {
   /*
    ** Headers of the page
    */
+  // loadingIndicator: {
+  //   name: 'circle',
+  //   color: '#3B8070',
+  //   background: 'white'
+  // },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
