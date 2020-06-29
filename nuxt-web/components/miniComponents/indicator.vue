@@ -24,15 +24,15 @@ export default class Indicator extends Vue {}
   bottom: 0;
   z-index: 999;
   background: #27ae60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .spinner {
   width: 50px;
   height: 50px;
   position: absolute;
-
-  left: 50%;
-  top: 45%;
 }
 
 .cube1,
