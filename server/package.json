@@ -32,7 +32,7 @@
     "ali-oss": "^6.5.1",
     "bcryptjs": "^2.4.3",
     "cache-manager": "^2.10.1",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "dayjs": "^1.8.18",
     "dotenv": "^8.2.0",
     "jimp": "^0.9.3",
