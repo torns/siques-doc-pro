@@ -57,10 +57,10 @@
               <el-dropdown @command="handleEditor" class="footer-left fs-sm" trigger="click">
                 <span> <i class="el-icon-s-operation pr-2"></i>设置 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-toilet-paper" command="a">
+                  <!-- <el-dropdown-item icon="el-icon-toilet-paper" command="a">
                     默认编辑器
                     <span class="text-blue"> ({{ defaultEditor ? '富文本编辑器' : 'markdown编辑器' }}) </span>
-                  </el-dropdown-item>
+                  </el-dropdown-item> -->
 
                   <el-dropdown-item icon="el-icon-set-up">设置显示模式</el-dropdown-item>
                 </el-dropdown-menu>
@@ -124,16 +124,22 @@
             <div class="my-2 pt-1">
               <el-input v-focus v-model="title" size="medium" placeholder></el-input>
             </div>
-            <div class="d-flex tags text-left my-3">
-              <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
+            <div>{{ isPublished == 0 ? '未发布' : '已发布' }}</div>
+            <div class="d-flex jc-between tags text-left my-3">
+              <div class="d-flex ">
+                <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
 
-              <sq-tag ref="tag" :ishow="showtag" :position="`bottom`" @add="addTag">
-                <el-button @click="showtag = true" class="button-new-tag" size="small">+ 添加标签</el-button>
-              </sq-tag>
+                <sq-tag ref="tag" :ishow="showtag" :position="`bottom`" @add="addTag">
+                  <el-button @click="showtag = true" class="button-new-tag" size="small">+ 添加标签</el-button>
+                </sq-tag>
+              </div>
+              <!-- 主动发布文章 -->
+              <el-button type="primary" size="mini" @click="updatePost($refs.markdown.value, true)">发布文章</el-button>
             </div>
+            <!-- 仅仅保存文章 -->
             <tinymce ref="tinymce" v-show="selectEditor" @submit="updatePost"></tinymce>
 
-            <markdown ref="markdown" v-show="!selectEditor" @submit="updatePost" height="70vh" name="发布文章"></markdown>
+            <markdown :selectedPost="selectedPost" ref="markdown" v-show="!selectEditor" @submit="updatePost" height="70vh" name="发布文章"></markdown>
           </div>
           <div v-else class="bg" style="flex:1">思趣</div>
         </div>
@@ -143,6 +149,8 @@
 </template>
 
 <script lang="ts">
+import { release } from 'os'
+
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { wordcounts } from '../../plugins/utils.js'
@@ -194,12 +202,42 @@ export default class index extends Vue {
   visible: any
   width = '300px'
   canHover = false
+  isPublished = 0
+  timer = null
+  changed = true
+  // get clone() {
+  //   return { id: this.selectedPost, title: this.title }
+  // }
+
+  @Watch('selectedPost')
+  isIdChanged(newval: any, oldval: any) {
+    if (newval !== oldval) {
+      this.changed = true
+      setTimeout(() => {
+        this.changed = false
+      }, 3000)
+    }
+  }
+
+  @Watch('title')
+  isTitleChanged(newval: any, oldval: any) {
+    const ref: any = this.$refs.markdown
+
+    if (typeof this.timer === 'number') {
+      clearTimeout(this.timer)
+    }
+    if (!this.changed) {
+      this.timer = setTimeout(() => {
+        if (oldval !== '') {
+          this.updatePost(ref.value)
+        }
+      }, 2000)
+    }
+  }
 
   // 标签
   dynamicTags: Array<any> = []
 
-  inputVisible = false
-  inputValue = ''
   // true是tinymce
   changeWidth() {
     if (this.width.split('px')[0] >= '300') {
@@ -278,7 +316,7 @@ export default class index extends Vue {
       const res = await this.$http.get(`/posts/${id}?type=edit`)
       this.dynamicTags = res.data.tags
       this.selectEditor = res.data.editor
-
+      this.isPublished = res.data.isPublished
       this.title = res.data.title
       if (res.data.editor) {
         this.$nextTick(() => {
@@ -335,40 +373,46 @@ export default class index extends Vue {
     }
   }
 
-  async updatePost() {
+  // 子组件内容更后传过来的值
+  updatePost(value, release?) {
     // 不同的编辑器方式不同
-    let body
-    if (this.selectEditor) {
-      const ref: any = this.$refs.tinymce
-      body = ref.body
-    } else {
-      const ref: any = this.$refs.markdown
-      body = ref.body
-    }
 
-    const words = wordcounts(body)
+    const words = wordcounts(value)
 
     const data = {
       title: this.title,
       counts: words,
-      body
+      body: value,
+      isPublished: release ? 1 : 0
     }
-    if (data.counts > 50) {
-      await this.$http.put(`/posts/${this.selectedPost}`, data)
-      this.$notify({
-        title: '成功',
-        type: 'success',
-        message: '更新成功'
+
+    if (release) {
+      this.$confirm('确认要发布文章吗', '发布', {
+        confirmButtonText: 'confirm',
+        cancelButtonText: 'cancel',
+        type: 'warning'
       })
-      this.fetchPost(this.selectedCollection)
+        .then(() => {
+          this.doPost(data, release)
+        })
+        .catch(() => {})
     } else {
-      this.$notify({
-        type: 'info',
-        title: '消息',
-        message: '字数太少了，要不要再写点'
-      })
+      this.doPost(data)
     }
+
+    this.fetchPost(this.selectedCollection)
   }
+
+  async doPost(data: any, release?) {
+    await this.$http.put(`/posts/${this.selectedPost}`, data)
+
+    this.$notify({
+      title: '成功',
+      type: 'success',
+      message: release ? '发布成功' : '更新成功'
+    })
+  }
+
   // 刷新问题
   async fetchCollect() {
     const res = await this.$http.get(`/collections/${this.$store.state.auth.user.id}/write?type=post`)

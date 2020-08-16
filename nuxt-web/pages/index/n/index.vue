@@ -33,6 +33,7 @@
                 ref="reference1"
                 :hide-on-single-page="maxLen < 10 ? true : false"
                 @current-change="handleCurrentChange"
+                :current-page.sync="currentPage"
                 :total="maxLen"
                 background
                 layout="prev, pager, next"
@@ -69,6 +70,7 @@
                 ref="reference2"
                 :hide-on-single-page="maxLen < 10 ? true : false"
                 @current-change="handleCurrentChange"
+                :current-page.sync="currentPage"
                 :total="maxLen"
                 background
                 layout="prev, pager, next"
@@ -90,20 +92,22 @@ import { Vue, Component, Watch } from 'nuxt-property-decorator'
   components: {}
 })
 export default class NotesIndex extends Vue {
-  async asyncData({ params, query }: any) {
+  async asyncData({ params, query, route }: any) {
     const http = Vue.prototype.$http
 
-    const res = await http.get('/posts/all?limit=10&page=1&type=note&sort=created')
+    const res = await http.get(`/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&type=note&sort=created`)
 
     return {
       notes: res.data[0],
-      maxLen: res.data[1]
+      maxLen: res.data[1],
+      currentPage: parseInt(route.query.page ? route.query.page : 1)
     }
   }
 
   activeName = 'first'
   notes = ''
   maxLen = 0
+  currentPage = 1
   show = false
 
   @Watch('activeName')

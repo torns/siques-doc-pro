@@ -1,4 +1,4 @@
-import { Injectable, Body } from '@nestjs/common';
+import { Injectable, Body, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, QueryBuilder } from 'typeorm';
 import { Post } from './post.entity';
@@ -9,6 +9,7 @@ import { Tag } from '../tag/tag.entity';
 import { Collection } from '../collection/collection.entity';
 import { Comment } from '../comment/comment.entity';
 import { throwError } from 'rxjs';
+import { exception } from 'console';
 
 @Injectable()
 export class PostService {
@@ -42,10 +43,16 @@ export class PostService {
   async store(data: PostDto, user: User) {
     const { tags, collection, type } = data;
 
+    let isPublished = 0;
+    // 笔记与问题都设置为直接发布
+    if (type == 'note' || type == 'question') {
+      isPublished = 1;
+    }
     const entity = await this.postRepository.create(data);
     const res = await this.postRepository.save({
       ...entity,
       user,
+      isPublished,
       type,
     });
 
@@ -105,8 +112,10 @@ export class PostService {
     queryBuilder.where('post.userId=:id', { id });
 
     if (type) {
-      queryBuilder.andWhere('post.type=:type', { type });
+      queryBuilder.where('post.type=:type', { type });
     }
+
+    queryBuilder.andWhere('post.isPublished=1');
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
     //获取结果以及数量
@@ -159,7 +168,12 @@ export class PostService {
       queryBuilder.andWhere('tag.id IN(:...taglist)', { taglist });
     }
     if (type) {
-      queryBuilder.andWhere('post.type = :type', { type });
+      queryBuilder.where('post.type = :type', { type });
+      // 查询已经发布的
+      console.log(type);
+      if (type == 'post') {
+        queryBuilder.andWhere('post.isPublished =1');
+      }
     }
 
     if (collection) {
@@ -168,6 +182,7 @@ export class PostService {
 
     // 限制查询数量
     queryBuilder.take(limit).skip(limit * (page - 1));
+
     //获取结果以及数量
 
     // 排序
@@ -230,6 +245,10 @@ export class PostService {
 
     queryBuilder.where('post.id =:id', { id });
 
+    if (type !== 'edit' && type !== 'note' && type !== 'question') {
+      queryBuilder.andWhere('post.isPublished =1');
+    }
+
     const entities = await queryBuilder.getOne();
 
     const number = Math.random() * 3;
@@ -246,7 +265,7 @@ export class PostService {
     try {
       entities.concerned = concern;
     } catch {
-      return;
+      return new NotFoundException();
     }
 
     return entities;
@@ -293,7 +312,7 @@ export class PostService {
         .where('post.id=:id', { id })
         //截取一部分的数据
 
-        .set({ cover: url, alias: body.substring(0, 70) })
+        .set({ cover: url, alias: body.substring(0, 70), updated: new Date() })
         .execute();
     }
   }
@@ -430,19 +449,20 @@ export class PostService {
       .where('post.type=:type', { type })
       .getMany();
 
-    const note = await this.postRepository
-      .createQueryBuilder('post')
-      .where('post.type=:type1', { type1 })
-      .getMany();
+    // 笔记本不在推送到百度
+    // const note = await this.postRepository
+    //   .createQueryBuilder('post')
+    //   .where('post.type=:type1', { type1 })
+    //   .getMany();
 
     let idList = [];
 
     post.map(e => {
       idList.push({ type: 'p', id: e.id });
     });
-    note.map(e => {
-      idList.push({ type: 'n', id: e.id });
-    });
+    // note.map(e => {
+    //   idList.push({ type: 'n', id: e.id });
+    // });
 
     return idList;
   }

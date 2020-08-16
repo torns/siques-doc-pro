@@ -20,27 +20,35 @@
           </el-menu-item>
 
           <el-menu-item class="xs" index="/">
-            <span style="font-weight:600" class=" fs-md" to="/">
+            <span style="font-weight:600" class="fs-md" to="/">
               <a href="/" onclick="return false">首页</a>
             </span>
           </el-menu-item>
 
           <el-menu-item class="xm" index="/q">
-            <span class="fs-md"><a href="/q" onclick="return false"> 问答</a></span>
+            <span class="fs-md">
+              <a href="/q" onclick="return false">问答</a>
+            </span>
           </el-menu-item>
 
           <el-menu-item class="xs" index="/blogs">
-            <span class="fs-md"><a href="/blogs" onclick="return false"> 专栏</a></span>
+            <span class="fs-md">
+              <a href="/blogs" onclick="return false">专栏</a>
+            </span>
           </el-menu-item>
 
           <el-menu-item class="xs" index="/tags">
-            <span class="fs-md"><a href="/tags" onclick="return false">标签</a></span>
+            <span class="fs-md">
+              <a href="/tags" onclick="return false">标签</a>
+            </span>
           </el-menu-item>
           <el-menu-item class="xs" index="/n">
-            <span class="fs-md"><a href="/n" onclick="return false">笔记</a></span>
+            <span class="fs-md">
+              <a href="/n" onclick="return false">笔记</a>
+            </span>
           </el-menu-item>
 
-          <el-menu-item v-show="this.$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0" class="xm " style="padding-left:40px">
+          <el-menu-item v-show="this.$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0" class="xm" style="padding-left:40px">
             <el-badge :value="hasNewMessage ? 'new' : null" class="item" type="primary">
               <el-popover :popper-class="`message`" @show="fetchUserLetter" placement="bottom" trigger="click">
                 <div class="d-flex flex-column h-100">
@@ -57,32 +65,22 @@
                   </el-radio-group>
 
                   <div v-if="topRadio == 'message'" style="width: 350px;overflow-y: auto;">
-                    <div class="border-bottom py-1 pl-2">
-                      一些关于你的通知
-                    </div>
+                    <div class="border-bottom py-1 pl-2">一些关于你的通知</div>
                     <div v-for="(letter, index) in userLetters" :key="index">
                       <div v-if="letter.type !== 'followuser' && letter.content === null" :class="`d-flex py-1 pl-2 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
                         <router-link :to="`/u/${letter.from_uid.id}`" tag="div">
-                          <div class="hover-4 point pr-1 text-primary " style="white-space: nowrap;">
-                            {{ letter.from_uid.name }}
-                          </div>
+                          <div class="hover-4 point pr-1 text-primary" style="white-space: nowrap;">{{ letter.from_uid.name }}</div>
                         </router-link>
-                        <div style="white-space: nowrap;" class="pr-1">
-                          {{ actionTransFomer(letter) }}
-                        </div>
+                        <div style="white-space: nowrap;" class="pr-1">{{ actionTransFomer(letter) }}</div>
                         <router-link :to="link(letter) + `${letter.to_Post.id}`" tag="div">
-                          <div class="point text-primary hoverlink ellipsis-1">
-                            {{ letter.to_Post.title }}
-                          </div>
+                          <div class="point text-primary hoverlink ellipsis-1">{{ letter.to_Post.title }}</div>
                         </router-link>
                       </div>
                     </div>
                   </div>
 
                   <div v-if="topRadio == 'follow'">
-                    <div class="border-bottom py-1 pl-2">
-                      他们最近关注了你
-                    </div>
+                    <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
 
                     <div v-for="(letter, index) in userLetters" :key="index">
                       <div v-if="letter.type == 'followuser'" :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
@@ -94,13 +92,11 @@
                   </div>
 
                   <div v-if="topRadio == 'letter'">
-                    <div class="border-bottom py-1 pl-2">
-                      他们最近私信了你
-                    </div>
+                    <div class="border-bottom py-1 pl-2">他们最近私信了你</div>
 
                     <div v-for="(letter, index) in userLetters" :key="index">
                       <div v-if="letter.content != null && letter.from_uid !== null" :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                        <el-popover :content="` ${letter.content + $dayjs(letter.created).format('M月D日 H:MM')}`" placement="bottom" title="私信详情" width="" icon trigger="hover">
+                        <el-popover :content="` ${letter.content + $dayjs(letter.created).format('M月D日 H:MM')}`" placement="bottom" title="私信详情" width icon trigger="hover">
                           <router-link slot="reference" :to="`/u/${letter.from_uid.id}`" tag="span">
                             <span class="ml-2 hover-4 text-primary point pr-1">{{ letter.from_uid.name }}</span>
                             私信了你
@@ -109,9 +105,7 @@
                       </div>
                       <div v-if="letter.from_uid === null">
                         <div :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                          <div class="pl-2">
-                            {{ letter.content }}
-                          </div>
+                          <div class="pl-2">{{ letter.content }}</div>
                         </div>
                       </div>
                     </div>
@@ -119,21 +113,19 @@
                   <div class="flex-1 pt-3"></div>
 
                   <div></div>
-                  <div class=" border-top ">
+                  <div class="border-top">
                     <div class="d-flex jc-between pt-2">
-                      <div @click="markedRead" class="point ">
-                        全部标记为已读
-                      </div>
+                      <div @click="markedRead" class="point">全部标记为已读</div>
                       <router-link to="/notification" tag="div" class="point hover-4">查看全部</router-link>
                     </div>
                   </div>
                 </div>
-                <i slot="reference" class="fa fa-bell-o  fs-xm "> </i>
+                <i slot="reference" class="fa fa-bell-o fs-xm"></i>
               </el-popover>
             </el-badge>
           </el-menu-item>
 
-          <el-submenu :popper-class="isHomepage ? 'mysubmenu' : ''" :index="`person`" v-if="$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0">
+          <!-- <el-submenu :popper-class="isHomepage ? 'mysubmenu' : ''" :index="`person`" v-if="$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0">
             <template slot="title">
               <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1">
                 <img v-if="this.$store.state.auth.user.avator[0].url !== null" :src="this.$store.state.auth.user.avator[0].url" style="background-color:white;" />
@@ -148,19 +140,42 @@
               </span>
             </el-menu-item>
 
-            <el-menu-item @click="logout"> <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出</el-menu-item>
-          </el-submenu>
+            <el-menu-item @click="logout"> <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出 </el-menu-item>
+          </el-submenu> -->
+
+          <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" v-if="$store.state.UserNotExist == false" class="xs">
+            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">
+              <span>
+                <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
+                  <img v-if="this.$store.state.auth.user.avator[0].url !== null" :src="this.$store.state.auth.user.avator[0].url" style="background-color:white;" />
+
+                  <img v-else src="~/static/avator.jpg" /> </el-avatar
+              ></span>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu>
+              <el-dropdown-item command="/u">
+                <span>
+                  我的主页
+                </span></el-dropdown-item
+              >
+              <el-dropdown-item command="/logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
 
           <el-menu-item v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = false)">
-            <el-link :underline="false"> 立即登录</el-link>
+            <el-link :underline="false">立即登录</el-link>
           </el-menu-item>
           <!-- 
-          <el-menu-item > -->
+          <el-menu-item >-->
           <el-button v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = true)" class="xm" type="primary">免费注册</el-button>
           <!-- </el-menu-item> -->
 
-          <el-dropdown :show-timeout="0" :hide-timeout="1000" @command="handleCommand" class="xs">
-            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;"> 写稿<i class="el-icon-arrow-down el-icon--right"></i> </span>
+          <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" class="xs">
+            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;">
+              写稿
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="/post">写文章</el-dropdown-item>
               <el-dropdown-item command="/record">记笔记</el-dropdown-item>
@@ -308,7 +323,15 @@ export default class Home extends Vue {
   }
 
   handleCommand(command) {
-    this.$router.push(command)
+    switch (command) {
+      case '/logout':
+        this.logout()
+        break
+
+      default:
+        this.$router.push(command)
+        break
+    }
   }
 
   async fetchUserLetter() {

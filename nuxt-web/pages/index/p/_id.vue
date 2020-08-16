@@ -270,11 +270,16 @@ const mediumzoom = () => {
   }
 })
 export default class Post extends Vue {
-  async asyncData({ params, store }: any) {
+  async asyncData({ params, store, redirect }: any) {
     // 在 @component 中不可以写 this.$http //
 
     const http = Vue.prototype.$http
+
     const res = await http.get(`posts/${params.id}?collection=true`)
+
+    if (res.data.status === 404) {
+      redirect('/error')
+    }
     res.data.body = md.render(res.data.body)
 
     const link = `/posts/all?limit=8&sort=liked&type=post`
@@ -341,7 +346,7 @@ export default class Post extends Vue {
 
   mounted() {
     this.fetchpost(this.id)
-    // copyRight(this.post.user.name)
+
     mdTable()
   }
 

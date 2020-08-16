@@ -21,7 +21,7 @@
                 </el-option-group>
               </el-select>
             </div>
-            <markdown ref="markdown" @submit="submitQues" name="发布提问" height="70vh"></markdown>
+            <markdown ref="markdown" @submit="submitQues" name="发布提问" height="60vh"></markdown>
           </div>
         </el-col>
       </el-row>

@@ -11,6 +11,7 @@ import {
   AfterLoad,
   OneToOne,
   JoinColumn,
+  Timestamp,
 } from 'typeorm';
 
 import { User } from '../user/user.entity';
@@ -43,7 +44,7 @@ export class Post {
   @CreateDateColumn()
   created: Date;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   updated: Date;
 
   @Column({ default: 0 })
@@ -66,6 +67,9 @@ export class Post {
 
   @Column({ type: 'enum', enum: Posttype })
   type: Posttype;
+
+  @Column({ default: 0 })
+  isPublished: number;
 
   // 一个问题对应一个回答
   @OneToOne(type => Comment, { nullable: true })

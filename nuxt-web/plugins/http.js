@@ -6,19 +6,14 @@ const http = axios.create({
 })
 
 if (process.client) {
-  http.interceptors.request.use(
-    (config) => {
-      if (window.localStorage.state) {
-        const date = JSON.parse(window.localStorage.state)
+  http.interceptors.request.use((config) => {
+    if (window.localStorage.state) {
+      const date = JSON.parse(window.localStorage.state)
 
-        config.headers.Authorization = date.auth['auth._token.local'] || ''
-      }
-      return config
-    },
-    (err) => {
-      return Promise.reject(err)
+      config.headers.Authorization = date.auth['auth._token.local'] || ''
     }
-  )
+    return config
+  })
 
   // 添加一个反应拦截器
 
@@ -29,20 +24,19 @@ if (process.client) {
     (err) => {
       if (err.response) {
         // console.log(err.response)
-        Vue.prototype.$notify({
-          type: 'error',
-          message: err.response.data.message
-        })
-
-        if (err.response.status === 401) {
-          Vue.prototype.$notify({
-            type: 'error',
-            message: '授权失败，请重新登录'
-          })
-        }
+        // Vue.prototype.$notify({
+        //   type: 'error',
+        //   message: err.response.data.message
+        // })
+        // if (err.response.status === 401) {
+        //   Vue.prototype.$notify({
+        //     type: 'error',
+        //     message: '授权失败，请重新登录'
+        //   })
+        // }
       }
 
-      return Promise.reject(err)
+      // return Promise.reject(err)
     }
   )
 }

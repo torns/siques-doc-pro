@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
+import _ from 'lodash'
 import Tag from '@/components/dialog/tag.vue'
 
 @Component({
@@ -88,11 +88,29 @@ export default class Index extends Vue {
   }
 
   drawer = false
+
   title = ''
   dynamicTags: Array<any> = []
   content = [{ development: '' }]
-
   tagLen: number = 5
+  timer = null
+
+  @Watch('title')
+  isTitleChanged(newval: any, oldval: any) {
+    const ref: any = this.$refs.markdown
+
+    if (typeof this.timer === 'number') {
+      clearTimeout(this.timer)
+    }
+
+    this.timer = setTimeout(() => {
+      if (oldval !== '') {
+        if (newval !== oldval) {
+          this.submitNote(ref.value)
+        }
+      }
+    }, 2000)
+  }
 
   noteList = []
   visible: any

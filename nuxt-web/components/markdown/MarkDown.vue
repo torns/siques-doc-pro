@@ -1,21 +1,16 @@
 <template>
   <div>
-    <div id="editorSection" class="text-left" />
+    <div :id="id" class="text-left" />
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-    <div class="mt-2">
-      <el-button :loading="loading" @click="submit" size="mini" type="primary"
-        ><i v-if="$attrs.icon" :class="$attrs.icon + ' fs-xs'"></i> <span class="pl-1">{{ $attrs.name }}</span></el-button
-      >
-
-      <el-button v-if="$attrs.cancle !== undefined" @click="cancle" size="mini" type="text"> <span class="pl-1 text-gray">取消</span></el-button>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import _ from 'lodash'
 import md from './md.js'
 import plugin from './plugin.js'
+
 // import { dragUpload } from './plugin.js'
 // import Editor from 'tui-editor'
 // import defalutConfig from './defalut-config'
@@ -28,10 +23,38 @@ import plugin from './plugin.js'
 export default class MarkDown extends Vue {
   @Prop()
   height: any
-  body: any = ''
+
+  @Prop()
+  selectedPost: any
+
   editor: any
   loading = false
   paste: any
+  value: any = ''
+  timer = null
+  debounceValue = _.debounce(this.submit, 1500)
+  id = 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+
+  changed = true
+
+  @Watch('selectedPost')
+  isIdChanged(newval: any, oldval: any) {
+    if (newval !== oldval) {
+      this.changed = true
+      setTimeout(() => {
+        this.changed = false
+      }, 5000)
+    }
+  }
+
+  @Watch('value')
+  isValueChanged(newval: any, oldval: any) {
+    if (!this.changed) {
+      if (oldval !== '') {
+        this.debounceValue(this.submit)
+      }
+    }
+  }
 
   mounted() {
     this.initEditor()
@@ -42,19 +65,14 @@ export default class MarkDown extends Vue {
   submit() {
     this.loading = true
     setTimeout(() => {
-      this.body = this.getContent()
-
-      this.$emit('submit', this.body)
+      this.$emit('submit', this.value)
       this.loading = false
     }, 1000)
-  }
-  cancle() {
-    this.$emit('cancle')
   }
 
   pasteUpload() {
     /* eslint-disable */
-    var dp: any = document.getElementById('editorSection')
+    var dp: any = document.getElementById(this.id)
     dp.addEventListener(
       'paste',
       (this.paste = (event: any): any => {
@@ -92,7 +110,7 @@ export default class MarkDown extends Vue {
   }
 
   dropUpload() {
-    var dp: any = document.getElementById('editorSection')
+    var dp: any = document.getElementById(this.id)
     dp.addEventListener('dragover', (e: any) => {
       e.stopPropagation()
       //阻止浏览器默认打开文件的操作
@@ -114,7 +132,7 @@ export default class MarkDown extends Vue {
   }
 
   initEditor() {
-    this.editor = md(this.height)
+    this.editor = md(this.height, this.id)
     plugin(this.editor)
 
     const fileDom: any = this.$refs.files
@@ -122,9 +140,20 @@ export default class MarkDown extends Vue {
     this.editor.eventManager.addEventType('uploadEvent')
     this.editor.eventManager.listen('uploadEvent', () => {
       fileDom.click()
+
       // console.log('按下按钮')
       // Do some other thing...
     })
+    if (typeof this.timer === 'number') {
+      clearTimeout(this.timer)
+    }
+    this.timer = setInterval(() => {
+      this.getContent()
+    }, 1000)
+  }
+
+  beforeDestroy() {
+    this.timer = null
   }
 
   async uploadFile(e: any, type?: any) {
@@ -202,8 +231,9 @@ export default class MarkDown extends Vue {
   setContent(value: any) {
     this.editor.setValue(value)
   }
+
   getContent() {
-    return this.editor.getValue()
+    this.value = this.editor.getValue()
   }
 }
 </script>

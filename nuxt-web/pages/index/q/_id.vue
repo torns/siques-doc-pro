@@ -263,7 +263,7 @@ export default class Question extends Vue {
 
   async fetchQuestion(id: any) {
     if (!this.question) {
-      const res = await this.$http.get(`posts/${id}`)
+      const res = await this.$http.get(`posts/${id}?type=question`)
       this.question = res.data
       this.liked = res.data.liked
       // if (!res.data.editor) {

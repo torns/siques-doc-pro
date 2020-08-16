@@ -11,7 +11,12 @@
           </div>
           <div @click="panelOff" class="fa fs-xl  fa-angle-double-down hover-1 point col-33" style="text-align:end"></div>
         </div>
-        <markdown ref="markdown" @submit="handleSend" @cancle="cancle" cancle name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
+        <markdown ref="markdown" name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
+        <div class="py-2">
+          <el-button @click="handleSend" size="mini" type="primary"><span class="pl-1">回复</span></el-button>
+
+          <el-button @click="cancle" size="mini" type="text"> <span class="pl-1 text-gray">取消</span></el-button>
+        </div>
       </div>
     </div>
   </transition>
@@ -84,7 +89,8 @@ export default class commentPanel extends Vue {
       .catch(() => {})
   }
 
-  handleSend(value: any) {
+  handleSend() {
+    const value = this.ref.value
     switch (this.$attrs.type) {
       case 'comment':
         this.sendComment(value)

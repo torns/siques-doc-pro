@@ -158,6 +158,12 @@ export default {
   axios: {},
 
   auth: {
+    redirect: {
+      login: false,
+
+      callback: false,
+      home: false
+    },
     strategies: {
       local: {
         endpoints: {

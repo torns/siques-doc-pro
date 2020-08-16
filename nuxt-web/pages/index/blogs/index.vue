@@ -45,19 +45,25 @@ import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
   components: { 'sq-panel': BlogPanel }
 })
 export default class index extends Vue {
-  async asyncData({ params, store }: any) {
+  async asyncData({ params, store, route }: any) {
     const Taglist = store.state.auth ? (store.state.auth.user ? (store.state.auth.user.tags ? store.state.auth.user.tags : null) : null) : null
     const List = listIntercep(Taglist)
     const http = Vue.prototype.$http
 
-    const link = `/posts/all?limit=10&page=1&sort=views` + (Taglist ? `&taglist=${List}` : '') + `&listId=true&collection=true&type=post`
+    const link =
+      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&sort=${route.query.sort ? route.query.sort : 'views'}` +
+      (Taglist ? `&taglist=${List}` : '') +
+      `&listId=true&collection=true&type=post`
     const res = await http.get(link)
-
+    console.log(res.data)
     return {
       list: List,
       taglist: Taglist,
       posts: res.data[0],
-      total: res.data[1]
+      total: res.data[1],
+      page: parseInt(route.query.page ? route.query.page : 1),
+      sort: route.query.sort ? route.query.sort : 'views',
+      activeName: route.query.activeName ? route.query.activeName : 'first'
     }
   }
 
@@ -87,6 +93,7 @@ export default class index extends Vue {
     this.show = true
     this.fetchPost()
     window.scrollTo(0, 0)
+    this.$router.push(`/blogs?page=${val}&sort=${this.sort}&activeName=${this.activeName}`)
   }
 
   async fetchPost() {
@@ -95,7 +102,7 @@ export default class index extends Vue {
       (this.sort ? `&sort=${this.sort}` : '') +
       (this.taglist ? `&taglist=${this.list}` : '') +
       (this.listId ? `&listId=${this.listId}` : '') +
-      `&collection=true`
+      `&collection=true&type=post`
 
     const res = await this.$http.get(link)
 
@@ -104,11 +111,13 @@ export default class index extends Vue {
       this.posts = res.data[0]
       this.show = false
     }, 400)
+    this.$router.push(`/blogs?page=${this.page}&sort=${this.sort}&activeName=${this.activeName}`)
   }
 
   handleClick(tab: any, event: any) {
     this.posts = []
     this.show = true
+    this.page = 1
     if (tab.name === 'second') {
       this.sort = 'liked'
       this.fetchPost()

@@ -128,6 +128,7 @@ export class TagService {
       .createQueryBuilder('post')
 
       .leftJoinAndSelect('post.user', 'user')
+      .where('post.isPublished =1')
       .leftJoinAndSelect('user.avator', 'avator')
       .having('tags.Id=:id', { id })
       .leftJoinAndSelect('post.tags', 'tags')

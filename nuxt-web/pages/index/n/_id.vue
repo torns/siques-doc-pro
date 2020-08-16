@@ -65,13 +65,19 @@ const mediumzoom = () => {
   components: {}
 })
 export default class Note extends Vue {
-  async asyncData({ store, params }: any) {
+  async asyncData({ store, params, redirect }: any) {
     const http = Vue.prototype.$http
 
-    const res = await http.get(`/posts/${params.id}`)
-    if (res.data.body !== null) {
-      res.data.body = md.render(res.data.body)
+    const res = await http.get(`/posts/${params.id}?type=note`)
+
+    if (res.data.status === 404) {
+      redirect('/error')
     }
+    if (res.data.body == null) {
+      res.data.body = ''
+    }
+
+    res.data.body = md.render(res.data.body)
 
     return {
       note: res.data
