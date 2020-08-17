@@ -48,6 +48,7 @@ h1 {
 
   padding: 0.5em 0 !important;
   box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.7);
+
   &-comment,
   &-quote {
     color: #548a37 !important;
@@ -84,14 +85,14 @@ h1 {
   }
 
   ul {
-    margin: 0;
-    padding-left: 2.5em;
+    margin: 10px 0;
+    padding: 5px 0;
     max-height: 500px;
 
     li {
-      list-style: decimal;
+      list-style: none;
 
-      padding: 5px !important;
+      padding: 5px 12px !important;
       cursor: text;
       line-height: 14px;
       font-size: 14px;
@@ -111,6 +112,14 @@ h1 {
 // }
 
 .article {
+  a {
+    text-decoration: none;
+    color: #009a61;
+  }
+  p {
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
   h3,
   h4,
   h5,
@@ -140,24 +149,17 @@ h1 {
   }
 }
 
-.article {
-  a {
-    text-decoration: none;
-    color: #009a61;
+p,
+.hljs {
+  code {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    color: #476582;
+    padding: 0.25rem 0.5rem;
+    margin: 0 1.5px;
+    font-size: 0.85em;
+    background-color: rgba(27, 31, 35, 0.05);
+    border-radius: 3px;
   }
-  p {
-    margin-bottom: 16px;
-    font-size: 15px;
-  }
-}
-
-code {
-  color: #c7254e;
-  padding: 0.065em 0.4em;
-  font-size: 14px;
-  margin: 0 1px;
-  border-radius: 3px;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 
 nav .active {
@@ -171,14 +173,7 @@ nav .active {
     position: absolute;
     width: 4px;
     height: 27px;
-    background-image: -webkit-gradient(
-      linear,
-      left bottom,
-      left top,
-      from(#04c0c6),
-      color-stop(51%, #2ba3de),
-      to(#835be3)
-    );
+    background-image: -webkit-gradient(linear, left bottom, left top, from(#04c0c6), color-stop(51%, #2ba3de), to(#835be3));
     background-image: linear-gradient(0deg, #04c0c6, #2ba3de 51%, #835be3);
   }
   a {
@@ -226,12 +221,13 @@ nav li {
 .article table {
   *border-collapse: collapse; /* IE7 and lower */
   border-spacing: 0;
-  width: 100%;
-  margin: 16px 0;
+  width: 90%;
+  margin: 20px auto;
+  border-top: 2px solid black;
+  text-align: left;
+  border-bottom: 2px solid black;
 }
-.article table {
-  border: solid #ccc 1px;
-}
+
 .article table tr:hover {
   background: #fbf8e9;
   -o-transition: all 0.1s ease-in-out;
@@ -242,18 +238,20 @@ nav li {
 }
 .article table td,
 .article .table th {
-  border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
+  // border-left: 1px solid #ccc;
+  // border-top: 1px solid #ccc;
+
+  text-overflow: hidden;
+  padding: 3px;
+  padding-left: 10px;
 }
 
 .article table th {
-  background-color: #dce9f9;
-
+  // background-color: #dce9f9;
+  border-bottom: 1px solid black;
   border-top: none;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  padding: 5px;
+  padding-left: 10px;
 }
 
 .article table td:first-child,
@@ -311,10 +309,5 @@ hr {
   margin: 3em auto;
   border: 0;
   height: 1px;
-  background-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0)
-  );
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }

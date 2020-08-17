@@ -447,6 +447,7 @@ export class PostService {
     const post = await this.postRepository
       .createQueryBuilder('post')
       .where('post.type=:type', { type })
+      .andWhere('post.isPublished=1')
       .getMany();
 
     // 笔记本不在推送到百度

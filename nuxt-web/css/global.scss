@@ -5,6 +5,7 @@
 @import 'backtop';
 @import 'post';
 @import './error.scss';
+// @import 'gitlab.scss';
 // reset
 // 防止自己撑大
 * {
@@ -198,11 +199,6 @@ li {
   .reTop {
     top: 80%;
   }
-}
-
-code {
-  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  font-size: 13.3px;
 }
 
 .el-avatar > img {

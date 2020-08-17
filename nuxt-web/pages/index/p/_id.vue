@@ -5,7 +5,7 @@
       <div class="container pt-4 pb-3">
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-            <article id="article" class=" bg-white shadow-1 border-radius">
+            <article id="article" class="markdown-body bg-white shadow-1 border-radius">
               <div class="pt-5 ">
                 <h1 class="bg-light-green boder-x" style="padding-left:25px;padding-right:25px;">
                   <div class="text-dark py-2 ">{{ post.title }}</div>
