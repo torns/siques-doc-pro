@@ -383,7 +383,7 @@ export default class index extends Vue {
       title: this.title,
       counts: words,
       body: value,
-      isPublished: release ? 1 : 0
+      isPublished: release
     }
 
     if (release) {
