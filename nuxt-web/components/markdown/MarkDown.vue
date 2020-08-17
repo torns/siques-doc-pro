@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :id="id" class="text-left" />
+    <div id="editorSection" class="text-left" />
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
     <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight"> <div v-if="isSaving" class="pt-2 fs-7">保存中...</div> </transition>
   </div>
@@ -34,7 +34,7 @@ export default class MarkDown extends Vue {
   value: any = ''
   timer = null
   debounceValue = _.debounce(this.submit, 4000)
-  id = 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+
   isSaving = false
   changed = false
 
@@ -71,7 +71,7 @@ export default class MarkDown extends Vue {
 
   pasteUpload() {
     /* eslint-disable */
-    var dp: any = document.getElementById(this.id)
+    var dp: any = document.getElementById('editorSection')
     dp.addEventListener(
       'paste',
       (this.paste = (event: any): any => {
@@ -109,7 +109,7 @@ export default class MarkDown extends Vue {
   }
 
   dropUpload() {
-    var dp: any = document.getElementById(this.id)
+    var dp: any = document.getElementById('editorSection')
     dp.addEventListener('dragover', (e: any) => {
       e.stopPropagation()
       //阻止浏览器默认打开文件的操作
@@ -131,7 +131,7 @@ export default class MarkDown extends Vue {
   }
 
   initEditor() {
-    this.editor = md(this.height, this.id)
+    this.editor = md(this.height)
     plugin(this.editor)
 
     const fileDom: any = this.$refs.files

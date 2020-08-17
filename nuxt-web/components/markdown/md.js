@@ -1,10 +1,10 @@
 import defalutConfig from './defalut-config'
 
-export default (height, id) => {
+export default (height) => {
   // eslint-disable-next-line
   return new tui.Editor({
     /* eslint-disable */
-    el: document.querySelector('#' + id),
+    el: document.querySelector('#editorSection'),
     initialEditType: 'markdown',
     language: 'zh_CN',
     placeholder: '来愉快的造作吧',
