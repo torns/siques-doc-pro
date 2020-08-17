@@ -7,7 +7,8 @@ export default async () => {
     window.location.href.includes('post') ||
     window.location.href.includes('n') ||
     window.location.href.includes('ask') ||
-    window.location.href.includes('record')
+    window.location.href.includes('record') ||
+    window.location.href.includes('search')
   ) {
   } else {
     await http.post('/auth/bdpush', { link: location.href })

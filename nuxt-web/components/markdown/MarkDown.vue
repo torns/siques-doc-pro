@@ -2,6 +2,7 @@
   <div>
     <div :id="id" class="text-left" />
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
+    <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight"> <div v-if="isSaving" class="pt-2 fs-7">保存中...</div> </transition>
   </div>
 </template>
 
@@ -32,10 +33,10 @@ export default class MarkDown extends Vue {
   paste: any
   value: any = ''
   timer = null
-  debounceValue = _.debounce(this.submit, 1500)
+  debounceValue = _.debounce(this.submit, 4000)
   id = 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
-
-  changed = true
+  isSaving = false
+  changed = false
 
   @Watch('selectedPost')
   isIdChanged(newval: any, oldval: any) {
@@ -43,7 +44,7 @@ export default class MarkDown extends Vue {
       this.changed = true
       setTimeout(() => {
         this.changed = false
-      }, 5000)
+      }, 7000)
     }
   }
 
@@ -51,6 +52,7 @@ export default class MarkDown extends Vue {
   isValueChanged(newval: any, oldval: any) {
     if (!this.changed) {
       if (oldval !== '') {
+        this.isSaving = true
         this.debounceValue(this.submit)
       }
     }
@@ -63,11 +65,8 @@ export default class MarkDown extends Vue {
   }
 
   submit() {
-    this.loading = true
-    setTimeout(() => {
-      this.$emit('submit', this.value)
-      this.loading = false
-    }, 1000)
+    this.$emit('submit', this.value)
+    this.isSaving = false
   }
 
   pasteUpload() {

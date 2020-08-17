@@ -561,12 +561,6 @@ export default class index extends Vue {
     await this.$http.get(`/tags/${this.selectedPost}?tagId=${id}`)
   }
 
-  showtagDialog() {
-    // tslint:disable-next-line
-    const ref: any = this.$refs.tag
-    ref.setVisible()
-  }
-
   async addTag(tagname: any, tagid: any) {
     if (this.tagLen > 0) {
       let includes = false
