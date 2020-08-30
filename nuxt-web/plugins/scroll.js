@@ -36,8 +36,10 @@ const install = (Vue, options) => {
   const scrollSpyElements = {}
   const scrollSpySections = {}
   const activeElement = {}
+  const activeChildrenEl = {}
   const activableElements = {}
   const currentIndex = {}
+  let indexArray = []
 
   // 赋值初始化
   options = Object.assign(
@@ -68,34 +70,43 @@ const install = (Vue, options) => {
     }
 
     const id = scrollSpyId(container)
+    indexArray = []
 
     const elements = []
 
-    for (const el of container.querySelectorAll(selector)) {
+    // let h3index = 0
+    let h2index = 0
+    let array = []
+    for (let index = 0; index < container.querySelectorAll(selector).length; index++) {
       // Filter out elements that are owned by another directive
-      if (scrollSpyIdFromAncestors(el) === id) {
-        elements.push(el)
+      const el = container.querySelectorAll(selector)[index]
+      if (el.localName === 'h2') {
+        array = []
+        h2index = index
+        indexArray[h2index] = [index]
+        h2index += 1
       }
+
+      if (index + 1 < container.querySelectorAll(selector).length) {
+        if (el.localName === 'h2' && container.querySelectorAll(selector)[index + 1].localName === 'h3') {
+          array.push(index)
+          indexArray[h2index - 1] = array
+        }
+      }
+
+      if (el.localName === 'h3') {
+        array.push(index)
+        indexArray[h2index - 1] = array
+      }
+      // console.log(indexArray)
+
+      elements.push(el)
     }
     // console.log(elements)
     return elements
   }
 
   function scrollSpyId(el) {
-    return el.getAttribute('data-scroll-spy-id') || el.getAttribute('scroll-spy-id') || 'default'
-  }
-
-  function scrollSpyIdDefined(el) {
-    return !!el.getAttribute('data-scroll-spy-id') || !!el.getAttribute('scroll-spy-id')
-  }
-
-  function scrollSpyIdFromAncestors(el) {
-    do {
-      if (scrollSpyIdDefined(el)) {
-        return scrollSpyId(el)
-      }
-      el = el.parentElement
-    } while (el)
     return 'default'
   }
 
@@ -109,7 +120,8 @@ const install = (Vue, options) => {
     const scrollSpyContextEl = el[scrollSpyContext]
     // console.log(scrollSpyContextEl)
     const idScrollSections = findElements(el, sectionSelector)
-    scrollSpySections[id] = idScrollSections
+    // idScrollSections元素列表
+    scrollSpySections.default = idScrollSections
 
     if (idScrollSections[0] && idScrollSections[0].offsetParent !== el) {
       scrollSpyContextEl.eventEl = window
@@ -129,40 +141,6 @@ const install = (Vue, options) => {
     } while (elem && elem !== untilParent)
     return offsetTop
   }
-
-  // function scrollTo(el, index) {
-  //   const id = scrollSpyId(el)
-  //   const idScrollSections = scrollSpySections[id]
-
-  //   const { scrollEl, options } = el[scrollSpyContext]
-  //   const current = scrollEl.scrollTop
-
-  //   if (idScrollSections[index]) {
-  //     const target = getOffsetTop(idScrollSections[index]) - options.offset
-  //     if (options.easing) {
-  //       // scrollWithAnimation(
-  //       //   scrollEl,
-  //       //   current,
-  //       //   target,
-  //       //   options.time,
-  //       //   options.easing
-  //       // )
-  //       return
-  //     }
-
-  //     const time = options.time
-  //     const steps = options.steps
-  //     const timems = parseInt(time / steps)
-  //     const gap = target - current
-  //     for (let i = 0; i <= steps; i++) {
-  //       const pos = current + (gap / steps) * i
-  //       setTimeout(() => {
-  //         scrollEl.scrollTop = pos
-  //         console.log(scrollEl)
-  //       }, timems * i)
-  //     }
-  //   }
-  // }
 
   Vue.directive('scroll-spy', {
     // 钩子
@@ -207,16 +185,29 @@ const install = (Vue, options) => {
         // 添加active类的方法
         if (index !== currentIndex[id]) {
           let idActiveElement = activeElement[id]
+          // let preActiveParent = activeElement[id]
+          // let proActiveParent = activableElements[index + 1]
 
           try {
             if (idActiveElement) {
-              const activeClasses = idActiveElement[scrollSpyContext].options.class
-
-              activeClasses.forEach(function(element) {
-                idActiveElement.classList.remove(element)
+              const activeClasses = idActiveElement[0][scrollSpyContext].options.class
+              // console.log(idActiveElement)
+              idActiveElement.forEach((e) => {
+                activeClasses.forEach(function(element) {
+                  e.classList.remove(element)
+                  // preActiveParent.classList.remove(element)
+                  // proActiveParent.classList.remove(element)
+                })
               })
               activeElement[id] = null
+              // activableElements[id] = null
+              // activableElements[id] = null
             }
+            const childrenClasses = 'active-child'
+
+            activeChildrenEl.default.forEach((e) => {
+              e.classList.remove(childrenClasses)
+            })
           } catch (error) {}
 
           // console.log(currentIndex)
@@ -226,14 +217,58 @@ const install = (Vue, options) => {
           try {
             if (typeof currentIndex !== 'undefined' && Object.keys(activableElements).length > 0) {
               idActiveElement = activableElements[id][currentIndex[id]]
-              activeElement[id] = idActiveElement
+
+              let i = index
+              let pre = index
+              let flag = false
+              let activeParent = index
+              indexArray.forEach((e) => {
+                if (e.includes(index)) {
+                  activeParent = indexArray.indexOf(e)
+                  i = e[e.length - 1]
+                  pre = e[0] - 1
+                  flag = true
+                }
+              })
+
+              // console.log(i)
+
+              const idActiveParent = activableElements[id][activeParent]
+              const proActiveParent = activableElements[id][i + 1]
+
+              const activeChildren = indexArray[activeParent]
+              const children = []
+              activeChildren.forEach((e) => {
+                children.push(activableElements[id][e])
+              })
+
+              activeChildrenEl.default = children
+
+              activeElement[id] = [idActiveElement, proActiveParent, idActiveParent]
+              // console.log('activeElement', activeElement)
+
               if (idActiveElement) {
                 // console.log(idActiveElement[scrollSpyContext])
                 const activeClasses = idActiveElement[scrollSpyContext].options.class
-
+                const activeParentClasses = 'active-parent'
                 activeClasses.forEach(function(element) {
                   idActiveElement.classList.add(element)
+                  idActiveParent.classList.add(element)
+
+                  if (flag) {
+                    proActiveParent.classList.add(element)
+                  }
                 })
+              }
+
+              if (children) {
+                const childrenClasses = 'active-child'
+                for (let index = 0; index < children.length; index++) {
+                  if (index !== 0) {
+                    const e = children[index]
+                    e.classList.add(childrenClasses)
+                  }
+                }
               }
             }
           } catch (error) {}
@@ -296,11 +331,12 @@ const install = (Vue, options) => {
   function initScrollActiveElement(el, activeOptions) {
     setTimeout(() => {
       const id = scrollSpyId(el)
-
+      // 元素列表findElements(el, activeOptions.selector)
       activableElements[id] = findElements(el, activeOptions.selector)
       const arr = [...activableElements[id]]
       // const arr1 = Object.keys(activableElements[id])
 
+      // console.log(activableElements)
       // alert(arr1.length === 0)
       // console.log(activableElements[id])
       arr.map((el) => {

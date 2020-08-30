@@ -62,6 +62,7 @@ export class PostController {
     @ListOptions({ limit: 10, sort: 'liked', order: 'DESC' }) //updated降序 ASC DESC
     Options: ListOptionsInterface,
   ) {
+    console.log(Options);
     return await this.postService.getAll(Options);
   }
 

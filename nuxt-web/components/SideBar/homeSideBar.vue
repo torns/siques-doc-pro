@@ -109,11 +109,11 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import noteWall from '../noteWall/noteWall.vue'
-import piechart from '~/components/miniComponents/piechart.vue'
+
 // import hover from './hover.js'
 
 @Component({
-  components: { noteWall, 'sq-piechart': piechart }
+  components: { noteWall }
 })
 export default class SideBar extends Vue {
   hotComments: any = this.$attrs.hotComments

@@ -10,5 +10,6 @@ export interface ListOptionsInterface {
   listId: boolean;
   type: Posttype;
   collection: boolean;
+  random: boolean;
   order: 'ASC' | 'DESC';
 }

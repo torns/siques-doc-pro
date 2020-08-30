@@ -1,86 +1,100 @@
 <template>
   <div>
-    <div class="bg-light">
+    <div>
       <sq-bookmark ref="bookmark"></sq-bookmark>
-      <div class="container pt-4 pb-3">
+      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 100%;top: 35%;">
+        <div class="fs-md">
+          <!-- <div class="d-flex">
+            <div class="pr-2" v-for="tag in post.tags" :key="tag.id">
+              <router-link :to="`/t/${tag.id}`">
+                <el-link type="primary">{{ tag.name }}</el-link>
+              </router-link>
+            </div>
+          </div> -->
+        </div>
+        <h1>
+          <div class="text-white py-2 ">{{ post.title }}</div>
+        </h1>
+        <div class="d-flex py-1 ai-center">
+          <!-- <router-link :to="`/u/${post.user.id}`">
+            <el-avatar :size="60" :src="post.user.avator[0] ? post.user.avator[0].url : ''" class="shadow-1" style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;">
+              <img src="~/static/avator.jpg" />
+            </el-avatar>
+          </router-link> -->
+
+          <!-- <div style="height: 32px;" class="d-flex ">
+              <router-link :to="`/u/${post.user.id}`">
+                <div class="mr-2 font-bold text-primary hover-4 point">
+                  {{ post.user.name }}
+                </div>
+              </router-link>
+            </div> -->
+          <div class="d-flex fs-xs ai-center pt-1 text-light-1">
+            <div class="pr-2">
+              <i class="el-icon-time"></i>
+              {{ $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss') }}
+            </div>
+
+            <div><i class="el-icon-view pr-1"></i>{{ post.views }}</div>
+          </div>
+        </div>
+        <div class="tag d-flex ai-baseline mb-3">
+          <div class="text-light-1 fs-xs">阅读约 {{ Math.ceil(post.counts / 275) }} 分钟</div>
+        </div>
+      </div>
+      <!-- <div class="absolute" style="z-index:5; width: 100%;top: 45%;"></div> -->
+      <div class="postMask" style="height:100vh;">
+        <sq-down
+          style=" position: absolute;bottom: 10%;
+    left: 50%;"
+        ></sq-down>
+      </div>
+
+      <div class="blur ">
+        <div class=" relative ">
+          <el-image fit="cover" :src="post.cover" style="height:100vh;" class="w-100"> </el-image>
+        </div>
+      </div>
+
+      <div class="post_container pt-4 pb-3">
         <el-row :gutter="0" type="flex">
-          <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
-            <article id="article" class="markdown-body bg-white shadow-1 border-radius">
-              <div class="pt-5 ">
-                <h1 class="bg-light-green boder-x" style="padding-left:25px;padding-right:25px;">
-                  <div class="text-dark py-2 ">{{ post.title }}</div>
-                </h1>
-              </div>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <article id="article" class="markdown-body bg-white ">
               <div>
                 <div v-if="post.title" style="padding:25px">
-                  <div class="d-flex flex-column menu-button" style="margin-top:3.4em;position:fixed">
-                    <div class="mb-2 text-center">{{ liked }}</div>
+                  <div
+                    class="d-flex flex-column menu-button"
+                    style="position:absolute;top: 0%;left: 0;
+    "
+                  >
+                    <!-- <div class="mb-2 text-center">{{ liked }}</div> -->
                     <div @click="like">
                       <sq-likebtn :status="isLike"></sq-likebtn>
                     </div>
 
-                    <i></i>
-                    <el-tooltip content="收藏" placement="right" effect="dark">
+                    <!-- <i></i> -->
+                    <!-- <el-tooltip content="收藏" placement="right" effect="dark">
                       <el-button @click="showBookmarkDialog(post.id)" type="text" circle>
                         <i class="iconfont icon-book-mark"></i>
                       </el-button>
-                    </el-tooltip>
+                    </el-tooltip> -->
 
-                    <i></i>
+                    <!-- <i></i>
                     <el-tooltip content="评论" placement="right" effect="dark">
                       <el-button style="margin-top:-15px" type="text" circle>
                         <a @click="showCommentPanel('comment')" class="text-primary" href="#comment"><i class="iconfont fs-xs icon-comments"> </i></a>
                       </el-button>
-                    </el-tooltip>
-                  </div>
-
-                  <div class="d-flex py-3 ">
-                    <router-link :to="`/u/${post.user.id}`">
-                      <el-avatar :size="60" :src="post.user.avator[0] ? post.user.avator[0].url : ''" class="shadow-1" style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;">
-                        <img src="~/static/avator.jpg" />
-                      </el-avatar>
-                    </router-link>
-                    <div class="pl-2 ">
-                      <div style="height: 32px;" class="d-flex ai-baseline">
-                        <router-link :to="`/u/${post.user.id}`">
-                          <div class="mr-2 font-bold text-primary hover-4 point">
-                            {{ post.user.name }}
-                          </div>
-                        </router-link>
-                        <el-button v-if="!isowner" @click="follow(post.user.id)" type="text" class="btn">关注</el-button>
-                        <el-button v-else type="text">作者</el-button>
-                      </div>
-                      <div class="d-flex fs-xm ai-center pt-1 text-gray-1">
-                        <div class="pr-2">
-                          <i class="el-icon-time"></i>
-                          {{ $dayjs(post.created).format('YYYY.MM.DD HH:MM:ss') }}
-                        </div>
-
-                        <div><i class="el-icon-view pr-1"></i>{{ post.views }}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tag d-flex ai-baseline mb-3">
-                    <ul class="d-flex">
-                      <li v-for="tag in post.tags" :key="tag.id">
-                        <router-link :to="`/t/${tag.id}`">
-                          <el-tag class="bg-2 hover-3 mr-2" effect="light" size="small">
-                            <span class="fs-sm">{{ tag.name }}</span>
-                          </el-tag>
-                        </router-link>
-                      </li>
-                    </ul>
-                    <div class="text-gray fs-xm">阅读约{{ Math.ceil(post.counts / 275) }}分钟</div>
+                    </el-tooltip> -->
                   </div>
 
                   <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article lh-3 "></div>
-                  <div class="text-primary mt-3 fs-xm">
+                  <div class="text-primary mt-3 fs-xs">
                     阅读：{{ post.views > 1000 ? (post.views / 1000).toFixed(1) + 'k' : post.views }}
                     <span>.</span>
                     <span class="pr-2">字数：{{ post.counts }}</span>
                     {{ '发布于 ' + $dayjs(post.created).fromNow() }}
                   </div>
-                  <div class="d-flex jc-center my-4">
+                  <!-- <div class="d-flex jc-center my-4">
                     <el-button @click="like" size="small" class="hover-2" type="plain">
                       <i class="pr-2 iconfont icon-Thumbsup"></i>
                       {{ liked }} 赞
@@ -95,18 +109,11 @@
                       <i class="pr-2 iconfont fs-xs icon-comments"></i>
                       回复
                     </el-button>
-                  </div>
-                  <div class="fs-xm text-center text-gray hover-1">
-                    本作品系 原创 ， 采用
-                    <a class="text-gray" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">《署名-非商业性使用-禁止演绎 4.0 国际》</a>许可协议
-                  </div>
-                  <el-divider></el-divider>
+                  </div> -->
                 </div>
               </div>
             </article>
-            <div id="card">
-              <sq-card :data="recommendCollection"></sq-card>
-            </div>
+
             <div id="comment" v-if="fetchedComment.length !== 0" class="pt-3">
               <div class="font-bold fs-xl py-1">{{ fetchedComment.length }}条评论</div>
 
@@ -159,7 +166,7 @@
                         </div>
                       </div>
                       <!-- 下面是回复展示模块 -->
-                      <div class="bg-light-1 border-radius px-3" style="margin-left:3em;margin-right:0em;">
+                      <div class="bg-light border-radius px-3" style="margin-left:3em;margin-right:0em;">
                         <div v-for="reply in comment.reply" :key="reply.id" class="py-2">
                           <div class="d-flex ai-baseline jc-between">
                             <div style="font-weight:600" class="text-primary pr-1">
@@ -201,28 +208,12 @@
               </div>
             </div>
 
-            <div>
-              <div class="font-bold fs-xl py-1 pt-4">推荐阅读</div>
-              <div v-for="post in recommendPost" :key="post.id" class="point hover-1 py-4 px-3 bg-white border-radius shadow-1" style="min-height:100px">
-                <router-link :to="`/p/${post.id}`" tag="a">
-                  <h3>{{ post.title }}</h3>
-                  <div class="text-gray py-2">{{ post.alias }}</div>
-                  <div class="d-flex fs-xm ai-baseline">
-                    <div class="text-primary pr-3">{{ post.user.name }}</div>
-                    <div class="text-gray">阅读{{ post.views }}</div>
-                  </div>
-                </router-link>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="0" :sm="6" :md="8" :lg="6" :xl="6" class="hidden-md-and-down pl-2">
-            <div class="pl-3 ">
-              <sq-postbar :data="post"></sq-postbar>
+            <div class="hidden-md-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
+              <sq-toc></sq-toc>
             </div>
           </el-col>
         </el-row>
       </div>
-      <div></div>
     </div>
     <sq-comment
       :to="name"
@@ -237,7 +228,10 @@
       @refresh="fetchComment"
       :show="show"
     ></sq-comment>
-    <sq-backbtn></sq-backbtn>
+    <!-- <sq-backbtn></sq-backbtn> -->
+
+    <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
+
     <sq-footer></sq-footer>
     <sq-click></sq-click>
   </div>
@@ -251,10 +245,10 @@ import mdTable from '../../../plugins/markdownTable'
 // import copyRight from '../../../plugins/copyright'
 import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
-
+import scrolldown from '~/components/miniComponents/scrolldown.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
+import PostNavigation from '~/components/PostNavigation/Navigation.vue'
 import share from '~/components/dialog/share.vue'
-import card from '~/components/Card/card.vue'
 import commentPanel from '~/components/commentPanel/commentPanel.vue'
 
 const mediumzoom = () => {
@@ -263,10 +257,11 @@ const mediumzoom = () => {
 
 @Component({
   components: {
-    'sq-postbar': PostSideBar,
+    'sq-toc': PostSideBar,
     'share-dialog': share,
-    'sq-card': card,
-    'sq-comment': commentPanel
+    'sq-down': scrolldown,
+    'sq-comment': commentPanel,
+    'sq-navigation': PostNavigation
   }
 })
 export default class Post extends Vue {
@@ -277,15 +272,17 @@ export default class Post extends Vue {
 
     const res = await http.get(`posts/${params.id}?collection=true`)
 
+    // console.log(res.data)
     if (res.data.status === 404) {
       redirect('/error')
     }
     res.data.body = md.render(res.data.body)
 
-    const link = `/posts/all?limit=8&sort=liked&type=post`
+    const link = `/posts/all?random=true&limit=2&type=post`
     const res1 = await http.get(link)
+    console.log(res1.data)
 
-    const res2 = await http.get(`collections/1/recommend`)
+    // const res2 = await http.get(`collections/1/recommend`)
 
     const res3 = await http.get(`posts/${params.id}/comments`)
 
@@ -312,7 +309,7 @@ export default class Post extends Vue {
     return {
       post: res.data,
       recommendPost: res1.data[0],
-      recommendCollection: res2.data,
+      // recommendCollection: res2.data,
       fetchedComment: res3.data
     }
   }

@@ -133,7 +133,7 @@ export class PostService {
 
   //获取主页文章列表
   async getAll(options: ListOptionsInterface) {
-    const {
+    let {
       categories,
       tags,
       taglist,
@@ -144,6 +144,7 @@ export class PostService {
       limit,
       sort,
       order,
+      random,
     } = options;
     // console.log(sort, tags, categories, taglist, type);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
@@ -175,6 +176,18 @@ export class PostService {
         queryBuilder.andWhere('post.isPublished =1');
       }
     }
+
+    const count = await queryBuilder.getCount();
+
+    if (random) {
+      page = Math.floor(Math.random() * (count / limit));
+    }
+
+    if (page <= 0) {
+      page = 1;
+    }
+
+    console.log(page);
 
     if (collection) {
       queryBuilder.innerJoinAndSelect('post.collection', 'collection');
@@ -212,6 +225,7 @@ export class PostService {
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.addSelect('post.body');
+    queryBuilder.addSelect('post.cover');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
 
     try {

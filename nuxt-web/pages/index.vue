@@ -1,14 +1,14 @@
 <template>
-  <div :id="isHomepage ? 'home' : ''">
+  <div :id="isHomepage ? 'home' : 'other'">
     <div id="app" :style="$route.path.includes('/record') || $route.path.includes('/ask') ? 'overflow-y: hidden;height:100vh;' : ''">
-      <div style="height:3px;" class="bg-primary"></div>
-      <div @click.stop :style="isHomepage ? '' : 'background-color:#ffffff'" :class="isHomepage ? 'menucover ' : 'shadow-1'">
+      <!-- <div style="height:3px;" class="bg-primary"></div> -->
+      <div id="menu" @click.stop :style="isHomepage ? '' : 'background-color:#ffffff;z-index:100;width:100%!important;'" :class="isHomepage ? 'menucover ' : 'fixed shadow-1'">
         <el-menu
           ref="menu"
           :background-color="isHomepage ? 'transparent' : ''"
           :active-text-color="isHomepage ? '#ffffff' : ''"
           default-active="/"
-          class="d-flex jc-between ai-center container header-menu"
+          class="d-flex jc-between ai-center container header-menu "
           mode="horizontal"
           style="margin:0 auto;"
           router
@@ -124,24 +124,6 @@
               </el-popover>
             </el-badge>
           </el-menu-item>
-
-          <!-- <el-submenu :popper-class="isHomepage ? 'mysubmenu' : ''" :index="`person`" v-if="$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0">
-            <template slot="title">
-              <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1">
-                <img v-if="this.$store.state.auth.user.avator[0].url !== null" :src="this.$store.state.auth.user.avator[0].url" style="background-color:white;" />
-
-                <img v-else src="~/static/avator.jpg" />
-              </el-avatar>
-            </template>
-            <el-menu-item index="/u">
-              <span>
-                <i class="iconfont icon-me pr-2 mr-1 pl-2 fs-lg"></i>
-                我的主页
-              </span>
-            </el-menu-item>
-
-            <el-menu-item @click="logout"> <i class="fa fa-remove pl-2 pr-3 fs-lg"></i> 退出 </el-menu-item>
-          </el-submenu> -->
 
           <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" v-if="$store.state.UserNotExist == false" class="xs">
             <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">

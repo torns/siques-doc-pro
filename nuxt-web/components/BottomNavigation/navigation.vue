@@ -1,5 +1,5 @@
 <template>
-  <div id="navigation" v-if="!isHomepage" class="visible-sm visible-xs animated fadeIn" style="position: fixed;z-index: 2;bottom: 0;height:50px;width:100vw">
+  <div id="navigation" v-if="!isHomepage" class="visible-sm visible-xs animated fadeIn" style="position: fixed;z-index: 10;bottom: 0;height:50px;width:100vw">
     <div style="height:inherit" class=" fs-xm d-flex jc-around ai-center border-top bg-white shadow-2">
       <li :class="` ${item.link == link ? 'text-primary' : 'text-gray-1'}`" @click="btnClick(item.link)" v-for="(item, index) in navigation" :key="index">
         <div class="text-center">

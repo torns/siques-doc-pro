@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <div v-if="data" class="shadow-1" style="height:204px;background-color:white;">
+    <!-- <div v-if="data" class="shadow-1" style="height:204px;background-color:white;">
       <div class="px-4 py-4">
         <div class="d-flex">
           <div class="pr-3">
@@ -32,16 +32,16 @@
           <el-button @click="$router.push(`/blogs/${collection.id}`)" size="small" type="plain">专栏主页</el-button>
         </div>
       </div>
-    </div>
-    <sq-leaderboard v-if="relaPost != null" :postId="data.id" :data="relaPost"></sq-leaderboard>
+    </div> -->
+    <!-- <sq-leaderboard v-if="relaPost != null" :postId="data.id" :data="relaPost"></sq-leaderboard> -->
     <div id="toc">
-      <div class="d-none d-lg-block  bg-white py-3 shadow-2" style="overflow-y: auto;margin-top:1.9em; min-height:100px;width:300px">
-        <div class="title fs-xl pl-2 pb-2" style="font-weight:600">目录</div>
+      <div class=" py-3 " style="overflow-y: unset; min-height:100px;width:250px">
+        <!-- <div class="title fs-xl pl-2 pb-2" style="font-weight:600">目录</div> -->
         <div>
           <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
         </div>
       </div>
-      <div class="d-none d-lg-block  bg-white mt-3 px-2 shadow-2" style="min-height:200px;width:300px">
+      <!-- <div class="d-none d-lg-block  bg-white mt-3 px-2 shadow-2" style="min-height:200px;width:300px">
         <div v-if="data" class="py-2 text-center">
           <div class="text-left">关于我</div>
           <nuxt-link :to="`/u/${data.user.id}`"
@@ -60,14 +60,14 @@
           </div>
           <div></div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { listIntercep } from '../../plugins/utils.js'
+
 @Component({})
 export default class SideBar extends Vue {
   @Prop()
@@ -77,59 +77,59 @@ export default class SideBar extends Vue {
   relaPost = null
 
   mounted() {
-    this.initfetchCollection()
+    // this.initfetchCollection()
   }
 
   get isUser() {
     return this.$store.state.UserNotExist
   }
 
-  changeStatu() {
-    if (!this.isUser) {
-      this.$store.state.auth.user.interest.map((e: any) => {
-        if (this.data.collection.id === e.id) {
-          this.isInterest = true
-        }
-      })
-    }
-  }
+  // changeStatu() {
+  //   if (!this.isUser) {
+  //     this.$store.state.auth.user.interest.map((e: any) => {
+  //       if (this.data.collection.id === e.id) {
+  //         this.isInterest = true
+  //       }
+  //     })
+  //   }
+  // }
 
-  async fetchRelaPost() {
-    const tags = await listIntercep(this.data.tags)
+  // async fetchRelaPost() {
+  //   const tags = await listIntercep(this.data.tags)
 
-    const link = `/posts/all?limit=5&page=1&sort=liked` + `&taglist=${tags}` + `&type=post&listId=true`
-    const res = await this.$http.get(link)
-    this.relaPost = res.data
-  }
+  //   const link = `/posts/all?limit=5&page=1&sort=liked` + `&taglist=${tags}` + `&type=post&listId=true`
+  //   const res = await this.$http.get(link)
+  //   this.relaPost = res.data
+  // }
 
-  async followCollection() {
-    if (!this.isUser) {
-      await this.$http.get(`/users/${this.data.collection.id}/interest`)
-      this.fetchCollection()
-      this.isInterest = !this.isInterest
-    } else {
-      this.$store.commit('toggleLoginForm')
-    }
-  }
+  // async followCollection() {
+  //   if (!this.isUser) {
+  //     await this.$http.get(`/users/${this.data.collection.id}/interest`)
+  //     this.fetchCollection()
+  //     this.isInterest = !this.isInterest
+  //   } else {
+  //     this.$store.commit('toggleLoginForm')
+  //   }
+  // }
 
-  async fetchCollection() {
-    const res = await this.$http.get(`/collections/${this.data.collection.id}/post`)
+  // async fetchCollection() {
+  //   const res = await this.$http.get(`/collections/${this.data.collection.id}/post`)
 
-    this.collection = res.data
-  }
+  //   this.collection = res.data
+  // }
 
-  async initfetchCollection() {
-    const res = await this.$http.get(`/collections/${this.data.collection.id}/post`)
-    this.fetchRelaPost()
-    this.collection = res.data
-    this.changeStatu()
-  }
+  // async initfetchCollection() {
+  //   const res = await this.$http.get(`/collections/${this.data.collection.id}/post`)
+  //   this.fetchRelaPost()
+  //   this.collection = res.data
+  //   this.changeStatu()
+  // }
 }
 </script>
 
 <style lang="scss" scoped>
 .sidebar {
-  width: 300px;
+  width: 250px;
   height: auto;
 }
 </style>
