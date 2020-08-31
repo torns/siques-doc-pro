@@ -12,7 +12,7 @@
             </div>
           </div> -->
         </div>
-        <h1>
+        <h1 style="text-align: center;">
           <div class="text-white py-2 ">{{ post.title }}</div>
         </h1>
         <div class="d-flex py-1 ai-center">
@@ -117,14 +117,14 @@
             <div id="comment" v-if="fetchedComment.length !== 0" class="pt-3">
               <div class="font-bold fs-xl py-1">{{ fetchedComment.length }}条评论</div>
 
-              <div class="py-4 bg-white border-radius shadow-1" style="min-height:100px">
+              <div class="py-4 bg-white border-radius " style="min-height:100px">
                 <div v-if="fetchedComment" class="commentBody pt-3 px-4">
                   <div v-for="(comment, index) in fetchedComment" :key="index">
                     <div class="pb-4">
                       <div class="d-flex">
                         <div class="mr-3">
                           <router-link :to="`/u/${comment.user.id}`" tag="div" class="point">
-                            <el-avatar class="shadow-1 bg-white">
+                            <el-avatar class=" bg-white">
                               <div v-if="!comment.user.avator[0]">user</div>
                               <img v-else :src="comment.user.avator[0].url" alt />
                             </el-avatar>

@@ -3,8 +3,8 @@
     <nav class="post-navigation" id="post-navigation">
       <h2 class="screen-reader-text">Post navigation</h2>
       <div class="nav-links d-flex ">
-        <a :href="`/p/${posts[0].id}`" class="nav-previous relative">
-          <div class="nav-bg " style="height:350px">
+        <a :href="`/p/${posts[0].id}`" class="nav-previous relative over-hidden">
+          <div class="nav-bg  " style="height:350px">
             <el-image style="width: 50vw;height:350px" :src="posts[0].cover ? posts[0].cover : imgLink[0].link" fit="cover"></el-image>
           </div>
           <div class="nav-inside">
@@ -13,7 +13,7 @@
             <span class="nav-date"><time class="published" datetime="2020-01-02">2020-01-02 </time></span>
           </div>
         </a>
-        <a :href="`/p/${posts[1].id}`" class="nav-next relative">
+        <a :href="`/p/${posts[1].id}`" class="nav-next relative over-hidden">
           <div class="nav-bg " style="height:350px">
             <el-image style="width: 50vw;height:350px" :src="posts[1].cover ? posts[1].cover : imgLink[1].link" fit="cover"></el-image>
           </div>
@@ -25,30 +25,6 @@
         </a>
       </div>
     </nav>
-    <!-- <a :href="`/p/${posts[0].id}`">
-        <div :style="`background-image: url(${posts[0].cover ? posts[0].cover : imgLink[0].link})`">
-          <div>
-            <p>专栏</p>
-            <h3>{{ posts[0].name }}</h3>
-          </div>
-        </div>
-      </a> -->
-
-    <!-- <div>
-      <div>
-        <div class="nav-bg" style="height:300px;">
-          <img :src="posts[1].cover ? posts[1].cover : imgLink[1].link" style="width: 50vw; height: 300px" />
-        </div> -->
-    <!-- <a :href="`/p/${posts[1].id}`">
-          <div :style="`background-image: url(${posts[1].cover ? posts[1].cover : imgLink[1].link})`">
-            <div>
-              <p>专栏</p>
-              <h3>{{ posts[1].name }}</h3>
-            </div>
-          </div>
-        </a> -->
-    <!-- </div>
-    </div> -->
   </div>
 </template>
 

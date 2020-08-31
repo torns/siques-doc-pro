@@ -1,0 +1,52 @@
+.noteMask {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(-180deg, #5252846b, rgba(22, 22, 22, 0.42));
+  //   background: rgba(0, 0, 0, 0.5);
+  /*background:hsla(0,100%,80%,0.5)*/
+  /*background:#000; opacity:0.5; */
+}
+
+.pannel-body {
+  .description {
+    word-break: break-all;
+    font-size: 1rem;
+    margin: 20px 30px;
+  }
+
+  .title {
+    color: #2474b5;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+}
+
+.note_container {
+  margin-right: auto;
+  margin-left: auto;
+  @media (min-width: 768px) {
+    width: 800px;
+  }
+  @media (min-width: 992px) {
+    width: 900px;
+  }
+  @media (min-width: 1200px) {
+    width: 1200px;
+  }
+}
+
+.card-shadow {
+  transition: 1s all;
+  &:hover {
+    transform: translateY(-6px);
+    -webkit-transform: translateY(-6px);
+    -moz-transform: translateY(-6px);
+    box-shadow: 0 1rem 2rem 0 rgba(48, 55, 66, 0.15) !important;
+    -webkit-box-shadow: 0 1rem 2rem 0 rgba(48, 55, 66, 0.15) !important;
+    -moz-box-shadow: 0 1rem 2rem 0 rgba(48, 55, 66, 0.15) !important;
+  }
+}

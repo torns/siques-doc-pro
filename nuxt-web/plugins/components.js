@@ -9,7 +9,7 @@ import footer from '~/components/footer/Footer.vue'
 import createBookmark from '~/components/dialog/createBookmark.vue'
 
 import likebutton from '~/components/miniComponents/likebutton.vue'
-import backbutton from '~/components/BackToTop/Back2Top.vue'
+
 import placeholder from '~/components/placeholder/placeholder.vue'
 import mouseclick from '~/components/MouseClick/click.vue'
 import indicator from '~/components/miniComponents/indicator.vue'
@@ -22,7 +22,7 @@ Vue.component('sq-footer', footer)
 Vue.component('sq-bookmark', createBookmark)
 
 Vue.component('sq-likebtn', likebutton)
-Vue.component('sq-backbtn', backbutton)
+
 Vue.component('sq-holder', placeholder)
 Vue.component('sq-click', mouseclick)
 Vue.component('sq-indicator', indicator)

@@ -24,7 +24,7 @@
           </div>
         </div>
         <sq-tag ref="reference" @add="addTag" cunstom="sq-tag" positon="left-start"></sq-tag>
-        <div v-if="!isInputShow" class="bg-light-1 ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
+        <div v-if="!isInputShow" class="bg-light ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
           <div v-if="originTag != ''" class="flex-wrap">
             <el-tag v-for="tag in originTag" :key="tag.id" :closable="id ? false : true" @close="handleClose(tag)" class="mx-1 my-2" type="primary" size="small">{{ tag.name }}</el-tag>
           </div>
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <div class="bg-light-1 ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
+        <div class="bg-light ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
           <div class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
             <el-button v-if="!id" type="text">立即添加</el-button>

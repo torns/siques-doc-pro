@@ -1,7 +1,7 @@
 <template>
   <div class="border-radius">
     <sq-github class="xs"></sq-github>
-    <div class="d-flex jc-between header bg-light-1 border-solid py-1 px-3">
+    <div class="d-flex jc-between header bg-light border-solid py-1 px-3">
       <div style="line-height:28px">高分内容</div>
       <div>
         <el-radio-group v-model="sort" size="mini">
@@ -22,13 +22,13 @@
       </div>
 
       <div v-else style="height:200px" class="d-flex ai-center">
-        <div class="d-flex bg-light-1 ai-center jc-center border-dash border-radius" style="height:80%;width:80%;margin:0 auto;">
+        <div class="d-flex bg-light ai-center jc-center border-dash border-radius" style="height:80%;width:80%;margin:0 auto;">
           (ﾟ∀ﾟ ) 暂时没有任何数据
         </div>
       </div>
     </div>
 
-    <div class="mt-4 d-flex jc-between header bg-light-1 border-solid py-1 px-3">
+    <div class="mt-4 d-flex jc-between header bg-light border-solid py-1 px-3">
       <div style="line-height:28px">个人动态</div>
     </div>
     <div class="body border-solid">

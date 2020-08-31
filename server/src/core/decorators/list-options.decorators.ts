@@ -15,6 +15,7 @@ export const ListOptions = createParamDecorator(
       sort,
       order,
       random,
+      avator,
     } = req.query;
     console.log(req.query);
     // console.log(data); //后台的默认值
@@ -73,6 +74,7 @@ export const ListOptions = createParamDecorator(
       sort,
       order,
       random,
+      avator,
     };
   },
 );

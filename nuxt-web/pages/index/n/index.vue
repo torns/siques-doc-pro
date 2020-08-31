@@ -1,8 +1,26 @@
 <template>
   <div>
+    <div class="noteMask" style="height:70vh;">
+      <div class="text-white relative" style="left:50%;top:46%;left: -1%;z-index:5;text-align: center;">
+        <h1>
+          <div class=" py-2 ">杂记</div>
+        </h1>
+        <div>记录日程生活中一些点点滴滴记录</div>
+      </div>
+    </div>
+
+    <el-image
+      style="width: 100%;height:70vh;box-shadow: -19px -3px 60px 10px;"
+      src="
+https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg"
+      fit="cover"
+    ></el-image>
+    <div class="note_container h-100 pt-4 px-3">
+      <sq-pannel :data="notes"></sq-pannel>
+    </div>
     <div class="container h-100">
       <el-row style="min-height:60vh" type="flex" class="pt-4">
-        <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="px-2">
           <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="最新笔记" name="first">
               <div v-for="(note, index) in notes" :key="index" :class="`d-flex ai-center bg-${color(note.views)} hover-2`" style="height:70px">
@@ -79,7 +97,6 @@
             </el-tab-pane>
           </el-tabs>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">内容还在路上</el-col>
       </el-row>
     </div>
     <sq-footer :topBorder="true"></sq-footer>
@@ -88,14 +105,17 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import notePannel from '~/components/NotePannel/NotePannel.vue'
 @Component({
-  components: {}
+  components: {
+    'sq-pannel': notePannel
+  }
 })
 export default class NotesIndex extends Vue {
   async asyncData({ params, query, route }: any) {
     const http = Vue.prototype.$http
 
-    const res = await http.get(`/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&type=note&sort=created`)
+    const res = await http.get(`/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&type=note&sort=created&avator=true`)
 
     return {
       notes: res.data[0],

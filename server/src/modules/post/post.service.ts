@@ -145,6 +145,7 @@ export class PostService {
       sort,
       order,
       random,
+      avator,
     } = options;
     // console.log(sort, tags, categories, taglist, type);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
@@ -154,6 +155,12 @@ export class PostService {
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     queryBuilder.leftJoinAndSelect('tag.taglist', 'taglist');
     queryBuilder.innerJoinAndSelect('post.user', 'user');
+
+    if (avator) {
+      queryBuilder
+        .leftJoinAndSelect('user.avator', 'avator')
+        .addOrderBy('avator.created', 'DESC');
+    }
 
     // where筛选
 
@@ -171,7 +178,7 @@ export class PostService {
     if (type) {
       queryBuilder.where('post.type = :type', { type });
       // 查询已经发布的
-      console.log(type);
+      // console.log(type);
       if (type == 'post') {
         queryBuilder.andWhere('post.isPublished =1');
       }
@@ -187,7 +194,7 @@ export class PostService {
       page = 1;
     }
 
-    console.log(page);
+    // console.log(page);
 
     if (collection) {
       queryBuilder.innerJoinAndSelect('post.collection', 'collection');

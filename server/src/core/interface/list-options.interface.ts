@@ -11,5 +11,6 @@ export interface ListOptionsInterface {
   type: Posttype;
   collection: boolean;
   random: boolean;
+  avator: boolean;
   order: 'ASC' | 'DESC';
 }
