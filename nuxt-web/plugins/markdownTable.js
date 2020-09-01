@@ -1,13 +1,23 @@
 export default () => {
   /* eslint-disable */
   $(document).ready(function() {
+    $(window).scroll(() => {
+      var top = $(document).scrollTop()
+      // console.log(top)
+      if (top < 2) {
+        $('#menu').removeClass('showMenu')
+        $('#menu').addClass('hideMenu')
+      } else {
+        $('#menu').removeClass('hideMenu')
+        $('#menu').addClass('showMenu')
+      }
+    })
+
     var headers = $('#post-content').find('h1, h2, h3')
     var post_toc = $('#post-toc')
 
     // var header_level = 'h1'
     // 生成目录
-    let h2index = 0
-    let h3index = 0
 
     for (let index = 0; index < headers.length; index++) {
       const header = headers[index]
@@ -18,7 +28,7 @@ export default () => {
 
       new_a.attr('href', '#' + header.getAttribute('id'))
 
-      var new_div = $('<div></div>')
+      var new_div = $('<div class="ellipsis-1"></div>')
       new_div.text(header.innerText.split('#')[0])
       new_a.append(new_div)
 
@@ -27,17 +37,6 @@ export default () => {
     }
 
     $('.sidebar nav   a').wrap('<li></li>')
-
-    $(window).scroll(() => {
-      var top = $(document).scrollTop()
-      if (top < 2) {
-        $('#menu').removeClass('showMenu')
-        $('#menu').addClass('hideMenu')
-      } else {
-        $('#menu').removeClass('hideMenu')
-        $('#menu').addClass('showMenu')
-      }
-    })
 
     // if ($('.mask').is(':visible')) {
     //   $('.context').addClass('blur')

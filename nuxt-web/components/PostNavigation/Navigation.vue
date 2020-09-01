@@ -5,22 +5,26 @@
       <div class="nav-links d-flex ">
         <a :href="`/p/${posts[0].id}`" class="nav-previous relative over-hidden">
           <div class="nav-bg  " style="height:350px">
-            <el-image style="width: 50vw;height:350px" :src="posts[0].cover ? posts[0].cover : imgLink[0].link" fit="cover"></el-image>
+            <el-image style="width: 50vw;height:350px" :src="posts[0].cover ? posts[0].cover : link[getRandomUrl()].url" fit="cover"></el-image>
           </div>
           <div class="nav-inside">
             <span class="nav-before">上一篇</span>
             <span class="nav-title">{{ posts[0].title }}</span>
-            <span class="nav-date"><time class="published" datetime="2020-01-02">2020-01-02 </time></span>
+            <span class="nav-date"
+              ><time class="published" datetime="2020-01-02">{{ $dayjs(posts[0].created).format('YYYY-MM-DD') }} </time></span
+            >
           </div>
         </a>
         <a :href="`/p/${posts[1].id}`" class="nav-next relative over-hidden">
           <div class="nav-bg " style="height:350px">
-            <el-image style="width: 50vw;height:350px" :src="posts[1].cover ? posts[1].cover : imgLink[1].link" fit="cover"></el-image>
+            <el-image style="width: 50vw;height:350px" :src="posts[1].cover ? posts[1].cover : link[getRandomUrl()].url" fit="cover"></el-image>
           </div>
           <div class="nav-inside" style="text-align: right;">
             <span class="nav-before">下一篇</span>
             <span class="nav-title">{{ posts[1].title }}</span>
-            <span class="nav-date"><time class="published" datetime="2019-12-29">2019-12-29 </time></span>
+            <span class="nav-date"
+              ><time class="published" datetime="2019-12-29">{{ $dayjs(posts[1].created).format('YYYY-MM-DD') }}</time></span
+            >
           </div>
         </a>
       </div>
@@ -30,10 +34,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import config from '~/plugins/config/website.js'
 @Component({})
 export default class Navigation extends Vue {
   posts = this.$attrs.data
-  imgLink = [{ link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/4.jpg' }, { link: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/6.jpg' }]
+  link = config.link
+  getRandomUrl() {
+    return Math.floor(Math.random() * 7)
+  }
 }
 </script>
 

@@ -108,8 +108,9 @@ export default {
     '@/plugins/directive',
     '@/plugins/global.ts',
     { src: '@/plugins/http', ssr: true },
-
+    { src: '@/plugins/markdownTable', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
+
     '@/plugins/nullSSRComponents.js',
     '@/plugins/axios',
     { src: '@plugins/push', ssr: false },

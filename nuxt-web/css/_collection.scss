@@ -1,0 +1,43 @@
+.collection_wrapper {
+  .el-image__inner {
+    transform: scale(1, 1);
+    transition: transform 1s;
+    &:hover {
+      transform: scale(1.05, 1.05);
+    }
+  }
+}
+
+.collection_container {
+  margin-right: auto;
+  margin-left: auto;
+  @media (min-width: 768px) {
+    width: 680px;
+  }
+  @media (min-width: 992px) {
+    width: 992px;
+
+    .order-lg-last {
+      -ms-flex-order: 13;
+      order: 13;
+    }
+
+    .order-lg-first {
+      -ms-flex-order: -1;
+      order: -1;
+    }
+  }
+  @media (min-width: 1200px) {
+    width: 1150px;
+
+    .order-lg-last {
+      -ms-flex-order: 13;
+      order: 13;
+    }
+
+    .order-lg-first {
+      -ms-flex-order: -1;
+      order: -1;
+    }
+  }
+}

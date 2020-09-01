@@ -1,46 +1,82 @@
 <template>
   <el-row :gutter="43">
-    <el-col class="py-3 pb-6" v-for="(note, index) in $attrs.data" :key="index" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-      <div class="w-100 shadow-2 d-flex flex-column card-shadow" style="height:520px;border-radius:15px">
-        <div class="pannel-head">
-          <div class="pannel-image">
-            <el-image style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || link[0].url"> </el-image>
+    <transition-group name="list-complete" tag="span">
+      <el-col class="py-3 pb-6 list-complete-item" v-for="note in $attrs.data" :key="note.id" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+        <div class="w-100 shadow-2 d-flex flex-column card-shadow" style="height:520px;border-radius:15px">
+          <div class="pannel-head relative">
+            <div class="pannel-tag absolute " style="top:-7%;left: 50%;width: 100px;margin-left: -50px;background-color:#FF5F5F;z-index:5;border-radius: 22px">
+              <div class="px-4 py-2 text-white text-center">
+                {{ note.tags[0] ? note.tags[0].name : '♥' }}
+              </div>
+            </div>
+            <router-link class="pannel-image point" :to="`/n/${note.id}`">
+              <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || link[getRandomUrl()].url"> </el-image>
+            </router-link>
+          </div>
+          <div class="pannel-body flex-1 text-center">
+            <div class="py-3 fs-xm">
+              <i class="fa fa-pencil fs-xm"></i>
+              <span>{{ $dayjs(note.created).format('YYYY-MM-DD') }}</span>
+            </div>
+            <h1>
+              <router-link :to="`/n/${note.id}`" class="ellipsis-1 title px-3">{{ note.title }}</router-link>
+            </h1>
+            <div class="description text-gray">{{ note.alias }}...</div>
+          </div>
+          <div class="pannel-footer d-flex ai-center jc-between" style="height: 80px;border-top:1px solid #dbdbdb">
+            <div class="d-flex ai-center">
+              <div class="px-3">
+                <router-link :to="`/u/${note.user.id}`">
+                  <el-avatar :size="40" :src="note.user.avator[0] ? note.user.avator[0].url : ''" class="shadow-2 note_avatar" style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;">
+                    <img src="~/static/avator.jpg" />
+                  </el-avatar>
+                </router-link>
+              </div>
+              <div class="fs-xm text-gray">
+                {{ note.user.name }}
+              </div>
+            </div>
+
+            <div class="fs-xm text-gray pr-3">
+              <i class="fa fa-fire pr-1"></i>
+              <span>{{ note.views }}</span>
+            </div>
           </div>
         </div>
-        <div class="pannel-body flex-1 text-center">
-          <div class="py-3">2019-12-12</div>
-          <h1>
-            <router-link :to="`/n/${note.id}`" class="ellipsis-1 title">{{ note.title }}</router-link>
-          </h1>
-          <div class="description">{{ note.alias }}</div>
-        </div>
-        <div class="pannel-footer" style="height: 80px;">
-          <el-divider></el-divider>
-        </div>
-      </div>
-    </el-col>
+      </el-col>
+    </transition-group>
   </el-row>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import config from '~/plugins/config/website.js'
 @Component({})
 export default class NotePannel extends Vue {
-  link = [
-    {
-      url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg'
-    },
-    {
-      url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg'
-    },
-    {
-      url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg'
-    },
-    {
-      url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg'
-    }
-  ]
+  //  笔记展示面板
+  array = []
+  link = config.link
+  getRandomUrl() {
+    const num = Math.floor(Math.random() * 7)
+    return num
+  }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.note_avatar > img {
+  border-radius: 50% !important;
+}
+.list-complete-item {
+  transition: all 1s;
+  display: inline-block;
+}
+.list-complete-enter, .list-complete-leave-to
+/* .list-complete-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}
+</style>

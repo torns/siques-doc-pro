@@ -1,5 +1,6 @@
 <template>
   <section
+    id="wrap"
     v-show="layerx !== 0 && clickEvent"
     :class="`absolute  ${active ? 'active' : ''}`"
     :style="{
@@ -34,18 +35,50 @@ export default class MouseClick extends Vue {
 
   confettiColors = ['#7d32f5', '#f6e434', '#63fdf1', '#e672da', '#295dfe', '#6e57ff']
 
+  get cube(): HTMLElement {
+    return document.getElementById('wrap')
+  }
+
   mounted() {
-    this.initState()
+    // this.initState()
+    // console.log(this.down())
 
     setTimeout(() => {
       click()
     }, 1000)
+  }
+  off = 0
+
+  down() {
+    let _top = 0
+    // 起始位
+    let t = 0.0
+    // 时间bai
+    let h
+    // 高度
+    let offbottom = 1000
+    const off = setInterval(() => {
+      t += 0.01
+      h = 5 * t * t
+      //  满足公式h=1/2gt^2,此处g取10
+      offbottom -= h
+      if (offbottom < 0) {
+        clearInterval(off)
+      }
+      _top += h
+      for (let index = 0; index < this.cube.children.length; index++) {
+        const e: any = this.cube.children[index]
+        e.style.top = _top + 'px'
+      }
+      this.off = _top
+    }, 10)
   }
 
   initState() {
     const el: any = document.getElementById('article')
     el.addEventListener('click', (e: any) => {
       if (!this.clickEvent) {
+        this.down()
         this.clickEvent = true
         this.active = true
         this.layerx = e.pageX
@@ -59,7 +92,7 @@ export default class MouseClick extends Vue {
     this.timer = setTimeout(() => {
       this.clickEvent = false
       this.active = false
-    }, 500)
+    }, 5000)
   }
 
   random(min: any, max: any) {
@@ -94,10 +127,10 @@ i {
   top: 50%;
   left: 50%;
   margin: -2px 0 0 -2px;
-  opacity: var(--o, 0);
+  // opacity: var(--o, 0);
   background: var(--b);
-  border-radius: 4px;
-  -webkit-transform: translate(var(--x), var(--y)) scale(var(--s, 1));
+  // border-radius: 4px;
+  -webkit-transform: translate(var(--x), 0);
   transform: translate(var(--x), var(--y)) scale(var(--s, 1));
   -webkit-animation: confetti 0.8s ease-out forwards;
   animation: confetti 0.8s ease-out forwards;
@@ -124,7 +157,6 @@ section {
   from {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
-
     opacity: 1;
   }
 }

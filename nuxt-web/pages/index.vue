@@ -25,15 +25,15 @@
             </span>
           </el-menu-item>
 
-          <el-menu-item class="xm" index="/q">
+          <!-- <el-menu-item class="xm" index="/q">
             <span class="fs-md">
               <a href="/q" onclick="return false">问答</a>
             </span>
-          </el-menu-item>
+          </el-menu-item> -->
 
-          <el-menu-item class="xs" index="/blogs">
+          <el-menu-item class="xs" index="/collection">
             <span class="fs-md">
-              <a href="/blogs" onclick="return false">专栏</a>
+              <a href="/collection" onclick="return false">专栏</a>
             </span>
           </el-menu-item>
 
@@ -161,7 +161,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="/post">写文章</el-dropdown-item>
               <el-dropdown-item command="/record">记笔记</el-dropdown-item>
-              <el-dropdown-item command="/ask">提问题</el-dropdown-item>
+              <!-- <el-dropdown-item command="/ask">提问题</el-dropdown-item> -->
             </el-dropdown-menu>
           </el-dropdown>
         </el-menu>
