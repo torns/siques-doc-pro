@@ -8,6 +8,13 @@ export const state = () => ({
   selectedNote: '',
   time: 0,
   tags: [],
+  imageLinks: [],
+  pageImages: [
+    { url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4', path: '/collection' },
+    { url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/notes/cover4.mp4', path: '/n' },
+    { url: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4', path: '/tags' },
+    { url: 'https://shuxie.oss-accelerate.aliyuncs.com/public/t/cover1.mp4', path: '/t' }
+  ],
   bakendCode: ''
 })
 
@@ -104,6 +111,14 @@ export const mutations = {
   },
   uploadUserAvator(state, data) {
     state.auth.user.avator[0].url = data
+  },
+  storeImageLinks(state, data) {
+    state.imageLinks = data
+  },
+  updataImageLink(state, data) {
+    const { url, index } = data
+    console.log(data)
+    state.pageImages[index].url = url
   }
 }
 
@@ -112,18 +127,26 @@ export const getters = {}
 // 验证
 
 export const actions = {
-  nuxtServerInit({ commit }, { req }) {
-    // let auth = null
-    // if (req.headers.cookie) {
-    //   const parsed = cookieparser.parse(req.headers.cookie)
-    //   try {
-    //     auth = JSON.parse(parsed.auth)
-    //   } catch (err) {
-    //     // No valid cookie found
-    //   }
-    // }
-    // console.log(auth)
-    // commit('setAuth', auth)
+  async toggleImage({ state, commit }, data) {
+    let ins = data.index
+    const path = data.path
+    if (ins < 0) {
+      ins = state.imageLinks.length - 1
+    }
+
+    if (ins >= state.imageLinks.length) {
+      ins = 0
+    }
+    const ind = await state.pageImages.findIndex((e) => e.path === path)
+
+    commit('updataImageLink', { url: state.imageLinks[ins].url, index: ind })
+
+    return { url: state.imageLinks[ins].url, index: ins }
+  },
+  async getImage({ state }, path) {
+    const ind = await state.pageImages.findIndex((e) => e.path === path)
+    console.log(state.pageImages)
+    return { url: state.pageImages[ind].url, index: ind }
   },
   nuxtClientInit({ commit }, { req }) {
     const autho = localStorage.getItem('auth._token.local') // or whatever yours is called

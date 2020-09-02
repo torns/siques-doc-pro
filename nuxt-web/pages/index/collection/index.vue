@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tagMask" style="height:100vh;">
+    <div class="tagMask" style="height:110vh;">
       <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">专栏</div>
@@ -9,23 +9,17 @@
       </div>
     </div>
 
-    <el-image
-      style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
-      src="
-https://shuxie.oss-accelerate.aliyuncs.com/public/collection/cover3.gif"
-      fit="cover"
-    >
-      <div slot="placeholder" class="image-slot">
-        <el-image
-          style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
-          src="
-https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/default/loading.gif"
-          fit="cover"
-        >
-        </el-image>
-      </div>
-    </el-image>
-    <div class="collection_container h-100 pt-4">
+    <div>
+      <video
+        style="height:110vh;box-shadow: -19px -3px 60px 10px;object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4"
+      ></video>
+    </div>
+    <div style="margin-top:-10em" class="collection_container h-100 pt-4 ">
       <sq-panel :data="posts"></sq-panel>
     </div>
 
@@ -99,8 +93,6 @@ export default class CollectionIndex extends Vue {
       `&collection=true&type=post&avator=true`
 
     const res = await this.$http.get(link)
-
-    console.log(res)
 
     setTimeout(() => {
       this.posts = res.data[0]

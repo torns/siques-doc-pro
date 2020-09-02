@@ -9,22 +9,17 @@
       </div>
     </div>
 
-    <el-image
-      style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
-      src="
-https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover1.gif"
-      fit="cover"
-    >
-      <div slot="placeholder" class="image-slot">
-        <el-image
-          style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
-          src="
-https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/default/loading.gif"
-          fit="cover"
-        >
-        </el-image>
-      </div>
-    </el-image>
+    <div>
+      <video
+        style="height:100vh;box-shadow: -19px -3px 60px 10px;object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4"
+      ></video>
+    </div>
+
     <div class="pt-5">
       <div class="container h-100 pb-5 tagIndex">
         <el-row type="flex" class="pt-4 px-2">

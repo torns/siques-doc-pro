@@ -20,7 +20,7 @@ export default class navigation extends Vue {
   navigation = [
     { name: '首页', icon: 'home', link: '/' },
     { name: '笔记', icon: 'book', link: '/n' },
-    { name: '专栏', icon: 'wpexplorer ', link: '/blogs' },
+    { name: '专栏', icon: 'wpexplorer ', link: '/collection' },
     { name: '标签', icon: 'tags', link: '/tags' },
     { name: '回顶部', icon: 'level-up', link: 'top' }
   ]

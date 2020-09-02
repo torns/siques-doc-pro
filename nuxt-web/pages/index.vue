@@ -190,6 +190,25 @@ import login from '~/components/dialog/login.vue'
   components: { 'sq-navigation': navigation, 'sq-login': login }
 })
 export default class Home extends Vue {
+  async asyncData({ params, query, route, store }) {
+    const http = Vue.prototype.$http
+    const obj = {
+      common: { device_id: '8ac34b4467d5216b7a1246acbe59ff81', is_logout: false, open_id: '1300993557872119808', token: '231e104ad5ba85a2eabc31f6b0941b9986a4c6ff', vaildate_date: '1599059301' },
+      wids: [13408, 10618, 12135, 4684, 7461]
+    }
+    const res = await http.post(`http://pcwallpaper.zhhainiao.com/wallpaper/live/list/by/wids`, obj)
+    const list = []
+    // console.log(res)
+    for (let index = 0; index < res.data.data.length; index++) {
+      const e = res.data.data[index]
+      list.push({ url: e.preview_video })
+    }
+
+    store.commit('storeImageLinks', list)
+
+    return {}
+  }
+
   head() {
     return {
       title: '思趣——分享自由的趣味-yahoo'

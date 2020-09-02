@@ -7,7 +7,7 @@
     <nuxt />
   </div>
 </template>
-<script lang="ts">
+<script>
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 export default {
@@ -22,7 +22,7 @@ export default {
   watch: {
     $route(to, from) {
       if (to.path !== from.path) {
-        var that: any = this
+        var that = this
         that.show = true
         setTimeout(() => {
           that.show = false
@@ -33,10 +33,12 @@ export default {
 
   mounted() {
     setTimeout(() => {
-      var that: any = this
+      var that = this
       that.show = false
     }, 1500)
-  }
+  },
+
+  methods: {}
 }
 </script>
 <style>

@@ -672,3 +672,31 @@ h6 {
   font-weight: 500;
   line-height: 1.5;
 }
+
+.note_body {
+  &:hover {
+    .newer-image,
+    .older-image {
+      opacity: 1;
+    }
+  }
+
+  .newer-image,
+  .older-image {
+    height: 50px;
+    margin-top: -15px;
+    position: absolute;
+    opacity: 0.2;
+    top: 50%;
+    width: 50px;
+    transition: 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+}
+
+.newer-image {
+  left: 50px;
+}
+
+.older-image {
+  right: 50px;
+}
