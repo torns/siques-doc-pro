@@ -13,6 +13,7 @@ import likebutton from '~/components/miniComponents/likebutton.vue'
 import placeholder from '~/components/placeholder/placeholder.vue'
 import mouseclick from '~/components/MouseClick/click.vue'
 import indicator from '~/components/miniComponents/indicator.vue'
+import pagination from '~/components/pagination/index.vue'
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
@@ -20,7 +21,7 @@ Vue.prototype.$dayjs = dayjs
 Vue.component('markdown', markdown)
 Vue.component('sq-footer', footer)
 Vue.component('sq-bookmark', createBookmark)
-
+Vue.component('sq-pagination', pagination)
 Vue.component('sq-likebtn', likebutton)
 
 Vue.component('sq-holder', placeholder)

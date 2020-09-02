@@ -1,81 +1,103 @@
 <template>
-  <div class="pt-5">
-    <div class="container h-100 pb-5 tagIndex">
-      <el-row type="flex" class="pt-4 px-2">
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="min-height:60vh">
-          <div class="fs-xll pb-2">标签</div>
-          <div>
-            标签不仅能组织和归类你的内容，还能关联相似的内容。正确的使用标签将让你的问题被更多人发现和解决。
-          </div>
+  <div>
+    <div class="tagMask" style="height:100vh;">
+      <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
+        <h1>
+          <div class=" py-2 ">所有标签</div>
+        </h1>
+        <div class="lh-2" style="width:300px;margin:0 auto">标签不仅能组织和归类你的内容，还能关联相似的内容</div>
+      </div>
+    </div>
 
-          <div class="py-2">
-            <div class="bg-3 py-3 px-3" style="height:90px;">
-              <div class="d-flex">
-                <div>
-                  <el-search ref="search" :data="tags"></el-search>
+    <el-image
+      style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
+      src="
+https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover1.gif"
+      fit="cover"
+    >
+      <div slot="placeholder" class="image-slot">
+        <el-image
+          style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
+          src="
+https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/default/loading.gif"
+          fit="cover"
+        >
+        </el-image>
+      </div>
+    </el-image>
+    <div class="pt-5">
+      <div class="container h-100 pb-5 tagIndex">
+        <el-row type="flex" class="pt-4 px-2">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="min-height:60vh">
+            <div class="py-2">
+              <div class="bg-3 py-3 px-3" style="height:90px;">
+                <div class="d-flex">
+                  <div>
+                    <el-search ref="search" :data="tags"></el-search>
+                  </div>
+                  <el-button @click="storeUserTag" class="h-100" size="mini" type="plain">加关注</el-button>
                 </div>
-                <el-button @click="storeUserTag" class="h-100" size="mini" type="plain">加关注</el-button>
-              </div>
-              <div v-if="userTags" class="pt-2 d-flex">
-                <div v-for="tag in userTags" :key="tag.id">
-                  <nuxt-link :to="`/t/${tag.id}`" tag="div">
-                    <el-tag size="small" type="plain" class="mr-1 hover-3 point">{{ tag.name }}</el-tag>
-                  </nuxt-link>
+                <div v-if="userTags" class="pt-2 d-flex">
+                  <div v-for="tag in userTags" :key="tag.id">
+                    <nuxt-link :to="`/t/${tag.id}`" tag="div">
+                      <el-tag size="small" type="plain" class="mr-1 hover-3 point">{{ tag.name }}</el-tag>
+                    </nuxt-link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="pt-4">
-            <ul class="d-flex flex-wrap">
-              <div v-for="(title, index) in taglist" :key="index" class="tag-list__itemWraper fs-sm pb-4 w-100">
-                {{ title.name }}
-                <div>
-                  <el-divider></el-divider>
-                </div>
-                <ul class="d-flex flex-wrap" style="width:95%">
-                  <li v-for="tag in title.tags" :key="tag.id" class="bg-3 mr-1 my-1  fs-xm point">
-                    <el-popover :open-delay="500" :close-delay="1000" @show="show(tag.id)" popper-class="tag" placement="top" width="250" trigger="hover">
-                      <div v-if="taginfo" class="px-3 py-2">
-                        <div>
-                          <div style="font-weight:700" class="fs-md">
-                            {{ taginfo.info.name }}
+            <div class="pt-4">
+              <ul class="d-flex flex-wrap">
+                <div v-for="(title, index) in taglist" :key="index" class="tag-list__itemWraper fs-sm pb-4 w-100">
+                  {{ title.name }}
+                  <div>
+                    <el-divider></el-divider>
+                  </div>
+                  <ul class="d-flex flex-wrap" style="width:95%">
+                    <li v-for="tag in title.tags" :key="tag.id" class="bg-3 mr-1 my-1  fs-xm point">
+                      <el-popover :open-delay="500" :close-delay="1000" @show="show(tag.id)" popper-class="tag" placement="top" width="250" trigger="hover">
+                        <div v-if="taginfo" class="px-3 py-2">
+                          <div>
+                            <div style="font-weight:700" class="fs-md">
+                              {{ taginfo.info.name }}
+                            </div>
+                            <div class="ellipsis fs-xm pt-2" style="min-height:60px;">
+                              {{ taginfo.info.description }}
+                            </div>
                           </div>
-                          <div class="ellipsis fs-xm pt-2" style="min-height:60px;">
-                            {{ taginfo.info.description }}
+                          <el-divider></el-divider>
+                          <div class="d-flex jc-between ai-baseline">
+                            <div>
+                              <el-button type="text">查看</el-button>
+                            </div>
+                            <div>
+                              {{ taginfo.count }}人
+                              <el-button :type="isTagFollowed ? 'plain' : 'primary'" @click="!isTagFollowed ? storeUserTag(taginfo.info.id) : deleteUserTag(taginfo.info.id)" size="mini">{{
+                                isTagFollowed ? '已关注' : '关注'
+                              }}</el-button>
+                            </div>
                           </div>
                         </div>
-                        <el-divider></el-divider>
-                        <div class="d-flex jc-between ai-baseline">
-                          <div>
-                            <el-button type="text">查看</el-button>
-                          </div>
-                          <div>
-                            {{ taginfo.count }}人
-                            <el-button :type="isTagFollowed ? 'plain' : 'primary'" @click="!isTagFollowed ? storeUserTag(taginfo.info.id) : deleteUserTag(taginfo.info.id)" size="mini">{{
-                              isTagFollowed ? '已关注' : '关注'
-                            }}</el-button>
-                          </div>
-                        </div>
-                      </div>
 
-                      <slot slot="reference">
-                        <nuxt-link :to="`/t/${tag.id}`" style="display: -webkit-inline-box;-webkit-box-align: baseline;" tag="a" class="text-primary hover-3">
-                          <i :class="` fs-xm fa fa-${tag.name} px-1`"></i>
-                          <div style="padding:2px 8px 2px 0;">
-                            {{ tag.name }}
-                          </div>
-                        </nuxt-link>
-                      </slot>
-                    </el-popover>
-                  </li>
-                </ul>
-              </div>
-            </ul>
-          </div>
-        </el-col>
-      </el-row>
+                        <slot slot="reference">
+                          <nuxt-link :to="`/t/${tag.id}`" style="display: -webkit-inline-box;-webkit-box-align: baseline;" tag="a" class="text-primary hover-3">
+                            <i :class="` fs-xm fa fa-${tag.name} px-1`"></i>
+                            <div style="padding:2px 8px 2px 0;">
+                              {{ tag.name }}
+                            </div>
+                          </nuxt-link>
+                        </slot>
+                      </el-popover>
+                    </li>
+                  </ul>
+                </div>
+              </ul>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <sq-footer :topBorder="true"></sq-footer>
     </div>
-    <sq-footer :topBorder="true"></sq-footer>
   </div>
 </template>
 

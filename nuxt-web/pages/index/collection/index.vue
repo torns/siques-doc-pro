@@ -1,32 +1,35 @@
 <template>
   <div>
-    <div class="noteMask" style="height:70vh;">
-      <div class="text-white relative" style="left:50%;top:46%;left: -1%;z-index:5;text-align: center;">
+    <div class="tagMask" style="height:100vh;">
+      <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">专栏</div>
         </h1>
-        <div>记录代码中一些点点滴滴记录</div>
+        <div>点点滴滴记录代码日常</div>
       </div>
     </div>
 
-    <el-image style="width: 100%;height:70vh;box-shadow: -19px -3px 60px 10px;" :src="config.collectLink" fit="cover"></el-image>
+    <el-image
+      style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
+      src="
+https://shuxie.oss-accelerate.aliyuncs.com/public/collection/cover3.gif"
+      fit="cover"
+    >
+      <div slot="placeholder" class="image-slot">
+        <el-image
+          style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
+          src="
+https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/default/loading.gif"
+          fit="cover"
+        >
+        </el-image>
+      </div>
+    </el-image>
     <div class="collection_container h-100 pt-4">
       <sq-panel :data="posts"></sq-panel>
     </div>
-    <nav class="pagination" id="pagination">
-      <h2 class="screen-reader-text">Posts Navigation</h2>
-      <div class="inner relative ">
-        <a v-if="currentPage != 1" class="newer-posts arrow-left point" @click="handleCurrentChange(currentPage - 1)">
-          <span class="screen-reader-text"></span>
-        </a>
-        <span class="page-number">
-          <a href="/collection?page=1">PAGE {{ currentPage }} OF {{ maxPage }} </a>
-        </span>
-        <a v-if="currentPage != maxPage" class="older-posts arrow-right point" @click="handleCurrentChange(currentPage + 1)">
-          <span class="screen-reader-text"></span>
-        </a>
-      </div>
-    </nav>
+
+    <sq-pagination :href="`${$route.path}?page=1`" @current-change="handleCurrentChange" :currentPage="currentPage" :maxLen="maxLen"></sq-pagination>
     <sq-footer class="pt-5"></sq-footer>
   </div>
 </template>
@@ -59,7 +62,6 @@ export default class CollectionIndex extends Vue {
       taglist: Taglist,
       posts: res.data[0],
       maxLen: res.data[1],
-      maxPage: Math.ceil(res.data[1] / 10),
       currentPage: parseInt(route.query.page ? route.query.page : 1),
       sort: route.query.sort ? route.query.sort : 'views'
     }
@@ -76,7 +78,6 @@ export default class CollectionIndex extends Vue {
   sort = 'views'
   listId = true
   maxLen = 0
-  maxPage = 0
   posts = []
   list: any
   taglist = []

@@ -1,39 +1,25 @@
 <template>
   <div>
-    <div class="noteMask" style="height:70vh;">
-      <div class="text-white relative" style="left:50%;top:46%;left: -1%;z-index:5;text-align: center;">
+    <div class="noteMask" style="height:100vh;">
+      <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">杂记</div>
         </h1>
-        <div>记录代码中一些点点滴滴记录</div>
+        <div>点点滴滴记录生活美好</div>
       </div>
     </div>
 
     <el-image
-      style="width: 100%;height:70vh;box-shadow: -19px -3px 60px 10px;"
+      style="width: 100%;height:100vh;box-shadow: -19px -3px 60px 10px;"
       src="
-https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/hello-world.jpg"
+https://shuxie.oss-accelerate.aliyuncs.com/public/notes/cover1.gif"
       fit="cover"
     ></el-image>
     <div class="note_container h-100 pt-4 px-3">
       <sq-pannel :data="notes"></sq-pannel>
     </div>
 
-    <nav class="pagination" id="pagination">
-      <h2 class="screen-reader-text">Posts Navigation</h2>
-      <div class="inner relative ">
-        <a v-if="currentPage != 1" class="newer-posts arrow-left point" @click="handleCurrentChange(currentPage - 1)">
-          <span class="screen-reader-text"></span>
-        </a>
-        <span class="page-number">
-          <a href="/n?page=1" data-scroll="" data-ajax="" data-pjax-state="">PAGE {{ currentPage }} OF {{ maxPage }} </a>
-        </span>
-        <a v-if="currentPage != maxPage" class="older-posts arrow-right point" @click="handleCurrentChange(currentPage + 1)">
-          <span class="screen-reader-text"></span>
-        </a>
-      </div>
-    </nav>
-
+    <sq-pagination :href="`${$route.path}?page=1`" @current-change="handleCurrentChange" :currentPage="currentPage" :maxLen="maxLen"></sq-pagination>
     <sq-footer></sq-footer>
   </div>
 </template>
@@ -56,13 +42,11 @@ export default class NotesIndex extends Vue {
     return {
       notes: res.data[0],
       maxLen: res.data[1],
-      maxPage: Math.ceil(res.data[1] / 10),
       currentPage: parseInt(route.query.page ? route.query.page : 1)
     }
   }
 
   notes = ''
-  maxPage = 0
   maxLen = 0
   currentPage = 1
 

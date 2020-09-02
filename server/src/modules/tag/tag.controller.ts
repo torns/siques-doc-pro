@@ -18,6 +18,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/core/decorators/user.decorators';
 import { User as UserEntity } from '../user/user.entity';
 import { Taglist } from './taglist.entity';
+import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
+import { ListOptions } from 'src/core/decorators/list-options.decorators';
 
 @ApiTags('标签')
 @Controller('tags')
@@ -73,8 +75,12 @@ export class TagController {
   }
 
   @Get('post/:id')
-  async getTagPost(@Param('id', ParseIntPipe) id: number) {
-    return await this.tagService.showTagPost(id);
+  async getTagPost(
+    @ListOptions({ limit: 10, sort: 'views', order: 'DESC' }) //updated降序 ASC DESC
+    Options: ListOptionsInterface,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.tagService.showTagPost(id, Options);
   }
 
   @Put(':id')

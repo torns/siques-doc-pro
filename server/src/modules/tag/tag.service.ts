@@ -7,6 +7,8 @@ import { Taglist } from './taglist.entity';
 import { throwError } from 'rxjs';
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
+import { ListenOptions } from 'net';
+import { ListOptionsInterface } from 'src/core/interface/list-options.interface';
 
 @Injectable()
 export class TagService {
@@ -112,18 +114,29 @@ export class TagService {
   }
 
   // 标签id
-  async showTagPost(id: number) {
-    // const res = await this.postRepository
-    //   .createQueryBuilder('posts')
+  async showTagPost(id: number, options: ListOptionsInterface) {
+    let {
+      categories,
+      tags,
+      taglist,
+      listId,
+      collection,
+      page,
+      type,
+      limit,
+      sort,
+      order,
+      random,
+      avator,
+    } = options;
 
-    //   .relation(Tag, 'posts')
+    const count = await this.userRepository
+      .createQueryBuilder('tag')
+      .addSelect('tag.description')
+      .relation(Tag, 'posts')
+      .of(id)
+      .loadMany();
 
-    //   .of(id)
-
-    //   .loadMany();
-
-    //
-    // 为什么 —_—
     const res = await this.postRepository
       .createQueryBuilder('post')
 
@@ -133,10 +146,13 @@ export class TagService {
       .having('tags.Id=:id', { id })
       .leftJoinAndSelect('post.tags', 'tags')
       .orderBy('post.created', 'DESC')
-
+      .take(limit)
+      .skip(limit * (page - 1))
       .getMany();
 
-    return res;
+    const returnValue = [res, count.length];
+
+    return returnValue;
   }
 
   async showTagInfo(id: number) {

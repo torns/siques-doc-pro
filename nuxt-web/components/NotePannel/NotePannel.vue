@@ -63,7 +63,7 @@ export default class NotePannel extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .note_avatar > img {
   border-radius: 50% !important;
 }
