@@ -139,7 +139,7 @@ export class TagService {
 
     const res = await this.postRepository
       .createQueryBuilder('post')
-
+      .addSelect('post.cover')
       .leftJoinAndSelect('post.user', 'user')
       .where('post.isPublished =1')
       .leftJoinAndSelect('user.avator', 'avator')

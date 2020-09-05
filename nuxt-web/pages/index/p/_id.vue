@@ -42,7 +42,7 @@
           <div class="text-light-1 fs-xs">阅读约 {{ Math.ceil(post.counts / 275) }} 分钟</div>
         </div>
       </div>
-      <!-- <div class="absolute" style="z-index:5; width: 100%;top: 45%;"></div> -->
+
       <div class="postMask" style="height:100vh;">
         <sq-down
           style=" position: absolute;bottom: 10%;
@@ -67,24 +67,9 @@
                     style="position:absolute;top: 0%;left: 0;
     "
                   >
-                    <!-- <div class="mb-2 text-center">{{ liked }}</div> -->
                     <div @click="like">
                       <sq-likebtn :status="isLike"></sq-likebtn>
                     </div>
-
-                    <!-- <i></i> -->
-                    <!-- <el-tooltip content="收藏" placement="right" effect="dark">
-                      <el-button @click="showBookmarkDialog(post.id)" type="text" circle>
-                        <i class="iconfont icon-book-mark"></i>
-                      </el-button>
-                    </el-tooltip> -->
-
-                    <!-- <i></i>
-                    <el-tooltip content="评论" placement="right" effect="dark">
-                      <el-button style="margin-top:-15px" type="text" circle>
-                        <a @click="showCommentPanel('comment')" class="text-primary" href="#comment"><i class="iconfont fs-xs icon-comments"> </i></a>
-                      </el-button>
-                    </el-tooltip> -->
                   </div>
 
                   <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article lh-3 "></div>
@@ -231,7 +216,7 @@
     <!-- <sq-backbtn></sq-backbtn> -->
 
     <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
-
+    <search-button></search-button>
     <sq-footer></sq-footer>
     <sq-click></sq-click>
   </div>
@@ -241,8 +226,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 import mediumZoom from 'medium-zoom'
-// import mdTable from '../../../plugins/markdownTable'
-// import copyRight from '../../../plugins/copyright'
+
 import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown'
 import scrolldown from '~/components/miniComponents/scrolldown.vue'
@@ -250,7 +234,7 @@ import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import PostNavigation from '~/components/PostNavigation/Navigation.vue'
 import share from '~/components/dialog/share.vue'
 import commentPanel from '~/components/commentPanel/commentPanel.vue'
-
+import SearchButton from '~/components/searchPanel/SearchButton.vue'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
 }
@@ -261,7 +245,8 @@ const mediumzoom = () => {
     'share-dialog': share,
     'sq-down': scrolldown,
     'sq-comment': commentPanel,
-    'sq-navigation': PostNavigation
+    'sq-navigation': PostNavigation,
+    'search-button': SearchButton
   }
 })
 export default class Post extends Vue {
@@ -343,8 +328,6 @@ export default class Post extends Vue {
 
   mounted() {
     this.fetchpost(this.id)
-
-    // mdTable()
   }
 
   beforeMount() {

@@ -67,7 +67,7 @@ h1 {
       content: '\f0c5';
       display: inline-block;
       position: absolute;
-      opacity: 0.3;
+      opacity: 0.1;
       padding-top: 4px;
       right: 14px;
       cursor: pointer;
@@ -142,6 +142,9 @@ h1 {
 
     display: flex;
     margin: 1.667em auto;
+    border: 3px solid #f8f8f8;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   }
   pre {
     margin: 15px 0;
@@ -258,8 +261,8 @@ a.toc-h2 {
   span {
     right: 0;
     position: absolute;
-    height: 12px;
-    width: 12px;
+    height: 10px;
+    width: 10px;
     background-color: lightgray;
     border-radius: 50%;
     margin-right: 3px;
@@ -350,7 +353,7 @@ h4:hover {
 
   transform: translate(50%);
 
-  opacity: 0;
+  opacity: 0.3;
 
   text-decoration: none;
 

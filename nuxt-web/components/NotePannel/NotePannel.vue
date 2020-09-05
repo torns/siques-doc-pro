@@ -9,7 +9,7 @@
                 {{ note.tags[0] ? note.tags[0].name : '♥' }}
               </div>
             </div>
-            <router-link class="pannel-image point" :to="`/n/${note.id}`">
+            <router-link class="pannel-image point" :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`">
               <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || link[getRandomUrl()].url"> </el-image>
             </router-link>
           </div>
@@ -19,7 +19,7 @@
               <span>{{ $dayjs(note.created).format('YYYY-MM-DD') }}</span>
             </div>
             <h1>
-              <router-link :to="`/n/${note.id}`" class="ellipsis-1 title px-3">{{ note.title }}</router-link>
+              <router-link :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`" class="ellipsis-1 title px-3">{{ note.title }}</router-link>
             </h1>
             <div class="description text-gray">{{ note.alias }}...</div>
           </div>

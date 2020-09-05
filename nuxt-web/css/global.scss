@@ -40,7 +40,9 @@ html,
 body {
   // height: 100%;
   // font-family: Helvetica Neue, NotoSansHans-Regular, AvenirNext-Regular, arial, Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica, sans-serif;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+  // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+
+  font-family: 'EB Garamond', 'Noto Serif SC', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -671,6 +673,20 @@ h6 {
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.5;
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+
+  font-size: 1.8em;
+
+  font-weight: 600;
+
+  text-align: center;
+
+  margin-block-start: 0;
+
+  margin-block-end: 0;
 }
 
 .note_body {

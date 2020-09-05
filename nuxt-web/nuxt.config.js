@@ -54,6 +54,7 @@ export default {
       }
     ],
     link: [
+      { rel: 'stylesheet', href: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/libs/css/_font.css' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
       {

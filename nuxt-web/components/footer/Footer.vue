@@ -31,7 +31,9 @@
             <div>
               <a class="text-gray" rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
             </div>
-            <div class="py-1">Copyright © 2018-{{ new Date().getFullYear() }} Siques</div>
+            <div class="py-1">
+              Copyright <i class="el-icon-star-on" id="heart" style="text-shadow: 0px 2px 4px rgba(0,0,0,0.12), 0px 0px 6px rgba(0,0,0,0.04);"> </i> 2018-{{ new Date().getFullYear() }} Siques
+            </div>
             <div>
               <span style="font-family: fantasy;"> Powered by</span>
               <span>
@@ -54,6 +56,7 @@
               <i class="fa fa-github pr-2"></i>
             </a>
           </div>
+
           <!-- <li>
             {{ '❤ ' + Math.ceil((new Date() - Date.parse('2018-12-15')) / (1 * 24 * 60 * 60 * 1000)) + ' 天' }}
           </li> -->
@@ -156,5 +159,32 @@ svg {
   h1 {
     font-size: 60px;
   }
+}
+
+@keyframes heartAnimate {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  10%,
+  30% {
+    transform: scale(0.9);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: scale(1.1);
+  }
+  50%,
+  70% {
+    transform: scale(1.1);
+  }
+}
+#heart {
+  animation: heartAnimate 1.33s ease-in-out infinite;
+}
+.el-icon-star-on {
+  color: rgb(255, 113, 168) !important;
 }
 </style>
