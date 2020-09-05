@@ -13,17 +13,17 @@
               <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || link[getRandomUrl()].url"> </el-image>
             </router-link>
           </div>
-          <div class="pannel-body flex-1 text-center">
-            <div class="py-3 fs-xm">
-              <i class="fa fa-pencil fs-xm"></i>
+          <div class="pannel-body flex-1 text-center text-dark">
+            <div class="py-2 fs-xm  my-2">
+              <i class="fa fa-paint-brush  pr-1"></i>
               <span>{{ $dayjs(note.created).format('YYYY-MM-DD') }}</span>
             </div>
             <h1>
               <router-link :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`" class="ellipsis-1 title px-3">{{ note.title }}</router-link>
             </h1>
-            <div class="description text-gray">{{ note.alias }}...</div>
+            <div class="description text-gray ellipsis-3 pt-3">{{ note.alias }}...</div>
           </div>
-          <div class="pannel-footer d-flex ai-center jc-between" style="height: 80px;border-top:1px solid #dbdbdb">
+          <div class="pannel-footer d-flex ai-center jc-between " style="height: 80px;border-top:1px solid #dbdbdb">
             <div class="d-flex ai-center">
               <div class="px-3">
                 <router-link :to="`/u/${note.user.id}`">

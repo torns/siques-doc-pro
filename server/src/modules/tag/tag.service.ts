@@ -137,6 +137,10 @@ export class TagService {
       .of(id)
       .loadMany();
 
+    const filters = count.filter(e => {
+      return e.isPublished == 1;
+    });
+
     const res = await this.postRepository
       .createQueryBuilder('post')
       .addSelect('post.cover')
@@ -150,7 +154,7 @@ export class TagService {
       .skip(limit * (page - 1))
       .getMany();
 
-    const returnValue = [res, count.length];
+    const returnValue = [res, filters.length];
 
     return returnValue;
   }

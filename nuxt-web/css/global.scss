@@ -312,6 +312,13 @@ li {
   overflow: hidden;
 }
 
+.ellipsis-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
 //鼠标样式
 .point {
   cursor: pointer;
@@ -445,7 +452,7 @@ li {
 
 @each $sizekey, $size in $font-sizes {
   .fs-#{$sizekey} {
-    font-size: $size * $base-font-size;
+    font-size: $size * $base-font-size !important;
   }
 }
 
@@ -678,7 +685,7 @@ h6 {
 h1 {
   font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
 
-  font-size: 1.8em;
+  font-size: 1.6em;
 
   font-weight: 600;
 
