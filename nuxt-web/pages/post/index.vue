@@ -137,7 +137,7 @@
               <el-button type="primary" size="mini" @click="updatePost($refs.markdown.value, true)">发布文章</el-button>
             </div>
             <!-- 仅仅保存文章 -->
-            <tinymce ref="tinymce" v-show="selectEditor" @submit="updatePost"></tinymce>
+            <!-- <tinymce ref="tinymce" v-show="selectEditor" @submit="updatePost"></tinymce> -->
 
             <markdown :selectedPost="selectedPost" ref="markdown" v-show="!selectEditor" @submit="updatePost" height="70vh" name="发布文章"></markdown>
           </div>
@@ -155,10 +155,10 @@ import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { wordcounts } from '../../plugins/utils.js'
 import Tag from '~/components/dialog/tag.vue'
-import tinymce from '~/components/Tinymce/Tinymce.vue'
+// import tinymce from '~/components/Tinymce/Tinymce.vue'
 
 @Component({
-  components: { tinymce, 'sq-tag': Tag }
+  components: { 'sq-tag': Tag }
 })
 export default class index extends Vue {
   asyncData({ store }: any) {
@@ -319,10 +319,10 @@ export default class index extends Vue {
       this.isPublished = res.data.isPublished
       this.title = res.data.title
       if (res.data.editor) {
-        this.$nextTick(() => {
-          const ref: any = this.$refs.tinymce
-          ref.setContent(res.data.body)
-        })
+        // this.$nextTick(() => {
+        //   const ref: any = this.$refs.tinymce
+        //   ref.setContent(res.data.body)
+        // })
       } else {
         this.$nextTick(() => {
           const ref: any = this.$refs.markdown

@@ -316,10 +316,7 @@ export class PostService {
         ) {
           url = data.body.match(reg1)[1].match(reg2);
         } else {
-          url =
-            data.body.match(reg1)[1].match(reg2) +
-            '?x-oss-process=style/' +
-            'cover-picture';
+          url = data.body.match(reg1)[1].match(reg2);
         }
       } catch {
         url = null;

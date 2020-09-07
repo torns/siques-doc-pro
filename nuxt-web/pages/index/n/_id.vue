@@ -56,7 +56,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 import md from '../../../plugins/markdown'
 import { hljs } from '../../../plugins/utils.js'
-import mdTable from '../../../plugins/markdownTable'
+import toc from '../../../plugins/toc'
 
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
@@ -104,7 +104,7 @@ export default class Note extends Vue {
 
   mounted() {
     this.initNote()
-    mdTable()
+    toc()
   }
 
   get hasAccess(): any {

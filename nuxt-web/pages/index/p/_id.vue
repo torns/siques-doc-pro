@@ -228,7 +228,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 
 import { hljs } from '../../../plugins/utils.js'
-import md from '../../../plugins/markdown'
+import md from '../../../plugins/markdown.js'
 import scrolldown from '~/components/miniComponents/scrolldown.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import PostNavigation from '~/components/PostNavigation/Navigation.vue'

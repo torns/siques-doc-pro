@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+const path = require('path')
 const axios = require('axios')
 dotenv.config()
 export default {
@@ -32,10 +33,10 @@ export default {
     ],
 
     script: [
-      {
-        src: 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js',
-        async: 'async'
-      },
+      // {
+      //   src: 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js',
+      //   async: 'async'
+      // },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
@@ -50,11 +51,38 @@ export default {
         async: 'async'
       },
       {
-        src: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'
+        src: 'https://cdn.siques.cn/libs/js/jquery.min.js'
+      },
+      {
+        src: '//cdn.siques.cn/libs/js/vue.min.js'
+      },
+      {
+        src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
+        ssr: true
+      },
+      {
+        src: '//cdn.siques.cn/libs/js/lodash.min.js'
+      },
+      {
+        src: '//cdn.siques.cn/libs/js/vue-router.js'
+      },
+      {
+        src: '//cdn.siques.cn/libs/js/vuex.min.js'
+      },
+      {
+        src: '//cdn.siques.cn/libs/js/vue-meta.min.js'
+      },
+      {
+        src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
+        ssr: true
       }
+      // {
+      //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
+      //   ssr: true
+      // }
     ],
     link: [
-      { rel: 'stylesheet', href: 'https://shuxie.oss-cn-hangzhou.aliyuncs.com/libs/css/_font.css' },
+      { rel: 'stylesheet', href: 'https://shuxie.oss-accelerate.aliyuncs.com/libs/css/_font.css' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
       {
@@ -66,10 +94,10 @@ export default {
         href: 'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
       },
 
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://cdn.bootcss.com/element-ui/2.4.11/theme-chalk/index.css'
-      // },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdn.siques.cn/libs/css/element-ui/2.13.2/theme-chalk/index.css'
+      },
       {
         rel: 'stylesheet',
         href: 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
@@ -108,8 +136,9 @@ export default {
     { src: '@/plugins/element-ui', ssr: true },
     '@/plugins/directive',
     '@/plugins/global.ts',
+    { src: '@/plugins/markdown', ssr: true },
     { src: '@/plugins/http', ssr: true },
-    { src: '@/plugins/markdownTable', ssr: false },
+    { src: '@/plugins/toc', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
 
     '@/plugins/nullSSRComponents.js',
@@ -190,14 +219,33 @@ export default {
      */
     // 开启打包分析
     babel: {
-      plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
+      // plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
     },
 
     // analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
     // },
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      if (ctx.isClient) {
+        // 添加 alias 配置
+        // Object.assign(config.resolve.alias, {
+        //   '@components': path.resolve(__dirname, 'components')
+        // })
+
+        config.externals = config.externals || {}
+        Object.assign(config.externals, {
+          vue: 'Vue',
+          'element-ui': 'ELEMENT',
+          lodash: '_',
+          'vue-router': 'VueRouter',
+          vuex: 'Vuex',
+          'vue-meta': 'VueMeta',
+          transliteration: 'SlugifyFunction',
+          'markdown-it': 'markdownit'
+        })
+      }
+    }
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'

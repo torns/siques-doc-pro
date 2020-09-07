@@ -31,9 +31,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
-import { wordcounts } from '../../../plugins/utils.js'
 import Tag from '@/components/dialog/tag.vue'
+import { wordcounts } from '../../../plugins/utils.js'
 
 @Component({
   components: { 'sq-tag': Tag }
