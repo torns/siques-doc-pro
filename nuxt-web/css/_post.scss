@@ -16,12 +16,6 @@ blockquote {
   }
 }
 
-.article li {
-  cursor: text;
-  list-style: unset;
-  margin-left: 20px;
-}
-
 h1 {
   font-size: 1.6em !important;
   font-weight: 700 !important;
@@ -110,8 +104,34 @@ h1 {
 //     content: counter(section, bengali) ' ';
 //   }
 // }
-
 .article {
+  line-height: 2.3rem;
+  letter-spacing: 1px;
+  word-break: normal;
+  blockquote ul li {
+    padding: 3px 0;
+  }
+  ul li {
+    padding: 0px 0px 15px 0;
+  }
+  ol li {
+    padding: 0px 0px 5px 0;
+  }
+  li {
+    cursor: text;
+    list-style: unset;
+    margin-left: 20px;
+    code {
+      font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      color: #476582;
+      padding: 0.25rem 0.5rem;
+      margin: 0 1.5px;
+      font-size: 0.85em;
+      background-color: rgba(27, 31, 35, 0.05);
+      border-radius: 3px;
+    }
+  }
+
   a {
     text-decoration: none;
     color: #009a61;

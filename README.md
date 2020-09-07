@@ -26,6 +26,7 @@ $ npm install
 ### Running the Nest app
 
 ```bash
+$ cd nuxt-web
 # development
 $ npm run start
 

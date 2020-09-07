@@ -72,7 +72,7 @@
                     </div>
                   </div>
 
-                  <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article lh-3 "></div>
+                  <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article "></div>
                   <div class="text-primary mt-3 fs-xs">
                     阅读：{{ post.views > 1000 ? (post.views / 1000).toFixed(1) + 'k' : post.views }}
                     <span>.</span>

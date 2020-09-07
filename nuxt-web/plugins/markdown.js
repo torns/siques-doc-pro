@@ -6,6 +6,7 @@ const Slugify = require('transliteration').slugify
 const md = require('markdown-it')({
   html: true,
   linkify: true,
+  breaks: true,
   typographer: true
 })
   .use(markdownItAnchor, {
