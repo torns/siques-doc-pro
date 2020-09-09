@@ -4,8 +4,8 @@ export const state = () => ({
   isValid: '',
   selectedCollection: '',
   selectedPost: '',
-  selectedNoteList: '',
-  selectedNote: '',
+  selectedNoteBookId: '',
+  selectedNoteId: '',
   time: 0,
   tags: [],
   imageLinks: [],
@@ -28,11 +28,17 @@ export const mutations = {
   setPost(state, data) {
     state.selectedPost = data
   },
-  setNoteList(state, data) {
-    state.selectedNoteList = data
+  setNoteBookId(state, data) {
+    state.selectedNoteBookId = data
   },
-  setNote(state, data) {
-    state.selectedNote = data
+  delSelectedNote(state) {
+    state.selectedNoteId = ''
+  },
+  delSelectedPost(state) {
+    state.selectedPost = ''
+  },
+  setNote(state, id) {
+    state.selectedNoteId = id
   },
   setTime(state, data) {
     state.time = data
@@ -49,6 +55,10 @@ export const mutations = {
   toggleUser(state) {
     state.UserNotExist = true
     state.auth = {}
+    state.selectedCollection = ''
+    state.selectedPost = ''
+    state.selectedNoteBookId = ''
+    state.selectedNoteId = ''
   },
   toggleEditor(state) {
     state.auth.user.editor = !state.auth.user.editor

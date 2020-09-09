@@ -80,6 +80,21 @@ export class PostService {
       .getMany();
   }
 
+  // 移动文章
+  async movePost(id: string, query: any) {
+    const { collectionId } = query;
+    console.log(collectionId);
+    await this.postRepository
+      .createQueryBuilder()
+      .update(Post)
+      .where('post.id =:id', { id })
+      .set({ collection: collectionId })
+      .execute();
+
+    //  querryBuilder.where('id=:id',{id})
+    //  querryBuilder.set
+  }
+
   // 展示用户笔记
   async showUserNote(id: number) {
     const type = 'note';

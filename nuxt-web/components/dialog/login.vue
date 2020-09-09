@@ -339,6 +339,7 @@ export default class Login extends Vue {
   logout() {
     // this.$store.commit('toggleBanner')
     this.$store.commit('toggleUser')
+
     this.$notify({
       title: '成功',
       type: 'success',

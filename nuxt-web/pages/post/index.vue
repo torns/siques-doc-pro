@@ -41,7 +41,7 @@
                       <i class="el-icon-s-tools el-icon--right text-white"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="{ change: collect.id }" icon="el-icon-edit-outline">修改文集名称</el-dropdown-item>
+                      <el-dropdown-item :command="{ change: collect.id, name: collect.name }" icon="el-icon-edit-outline">修改文集名称</el-dropdown-item>
 
                       <el-upload :http-request="uploadCover" :show-file-list="false" :on-success="handleCoverSuccess" action="string">
                         <el-dropdown-item :command="{ addCover: collect.id }" icon="el-icon-edit-outline">添加封面</el-dropdown-item>
@@ -97,9 +97,22 @@
                       <i class="el-icon-s-tools el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="'a.' + post.id + '.' + post.title" icon="el-icon-chat-dot-round">修改文章标题</el-dropdown-item>
-                      <el-dropdown-item icon="el-icon-edit-outline">移动文章</el-dropdown-item>
-                      <el-dropdown-item :command="'c.' + post.id" icon="el-icon-delete">删除文章</el-dropdown-item>
+                      <el-dropdown-item :command="{ type: 'changeTitle', id: post.id, name: post.title }" icon="el-icon-chat-dot-round">修改文章标题</el-dropdown-item>
+
+                      <el-popover placement="left" width="200" :offset="200" trigger="click">
+                        <div class="pb-2">移动到(点击框外可取消)</div>
+                        <el-select v-model="movedCollection" placeholder="请选择">
+                          <el-option :disabled="selectedCollection == item.id" v-for="item in collections" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+                        </el-select>
+
+                        <div class="pt-3" style="text-align: right; margin: 0">
+                          <!-- <el-button size="mini" type="text" >取消</el-button> -->
+                          <el-button type="primary" size="mini" @click="handlePostMove">确定</el-button>
+                        </div>
+                        <el-dropdown-item slot="reference" :command="{ type: 'movePost', id: post.id, name: post.title }" icon="el-icon-edit-outline">移动文章</el-dropdown-item>
+                      </el-popover>
+
+                      <el-dropdown-item :command="{ type: 'delPost', id: post.id }" icon="el-icon-delete">删除文章</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </span>
@@ -119,7 +132,7 @@
       </div>
 
       <el-main :style="!selectedPost ? 'display:flex;flex-direction:row;justify-content:center;align-items:center;' : ''">
-        <div class="pr-2 mr-1">
+        <div class="pr-2 mr-1" v-show="!selectEditor">
           <div v-if="selectedPost">
             <div class="my-2 pt-1">
               <el-input v-focus v-model="title" size="medium" placeholder></el-input>
@@ -139,7 +152,7 @@
             <!-- 仅仅保存文章 -->
             <!-- <tinymce ref="tinymce" v-show="selectEditor" @submit="updatePost"></tinymce> -->
 
-            <markdown :selectedPost="selectedPost" ref="markdown" v-show="!selectEditor" @submit="updatePost" height="70vh" name="发布文章"></markdown>
+            <markdown :selectedPost="selectedPost" ref="markdown" @submit="updatePost" height="70vh" name="发布文章"></markdown>
           </div>
           <div v-else class="bg" style="flex:1">思趣</div>
         </div>
@@ -189,11 +202,14 @@ export default class index extends Vue {
       title: '写文章'
     }
   }
+
+  postMoveVisible = false
   collections: any = []
   newCollection: any = ''
   show: boolean = false
-  selectedCollection: any = null
+  selectedCollection: any = ''
   selectedPost: any = ''
+
   posts: any = ''
   selectEditor: boolean = true
   title: string = ''
@@ -205,8 +221,11 @@ export default class index extends Vue {
   isPublished = 0
   timer = null
   changed = true
-  // get clone() {
-  //   return { id: this.selectedPost, title: this.title }
+  movedCollection = ''
+
+  // @Watch('selectedCollection')
+  // isChanged(newval: any, oldval: any) {
+  //   this.movedCollection = newval
   // }
 
   @Watch('selectedPost')
@@ -299,6 +318,7 @@ export default class index extends Vue {
   }
 
   selectCollect(id: any, refetch: any) {
+    this.movedCollection = ''
     if (this.selectedCollection !== id) {
       this.$store.commit('setCollection', id)
       this.fetchPost(id)
@@ -314,16 +334,16 @@ export default class index extends Vue {
 
       this.$store.commit('setPost', id)
       const res = await this.$http.get(`/posts/${id}?type=edit`)
-      this.dynamicTags = res.data.tags
-      this.selectEditor = res.data.editor
-      this.isPublished = res.data.isPublished
-      this.title = res.data.title
-      if (res.data.editor) {
-        // this.$nextTick(() => {
-        //   const ref: any = this.$refs.tinymce
-        //   ref.setContent(res.data.body)
-        // })
+
+      if (res.data.status === 404) {
+        this.$store.commit('delSelectedNote')
+        this.$router.push(`/post`)
       } else {
+        this.dynamicTags = res.data.tags
+        this.selectEditor = res.data.editor
+        this.isPublished = res.data.isPublished
+        this.title = res.data.title
+
         this.$nextTick(() => {
           const ref: any = this.$refs.markdown
           ref.setContent(res.data.body)
@@ -333,7 +353,7 @@ export default class index extends Vue {
   }
 
   creatPost() {
-    if (this.selectedCollection != null) {
+    if (this.selectedCollection !== '') {
       const now = this.$dayjs(new Date()).format('YYYY-MM-DD')
 
       const data = {
@@ -470,7 +490,8 @@ export default class index extends Vue {
     if (command.change) {
       this.$prompt('请输入标题', '提示', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
+        inputValue: command.name
       })
         .then(async ({ value }: any) => {
           await this.$http.put(`/collections/${command.change}`, {
@@ -504,40 +525,62 @@ export default class index extends Vue {
         .catch(() => {})
     }
   }
-  async handlePost(command: any) {
-    const id = command.split('.')[1]
-
-    if (command.split('.')[0] === 'a') {
-      this.$prompt('请输入标题', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      })
-        .then(async ({ value }: any) => {
-          await this.$http.put(`/posts/${id}`, { title: value })
-          this.fetchPost(this.selectedCollection)
-          this.$notify({
-            title: '成功',
-            type: 'success',
-            message: '修改成功 '
-          })
+  handlePost(command: any) {
+    switch (command.type) {
+      case 'movePost':
+        break
+      case 'changeTitle':
+        this.$prompt('请输入标题', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: command.name
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
+          .then(async ({ value }: any) => {
+            await this.$http.put(`/posts/${command.id}`, { title: value })
+            this.fetchPost(this.selectedCollection)
+            this.$notify({
+              title: '成功',
+              type: 'success',
+              message: '修改成功 '
+            })
           })
-        })
-    }
-    if (command.split('.')[0] === 'c') {
-      await this.$http.delete(`/posts/${id}?collectionId=${this.selectedCollection}`)
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            })
+          })
+        break
 
-      this.$notify({
-        title: '成功',
-        type: 'success',
-        message: '删除成功'
-      })
-      this.$store.commit('decreLen', 'post')
-      this.fetchPost(this.selectedCollection)
+      case 'delPost':
+        this.$confirm('此操作将删除该文章，是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(async () => {
+            await this.$http.delete(`/posts/${command.id}?collectionId=${this.selectedCollection}`)
+
+            this.$notify({
+              title: '成功',
+              type: 'success',
+              message: '删除成功'
+            })
+
+            if (this.selectedPost === command.id) {
+              this.selectEditor = true
+            }
+            this.$store.commit('delSelectedPost')
+            this.$store.commit('decreLen', 'post')
+            this.$router.push('/post')
+
+            this.fetchPost(this.selectedCollection)
+          })
+          .catch(() => {})
+
+        break
+      default:
+        break
     }
   }
 
@@ -591,6 +634,21 @@ export default class index extends Vue {
         title: '错误',
         message: '已超出最大标签数量'
       })
+    }
+  }
+
+  // ################### 移动文章
+
+  handlePostMove() {
+    this.postMoveVisible = false
+    if (this.selectedCollection !== this.movedCollection && this.movedCollection !== '') {
+      this.$http.put(`/posts/move/${this.selectedPost}?collectionId=${this.movedCollection}`)
+      this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '移动成功 '
+      })
+      this.fetchPost(this.selectedCollection)
     }
   }
 }

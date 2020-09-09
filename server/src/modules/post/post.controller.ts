@@ -84,6 +84,12 @@ export class PostController {
     return await this.postService.show(id, query);
   }
 
+  // 移动文章
+  @Put('move/:id')
+  async movePost(@Param('id') id: string, @Query() query: any) {
+    return await this.postService.movePost(id, query);
+  }
+
   @Put(':id')
   // @ApiQuery({ name: 'role', enum: UserRole })
   @UseGuards(ActionGuard)

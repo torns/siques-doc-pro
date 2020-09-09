@@ -582,7 +582,11 @@ li {
   }
 }
 
-.boder-x {
+.border-l {
+  border-left: 4.5px solid $color-primary;
+}
+
+.border-x {
   border-left: 4.5px solid $color-primary;
   border-right: 4.5px solid $color-primary;
 }

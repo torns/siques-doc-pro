@@ -54,7 +54,8 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/jquery.min.js'
       },
       {
-        src: '//cdn.siques.cn/libs/js/vue.min.js'
+        // src: '//cdn.siques.cn/libs/js/vue.min.js'
+        src: process.env.NODE_ENV == 'production' ? '//cdn.siques.cn/libs/js/vue.min.js' : '//cdn.siques.cn/libs/js/vue.js'
       },
       {
         src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
