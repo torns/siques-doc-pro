@@ -90,11 +90,11 @@
                     <share-dialog :description="post" class="px-2">
                       <el-button size="small" class="hover-2" type="plain"> <i class="pr-2  iconfont icon-share"></i>分享 </el-button>
                     </share-dialog>
-                    <el-button @click="showCommentPanel('comment')" size="small" class="hover-2" type="primary">
-                      <i class="pr-2 iconfont fs-xs icon-comments"></i>
-                      回复
-                    </el-button>
+                  
                   </div> -->
+                  <div @click="showCommentPanel('comment')" class="d-flex jc-center pt-5">
+                    <sq-reply :show="show"></sq-reply>
+                  </div>
                 </div>
               </div>
             </article>
@@ -230,6 +230,7 @@ import mediumZoom from 'medium-zoom'
 import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown.js'
 import scrolldown from '~/components/miniComponents/scrolldown.vue'
+import replyButton from '~/components/miniComponents/replybutton.vue'
 import PostSideBar from '~/components/SideBar/PostSideBar.vue'
 import PostNavigation from '~/components/PostNavigation/Navigation.vue'
 import share from '~/components/dialog/share.vue'
@@ -242,6 +243,7 @@ const mediumzoom = () => {
 @Component({
   components: {
     'sq-toc': PostSideBar,
+    'sq-reply': replyButton,
     'share-dialog': share,
     'sq-down': scrolldown,
     'sq-comment': commentPanel,

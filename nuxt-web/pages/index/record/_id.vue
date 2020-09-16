@@ -48,8 +48,8 @@
         <el-button @click="CreateNote" type="text">新建笔记</el-button>
       </div>
       <div class="pt-3">
-        <transition-group name="list-complete" tag="span">
-          <div class="list-complete-item" v-for="(note, index) in noteList" :key="note.id">
+        <transition-group name="note-complete" tag="span">
+          <div class="note-complete-item" v-for="(note, index) in noteList" :key="note.id">
             <div :class="`bg-2 d-flex ai-baseline jc-between hover-3 ${note.id == $route.params.id ? ' border-l' : ''}`" style="line-height: 35px;">
               <nuxt-link :to="`/record/${note.id}`" tag="li" class="ellipsis-1 px-3  py-2 flex-1 ">
                 {{ note.title }}
@@ -533,17 +533,21 @@ export default class Index extends Vue {
   overflow-y: overlay;
 }
 
-.list-complete-item {
+.note-complete-item {
   transition: all 1s;
   // display: inline-block;
 }
-.list-complete-enter, .list-complete-leave-to
-/* .list-complete-leave-active for below version 2.1.8 */ {
+.note-complete-enter, .note-complete-leave-to
+/* .note-complete-leave-active for below version 2.1.8 */ {
   opacity: 0;
   transform: translateX(300px);
 }
-.list-complete-leave-active {
+.note-complete-leave-active {
   position: absolute;
+}
+
+.el-drawer__body {
+  overflow-x: hidden;
 }
 
 .record {

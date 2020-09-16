@@ -5,6 +5,7 @@ export default (height) => {
   return new tui.Editor({
     /* eslint-disable */
     el: document.querySelector('#editorSection'),
+    useDefaultHTMLSanitizer: false,
     initialEditType: 'markdown',
     language: 'zh_CN',
     placeholder: '来愉快的造作吧',

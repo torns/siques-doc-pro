@@ -2,7 +2,9 @@
   <div>
     <div id="editorSection" class="text-left" />
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-    <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight"> <div v-if="isSaving" class="pt-2 fs-7">保存中...</div> </transition>
+    <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight">
+      <div v-if="isSaving" class="pt-2 fs-7">保存中...</div>
+    </transition>
   </div>
 </template>
 
@@ -191,14 +193,16 @@ export default class MarkDown extends Vue {
     await setTimeout(async () => {
       res = await this.$http.post('/files/ali', params, config)
 
-      let url
-      if (file.type !== 'image/gif') {
-        url = res.data.url + '?x-oss-process=style/' + 'post-picture'
+      let url = res.data.url
+
+      if (file.type.indexOf('video') !== -1) {
+        this.addVideoToMd(url)
+      } else if (file.type == '') {
+        this.addFileToMd(url, file.name)
       } else {
-        url = res.data.url
+        this.addImgToMd(url)
       }
 
-      this.addImgToMd(url)
       if (!type) {
         target.value = '' // 这个地方清除一下不然会有问题
       }
@@ -210,6 +214,25 @@ export default class MarkDown extends Vue {
         message: '上传成功'
       })
     }, 1500)
+  }
+
+  addVideoToMd(url: any) {
+    const editor = this.editor.getCodeMirror()
+    const editorHtml = this.editor.getCurrentModeEditor()
+    const isMarkdownMode = this.editor.isMarkdownMode()
+    if (isMarkdownMode) {
+      editor.replaceSelection(`<video id="video" autoplay loop muted playsinline src="
+${url}" >
+</video>`)
+    } else {
+    }
+  }
+
+  addFileToMd(url: any, name: any) {
+    const editor = this.editor.getCodeMirror()
+    const editorHtml = this.editor.getCurrentModeEditor()
+    const isMarkdownMode = this.editor.isMarkdownMode()
+    editor.replaceSelection(`<a href="${url}" download="${name}">${name}</a>`)
   }
 
   addImgToMd(url: any) {

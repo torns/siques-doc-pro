@@ -50,7 +50,7 @@ export default class LikeButtton extends Vue {
   padding: 0;
   margin: 0;
   outline: none;
-  z-index: 2;
+  z-index: 0;
   -webkit-transition: -webkit-transform var(--duration) var(--easing);
   transition: -webkit-transform var(--duration) var(--easing);
   transition: transform var(--duration) var(--easing);

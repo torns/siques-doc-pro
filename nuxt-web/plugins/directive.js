@@ -34,27 +34,29 @@ Vue.directive('draggable', {
 
       let disX = e.offsetX
 
-      document.onmousemove = (e) => {
-        let left = e.clientX - mgl - maxWidth / 2
+      if (e.srcElement.className.indexOf('open') == -1) {
+        document.onmousemove = (e) => {
+          let left = e.clientX - mgl - maxWidth / 2
 
-        // _el.style.width = left + 'px'
-        // vnode.elm.parentElement.parentNode.__vue__._data.width = left + 'px'
-        vnode.context.width = left + 'px'
-        // vnode.elm.__vue__.width = left + 'px'
-        // ref.style.left = e.clientX - elWidth - mgl - maxWidth / 2 + 'px'
-
-        document.onmouseup = (e) => {
-          if (left < 199) {
-            vnode.context.canHover = true
-            left = 10
-          } else {
-            vnode.context.canHover = false
-          }
+          // _el.style.width = left + 'px'
+          // vnode.elm.parentElement.parentNode.__vue__._data.width = left + 'px'
           vnode.context.width = left + 'px'
-          ref.onmousemove = null
-          el.onmousemove = null
-          document.onmousemove = null
-          document.onmouseup = null
+          // vnode.elm.__vue__.width = left + 'px'
+          // ref.style.left = e.clientX - elWidth - mgl - maxWidth / 2 + 'px'
+
+          document.onmouseup = (e) => {
+            if (left < 199) {
+              vnode.context.canHover = true
+              left = 0
+            } else {
+              vnode.context.canHover = false
+            }
+            vnode.context.width = left + 'px'
+            ref.onmousemove = null
+            el.onmousemove = null
+            document.onmousemove = null
+            document.onmouseup = null
+          }
         }
       }
     }

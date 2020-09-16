@@ -119,16 +119,16 @@
               </li>
             </el-popover>
           </li>
-          <span :style="canHover ? 'margin:auto;position: absolute;right: 10px;top: 16px;z-index:4;' : 'position: absolute;right: 10px;top: 16px;z-index:4;'" @click="changeWidth" class="point ">
+          <span :style="canHover ? 'margin:auto;position: absolute;right: 0px;top: 16px;z-index:4;' : 'position: absolute;right: 0px;top: 16px;z-index:4;'" @click="changeWidth" class="point pr-2">
             <el-tooltip :content="canHover ? '展开' : '收起'" placement="right" effect="dark">
               <el-button :icon="canHover ? 'el-icon-caret-right' : 'el-icon-caret-left'" size="mini" circle></el-button>
             </el-tooltip>
           </span>
         </div>
       </el-aside>
-
-      <div ref="drag" class="resize">
-        <div class="resize-bar"></div>
+      <div @click="changeWidth()" :class="`${canHover ? 'doexpand' : ''}`"></div>
+      <div ref="drag" :class="`resize relative ${canHover ? 'open' : ''}`">
+        <div :class="`resize-bar ${canHover ? 'open' : ''}`"></div>
       </div>
 
       <el-main :style="!selectedPost ? 'display:flex;flex-direction:row;justify-content:center;align-items:center;' : ''">
@@ -260,7 +260,7 @@ export default class index extends Vue {
   // true是tinymce
   changeWidth() {
     if (this.width.split('px')[0] >= '300') {
-      this.width = '10px'
+      this.width = '0'
       this.canHover = true
     } else {
       this.width = '300px'
@@ -661,16 +661,50 @@ export default class index extends Vue {
 }
 
 #collections:hover + .expand {
-  width: 200px !important;
+  // width: 200px !important;
 
   transition: 0.4s cubic-bezier(0.68, -0.01, 0.29, 1.06);
 }
 
 .expand {
-  &:hover {
-    width: 200px !important;
-  }
+  // &:hover {
+  //   width: 200px !important;
+  // }
   transition: 0.4s cubic-bezier(0.68, -0.01, 0.29, 1.06);
+}
+.doexpand {
+  position: relative;
+  top: 50%;
+  left: 0;
+  /* text-shadow: 0 0 black; */
+  z-index: 20;
+}
+.doexpand:after {
+  content: '';
+  position: absolute;
+  height: 90px;
+  width: 6px;
+  top: 45%;
+  left: 0;
+  background-color: #a7a7a7;
+  border-radius: 0px 35px 35px 0px;
+}
+
+.doexpand::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent #1abc9c;
+  line-height: 99em;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 30px auto;
+  top: 45.4%;
+  z-index: 1;
+  border-radius: 20px;
 }
 
 .resize {
@@ -754,6 +788,7 @@ export default class index extends Vue {
   text-align: center;
   position: relative;
   height: 100vh;
+  //  transition: 0.s cubic-bezier(0.68, -0.01, 0.29, 1.06);
 }
 
 .el-main {
