@@ -35,7 +35,7 @@ export class FileService {
 
     //文章上传图片
     const res = await client.put(
-      'post/' + id + '/' + date + '/' + file.originalname + file.size,
+      'post/' + id + '/' + date + '/' + file.size + file.originalname,
       file.buffer,
     );
     return res;
