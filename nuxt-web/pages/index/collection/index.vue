@@ -1,23 +1,17 @@
 <template>
   <div>
-    <div class="tagMask" style="height:110vh;">
+    <div class="tagMask" style="height:115vh;">
       <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">专栏</div>
         </h1>
         <div>点点滴滴记录代码日常</div>
       </div>
+      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
     </div>
 
     <div>
-      <video
-        style="height:110vh;box-shadow: -19px -3px 60px 10px;object-fit: cover;width:100%;"
-        autoplay
-        loop
-        muted
-        playsinline
-        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4"
-      ></video>
+      <video style="height:115vh;object-fit: cover;width:100%;" autoplay loop muted playsinline src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4"></video>
     </div>
     <div style="margin-top:-10em" class="collection_container h-100 pt-4 ">
       <sq-panel :data="posts"></sq-panel>
@@ -34,6 +28,7 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { listIntercep } from '../../../plugins/utils.js'
 // import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
 import CollectionPannel from '~/components/collectionPanel/index.vue'
+
 import config from '~/plugins/config/website.js'
 
 @Component({

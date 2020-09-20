@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" :style="`background:${$attrs.background ? $attrs.background : ''}`">
     <!--Content before waves-->
 
     <!--Waves Container-->

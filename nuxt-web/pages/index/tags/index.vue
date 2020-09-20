@@ -1,23 +1,17 @@
 <template>
   <div>
-    <div class="tagMask" style="height:100vh;">
+    <div class="tagMask" style="height:115vh;">
       <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">所有标签</div>
         </h1>
         <div class="lh-2" style="width:300px;margin:0 auto">标签不仅能组织和归类你的内容，还能关联相似的内容</div>
       </div>
+      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
     </div>
 
     <div>
-      <video
-        style="height:100vh;box-shadow: -19px -3px 60px 10px;object-fit: cover;width:100%;"
-        autoplay
-        loop
-        muted
-        playsinline
-        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4"
-      ></video>
+      <video style="height:115vh;object-fit: cover;width:100%;" autoplay loop muted playsinline src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4"></video>
     </div>
 
     <div class="pt-5">

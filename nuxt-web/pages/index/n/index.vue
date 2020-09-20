@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="noteMask pagination_img note_body" style="height:110vh;">
+    <div class="noteMask pagination_img note_body" style="height:115vh;">
       <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
         <div class="inner relative ">
           <a class="newer-image arrow-left point" @click="toggleBefore">
@@ -15,10 +15,11 @@
           <span class="screen-reader-text"></span>
         </a>
       </div>
+      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
     </div>
 
     <div>
-      <video style="box-shadow: -19px -3px 60px 10px;height:110vh; object-fit: cover;width:100%;" autoplay loop muted playsinline :src="imageLink"></video>
+      <video style="height:115vh; object-fit: cover;width:100%;" autoplay loop muted playsinline :src="imageLink"></video>
     </div>
     <div style="margin-top:-6em" class="note_container h-100 pt-4 px-3">
       <sq-pannel :data="notes"></sq-pannel>
