@@ -13,7 +13,9 @@
           <el-col :class="`${index % 2 == 0 ? 'order-lg-first' : 'order-lg-last'} d-flex flex-column jc-center order-lg-first`" :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="description   ">
               <div class="pl-3">
-                <div class="header py-1  text-gray fs-xm"><i class="fa fa-leaf   pr-2"></i>{{ post.tags[0] ? post.tags[0].name : '' }}</div>
+                <div class="header py-1  text-gray fs-xm">
+                  <i class="fa fa-leaf   pr-2"></i><span class="point" @click="$router.push(`/t/${post.tags[0] ? post.tags[0].id : '1'}`)">{{ post.tags[0] ? post.tags[0].name : '' }}</span>
+                </div>
                 <router-link target="_blank" class="pannel-image point" :to="`/p/${post.id}`">
                   <h3 class="title pb-2  fs-xll ellipsis-1">{{ post.title }}</h3>
                 </router-link>

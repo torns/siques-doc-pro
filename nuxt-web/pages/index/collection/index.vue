@@ -46,7 +46,7 @@ export default class CollectionIndex extends Vue {
     const http = Vue.prototype.$http
 
     const link =
-      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&sort=${route.query.sort ? route.query.sort : 'views'}` +
+      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&sort=${route.query.sort ? route.query.sort : 'created'}` +
       (Taglist ? `&taglist=${List}` : '') +
       `&listId=true&collection=true&type=post&avator=true`
     const res = await http.get(link)
@@ -57,7 +57,7 @@ export default class CollectionIndex extends Vue {
       posts: res.data[0],
       maxLen: res.data[1],
       currentPage: parseInt(route.query.page ? route.query.page : 1),
-      sort: route.query.sort ? route.query.sort : 'views'
+      sort: route.query.sort ? route.query.sort : 'created'
     }
   }
 
