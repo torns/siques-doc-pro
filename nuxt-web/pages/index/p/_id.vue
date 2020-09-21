@@ -46,7 +46,7 @@
       <div class="postMask" style="height:100vh;">
         <sq-down
           style=" position: absolute;bottom: 10%;
-    left: 50%;"
+    left: 47%;"
         ></sq-down>
       </div>
 
