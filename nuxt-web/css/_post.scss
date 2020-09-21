@@ -140,7 +140,12 @@ h1 {
     margin-bottom: 16px;
     font-size: 16px;
   }
-  h3,
+  h3 {
+    margin-top: 1.618em;
+    margin-bottom: 1.018em;
+    border-left: 4px solid #1abc9c;
+    padding-left: 8px;
+  }
   h4,
   h5,
   h6 {
