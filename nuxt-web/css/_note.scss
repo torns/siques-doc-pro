@@ -25,6 +25,18 @@
   }
 }
 
+.pannel-tag {
+  top: -7%;
+  left: 50%;
+  width: 100px;
+  margin-left: -50px;
+  background-color: #9c27b0;
+  z-index: 5;
+  border-radius: 22px;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
 .note_container {
   margin-right: auto;
   margin-left: auto;

@@ -4,7 +4,7 @@
       <el-col class="py-3 pb-6 list-complete-item" v-for="note in $attrs.data" :key="note.id" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
         <div class="w-100 shadow-2 d-flex flex-column card-shadow" style="height:520px;border-radius:15px">
           <div class="pannel-head relative">
-            <div class="pannel-tag absolute " style="top:-7%;left: 50%;width: 100px;margin-left: -50px;background-color:#FF5F5F;z-index:5;border-radius: 22px">
+            <div class="pannel-tag absolute ">
               <div class="px-4 py-2 text-white text-center">
                 {{ note.tags[0] ? note.tags[0].name : '♥' }}
               </div>
