@@ -54,7 +54,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import config from '~/plugins/config/website.js'
 @Component({})
 export default class CollectionPannel extends Vue {
-  //  笔记展示面板
+  //  集合展示面板
 
   array = []
   link = config.link

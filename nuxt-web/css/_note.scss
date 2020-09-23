@@ -28,13 +28,19 @@
 .pannel-tag {
   top: -7%;
   left: 50%;
-  width: 100px;
-  margin-left: -50px;
-  background-color: #9c27b0;
+  width: 110px;
+  margin-left: -55px;
+  background-color: #3f51b5;
   z-index: 5;
   border-radius: 22px;
   text-transform: uppercase;
   overflow: hidden;
+  text-overflow: ellipsis;
+  height: 38px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-height: 24px;
 }
 
 .note_container {
