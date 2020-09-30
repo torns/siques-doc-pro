@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tagMask" style="height:115vh;">
-      <div class="text-white relative" style="left:50%;top:47%;left: -1%;z-index:5;text-align: center;">
+      <div class="text-white relative" style="left:50%;top:44%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">专栏</div>
         </h1>
