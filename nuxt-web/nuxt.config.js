@@ -90,11 +90,14 @@ export default {
         rel: 'stylesheet',
         href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
       },
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
+      // },
       {
         rel: 'stylesheet',
-        href: 'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
+        href: 'https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.0/styles/github.min.css'
       },
-
       {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/element-ui/2.13.2/theme-chalk/index.css'

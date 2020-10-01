@@ -151,8 +151,8 @@
                         </div>
                       </div>
                       <!-- 下面是回复展示模块 -->
-                      <div class="bg-light border-radius px-3" style="margin-left:3em;margin-right:0em;">
-                        <div v-for="reply in comment.reply" :key="reply.id" class="py-2">
+                      <div class="pl-4 pr-3 replyBody" style="margin-left:3em;margin-right:0em;border-radius:12px;">
+                        <div v-for="reply in comment.reply" :key="reply.id" class="py-2 ">
                           <div class="d-flex ai-baseline jc-between">
                             <div style="font-weight:600" class="text-primary pr-1">
                               {{ reply.from_uid.name }}:

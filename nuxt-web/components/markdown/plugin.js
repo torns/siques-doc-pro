@@ -22,13 +22,11 @@ export default (editor) => {
   // toolbar.addButton(
   //   {
   //     name: 'customize',
-  //     event: 'annotation',
-  //     tooltip: '插入代码注解',
+  //     event: 'hideDetail',
+  //     tooltip: '代码块隐藏',
   //     /* eslint-disable */
   //     // eslint-disable-next-line
-  //     $el: $(
-  //       '<button class="custom-button fa fa-dot-circle-o " style="font-size: 14px;color: #000"></button>'
-  //     )
+  //     $el: $('<button class="custom-button fa fa-dot-circle-o " style="font-size: 14px;color: #000"></button>')
   //   },
   //   16
   // )

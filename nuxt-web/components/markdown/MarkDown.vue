@@ -139,6 +139,13 @@ export default class MarkDown extends Vue {
     const fileDom: any = this.$refs.files
     // 添加事件
     this.editor.eventManager.addEventType('uploadEvent')
+
+    // this.editor.eventManager.addEventType('hideDetail')
+
+    // this.editor.eventManager.listen('hideDetail', () => {
+    //   this.editor.ad
+    // })
+
     this.editor.eventManager.listen('uploadEvent', () => {
       fileDom.click()
 

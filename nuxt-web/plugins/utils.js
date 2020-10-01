@@ -73,57 +73,55 @@ export function listIntercep(taglist) {
 }
 
 export function hljs() {
-  $('pre code').each(function () {
+  $('pre code').each(function() {
     $(this).html(
       '<ul><li>' +
-      $(this)
-        .html()
-        .replace(/\n/g, '</li><li>') +
-      '\n</li></ul>'
+        $(this)
+          .html()
+          .replace(/\n/g, '</li><li>') +
+        '\n</li></ul>'
     )
     // console.log($(this).html())
     // 给指定行增加样式
-    try {
-      var line = $(this)
-        .attr('class')
-        .match(/\d+/g)
+    // try {
+    //   var line = $(this)
+    //     .attr('class')
+    //     .match(/\d+/g)
 
-      // var line2 = $(this)
-      //   .attr('class')
-      //   .split('hljs ')[1]
-      // console.log(line2)
-      for (let i in line) {
-        $(this)
-          .children()
-          .children()
-          .eq(line[i] - 1)
-          .addClass('selected')
-      }
-    } catch (err) {
-      throw err
-    }
+    //   // var line2 = $(this)
+    //   //   .attr('class')
+    //   //   .split('hljs ')[1]
+    //   // console.log(line2)
+    //   for (let i in line) {
+    //     $(this)
+    //       .children()
+    //       .children()
+    //       .eq(line[i] - 1)
+    //       .addClass('selected')
+    //   }
+    // } catch (err) {
+    //   throw err
+    // }
   })
   // 去掉最后一行的空行
-  $('code ul li:last-child').remove()
-  $('pre code ').each(function () {
+  // $('code ul li:last-child').remove()
+
+  $('pre code ').each(function() {
     if (
       $(this)
-        .html()
-        .includes('~开始~')
+        .text()
+        .includes('(begin)')
     ) {
-      if (
-        true
-      ) {
+      if (true) {
         let el = $(this)
           .html()
-          .match(/<li>~开始~([\s\S]*?)~结束~<\/li>/g)
+          .match(/<li>\(begin\)([\s\S]*?)\(\/end\)<\/li>/g)
 
+        console.log(el)
         for (let index = 0; index < el.length; index++) {
           let brief = el[index].match(/(?=<span)[\s\S]*?(?=<\/li>)/g)[0]
           let el1 = `
-      ${`<details><summary class="point hover-2" >${brief}</summary>` +
-            el[index] +
-            '</details>'}`
+      ${`<details><summary class="point hover-2" style="padding-left: 17px;">${brief}</summary>` + el[index] + '</details>'}`
           $(this).html(
             $(this)
               .html()
@@ -131,36 +129,41 @@ export function hljs() {
           )
         }
       } else {
-        console.log('┗|｀O′|┛ 嗷~~,浏览器好像不支持')
       }
 
       let el1 = $(this)
         .html()
-        .match(/(<li>~开始~<\/li>)/g)
-
-      for (let index = 0; index < el1.length; index++) {
-        $(this).html(
-          $(this)
-            .html()
-            .replace(el1[index], '')
-        )
+        .match(/(<li> *\(begin\) *<\/li>)/g)
+      try {
+        for (let index = 0; index < el1.length; index++) {
+          $(this).html(
+            $(this)
+              .html()
+              .replace(el1[index], '')
+          )
+        }
+      } catch {
+        console.log('开始结束匹配有误')
       }
 
       let el2 = $(this)
         .html()
-        .match(/(<li>~结束~<\/li>)/g)
-
-      for (let index = 0; index < el2.length; index++) {
-        $(this).html(
-          $(this)
-            .html()
-            .replace(el2[index], '')
-        )
+        .match(/(<li> *\(\/end\) *<\/li>)/)
+      try {
+        for (let index = 0; index < el2.length; index++) {
+          $(this).html(
+            $(this)
+              .html()
+              .replace(el2[index], '')
+          )
+        }
+      } catch {
+        console.log('开始结束匹配有误')
       }
     }
   })
 
-  $('summary').click(function () {
+  $('summary').click(function() {
     if (!$(this)[0].parentNode.attributes.open) {
       $(this).css({ opacity: 0.2, '-webkit-text-security': 'disc' })
     } else {
