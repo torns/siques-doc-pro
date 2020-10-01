@@ -104,7 +104,7 @@ export function hljs() {
     // }
   })
   // 去掉最后一行的空行
-  // $('code ul li:last-child').remove()
+  $('code ul li:last-child').remove()
 
   $('pre code ').each(function() {
     if (
@@ -171,5 +171,18 @@ export function hljs() {
     }
   })
 
+  $('pre code').each(function() {
+    let lang = $(this).attr('class')
+    let array = lang.split(' ')
+    if (array[0] == 'hljs') lang = array[1]
+
+    if (array[1] == 'hljs') lang = array[0].substring(9)
+
+    if ($(this).children()[0].childElementCount > 2) {
+      $(this)
+        .children()
+        .after($(`<span id="language">${lang}</span>`))
+    }
+  })
   $('pre code ul').before('<a id="copy"></a>')
 }
