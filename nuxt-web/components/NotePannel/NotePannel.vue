@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="43">
     <transition-group name="list-complete" tag="span">
-      <el-col class="py-3 pb-6 list-complete-item" v-for="note in $attrs.data" :key="note.id" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+      <el-col class="py-3 pb-6 list-complete-item" v-for="(note, index) in $attrs.data" :key="note.id" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
         <div class="w-100 shadow-2 d-flex flex-column card-shadow" style="height:520px;border-radius:15px">
           <div class="pannel-head relative">
             <div class="pannel-tag absolute ">
@@ -10,7 +10,7 @@
               </div>
             </div>
             <router-link class="pannel-image point" :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`">
-              <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || link[getRandomUrl()].url"> </el-image>
+              <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || getRandomUrl(index)"> </el-image>
             </router-link>
           </div>
           <div class="pannel-body flex-1 text-center text-dark">
@@ -55,10 +55,9 @@ import config from '~/plugins/config/website.js'
 export default class NotePannel extends Vue {
   //  笔记展示面板
   array = []
-  link = config.link
-  getRandomUrl() {
-    const num = Math.floor(Math.random() * 7)
-    return num
+  coverLink = config.link
+  getRandomUrl(index: any) {
+    return this.coverLink[index % this.coverLink.length].url
   }
 }
 </script>

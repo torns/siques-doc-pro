@@ -191,7 +191,7 @@ export class PostService {
       queryBuilder.andWhere('tag.id IN(:...taglist)', { taglist });
     }
     if (type) {
-      queryBuilder.where('post.type = :type', { type });
+      queryBuilder.andWhere('post.type = :type', { type });
       // 查询已经发布的
       // console.log(type);
       if (type == 'post') {

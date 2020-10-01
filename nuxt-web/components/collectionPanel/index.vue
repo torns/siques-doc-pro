@@ -6,7 +6,7 @@
           <el-col :class="index % 2 == 1 ? 'order-lg-last' : 'order-lg-first'" :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="cover point">
               <router-link target="_blank" class="pannel-image point" :to="`/p/${post.id}`">
-                <el-image class="hover w-100" style="height:400px;border-radius:20px;" :src="post.collection.cover ? post.collection.cover : link[getRandomUrl()].url" fit="cover"></el-image>
+                <el-image class="hover w-100" style="height:400px;border-radius:20px;" :src="post.collection.cover ? post.collection.cover : getRandomUrl(index)" fit="cover"></el-image>
               </router-link>
             </div>
           </el-col>
@@ -57,9 +57,9 @@ export default class CollectionPannel extends Vue {
   //  集合展示面板
 
   array = []
-  link = config.link
-  getRandomUrl() {
-    return Math.floor(Math.random() * 7)
+  coverLink = config.link
+  getRandomUrl(index: any) {
+    return this.coverLink[index % this.coverLink.length].url
   }
 }
 </script>
