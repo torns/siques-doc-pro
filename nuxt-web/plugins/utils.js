@@ -115,13 +115,15 @@ export function hljs() {
       if (true) {
         let el = $(this)
           .html()
-          .match(/<li>\(begin\)([\s\S]*?)\(\/end\)<\/li>/g)
+          .match(/<li> *\(begin\)([\s\S]*?)\(\/end\) *<\/li>/g)
 
         console.log(el)
         for (let index = 0; index < el.length; index++) {
-          let brief = el[index].match(/(?=<span)[\s\S]*?(?=<\/li>)/g)[0]
+          let brief = el[index].match(/(?=<li>)[\s\S]*?(<\/li>)/g)[1]
+          brief = brief.replace('<li>', '')
+          brief = brief.replace('</li>', '')
           let el1 = `
-      ${`<details><summary class="point hover-2" style="padding-left: 17px;">${brief}</summary>` + el[index] + '</details>'}`
+      ${`<details><summary class="point hover-2" style="padding-left: 5px;">${brief}</summary>` + el[index] + '</details>'}`
           $(this).html(
             $(this)
               .html()

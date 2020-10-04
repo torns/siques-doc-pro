@@ -29,6 +29,9 @@ h1 {
   font-size: 0.9em;
   margin-right: 0;
   font-weight: 200;
+  @media (max-width: 36em) {
+    font-size: 10px;
+  }
 
   &-comment,
   &-quote {
@@ -50,13 +53,13 @@ h1 {
     right: 15px;
 
     &::after {
-      color: #607d8b;
+      color: hsla(0, 0%, 62%, 0.50196);
       font: normal normal normal 14px/1 FontAwesome;
       font-size: 14px;
       content: '\f0c5';
       display: inline-block;
       position: absolute;
-      opacity: 0.3;
+      opacity: 0;
       padding-top: 4px;
       right: 14px;
       cursor: pointer;
