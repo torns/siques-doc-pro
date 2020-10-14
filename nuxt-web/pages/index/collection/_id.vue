@@ -104,7 +104,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import bookmark from '~/components/dialog/bookmark.vue'
+import bookmark from '~/components/Dialog/BookMarkCreate/BookMark/bookmark.vue'
 
 @Component({
   components: { 'bookmark-dialog': bookmark }

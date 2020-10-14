@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-      <sq-bookmark ref="bookmark"></sq-bookmark>
       <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 100%;top: 35%;">
         <div class="fs-md">
           <!-- <div class="d-flex">
@@ -218,7 +217,7 @@
     <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
     <search-button></search-button>
     <sq-footer></sq-footer>
-    <sq-click></sq-click>
+    <!-- <sq-click></sq-click> -->
   </div>
 </template>
 
@@ -229,26 +228,27 @@ import mediumZoom from 'medium-zoom'
 
 import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown.js'
-import scrolldown from '~/components/miniComponents/scrolldown.vue'
-import replyButton from '~/components/miniComponents/replybutton.vue'
-import PostSideBar from '~/components/SideBar/PostSideBar.vue'
-import PostNavigation from '~/components/PostNavigation/Navigation.vue'
-import share from '~/components/dialog/share.vue'
-import commentPanel from '~/components/commentPanel/commentPanel.vue'
-import SearchButton from '~/components/searchPanel/SearchButton.vue'
+import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
+
+import toc from '~/components/Toc/PostToc.vue'
+import PostNavigation from '~/components/Page/Post/NaviToNextPost.vue'
+import commentPanel from '~/components/Base/BaseCommentPanel/index.vue'
+import SearchButton from '~/components/Page/Post/ButtonSearchAny.vue'
+import replyButton from '~/components/Page/Post/ButtonReplyPost.vue'
+import likeButton from '~/components/Page/Post/ButtonLikePost.vue'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
 }
 
 @Component({
   components: {
-    'sq-toc': PostSideBar,
+    'sq-toc': toc,
     'sq-reply': replyButton,
-    'share-dialog': share,
     'sq-down': scrolldown,
     'sq-comment': commentPanel,
     'sq-navigation': PostNavigation,
-    'search-button': SearchButton
+    'search-button': SearchButton,
+    'sq-likebtn': likeButton
   }
 })
 export default class Post extends Vue {

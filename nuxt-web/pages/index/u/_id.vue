@@ -159,14 +159,16 @@
               </ul>
             </div>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-            <!-- eslint-disable-next-line vue/require-component-is -->
-            <component v-bind:is="currentComponent" :id="id" />
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="pt-2">
-            <!-- eslint-disable-next-line vue/require-component-is -->
-            <component :liked="id ? user.liked : $store.state.auth.user.liked" :id="id" :is="sideComponent" class="px-2" />
-          </el-col>
+          <template>
+            <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+              <!-- eslint-disable-next-line vue/require-component-is -->
+              <component v-bind:is="currentComponent" :id="id" />
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="pt-2">
+              <!-- eslint-disable-next-line vue/require-component-is -->
+              <component :liked="id ? user.liked : $store.state.auth.user.liked" :id="id" :is="sideComponent" class="px-2" />
+            </el-col>
+          </template>
         </el-row>
       </div>
       <sq-footer top-border="true"></sq-footer>
@@ -179,11 +181,11 @@ import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import Homepage from '~/components/Page/Homepage.vue'
 import PostList from '~/components/Page/PostList.vue'
 import Fans from '~/components/Page/Fans.vue'
-import Followers from '~/components/Page/Followers.vue'
-import FollowPageBar from '~/components/Page/SideBar/followers.vue'
+import followerPanel from '~/components/Page/User/FollowerPanel/index.vue'
+import followerSideBar from '~/components/Page/User/FollowerPanel/SideBar/followers.vue'
 
-import HomePageBar from '~/components/Page/SideBar/homepage.vue'
-import Bookmark from '~/components/Page/Bookmark.vue'
+import HomePageBar from '~/components/Page/User/SideBar/homepage.vue'
+// import Bookmark from '~/components/Page/Bookmark.vue'
 import questionList from '~/components/Page/questionList.vue'
 import noteList from '~/components/Page/noteList.vue'
 
@@ -193,11 +195,11 @@ import noteList from '~/components/Page/noteList.vue'
     PostList,
     questionList,
     HomePageBar,
-    FollowPageBar,
+    followerSideBar,
     noteList,
     Fans,
-    Followers,
-    Bookmark
+    followerPanel
+    // Bookmark
   }
 })
 export default class Page extends Vue {
@@ -258,8 +260,8 @@ export default class Page extends Vue {
       case 'Homepage':
         this.sideComponent = 'HomePageBar'
         break
-      case 'followers':
-        this.sideComponent = 'FollowPageBar'
+      case 'followerPanel':
+        this.sideComponent = 'followerSideBar'
         break
 
       default:
@@ -405,7 +407,7 @@ export default class Page extends Vue {
       },
       {
         name: `${this.id ? '他' : '我'}的关注`,
-        alias: 'followers',
+        alias: 'followerPanel',
         nick: ''
       },
       {

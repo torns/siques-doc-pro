@@ -619,6 +619,7 @@ a {
 
 #other #menu {
   // opacity: 0;
+
   display: none;
 }
 
@@ -648,13 +649,15 @@ a {
   -moz-animation: showMenu 1s; /* Firefox */
   -webkit-animation: showMenu 1s; /* Safari and Chrome */
   -o-animation: showMenu 1s; /* Opera */
+  z-index: 10;
 }
 
 #other .hideMenu {
   display: block !important;
   opacity: 0;
-  height: 70px;
+  // z-index: -10;
   transition: 0.5s all;
+  height: 70px;
   animation: hideMenu 1s;
   -moz-animation: hideMenu 1s; /* Firefox */
   -webkit-animation: hideMenu 1s; /* Safari and Chrome */

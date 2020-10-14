@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="noteMask pagination_img note_body" style="height:115vh;">
-      <div class="text-white relative" style="left:50%;top:44%;left: -1%;z-index:5;text-align: center;">
+      <div class="text-white relative" style="left:50%;top:40%;left: -1%;z-index:5;text-align: center;">
         <div class="inner relative ">
           <a class="newer-image arrow-left point" @click="toggleBefore">
             <span class="screen-reader-text"></span>
@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-import notePannel from '~/components/NotePannel/NotePannel.vue'
+import notePannel from '~/components/Page/Note/NotePanel.vue'
 @Component({
   components: {
     'sq-pannel': notePannel

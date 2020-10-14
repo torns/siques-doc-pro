@@ -167,12 +167,10 @@ import { release } from 'os'
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { wordcounts } from '../../plugins/utils.js'
-import Tag from '~/components/dialog/tag.vue'
+
 // import tinymce from '~/components/Tinymce/Tinymce.vue'
 
-@Component({
-  components: { 'sq-tag': Tag }
-})
+@Component({})
 export default class index extends Vue {
   asyncData({ store }: any) {
     // 在 @component 中不可以写 this.$http //

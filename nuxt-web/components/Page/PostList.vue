@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import ListPanel from '../ListPanel/ListPanel.vue'
+import ListPanel from '~/components/Base/BaseListPanel/index.vue'
 @Component({
   components: { 'list-panel': ListPanel }
 })

@@ -33,7 +33,7 @@
           <div slot="reference" class="d-flex jc-between flex-wrap flex-column" style="height:300px">
             <div style="padding: 0px 10em;" v-for="(noteBook, index) in noteBooks" :key="noteBook.id" @click="showAllNotebook">
               <transition :duration="{ enter: 500, leave: 200 }" enter-active-class="animated fadeIn " leave-active-class="animated fadeOut ">
-                <sq-notebook class="point " v-show="selectedNotebook == index" :title="noteBook.name" :index="index"> </sq-notebook>
+                <sq-bookface class="point " v-show="selectedNotebook == index" :title="noteBook.name" :index="index"> </sq-bookface>
               </transition>
             </div>
           </div>
@@ -125,10 +125,10 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import _ from 'lodash'
-import Tag from '@/components/dialog/tag.vue'
-import noteBook from '@/components/miniComponents/notebook.vue'
+
+import bookface from '@/components/Page/Write/BookFace.vue'
 @Component({
-  components: { 'sq-tag': Tag, 'sq-notebook': noteBook }
+  components: { 'sq-bookface': bookface }
 })
 /* eslint-disable */
 export default class Index extends Vue {

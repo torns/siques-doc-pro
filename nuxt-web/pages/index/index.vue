@@ -146,19 +146,21 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
 import fetchdata from '../../plugins/fetchdata'
-import homeSideBar from '~/components/SideBar/homeSideBar.vue'
-import scrolldown from '~/components/miniComponents/scrolldown.vue'
-import banner from '~/components/miniComponents/banner.vue'
-import typer from '~/components/miniComponents/typer.vue'
+import sidebar from '~/components/Page/Index/SideBar/index.vue'
+import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
+import banner from '~/components/Page/Index/IndexBanner.vue'
+import typer from '~/components/Page/Index/IndexTyper.vue'
+import placeholder from '~/components/Singlton/ThePlaceholder.vue'
 @Component({
   components: {
-    'sq-indexBar': homeSideBar,
+    'sq-indexBar': sidebar,
     'sq-down': scrolldown,
     'sq-banner': banner,
-    'sq-typer': typer
+    'sq-typer': typer,
+    'sq-holder': placeholder
   }
 })
-export default class MyPage extends Vue {
+export default class AppPage extends Vue {
   async asyncData() {
     // 在 @component 中不可以写 this.$http //
     const http = Vue.prototype.$http

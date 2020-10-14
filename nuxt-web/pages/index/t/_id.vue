@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="tagMask" style="height:115vh;">
-      <div class="text-white relative" style="left:50%;top:44%;left: -1%;z-index:5;text-align: center;">
+    <div class="noteMask" style="height:115vh;">
+      <div class="text-white relative" style="left:50%;top:40%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">{{ tagInfo.info.name }}</div>
         </h1>
@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 
-import notePannel from '~/components/NotePannel/NotePannel.vue'
+import notePannel from '~/components/Page/Note/NotePanel.vue'
 @Component({
   components: {
     'sq-pannel': notePannel

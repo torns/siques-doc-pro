@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="tagMask" style="height:115vh;">
-      <div class="text-white relative" style="left:50%;top:44%;left: -1%;z-index:5;text-align: center;">
+    <div class="noteMask" style="height:115vh;">
+      <div class="text-white relative" style="left:50%;top:40%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">所有标签</div>
         </h1>
@@ -22,7 +22,7 @@
               <div class="bg-3 py-3 px-3" style="height:90px;">
                 <div class="d-flex">
                   <div>
-                    <el-search ref="search" :data="tags"></el-search>
+                    <sq-search ref="search" :data="tags"></sq-search>
                   </div>
                   <el-button @click="storeUserTag" class="h-100" size="mini" type="plain">加关注</el-button>
                 </div>
@@ -93,9 +93,9 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 
-import mysearch from '~/components/searchPanel/search.vue'
+import search from '~/components/Page/Tags/SearchTag.vue'
 @Component({
-  components: { 'el-search': mysearch }
+  components: { 'sq-search': search }
 })
 export default class TagsIndex extends Vue {
   async asyncData() {

@@ -2,7 +2,7 @@
   <div :id="isHomepage ? 'home' : 'other'">
     <div id="app" :style="$route.path.includes('/record') || $route.path.includes('/ask') ? 'overflow-y: hidden;height:100vh;' : ''">
       <!-- <div style="height:3px;" class="bg-primary"></div> -->
-      <div id="menu" @click.stop :style="isHomepage ? '' : 'background-color:#ffffff;z-index:100;width:100%!important;'" :class="isHomepage ? 'menucover ' : 'fixed shadow-1'">
+      <div id="menu" @click.stop :style="isHomepage ? '' : 'background-color:#ffffff;width:100%!important;'" :class="isHomepage ? 'menucover ' : 'fixed shadow-1'">
         <el-menu
           ref="menu"
           :background-color="isHomepage ? 'transparent' : ''"
@@ -184,8 +184,10 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import navigation from '~/components/BottomNavigation/navigation.vue'
-import login from '~/components/dialog/login.vue'
+import navigation from '~/components/Singlton/TheNavigation.vue'
+import login from '~/components/Dialog/UserLogin.vue'
+import click from '~/plugins/click.js'
+
 @Component({
   components: { 'sq-navigation': navigation, 'sq-login': login }
 })
@@ -315,6 +317,9 @@ export default class Home extends Vue {
         this.fetchUserLetter()
       }
     }, 300)
+    setTimeout(() => {
+      click()
+    }, 2000)
     this.changeMenu()
   }
 

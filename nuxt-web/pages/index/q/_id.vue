@@ -1,7 +1,6 @@
 <template>
   <div class="bg-light">
     <div class="container pt-4 pb-3">
-      <sq-bookmark ref="bookmark"></sq-bookmark>
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="17" :xl="17">
           <div class="font-songti bg-white shadow-1 border-radius">
@@ -24,11 +23,6 @@
                   </el-button>
 
                   <i></i>
-                  <share-dialog :description="question" class>
-                    <el-button style="margin-top:-25px" type="text" circle>
-                      <i class="iconfont icon-share1"></i>
-                    </el-button>
-                  </share-dialog>
                 </div>
                 <h1 class="py-4">{{ question.title }}</h1>
                 <div class="d-flex py-3">
@@ -73,8 +67,6 @@
                     <i class="pr-2 iconfont icon-Thumbsup"></i>
                     {{ liked }} 赞
                   </el-button>
-
-                  <el-button @click="showBookmark" class="hover-3" type="plain"> <i class="pr-2 iconfont icon-bookmark"></i>收藏 </el-button>
 
                   <el-button @click="followQue" class="hover-3" type="plain"> <i class="pr-2  iconfont icon-note"></i>{{ question.concerned }}关注 </el-button>
                   <el-button @click="showCommentPanel = !showCommentPanel" type="text">评论</el-button>
@@ -208,14 +200,11 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 // import hljs from 'highlight.js'
 import md from '../../../plugins/markdown'
-import PostSideBar from '~/components/SideBar/PostSideBar.vue'
-
-import share from '~/components/dialog/share.vue'
+import toc from '~/components/Toc/PostToc.vue'
 
 @Component({
   components: {
-    'sq-postbar': PostSideBar,
-    'share-dialog': share
+    'sq-postbar': toc
   }
 })
 export default class Question extends Vue {
@@ -412,11 +401,6 @@ export default class Question extends Vue {
     } else {
       this.$store.commit('toggleLoginForm')
     }
-  }
-
-  showBookmark(id: any) {
-    const ref: any = this.$refs.bookmark
-    ref.showBookmark(id)
   }
 }
 </script>

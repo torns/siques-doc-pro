@@ -1,6 +1,5 @@
 <template>
   <div class="border-radius">
-    <sq-github class="xs"></sq-github>
     <div class="d-flex jc-between header bg-light border-solid py-1 px-3">
       <div style="line-height:28px">高分内容</div>
       <div>
@@ -90,11 +89,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import ListPanel from '../ListPanel/ListPanel.vue'
-import Github from '~/components/miniComponents/github.vue'
+import ListPanel from '~/components/Base/BaseListPanel/index.vue'
 
 @Component({
-  components: { 'list-panel': ListPanel, 'sq-github': Github }
+  components: { 'list-panel': ListPanel }
 })
 export default class MyHomepage extends Vue {
   @Prop()

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container h-100 pb-4">
-      <el-row type="flex" class="pt-4">
+      <el-row class="pt-4">
         <el-col v-show="note != null" :xs="24" :sm="24" :md="24" :lg="18" :xl="18" class="px-2">
           <div id="article">
             <div class="fs-xll d-flex ai-baseline mb-2">
@@ -32,20 +32,13 @@
           <div class="text-center">
             <el-button @click="showBookmark(note.id)" type="plain">收藏</el-button>
           </div>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">
-          <div id="toc">
-            <div class="d-none d-lg-block  bg-white py-3 " style="overflow-y: auto;margin-top:1.9em; min-height:100px;width:300px">
-              <div class="title fs-xl pl-2 pb-2"></div>
-              <div>
-                <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
-              </div>
-            </div>
+          <div class="hidden-sm-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
+            <sq-toc></sq-toc>
           </div>
         </el-col>
       </el-row>
-      <sq-bookmark ref="reference"></sq-bookmark>
-      <sq-click></sq-click>
+      <!-- <sq-bookmark ref="reference"></sq-bookmark> -->
+      <!-- <sq-click></sq-click> -->
     </div>
     <sq-footer top-border="true"></sq-footer>
   </div>
@@ -56,13 +49,15 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 import md from '../../../plugins/markdown'
 import { hljs } from '../../../plugins/utils.js'
-import toc from '../../../plugins/toc'
 
+import toc from '~/components/Toc/PostToc.vue'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
 }
 @Component({
-  components: {}
+  components: {
+    'sq-toc': toc
+  }
 })
 export default class Note extends Vue {
   async asyncData({ store, params, redirect }: any) {
@@ -104,7 +99,6 @@ export default class Note extends Vue {
 
   mounted() {
     this.initNote()
-    toc()
   }
 
   get hasAccess(): any {

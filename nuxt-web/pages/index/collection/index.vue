@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="tagMask" style="height:115vh;">
-      <div class="text-white relative" style="left:50%;top:44%;left: -1%;z-index:5;text-align: center;">
+    <div class="noteMask" style="height:115vh;">
+      <div class="text-white relative" style="left:50%;top:40%;left: -1%;z-index:5;text-align: center;">
         <h1>
           <div class=" py-2 ">专栏</div>
         </h1>
@@ -27,12 +27,12 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 import { listIntercep } from '../../../plugins/utils.js'
 // import BlogPanel from '~/components/ListPanel/BlogPanel.vue'
-import CollectionPannel from '~/components/collectionPanel/index.vue'
+import panel from '~/components/Page/Collection/CollectionPanel.vue'
 
 import config from '~/plugins/config/website.js'
 
 @Component({
-  components: { 'sq-panel': CollectionPannel }
+  components: { 'sq-panel': panel }
 })
 export default class CollectionIndex extends Vue {
   async asyncData({ params, store, route }: any) {

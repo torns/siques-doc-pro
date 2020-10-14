@@ -29,7 +29,6 @@
           </el-tab-pane>
           <el-tab-pane label="我关注的收藏夹" name="second">关注的收藏夹</el-tab-pane>
         </el-tabs>
-        <bookmark-dialog ref="dialog"></bookmark-dialog>
       </el-col>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down pl-2">123</el-col>
     </el-row>
@@ -38,10 +37,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import bookmark from '~/components/dialog/bookmark.vue'
-@Component({
-  components: { 'bookmark-dialog': bookmark }
-})
+// import bookmark from '~/components/dialog/bookmark.vue'
+@Component({})
 export default class Bookmark extends Vue {
   name: any
   activeName = 'first'
