@@ -133,7 +133,7 @@
         </el-col>
 
         <el-col :xs="0" :sm="6" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
-          <sq-indexBar :hotTags="hotTags" :hotComments="hotComments" :hotNotebooks="hotNotebooks"></sq-indexBar>
+          <sq-indexBar></sq-indexBar>
         </el-col>
       </el-row>
     </div>
@@ -165,15 +165,15 @@ export default class AppPage extends Vue {
     // 在 @component 中不可以写 this.$http //
     const http = Vue.prototype.$http
     const res = await http.get('/posts/all?limit=20&page=1&type=post&sort=created')
-    const res1 = await http.get('tags/1/hot')
-    const res2 = await http.get('comments')
-    const res3 = await http.get('collections/1/note?type=note&limit=3')
+    // const res1 = await http.get('tags/1/hot')
+    // const res2 = await http.get('comments')
+    // const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
       posts: res.data[0],
-      total: res.data[1],
-      hotTags: res1.data,
-      hotComments: res2.data,
-      hotNotebooks: res3.data
+      total: res.data[1]
+      // hotTags: res1.data,
+      // hotComments: res2.data,
+      // hotNotebooks: res3.data
     }
   }
   page = 1
@@ -214,7 +214,7 @@ export default class AppPage extends Vue {
       name: '最近更新',
       alias: 'new',
       sort: 'created',
-      icon: 'compass',
+      icon: 'lastfm',
       color: 'dark'
     },
     {
@@ -222,14 +222,14 @@ export default class AppPage extends Vue {
       taglist: this.taglists,
       listId: true,
       sort: 'liked',
-      icon: 'address-card',
+      icon: 'subscript',
       color: 'dark'
     },
     {
       name: '近期热门',
       alias: 'hot',
       sort: 'liked',
-      icon: 'thumbs-up',
+      icon: 'fire-extinguisher',
       color: 'dark'
     }
   ]

@@ -37,6 +37,7 @@ export default {
       //   src: 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js',
       //   async: 'async'
       // },
+      { src: 'https://cdn.siques.cn/libs/js/tui-editor-Editor-full.min.js', defer: true },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
@@ -46,32 +47,29 @@ export default {
       {
         src: 'https://cdn.bootcss.com/highlight.js/9.18.1/languages/dart.min.js'
       },
-      {
-        src: 'https://cdn.siques.cn/libs/js/tui-editor-Editor-full.min.js',
-        async: 'async'
-      },
+
       {
         src: 'https://cdn.siques.cn/libs/js/jquery.min.js'
       },
       {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
-        src: process.env.NODE_ENV == 'production' ? '//cdn.siques.cn/libs/js/vue.min.js' : '//cdn.siques.cn/libs/js/vue.js'
+        src: process.env.NODE_ENV == 'production' ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
       },
       {
         src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
         ssr: true
       },
       {
-        src: '//cdn.siques.cn/libs/js/lodash.min.js'
+        src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
       },
       {
-        src: '//cdn.siques.cn/libs/js/vue-router.js'
+        src: 'https://cdn.siques.cn/libs/js/vue-router.js'
       },
       {
-        src: '//cdn.siques.cn/libs/js/vuex.min.js'
+        src: 'https://cdn.siques.cn/libs/js/vuex.min.js'
       },
       {
-        src: '//cdn.siques.cn/libs/js/vue-meta.min.js'
+        src: 'https://cdn.siques.cn/libs/js/vue-meta.min.js'
       },
       {
         src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
@@ -83,9 +81,9 @@ export default {
       // }
     ],
     link: [
-      { rel: 'stylesheet', href: 'https://shuxie.oss-accelerate.aliyuncs.com/libs/css/_font.css' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
+      { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
       {
         rel: 'stylesheet',
         href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
@@ -130,8 +128,7 @@ export default {
   css: [
     // 'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
-    '~/css/global.scss',
-    '~/css/tag.scss'
+    '~/css/global.scss'
   ],
   /*
    ** Plugins to load before mounting the App

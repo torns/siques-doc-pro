@@ -362,7 +362,7 @@ export default class Login extends Vue {
 }
 
 .login {
-  max-width: 450px;
+  max-width: 400px;
 }
 
 .el-form-item__label {
@@ -377,5 +377,8 @@ export default class Login extends Vue {
 .dialog-footer .el-button {
   padding: 9px 0 !important;
   width: 290px !important;
+}
+.el-dialog__body {
+  padding: 30px 20px 50px 20px;
 }
 </style>

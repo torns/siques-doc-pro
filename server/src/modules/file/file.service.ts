@@ -3,17 +3,9 @@ import { UploadFileDto } from './file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { File } from './file.entity';
+import Client from '../../core/oos/ali';
 // import * as client from "../../core/oos/ali";
 import dayjs from 'dayjs';
-import OSS = require('ali-oss');
-
-let client = new OSS({
-  region: 'oss-cn-hangzhou',
-  accessKeyId: 'LTAI4FqfKWi8iLykHAiRg1Go',
-  accessKeySecret: 'INM7qOizdwjIUCRHMTbmXqzzAfk4s3',
-  bucket: 'shuxie',
-  secure: true,
-});
 
 @Injectable()
 export class FileService {
@@ -34,10 +26,12 @@ export class FileService {
     const date = dayjs(now).format('YYYY-MM-DD');
 
     //文章上传图片
-    const res = await client.put(
+
+    const res = await Client.put(
       'post/' + id + '/' + date + '/' + file.size + file.originalname,
       file.buffer,
     );
+
     return res;
   }
 }

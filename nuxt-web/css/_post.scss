@@ -153,10 +153,12 @@ h1 {
     }
   }
   h3 {
-    margin-top: 1.618em;
-    margin-bottom: 1.018em;
+    // margin-top: 1.618em;
+    // margin-bottom: 1.018em;
+    margin: 40px 0 1.2em;
     border-left: 4px solid #1abc9c;
     padding-left: 8px;
+    font-weight: 600;
   }
   h4,
   h5,
@@ -167,10 +169,11 @@ h1 {
   }
   h2 {
     font-family: inherit;
-    margin-top: 1.618em;
+    // margin-top: 1.618em;
+    // margin-bottom: 0.3em;
     padding-bottom: 0.618em;
-    margin-bottom: 0.3em;
-
+    font-weight: 600;
+    margin: 45px 0 0.8em;
     border-bottom: 1px solid #e9ecef;
   }
   img {

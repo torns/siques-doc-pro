@@ -214,8 +214,10 @@ export default class Home extends Vue {
   head() {
     return {
       title: '思趣——分享自由的趣味-yahoo'
+      // script: []
     }
   }
+
   getScrollData = true
   isRegister: boolean = false
   topRadio = 'message'

@@ -92,7 +92,7 @@
                   
                   </div> -->
                   <div @click="showCommentPanel('comment')" class="d-flex jc-center pt-5">
-                    <sq-reply :show="show"></sq-reply>
+                    <sq-replybtn :show="show"></sq-replybtn>
                   </div>
                 </div>
               </div>
@@ -215,7 +215,7 @@
     <!-- <sq-backbtn></sq-backbtn> -->
 
     <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
-    <search-button></search-button>
+    <sq-searchbtn></sq-searchbtn>
     <sq-footer></sq-footer>
     <!-- <sq-click></sq-click> -->
   </div>
@@ -243,11 +243,11 @@ const mediumzoom = () => {
 @Component({
   components: {
     'sq-toc': toc,
-    'sq-reply': replyButton,
     'sq-down': scrolldown,
     'sq-comment': commentPanel,
     'sq-navigation': PostNavigation,
-    'search-button': SearchButton,
+    'sq-replybtn': replyButton,
+    'sq-searchbtn': SearchButton,
     'sq-likebtn': likeButton
   }
 })
