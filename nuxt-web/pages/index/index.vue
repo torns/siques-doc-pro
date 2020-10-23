@@ -115,7 +115,7 @@
                     </div>
                     <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
                       <router-link :to="`/p/${post.id}`" target="_blank">
-                        <el-image :src="post.cover" style="width: 140px; height: 90px" class="border-radius shadow-1 border-dash" fit="cover"></el-image>
+                        <el-image :src="post.cover" style="width: 140px; height: 90px" class="border-radius shadow-1 border-dash" fit="cover" lazy></el-image>
                       </router-link>
                     </div>
                   </div>

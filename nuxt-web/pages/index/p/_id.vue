@@ -212,12 +212,10 @@
       @refresh="fetchComment"
       :show="show"
     ></sq-comment>
-    <!-- <sq-backbtn></sq-backbtn> -->
 
     <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
     <sq-searchbtn></sq-searchbtn>
     <sq-footer></sq-footer>
-    <!-- <sq-click></sq-click> -->
   </div>
 </template>
 

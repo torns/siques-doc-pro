@@ -1,6 +1,6 @@
 import markdownItAnchor from 'markdown-it-anchor'
 import markdownItFootnote from 'markdown-it-footnote'
-
+import linkjs from './markdown/link'
 // import { slugify } from 'transliteration'
 // const slugify = require('transliteration').slugify
 
@@ -23,5 +23,9 @@ const md = require('markdown-it')({
     permalinkSpace: true
   })
   .use(markdownItFootnote)
+  .use(linkjs, {
+    target: '_blank',
+    rel: 'noopener noreferrer'
+  })
 
 export default md
