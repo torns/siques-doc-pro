@@ -1,6 +1,6 @@
 const indexRE = /(.*)(index|readme).md(#?.*)$/i
 
-module.exports = (md, externalAttrs) => {
+export default (md, externalAttrs) => {
   let hasOpenRouterLink = false
   let hasOpenExternalLink = false
 

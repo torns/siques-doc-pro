@@ -129,7 +129,11 @@
             <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">
               <span>
                 <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
-                  <img v-if="this.$store.state.auth.user.avator[0].url !== null" :src="this.$store.state.auth.user.avator[0].url" style="background-color:white;" />
+                  <img
+                    v-if="this.$store.state.auth.user.avator[0] != null && this.$store.state.auth.user.avator[0].url !== null"
+                    :src="this.$store.state.auth.user.avator[0].url"
+                    style="background-color:white;"
+                  />
 
                   <img v-else src="~/static/avator.jpg" /> </el-avatar
               ></span>

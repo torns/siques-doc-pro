@@ -47,14 +47,15 @@
     display: flex;"
             >
               <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
-                <i :class="(link.alias == category ? `text-white ` : `text-${link.color} `) + `fa pr-1  fa-${link.icon}`"></i>
+                <i :class="`text-${link.alias == category ? 'white' : link.color} fa   fa-${link.icon}`"></i>
 
-                {{ link.name }}
+                <span class="pl-1"> {{ link.name }}</span>
               </li>
               <div class="pl-3 py-2 xm ">技术频道</div>
               <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
-                <i :class="(link.alias == category ? `text-white ` : `text-${link.color} `) + `fs-md pr-1 iconfont   icon-${link.icon}`"></i>
-                {{ link.name }}
+                <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
+                <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
+                <span class="pl-1">{{ link.name }}</span>
               </li>
               <router-link :to="`/tags`" class="w-100 " tag="li">
                 <div class="pl-3   py-2 hover-2">
@@ -163,8 +164,15 @@ import placeholder from '~/components/Singlton/ThePlaceholder.vue'
 export default class AppPage extends Vue {
   async asyncData() {
     // 在 @component 中不可以写 this.$http //
+    // var type = {
+    //   post: 'post',
+    //   video: 'video'
+    // }
+
+    // var jsonObj = JSON.stringify(type)
+
     const http = Vue.prototype.$http
-    const res = await http.get('/posts/all?limit=20&page=1&type=post&sort=created')
+    const res = await http.get(`/posts/all?limit=20&page=1&type=post&sort=created`)
     // const res1 = await http.get('tags/1/hot')
     // const res2 = await http.get('comments')
     // const res3 = await http.get('collections/1/note?type=note&limit=3')
@@ -185,6 +193,7 @@ export default class AppPage extends Vue {
   taglist = null
   posts = []
   search = ''
+  type = 'post'
 
   category: string = 'new'
   name: string = '最近更新'
@@ -235,6 +244,15 @@ export default class AppPage extends Vue {
   ]
 
   techChanel = [
+    {
+      name: '小视频',
+      alias: 'video',
+      sort: 'created',
+      fontawesome: true,
+      icon: 'fa-youtube-play',
+      color: 'red',
+      type: 'video'
+    },
     {
       name: '前端',
       alias: 'frontEnd',
@@ -327,7 +345,6 @@ export default class AppPage extends Vue {
     this.page += 1
     let list = ''
     list = listIntercep(this.taglist)
-
     fetchdata({
       resource: `/posts/all`,
       page: this.page,
@@ -335,26 +352,30 @@ export default class AppPage extends Vue {
       sort: this.sort,
       tags: this.tag,
       taglist: list,
-      type: 'post',
+      type: this.type,
       success: this.fetchDataSuccess
     })
   }
 
   async handleCategory(links: any) {
-    const { alias, name, listId, tag, taglist, sort } = links
+    const { alias, name, listId, tag, taglist, sort, type } = links
     this.category = alias
     this.name = name
     this.tag = tag
     this.taglist = taglist
     this.sort = sort
     this.page = 1
+    this.type = type
     this.count = 20
     let list = ''
-    list = listIntercep(this.taglist)
-
-    // console.log(list)
+    list = listIntercep(this.taglist) / console.log(list)
     const link =
-      `/posts/all?limit=20&page=${this.page}` + (sort ? `&sort=${sort}` : '') + (tag ? `&tags=${tag}` : '') + (taglist ? `&taglist=${list}` : '') + (listId ? `&listId=${listId}` : '') + `&type=post`
+      `/posts/all?limit=20&page=${this.page}` +
+      (sort ? `&sort=${sort}` : '') +
+      (tag ? `&tags=${tag}` : '') +
+      (taglist ? `&taglist=${list}` : '') +
+      (listId ? `&listId=${listId}` : '') +
+      (type ? `&type=${type}` : '&type=post')
     const res = await this.$http.get(link)
     this.total = res.data[1]
     this.posts = res.data[0]

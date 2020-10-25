@@ -41,6 +41,11 @@ export class PostController {
     private readonly actionService: ActionService,
   ) {}
 
+  /**
+   * 新建文章
+   * @param data
+   * @param user
+   */
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async store(@Body() data: PostDto, @User() user: UserEntity) {

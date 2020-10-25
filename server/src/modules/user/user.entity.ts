@@ -33,7 +33,11 @@ export class User {
   name: string;
 
   //密码去除，除非指定
-  @Column({ select: false, nullable: false })
+  @Column({
+    select: false,
+    nullable: true,
+    default: '$2a$10$0BcChWbrRL3YbXY2i.khSeuNtEgiUT5Sh.GUVNohkkZqZPFSjUHmK',
+  })
   @Exclude()
   password: string;
 

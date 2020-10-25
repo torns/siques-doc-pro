@@ -10,6 +10,7 @@ import { Collection } from '../collection/collection.entity';
 import { Comment } from '../comment/comment.entity';
 import { throwError } from 'rxjs';
 import { exception } from 'console';
+import { Posttype } from 'src/core/enums/posttype.enum';
 
 @Injectable()
 export class PostService {
@@ -192,6 +193,7 @@ export class PostService {
     }
     if (type) {
       queryBuilder.andWhere('post.type = :type', { type });
+
       // 查询已经发布的
       // console.log(type);
       if (type == 'post') {
