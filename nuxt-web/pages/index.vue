@@ -21,7 +21,7 @@
 
           <el-menu-item class="xs" index="/">
             <span style="font-weight:600" class="fs-md" to="/">
-              <a href="/" onclick="return false">首页</a>
+              <a href="/" onclick="return false">主页</a>
             </span>
           </el-menu-item>
 
@@ -217,7 +217,7 @@ export default class Home extends Vue {
 
   head() {
     return {
-      title: '思趣——分享自由的趣味-yahoo'
+      title: '思趣网'
       // script: []
     }
   }

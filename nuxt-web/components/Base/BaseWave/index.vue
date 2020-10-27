@@ -29,7 +29,7 @@ export default class BaseWave extends Vue {}
 .header {
   position: relative;
   text-align: center;
-  background: #0c091d;
+  background: #000;
   color: white;
 }
 

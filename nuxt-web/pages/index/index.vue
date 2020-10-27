@@ -368,7 +368,7 @@ export default class AppPage extends Vue {
     this.type = type
     this.count = 20
     let list = ''
-    list = listIntercep(this.taglist) / console.log(list)
+    list = listIntercep(this.taglist)
     const link =
       `/posts/all?limit=20&page=${this.page}` +
       (sort ? `&sort=${sort}` : '') +
