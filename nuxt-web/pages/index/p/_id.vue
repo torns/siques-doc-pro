@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 100%;top: 35%;">
+      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 80%;top: 35%;left:10%;">
         <div class="fs-md">
           <!-- <div class="d-flex">
             <div class="pr-2" v-for="tag in post.tags" :key="tag.id">
