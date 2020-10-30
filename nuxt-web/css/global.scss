@@ -8,7 +8,7 @@
 @import 'collection';
 @import 'tag.scss';
 @import 'menu.scss';
-@import 'base';
+
 // @import 'gitlab.scss';
 // reset
 // 防止自己撑大
@@ -672,9 +672,6 @@ a {
 }
 
 .blur {
-  -webkit-filter: blur(5px); /* Chrome, Opera */
-  -moz-filter: blur(5px);
-  -ms-filter: blur(5px);
   filter: blur(5px);
 }
 

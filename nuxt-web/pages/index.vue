@@ -1,7 +1,7 @@
 <template>
   <div :id="isHomepage ? 'home' : 'other'">
     <div id="app">
-      <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed shadow-1') + ' w-100'">
+      <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
           <li class="favicon xs-flex-1 d-flex ai-center point">
             <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:40px;" />

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 80%;top: 35%;left:10%;">
+      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 80%;top: 7%;left:10%;">
         <div class="fs-md">
           <!-- <div class="d-flex">
             <div class="pr-2" v-for="tag in post.tags" :key="tag.id">
@@ -12,7 +12,7 @@
           </div> -->
         </div>
         <h1 style="text-align: center;">
-          <div class="text-white py-2 ">{{ post.title }}</div>
+          <div class="text-white py-2 ellipsis-2 lh-5">{{ post.title }}</div>
         </h1>
         <div class="d-flex py-1 ai-center">
           <!-- <router-link :to="`/u/${post.user.id}`">
@@ -42,20 +42,20 @@
         </div>
       </div>
 
-      <div class="postMask" style="height:100vh;">
-        <sq-down
+      <div class="postMask" style="height:32vh;">
+        <!-- <sq-down
           style=" position: absolute;bottom: 10%;
     left: 50%;"
-        ></sq-down>
+        ></sq-down> -->
       </div>
 
       <div class="blur ">
         <div class=" relative ">
-          <el-image fit="cover" :src="post.cover" style="height:100vh;" class="w-100"> </el-image>
+          <el-image fit="cover" :src="post.cover" style="height:32vh;" class="w-100"> </el-image>
         </div>
       </div>
 
-      <div class="post_container pt-4 pb-3">
+      <div class="post_container  pb-3">
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <article id="article" class="markdown-body bg-white ">
@@ -301,7 +301,7 @@ export default class Post extends Vue {
 
   head() {
     return {
-      title: this.post.title + '_文章_思趣',
+      title: this.post.title + '-思趣网',
       meta: [
         {
           hid: 'og:description',

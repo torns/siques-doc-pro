@@ -1,8 +1,27 @@
 export default () => {
   /* eslint-disable */
   $(document).ready(function() {
+    let temp = 0
+    let top = 0
     $(window).scroll(() => {
-      var top = $(document).scrollTop()
+      // 持续向下
+
+      temp = top
+
+      top = $(document).scrollTop()
+
+      console.log(temp)
+      console.log(top)
+      if (temp - top > 0) {
+        // console.log('持续向上')
+        $('#navigation').removeClass('animated fadeOut')
+        $('#navigation').addClass('animated fadeIn')
+      } else {
+        // console.log('持续向下')
+        $('#navigation').removeClass('animated fadeIn')
+        $('#navigation').addClass('animated fadeOut')
+      }
+
       // console.log(top)
       if (top < 2) {
         $('#menu').removeClass('showMenu')

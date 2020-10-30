@@ -74,7 +74,7 @@ export default class Index extends Vue {
 
   head() {
     return {
-      title: '来愉快的搜索吧'
+      title: '来愉快的搜索吧-思趣网'
     }
   }
 

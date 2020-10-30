@@ -119,7 +119,7 @@ export default class collection extends Vue {
   }
   head() {
     return {
-      title: `专栏_${this.collections.name}`
+      title: `${this.collections.name}-思趣网`
     }
   }
 

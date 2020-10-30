@@ -60,7 +60,7 @@ export default class CollectionIndex extends Vue {
 
   head() {
     return {
-      title: '专栏_思趣'
+      title: '专栏-思趣网'
     }
   }
 

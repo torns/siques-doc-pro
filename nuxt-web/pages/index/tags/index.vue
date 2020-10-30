@@ -110,7 +110,7 @@ export default class TagsIndex extends Vue {
 
   head() {
     return {
-      title: '标签_思趣'
+      title: '标签-思趣网'
     }
   }
   taglist = []

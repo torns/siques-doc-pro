@@ -81,7 +81,7 @@ export default class Note extends Vue {
 
   head() {
     return {
-      title: `笔记_${this.note.title ? this.note.title : ''}`,
+      title: `${this.note.title ? this.note.title : ''}-思趣网`,
       meta: [
         {
           hid: 'og:description',

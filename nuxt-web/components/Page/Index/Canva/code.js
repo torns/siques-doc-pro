@@ -14,7 +14,11 @@ export default (window) => {
   if (w < 500) {
     CONNECT_DISTANCE = w * 0.17
     FORCE_DISTANCE = w * 0.3
+  } else if (w < 900) {
+    CONNECT_DISTANCE = w * 0.1
+    FORCE_DISTANCE = w * 0.18
   }
+
   const r = (n = 1) => Math.random() * n
   const PI = Math.PI
   const TAU = PI * 2
