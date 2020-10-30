@@ -1,9 +1,80 @@
 <template>
   <div :id="isHomepage ? 'home' : 'other'">
-    <div id="app" :style="$route.path.includes('/record') || $route.path.includes('/ask') ? 'overflow-y: hidden;height:100vh;' : ''">
-      <!-- <div style="height:3px;" class="bg-primary"></div> -->
-      <div id="menu" @click.stop :style="isHomepage ? '' : 'background-color:#ffffff;width:100%!important;'" :class="isHomepage ? 'menucover ' : 'fixed shadow-1'">
-        <el-menu
+    <div id="app">
+      <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed shadow-1') + ' w-100'">
+        <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
+          <li class="favicon xs-flex-1 d-flex ai-center point">
+            <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:40px;" />
+            <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:40px;" />
+          </li>
+          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
+            <router-link tag="span" to="/">主页</router-link>
+          </li>
+          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/collection' ? 'show_underline' : ''}`">
+            <router-link tag="span" to="/collection">专栏</router-link>
+          </li>
+          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/tags' ? 'show_underline' : ''}`">
+            <router-link tag="span" to="/tags">标签</router-link>
+          </li>
+
+          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/n' ? 'show_underline' : ''}`">
+            <router-link tag="span" to="/n">笔记</router-link>
+          </li>
+          <li class="nav-top-list__rightInfo">
+            <div class="d-flex ai-center">
+              <div class="write-hover mr-5">
+                <!-- <div class="  round_button inline-block mr-4 ">
+                  <div>写稿</div>
+                </div>
+                <div class="nav-bottom-list">
+                  <ul class="child-ul d-flex jc-center ai-center pt-1">
+                    <router-link tag="li" class="pr-3" to="/post">写文章</router-link>
+                    <router-link tag="li" to="/record">记笔记</router-link>
+                  </ul>
+                </div> -->
+                <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" class="xs">
+                  <!-- <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;">
+                    写稿
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                  </span> -->
+                  <div class="  round_button   ">
+                    <div>写稿</div>
+                  </div>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="/post">写文章</el-dropdown-item>
+                    <el-dropdown-item command="/record">记笔记</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+
+              <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" v-if="$store.state.UserNotExist == false" class="xs">
+                <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">
+                  <span>
+                    <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
+                      <img
+                        v-if="this.$store.state.auth.user.avator[0] != null && this.$store.state.auth.user.avator[0].url !== null"
+                        :src="this.$store.state.auth.user.avator[0].url"
+                        style="background-color:white;"
+                      />
+
+                      <img v-else src="~/static/avator.jpg" /> </el-avatar
+                  ></span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="/u">
+                    <span>
+                      我的主页
+                    </span></el-dropdown-item
+                  >
+                  <el-dropdown-item command="/logout">退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </li>
+        </ul>
+
+        <!-- <el-menu
           ref="menu"
           :background-color="isHomepage ? 'transparent' : ''"
           :active-text-color="isHomepage ? '#ffffff' : ''"
@@ -13,7 +84,6 @@
           style="margin:0 auto;"
           router
         >
-          <!--  :text-color="isHomepage ? '#ffffff' : ''" -->
           <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
             <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:70%;" />
             <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:70%;" />
@@ -25,11 +95,7 @@
             </span>
           </el-menu-item>
 
-          <!-- <el-menu-item class="xm" index="/q">
-            <span class="fs-md">
-              <a href="/q" onclick="return false">问答</a>
-            </span>
-          </el-menu-item> -->
+  
 
           <el-menu-item class="xs" index="/collection">
             <span class="fs-md">
@@ -152,10 +218,10 @@
           <el-menu-item v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = false)">
             <el-link :underline="false">立即登录</el-link>
           </el-menu-item>
-          <!-- 
-          <el-menu-item >-->
+    
+       
           <el-button v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = true)" class="xm" type="primary">免费注册</el-button>
-          <!-- </el-menu-item> -->
+
 
           <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" class="xs">
             <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;">
@@ -165,11 +231,11 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="/post">写文章</el-dropdown-item>
               <el-dropdown-item command="/record">记笔记</el-dropdown-item>
-              <!-- <el-dropdown-item command="/ask">提问题</el-dropdown-item> -->
+             
             </el-dropdown-menu>
           </el-dropdown>
-        </el-menu>
-      </div>
+        </el-menu> -->
+      </nav>
 
       <div class="h-100">
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
@@ -196,22 +262,8 @@ import click from '~/plugins/click.js'
   components: { 'sq-navigation': navigation, 'sq-login': login }
 })
 export default class Home extends Vue {
-  async asyncData({ params, query, route, store }) {
+  asyncData({ params, query, route, store }) {
     const http = Vue.prototype.$http
-    const obj = {
-      common: { device_id: '8ac34b4467d5216b7a1246acbe59ff81', is_logout: false, open_id: '1300993557872119808', token: '231e104ad5ba85a2eabc31f6b0941b9986a4c6ff', vaildate_date: '1599059301' },
-      wids: [13408, 10618, 12135, 4684, 7461]
-    }
-    const res = await http.post(`http://pcwallpaper.zhhainiao.com/wallpaper/live/list/by/wids`, obj)
-    const list = []
-    // console.log(res)
-    for (let index = 0; index < res.data.data.length; index++) {
-      const e = res.data.data[index]
-      list.push({ url: e.preview_video })
-    }
-
-    store.commit('storeImageLinks', list)
-
     return {}
   }
 
@@ -330,8 +382,8 @@ export default class Home extends Vue {
   }
 
   changeMenu() {
-    const ref: any = this.$refs.menu
-    ref._computedWatchers.hoverBackground = null
+    // const ref: any = this.$refs.menu
+    // ref._computedWatchers.hoverBackground = null
   }
 
   handleCommand(command) {

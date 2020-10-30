@@ -8,9 +8,13 @@ export default (window) => {
   let h = (canvas.height = window.innerHeight * RESOLUTION - 200)
 
   const PARTICLE_COUNT = 150
-  const CONNECT_DISTANCE = w * 0.05
-  const FORCE_DISTANCE = w * 0.1
+  let CONNECT_DISTANCE = w * 0.05
+  let FORCE_DISTANCE = w * 0.1
 
+  if (w < 500) {
+    CONNECT_DISTANCE = w * 0.17
+    FORCE_DISTANCE = w * 0.3
+  }
   const r = (n = 1) => Math.random() * n
   const PI = Math.PI
   const TAU = PI * 2
