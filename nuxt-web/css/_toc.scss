@@ -1,0 +1,27 @@
+#post-toc.nav li {
+  // display: none;
+  a {
+    color: white;
+    &.toc-h1 {
+    }
+    &.toc-h2 {
+      padding-left: 15px;
+      font-size: 16px;
+    }
+    &.toc-h3 {
+      padding-left: 30px;
+      font-size: 14px;
+    }
+  }
+  &.active {
+    display: block !important;
+
+    a {
+      transition: all 0.25s ease 0ms;
+      color: #1abc9c;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

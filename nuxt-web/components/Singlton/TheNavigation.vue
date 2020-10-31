@@ -1,5 +1,5 @@
 <template>
-  <div id="navigation" class="visible-sm visible-xs animated fadeIn" style="position: fixed;z-index: 10;bottom: -2px;width:101vw">
+  <div v-if="!isHomepage" id="navigation" class="visible-sm visible-xs animated fadeIn" style="position: fixed;z-index: 10;bottom: -2px;width:101vw">
     <nav class="tabbar">
       <div>
         <input id="menu-1" type="radio" name="menu" checked />
@@ -52,14 +52,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 @Component({})
 export default class TheNavigation extends Vue {
-  navigation = [
-    { name: '首页', icon: 'home', link: '/' },
-    { name: '笔记', icon: 'book', link: '/n' },
-    { name: '专栏', icon: 'wpexplorer ', link: '/collection' },
-    { name: '标签', icon: 'tags', link: '/tags' },
-    { name: '回顶部', icon: 'level-up', link: 'top' }
-  ]
-
   get isHomepage() {
     return this.$route.path === '/'
   }

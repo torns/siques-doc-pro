@@ -23,7 +23,7 @@
                 <router-link :to="`/t/${tag.id}`" tag="div">{{ tag.name }}</router-link>
               </el-tag>
             </div>
-            <div id="post-content" v-scroll-spy v-highlight v-html="note.body" class="article lh-3 " style="min-height:300px;"></div>
+            <div id="post-content" v-highlight v-html="note.body" class="article lh-3 " style="min-height:300px;"></div>
           </div>
           <div>
             <el-button type="text">链接</el-button>
@@ -32,9 +32,9 @@
           <div class="text-center">
             <el-button @click="showBookmark(note.id)" type="plain">收藏</el-button>
           </div>
-          <div class="hidden-sm-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
+          <!-- <div class="hidden-sm-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
             <sq-toc></sq-toc>
-          </div>
+          </div> -->
         </el-col>
       </el-row>
       <!-- <sq-bookmark ref="reference"></sq-bookmark> -->
@@ -50,13 +50,13 @@ import mediumZoom from 'medium-zoom'
 import md from '../../../plugins/markdown'
 import { hljs } from '../../../plugins/utils.js'
 
-import toc from '~/components/Toc/PostToc.vue'
+// import toc from '~/components/Toc/PostToc.vue'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
 }
 @Component({
   components: {
-    'sq-toc': toc
+    // 'sq-toc': toc
   }
 })
 export default class Note extends Vue {

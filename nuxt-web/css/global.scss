@@ -8,7 +8,7 @@
 @import 'collection';
 @import 'tag.scss';
 @import 'menu.scss';
-
+@import 'toc.scss';
 // @import 'gitlab.scss';
 // reset
 // 防止自己撑大
@@ -675,13 +675,6 @@ a {
   filter: blur(5px);
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
 h2,
 h3,
 h4,
@@ -692,19 +685,19 @@ h6 {
   line-height: 1.5;
 }
 
-h1 {
-  // font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+// h1 {
+//   // font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
 
-  font-size: 1.6em;
+//   font-size: 1.6em;
 
-  font-weight: 600;
+//   font-weight: 600;
 
-  text-align: center;
+//   text-align: center;
 
-  margin-block-start: 0;
+//   margin-block-start: 0;
 
-  margin-block-end: 0;
-}
+//   margin-block-end: 0;
+// }
 
 .note_body {
   &:hover {

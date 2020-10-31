@@ -10,8 +10,6 @@ export default () => {
 
       top = $(document).scrollTop()
 
-      console.log(temp)
-      console.log(top)
       if (temp - top > 0) {
         // console.log('持续向上')
         $('#navigation').removeClass('animated fadeOut')
@@ -32,10 +30,10 @@ export default () => {
       }
     })
 
+    //================================ 目录生成相关
     var headers = $('#post-content').find('h1, h2, h3')
     var post_toc = $('#post-toc')
 
-    // var header_level = 'h1'
     // 生成目录
 
     for (let index = 0; index < headers.length; index++) {
@@ -52,45 +50,10 @@ export default () => {
       new_a.append(new_div)
 
       new_a.append('<span></span>')
+
       post_toc.append(new_a)
     }
 
     $('.sidebar nav   a').wrap('<li></li>')
-
-    // if ($('.mask').is(':visible')) {
-    //   $('.context').addClass('blur')
-    // } else {
-    //   $('.context').removeClass('blur')
-    // }
-
-    // var toc_position = $('#toc').offset().top
-    // var toc_width = $('#toc').width()
-    // var positon = null
-    // 滚动事件，修改目录部分的 position
-
-    // $(window).scroll(function() {
-    //   var toc = $('#toc')
-
-    //   var max = $(document).height()
-    //   var top = $(document).scrollTop()
-
-    //   var viewH = $(window).height()
-    //   var boxHeight = $('#toc').height()
-
-    //   var activeHeight = $('li.active')[0].offsetTop
-
-    //   if ($(window).scrollTop() >= toc_position + 238) {
-    //     if (viewH - activeHeight < 100) {
-    //       toc.css('top', viewH - activeHeight - 100)
-    //       positon = viewH - activeHeight - 100
-    //     } else {
-    //       toc.css('top', 0)
-    //       toc.css('position', 'fixed')
-    //     }
-    //   } else {
-    //     toc.css('top', '')
-    //     toc.css('position', '')
-    //   }
-    // })
   })
 }

@@ -41,33 +41,36 @@
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
         <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
           <div class="d-flex " style="flex-direction: row-reverse;">
-            <ul
-              class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
-              style="
+            <a href="#top">
+              <ul
+                class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
+                style="
     display: flex;"
-            >
-              <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
-                <i :class="`text-${link.alias == category ? 'white' : link.color} fa   fa-${link.icon}`"></i>
+              >
+                <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
+                  <i :class="`text-${link.alias == category ? 'white' : link.color} fa   fa-${link.icon}`"></i>
 
-                <span class="pl-1"> {{ link.name }}</span>
-              </li>
-              <div class="pl-3 py-2 xm ">技术频道</div>
-              <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
-                <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
-                <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
-                <span class="pl-1">{{ link.name }}</span>
-              </li>
-              <router-link :to="`/tags`" class="w-100 " tag="li">
-                <div class="pl-3   py-2 hover-2">
-                  <i class="fa fa-tag pr-1"></i>
-                  更多标签
-                </div>
-              </router-link>
-            </ul>
+                  <span class="pl-1"> {{ link.name }}</span>
+                </li>
+
+                <div class="pl-3 py-2 xm ">技术频道</div>
+                <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
+                  <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
+                  <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
+                  <span class="pl-1">{{ link.name }}</span>
+                </li>
+                <router-link :to="`/tags`" class="w-100 " tag="li">
+                  <div class="pl-3   py-2 hover-2">
+                    <i class="fa fa-tag pr-1"></i>
+                    更多标签
+                  </div>
+                </router-link>
+              </ul>
+            </a>
           </div>
         </el-col>
         <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
-          <sq-typer></sq-typer>
+          <sq-typer id="top"></sq-typer>
           <div>
             <div>
               <div class="pt-3">{{ name }}</div>

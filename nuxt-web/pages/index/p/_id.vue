@@ -71,6 +71,7 @@
                     </div>
                   </div>
 
+                  <!-- 滚动监听区域 -->
                   <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article "></div>
                   <div class="text-primary mt-3 fs-xs">
                     阅读：{{ post.views > 1000 ? (post.views / 1000).toFixed(1) + 'k' : post.views }}
@@ -91,6 +92,7 @@
                     </share-dialog>
                   
                   </div> -->
+
                   <div @click="showCommentPanel('comment')" class="d-flex jc-center pt-5">
                     <sq-replybtn :show="show"></sq-replybtn>
                   </div>
@@ -192,9 +194,9 @@
               </div>
             </div>
 
-            <div class="hidden-md-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
+            <!-- <div class="hidden-md-and-down pl-2 fixed  text-right" style="top:40%!important;right:2%;">
               <sq-toc></sq-toc>
-            </div>
+            </div> -->
           </el-col>
         </el-row>
       </div>
@@ -214,7 +216,10 @@
     ></sq-comment>
 
     <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
-    <sq-searchbtn></sq-searchbtn>
+    <!-- <sq-searchbtn></sq-searchbtn> -->
+    <sq-sidemenu>
+      <sq-toc></sq-toc>
+    </sq-sidemenu>
     <sq-footer></sq-footer>
   </div>
 </template>
@@ -231,6 +236,7 @@ import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 import toc from '~/components/Toc/PostToc.vue'
 import PostNavigation from '~/components/Page/Post/NaviToNextPost.vue'
 import commentPanel from '~/components/Base/BaseCommentPanel/index.vue'
+import sideMenu from '~/components/Page/Post/NaviSideMenu.vue'
 import SearchButton from '~/components/Page/Post/ButtonSearchAny.vue'
 import replyButton from '~/components/Page/Post/ButtonReplyPost.vue'
 import likeButton from '~/components/Page/Post/ButtonLikePost.vue'
@@ -240,6 +246,7 @@ const mediumzoom = () => {
 
 @Component({
   components: {
+    'sq-sidemenu': sideMenu,
     'sq-toc': toc,
     'sq-down': scrolldown,
     'sq-comment': commentPanel,
