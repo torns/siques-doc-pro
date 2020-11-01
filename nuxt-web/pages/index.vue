@@ -166,7 +166,7 @@
           <li class="favicon d-flex ai-center point">
             <img @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:36px;" />
           </li>
-          <li class="pr-3" @click="$route.push('/search')">
+          <li class="pr-3" @click="$router.push('/search')">
             <svg style="height:30px;width: 30px;">
               <use xlink:href="#searchIcon" />
             </svg>

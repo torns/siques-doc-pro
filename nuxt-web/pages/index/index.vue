@@ -8,7 +8,7 @@
             <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down "> </el-col>
             <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
               <div class=" d-flex jc-around header reTop" style="position: relative;">
-                <div style="width: 100%;max-width: 350px;">
+                <div style="width: 100%;max-width: 380px;">
                   <div class="text-white pb-3 text-center" style="font-size:32px">从思考, 到创造</div>
                   <div @click.stop>
                     <el-input v-model="search" @keyup.enter.native="dataSearch" size="medium" placeholder="搜索你喜欢的">
