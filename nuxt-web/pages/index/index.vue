@@ -8,10 +8,8 @@
             <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down "> </el-col>
             <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
               <div class=" d-flex jc-around header reTop" style="position: relative;">
-                <div>
-                  <div class="text-white pb-3 text-center" style="font-family: cursive;font-size:40px">
-                    思趣，发现思考的深度
-                  </div>
+                <div style="width: 100%;max-width: 350px;">
+                  <div class="text-white pb-3 text-center" style="font-size:32px">从思考, 到创造</div>
                   <div @click.stop>
                     <el-input v-model="search" @keyup.enter.native="dataSearch" size="medium" placeholder="搜索你喜欢的">
                       <el-button slot="append" @click="dataSearch">
@@ -40,7 +38,7 @@
     <div class="container" style="min-height: 100vh;">
       <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
         <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
-          <div class="d-flex " style="flex-direction: row-reverse;">
+          <div class=" xs d-flex " style="flex-direction: row-reverse;">
             <a href="#top">
               <ul
                 class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
@@ -82,7 +80,7 @@
                   <div class="d-flex ai-center jc-between">
                     <div class=" ">
                       <div>
-                        <router-link :to="`/p/${post.id}`" target="_blank" tag="a" class="text-dark-1 hoverlink point   fs-lg">{{ post.title }}</router-link>
+                        <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point   fs-lg">{{ post.title }}</router-link>
                       </div>
                       <div>
                         <el-tag v-for="tag in post.tags" :key="tag.id" effect="plain" size="mini" type="primary" class="mt-2 mr-2 hover-4 hover-2 point ">
@@ -118,7 +116,7 @@
                       </div>
                     </div>
                     <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
-                      <router-link :to="`/p/${post.id}`" target="_blank">
+                      <router-link :to="`/p/${post.id}`">
                         <el-image :src="post.cover" style="width: 140px; height: 90px" class="border-radius shadow-1 border-dash" fit="cover" lazy></el-image>
                       </router-link>
                     </div>
@@ -141,7 +139,37 @@
         </el-col>
       </el-row>
     </div>
-    <sq-footer :topBorder="true"></sq-footer>
+    <sq-extendBar v-if="$attrs.isMoreClick">
+      <div class="d-flex " style="flex-direction: row-reverse;">
+        <a href="#top">
+          <ul
+            class="text-left fs-xm  sq-leftside-link text-white flex-wrap"
+            style="
+    display: flex;"
+          >
+            <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
+              <i :class="`text-white fa   fa-${link.icon}`"></i>
+
+              <span class="pl-1"> {{ link.name }}</span>
+            </li>
+
+            <div class="pl-3 py-2 xm ">技术频道</div>
+            <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
+              <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
+              <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
+              <span class="pl-1">{{ link.name }}</span>
+            </li>
+            <router-link :to="`/tags`" class="w-100 " tag="li">
+              <div class="pl-3   py-2 hover-2">
+                <i class="fa fa-tag pr-1"></i>
+                更多标签
+              </div>
+            </router-link>
+          </ul>
+        </a>
+      </div>
+    </sq-extendBar>
+    <sq-footer :topBorder="true"> </sq-footer>
   </div>
 </template>
 
@@ -155,13 +183,15 @@ import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 import banner from '~/components/Page/Index/IndexBanner.vue'
 import typer from '~/components/Page/Index/IndexTyper.vue'
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
+import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
 @Component({
   components: {
     'sq-indexBar': sidebar,
     'sq-down': scrolldown,
     'sq-banner': banner,
     'sq-typer': typer,
-    'sq-holder': placeholder
+    'sq-holder': placeholder,
+    'sq-extendBar': extendBar
   }
 })
 export default class AppPage extends Vue {
@@ -361,6 +391,9 @@ export default class AppPage extends Vue {
   }
 
   async handleCategory(links: any) {
+    // this.$attrs.isMoreClick = 'false'
+    this.$emit('changeStatu', false)
+
     const { alias, name, listId, tag, taglist, sort, type } = links
     this.category = alias
     this.name = name

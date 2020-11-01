@@ -1,12 +1,13 @@
 <template>
   <div :id="isHomepage ? 'home' : 'other'">
     <div id="app">
-      <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' w-100'">
+      <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
           <li class="favicon xs-flex-1 d-flex ai-center point">
             <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:40px;" />
             <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:40px;" />
           </li>
+
           <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/">主页</router-link>
           </li>
@@ -74,45 +75,7 @@
           </li>
         </ul>
 
-        <!-- <el-menu
-          ref="menu"
-          :background-color="isHomepage ? 'transparent' : ''"
-          :active-text-color="isHomepage ? '#ffffff' : ''"
-          default-active="/"
-          class="d-flex jc-between ai-center container header-menu "
-          mode="horizontal"
-          style="margin:0 auto;"
-          router
-        >
-          <el-menu-item class="favicon xs-flex-1 d-flex ai-center">
-            <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:70%;" />
-            <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:70%;" />
-          </el-menu-item>
-
-          <el-menu-item class="xs" index="/">
-            <span style="font-weight:600" class="fs-md" to="/">
-              <a href="/" onclick="return false">主页</a>
-            </span>
-          </el-menu-item>
-
-  
-
-          <el-menu-item class="xs" index="/collection">
-            <span class="fs-md">
-              <a href="/collection" onclick="return false">专栏</a>
-            </span>
-          </el-menu-item>
-
-          <el-menu-item class="xs" index="/tags">
-            <span class="fs-md">
-              <a href="/tags" onclick="return false">标签</a>
-            </span>
-          </el-menu-item>
-          <el-menu-item class="xs" index="/n">
-            <span class="fs-md">
-              <a href="/n" onclick="return false">笔记</a>
-            </span>
-          </el-menu-item>
+        <!--
 
           <el-menu-item v-show="this.$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0" class="xm" style="padding-left:40px">
             <el-badge :value="hasNewMessage ? 'new' : null" class="item" type="primary">
@@ -190,56 +153,48 @@
               </el-popover>
             </el-badge>
           </el-menu-item>
-
-          <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" v-if="$store.state.UserNotExist == false" class="xs">
-            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">
-              <span>
-                <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
-                  <img
-                    v-if="this.$store.state.auth.user.avator[0] != null && this.$store.state.auth.user.avator[0].url !== null"
-                    :src="this.$store.state.auth.user.avator[0].url"
-                    style="background-color:white;"
-                  />
-
-                  <img v-else src="~/static/avator.jpg" /> </el-avatar
-              ></span>
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu>
-              <el-dropdown-item command="/u">
-                <span>
-                  我的主页
-                </span></el-dropdown-item
-              >
-              <el-dropdown-item command="/logout">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-
-          <el-menu-item v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = false)">
-            <el-link :underline="false">立即登录</el-link>
-          </el-menu-item>
-    
-       
-          <el-button v-if="$store.state.UserNotExist" @click="$store.commit('toggleLoginForm'), (isRegister = true)" class="xm" type="primary">免费注册</el-button>
-
-
-          <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" class="xs">
-            <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;">
-              写稿
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="/post">写文章</el-dropdown-item>
-              <el-dropdown-item command="/record">记笔记</el-dropdown-item>
-             
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-menu> -->
+        -->
       </nav>
+
+      <nav v-if="isHomepage" id="menu" style="display:none" @click.stop :class="(isHomepage ? '' : 'fixed') + ' visible-xs  w-100'">
+        <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center jc-between relative">
+          <li class="pl-3" @click="isMoreClick = !isMoreClick">
+            <svg style="height:30px;width: 30px;">
+              <use xlink:href="#settingsIcon" />
+            </svg>
+          </li>
+          <li class="favicon d-flex ai-center point">
+            <img @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:36px;" />
+          </li>
+          <li class="pr-3" @click="$route.push('/search')">
+            <svg style="height:30px;width: 30px;">
+              <use xlink:href="#searchIcon" />
+            </svg>
+          </li>
+        </ul>
+      </nav>
+
+      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" id="settingsIcon" fill="currentColor">
+          <path d="M159.744 101.888h217.6c51.2 0 76.8 25.6 76.8 76.8v217.6c0 51.2-25.6 76.8-76.8 76.8H159.744c-51.2 0-76.8-25.6-76.8-76.8V178.688c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
+          <path d="M750.592 71.68c136.704 0 204.8 68.096 204.8 204.8s-68.096 204.8-204.8 204.8-204.8-68.096-204.8-204.8c0-136.192 68.608-204.8 204.8-204.8z" fill="#997CD8" />
+          <path d="M652.8 581.12H870.4c51.2 0 76.8 25.6 76.8 76.8V875.52c0 51.2-25.6 76.8-76.8 76.8h-217.6c-51.2 0-76.8-25.6-76.8-76.8v-217.6c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
+          <path
+            d="M311.296 607.232L471.04 874.496c12.8 20.992 5.632 48.64-15.36 61.44-7.168 4.096-14.848 6.144-23.04 6.144H113.152c-24.576 0-45.056-19.968-45.056-44.544 0-8.192 2.048-15.872 6.144-23.04l159.744-267.264c12.8-20.992 39.936-28.16 61.44-15.36 6.656 3.584 12.288 8.704 15.872 15.36z"
+          />
+        </symbol>
+
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 -100 900 1200" id="searchIcon" fill="currentColor">
+          <circle cx="12" cy="12" r="1.5" />
+          <path
+            d="M799.117225 727.668111A446.399272 446.399272 0 0 0 896.675651 448.449169a51.046313 51.046313 0 1 0-102.165758 0 346.134953 346.134953 0 1 1-39.345152-160.525295 51.046313 51.046313 0 1 0 90.464597-47.462832 448.300711 448.300711 0 1 0-118.035456 558.730412c1.316381 1.828306 2.92529 3.58348 4.534199 5.19239l204.624044 204.624044a51.046313 51.046313 0 0 0 72.181534-72.181534l-204.624044-204.624043a51.558238 51.558238 0 0 0-5.119258-4.5342z"
+          />
+        </symbol>
+      </svg>
 
       <div class="h-100">
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
-        <router-view :key="$route.path"></router-view>
+        <router-view @changeStatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
         <!-- </transition> -->
       </div>
     </div>
@@ -276,6 +231,7 @@ export default class Home extends Vue {
 
   getScrollData = true
   isRegister: boolean = false
+  isMoreClick = false
   topRadio = 'message'
   search = ''
   userLetters = []

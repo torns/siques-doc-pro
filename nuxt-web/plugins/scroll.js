@@ -64,6 +64,7 @@ const install = (Vue, options) => {
     // el：指令所绑定的元素，可以用来直接操作 DOM。
 
     bind(el, binding, vnode) {
+      scrollSpyElements.length = 0
       for (let index = 0; index < el.children.length; index++) {
         const element = el.children[index]
         if (options.sectionSelector.includes(element.localName)) {
@@ -84,6 +85,7 @@ const install = (Vue, options) => {
 
   // curr是现在在激活的
   let curr = 0
+  // 前一个标题偏移
   let pre = 0
   function onScroll() {
     if (curr > scrollSpyElements.length - 1) {
@@ -140,14 +142,10 @@ const install = (Vue, options) => {
     }, 200)
   }
 
-  function findElements(container, selector) {
+  function findElements(el, selector) {
     if (!selector) {
-      return container.children
+      return el.children
     }
-
-    const elements = []
-
-    return elements
   }
 
   Vue.directive('scroll-spy-active', {

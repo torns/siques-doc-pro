@@ -139,7 +139,7 @@ export default {
     '@/plugins/global.ts',
     { src: '@/plugins/markdown', ssr: true },
     { src: '@/plugins/http', ssr: true },
-    { src: '@/plugins/toc', ssr: false },
+    { src: '@/plugins/scrollAnimate', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
 
     '@/plugins/nullSSRComponents.js',

@@ -129,9 +129,6 @@ li {
   }
   @media (min-width: 1200px) {
     width: 1140px;
-    .reTop {
-      top: 80%;
-    }
   }
 }
 
@@ -146,9 +143,6 @@ li {
   }
   @media (min-width: 1200px) {
     width: 820px;
-    .reTop {
-      top: 80%;
-    }
   }
 }
 
@@ -191,10 +185,6 @@ li {
   .xs-flex-wrap {
     flex-wrap: wrap;
   }
-
-  .reTop {
-    top: 40% !important;
-  }
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
@@ -213,18 +203,11 @@ li {
   .visible-md {
     display: block !important;
   }
-
-  .reTop {
-    top: 80%;
-  }
 }
 
 @media (max-width: 1200px) {
   .md {
     display: none !important;
-  }
-  .reTop {
-    top: 80%;
   }
 }
 
@@ -616,61 +599,6 @@ a {
   content: none !important;
 }
 
-// .el-menu--horizontal > .el-menu-item.is-active {
-//   border-bottom: none !important;
-// }
-
-// .el-menu--horizontal {
-//   border-bottom: none !important;
-// }
-
-#other #menu {
-  // opacity: 0;
-
-  display: none;
-}
-
-@keyframes hideMenu {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes showMenu {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-#other .showMenu {
-  display: block !important;
-  height: 60px !important;
-  transition: 0.5s all;
-  animation: showMenu 1s;
-  -moz-animation: showMenu 1s; /* Firefox */
-  -webkit-animation: showMenu 1s; /* Safari and Chrome */
-  -o-animation: showMenu 1s; /* Opera */
-  z-index: 10;
-}
-
-#other .hideMenu {
-  display: block !important;
-  opacity: 0;
-  // z-index: -10;
-  transition: 0.5s all;
-  height: 70px;
-  animation: hideMenu 1s;
-  -moz-animation: hideMenu 1s; /* Firefox */
-  -webkit-animation: hideMenu 1s; /* Safari and Chrome */
-  -o-animation: hideMenu 1s; /* Opera */
-}
-
 .blur {
   filter: blur(5px);
 }
@@ -729,4 +657,8 @@ h6 {
 
 .canavas {
   width: 100%;
+}
+
+.reTop {
+  top: calc(50vh - 237px);
 }

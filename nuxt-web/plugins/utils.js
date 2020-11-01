@@ -81,27 +81,6 @@ export function hljs() {
           .replace(/\n/g, '</li><li>') +
         '\n</li></ul>'
     )
-    // console.log($(this).html())
-    // 给指定行增加样式
-    // try {
-    //   var line = $(this)
-    //     .attr('class')
-    //     .match(/\d+/g)
-
-    //   // var line2 = $(this)
-    //   //   .attr('class')
-    //   //   .split('hljs ')[1]
-    //   // console.log(line2)
-    //   for (let i in line) {
-    //     $(this)
-    //       .children()
-    //       .children()
-    //       .eq(line[i] - 1)
-    //       .addClass('selected')
-    //   }
-    // } catch (err) {
-    //   throw err
-    // }
   })
   // 去掉最后一行的空行
   $('code ul li:last-child').remove()

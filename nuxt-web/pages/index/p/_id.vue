@@ -72,7 +72,7 @@
                   </div>
 
                   <!-- 滚动监听区域 -->
-                  <div id="post-content" v-scroll-spy v-if="post.body" v-html="post.body" v-highlight class="article "></div>
+                  <div id="post-content" v-scroll-spy v-html="post.body" v-highlight class="article "></div>
                   <div class="text-primary mt-3 fs-xs">
                     阅读：{{ post.views > 1000 ? (post.views / 1000).toFixed(1) + 'k' : post.views }}
                     <span>.</span>
@@ -231,13 +231,15 @@ import mediumZoom from 'medium-zoom'
 
 import { hljs } from '../../../plugins/utils.js'
 import md from '../../../plugins/markdown.js'
+import tocjs from '~/plugins/toc.js'
 import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 
 import toc from '~/components/Toc/PostToc.vue'
+
 import PostNavigation from '~/components/Page/Post/NaviToNextPost.vue'
 import commentPanel from '~/components/Base/BaseCommentPanel/index.vue'
 import sideMenu from '~/components/Page/Post/NaviSideMenu.vue'
-import SearchButton from '~/components/Page/Post/ButtonSearchAny.vue'
+// import SearchButton from '~/components/Page/Post/ButtonSearchAny.vue'
 import replyButton from '~/components/Page/Post/ButtonReplyPost.vue'
 import likeButton from '~/components/Page/Post/ButtonLikePost.vue'
 const mediumzoom = () => {
@@ -252,7 +254,6 @@ const mediumzoom = () => {
     'sq-comment': commentPanel,
     'sq-navigation': PostNavigation,
     'sq-replybtn': replyButton,
-    'sq-searchbtn': SearchButton,
     'sq-likebtn': likeButton
   }
 })
@@ -270,9 +271,7 @@ export default class Post extends Vue {
     }
     res.data.body = md.render(res.data.body)
 
-    const link = `/posts/all?random=true&limit=2&type=post`
-    const res1 = await http.get(link)
-    console.log(res1.data)
+    const res1 = await http.get(`/posts/all?random=true&limit=2&type=post`)
 
     // const res2 = await http.get(`collections/1/recommend`)
 
@@ -375,6 +374,7 @@ export default class Post extends Vue {
   initPost() {
     this.$nextTick(() => {
       hljs()
+      tocjs()
       mediumzoom()
     })
   }

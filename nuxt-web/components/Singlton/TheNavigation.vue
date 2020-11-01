@@ -7,41 +7,41 @@
           <svg>
             <use xlink:href="#messageIcon" />
           </svg>
-          <span>首页</span>
+          <span></span>
         </label>
-        <input id="menu-2" type="radio" name="menu" :checked="$route.path == '/collection'" />
-        <label @click="$router.push('/collection')" for="menu-2">
-          <svg>
+        <input />
+        <label @click="$router.push('/')">
+          <!-- <svg>
             <use xlink:href="#imageIcon" />
-          </svg>
-          <span>专栏</span>
+          </svg> -->
+          <img style="height:30px" src="~/static/banner1.png" alt="banner" />
+          <!-- <span>主页</span> -->
         </label>
-        <input id="menu-3" type="radio" name="menu" :checked="$route.path == '/n'" />
-        <label @click="$router.push('/n')" for="menu-3">
+        <input id="menu-3" type="radio" name="menu" />
+        <label @click="$router.push('/search')" for="menu-3">
           <svg>
-            <use xlink:href="#settingsIcon" />
+            <use xlink:href="#searchIcon" />
           </svg>
-          <span>笔记</span>
+          <span></span>
         </label>
         <span></span>
       </div>
     </nav>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="messageIcon" fill="currentColor">
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" id="messageIcon" fill="currentColor">
+        <path d="M159.744 101.888h217.6c51.2 0 76.8 25.6 76.8 76.8v217.6c0 51.2-25.6 76.8-76.8 76.8H159.744c-51.2 0-76.8-25.6-76.8-76.8V178.688c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
+        <path d="M750.592 71.68c136.704 0 204.8 68.096 204.8 204.8s-68.096 204.8-204.8 204.8-204.8-68.096-204.8-204.8c0-136.192 68.608-204.8 204.8-204.8z" fill="#997CD8" />
+        <path d="M652.8 581.12H870.4c51.2 0 76.8 25.6 76.8 76.8V875.52c0 51.2-25.6 76.8-76.8 76.8h-217.6c-51.2 0-76.8-25.6-76.8-76.8v-217.6c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
         <path
-          d="M19.07 4.93a10 10 0 0 0-16.28 11 1.06 1.06 0 0 1 .09.64L2 20.8a1 1 0 0 0 .27.91A1 1 0 0 0 3 22h.2l4.28-.86a1.26 1.26 0 0 1 .64.09 10 10 0 0 0 11-16.28zM8 13a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm4 0a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm4 0a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"
+          d="M311.296 607.232L471.04 874.496c12.8 20.992 5.632 48.64-15.36 61.44-7.168 4.096-14.848 6.144-23.04 6.144H113.152c-24.576 0-45.056-19.968-45.056-44.544 0-8.192 2.048-15.872 6.144-23.04l159.744-267.264c12.8-20.992 39.936-28.16 61.44-15.36 6.656 3.584 12.288 8.704 15.872 15.36z"
         />
       </symbol>
-      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="imageIcon" fill="currentColor">
-        <path
-          d="M18 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3zM8 7a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 8 7zm11 10.83A1.09 1.09 0 0 1 18 19H6l7.57-6.82a.69.69 0 0 1 .93 0l4.5 4.48z"
-        />
-      </symbol>
-      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="settingsIcon" fill="currentColor">
+
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 -100 900 1200" id="searchIcon" fill="currentColor">
         <circle cx="12" cy="12" r="1.5" />
         <path
-          d="M21.89 10.32L21.1 7.8a2.26 2.26 0 0 0-2.88-1.51l-.34.11a1.74 1.74 0 0 1-1.59-.26l-.11-.08a1.76 1.76 0 0 1-.69-1.43v-.28a2.37 2.37 0 0 0-.68-1.68 2.26 2.26 0 0 0-1.6-.67h-2.55a2.32 2.32 0 0 0-2.29 2.33v.24a1.94 1.94 0 0 1-.73 1.51l-.13.1a1.93 1.93 0 0 1-1.78.29 2.14 2.14 0 0 0-1.68.12 2.18 2.18 0 0 0-1.12 1.33l-.82 2.6a2.34 2.34 0 0 0 1.48 2.94h.16a1.83 1.83 0 0 1 1.12 1.22l.06.16a2.06 2.06 0 0 1-.23 1.86 2.37 2.37 0 0 0 .49 3.3l2.07 1.57a2.25 2.25 0 0 0 1.35.43A2 2 0 0 0 9 22a2.25 2.25 0 0 0 1.47-1l.23-.33a1.8 1.8 0 0 1 1.43-.77 1.75 1.75 0 0 1 1.5.78l.12.17a2.24 2.24 0 0 0 3.22.53L19 19.86a2.38 2.38 0 0 0 .5-3.23l-.26-.38A2 2 0 0 1 19 14.6a1.89 1.89 0 0 1 1.21-1.28l.2-.07a2.36 2.36 0 0 0 1.48-2.93zM12 15.5a3.5 3.5 0 1 1 3.5-3.5 3.5 3.5 0 0 1-3.5 3.5z"
+          d="M799.117225 727.668111A446.399272 446.399272 0 0 0 896.675651 448.449169a51.046313 51.046313 0 1 0-102.165758 0 346.134953 346.134953 0 1 1-39.345152-160.525295 51.046313 51.046313 0 1 0 90.464597-47.462832 448.300711 448.300711 0 1 0-118.035456 558.730412c1.316381 1.828306 2.92529 3.58348 4.534199 5.19239l204.624044 204.624044a51.046313 51.046313 0 0 0 72.181534-72.181534l-204.624044-204.624043a51.558238 51.558238 0 0 0-5.119258-4.5342z"
         />
       </symbol>
     </svg>
@@ -76,7 +76,7 @@ export default class TheNavigation extends Vue {
   --icon-inactive: #6c7486;
   --icon-hover: #99a3ba;
   --text: #000000;
-  --circle: #e4ecfa;
+  --circle: #ffffff;
   --background: #ffffff;
   --shadow: rgba(18, 22, 33, 0.1);
   // border-radius: 0 0 12px 12px;
