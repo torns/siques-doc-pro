@@ -139,7 +139,7 @@
         </el-col>
       </el-row>
     </div>
-    <sq-extendBar v-if="$attrs.isMoreClick">
+    <sq-extendBar :statu="$attrs.isMoreClick" v-if="$attrs.isMoreClick">
       <div class="d-flex " style="flex-direction: row-reverse;">
         <a href="#top">
           <ul

@@ -35,7 +35,7 @@ export default class NaviSideMenu extends Vue {
   position: fixed;
   left: 0;
   bottom: 10%;
-  z-index: 100;
+  z-index: 1;
 }
 
 .side-menu nav {

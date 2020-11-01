@@ -16,12 +16,12 @@ export default () => {
 
       if (temp - top > 0) {
         // console.log('持续向上')
-        $('#navigation').removeClass('animated fadeOut')
-        $('#navigation').addClass('animated fadeIn')
+        $('#navigation').removeClass('animated fadeOut show')
+        $('#navigation').addClass('animated fadeIn show')
       } else {
         // console.log('持续向下')
-        $('#navigation').removeClass('animated fadeIn')
-        $('#navigation').addClass('animated fadeOut')
+        $('#navigation').removeClass('animated fadeIn hide')
+        $('#navigation').addClass('animated fadeOut show')
       }
 
       // console.log(top)
