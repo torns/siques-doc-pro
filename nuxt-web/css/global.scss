@@ -49,13 +49,17 @@ body {
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overflow-x: hidden;
+  overflow: auto;
   box-sizing: border-box;
   flex-wrap: wrap;
   word-break: break-all;
   :focus {
     outline: none;
   }
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .page-enter-active,

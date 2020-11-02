@@ -1,5 +1,5 @@
 <template>
-  <div :style="`${isMoreClick ? 'overflow-y: hidden!important;' : ''}`" :id="isHomepage ? 'home' : 'other'">
+  <div :style="`${isMoreClick ? 'overflow-y: hidden;' : ''}`" :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
@@ -271,11 +271,11 @@ export default class Home extends Vue {
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
-      document.getElementsByTagName('body')[0].setAttribute('style', 'overflow-y:hidden!important')
+      document.getElementsByTagName('body')[0].setAttribute('style', 'overflow-y:hidden')
+      document.documentElement.style.overflow = 'hidden'
     } else {
-      if (document.getElementsByTagName('body')[0].getAttribute('style') != null) {
-        document.getElementsByTagName('body')[0].removeAttribute('style')
-      }
+      document.getElementsByTagName('body')[0].removeAttribute('style')
+      document.documentElement.style.overflow = 'auto'
     }
   }
 
@@ -481,7 +481,7 @@ export default class Home extends Vue {
 
 #home {
   overflow-y: auto;
-  // overflow-x: hidden !important;
+  overflow-x: hidden !important;
   height: 100vh;
 }
 </style>
