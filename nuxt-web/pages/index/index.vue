@@ -120,9 +120,10 @@
     </div>
 
     <!-- 首页的导航栏 -->
-    <sq-extendBar v-if="$attrs.isMoreClick" :statu="$attrs.isMoreClick">
+    <sq-extendBar @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick">
       <a href="#top">
         <!-- 首页左侧边栏 -->
+
         <sq-leftBar textColor="white" color="text-white" :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
       </a>
     </sq-extendBar>
@@ -244,7 +245,7 @@ export default class AppPage extends Vue {
 
   async handleCategory(links: any) {
     // 改变父组件状态
-    this.$emit('changeStatu', false)
+    this.$emit('changestatu', false)
 
     const { alias, name, listId, tag, taglist, sort, type } = links
     this.category = alias

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isRegister ? '注册' : '登录'" :visible="$store.state.loginFormVisible" @close="closeLoginForm" custom-class="login" style="margin: 0 auto" width="90%">
+  <el-dialog id="login" :title="isRegister ? '注册' : '登录'" :visible="$store.state.loginFormVisible" @close="closeLoginForm" custom-class="login" style="margin: 0 auto" width="90%">
     <div>
       <el-form ref="RegisterDto" v-show="isRegister" :model="RegisterDto" :rules="rules" status-icon>
         <el-form-item :label-width="formLabelWidth" class="pb-2" label="你的名字" prop="name">
@@ -353,7 +353,7 @@ export default class Login extends Vue {
 <style lang="scss">
 //登录相关
 
-.el-form {
+#login .el-form {
   width: 290px !important;
   margin: 0 auto;
   input {
@@ -361,24 +361,24 @@ export default class Login extends Vue {
   }
 }
 
-.login {
+#login .login {
   max-width: 400px;
 }
 
-.el-form-item__label {
+#login .el-form-item__label {
   line-height: 20px !important;
 }
-.el-dialog__header {
+#login .el-dialog__header {
   background-color: whitesmoke;
 }
-.el-form-item {
+#login .el-form-item {
   margin-bottom: 10px !important;
 }
-.dialog-footer .el-button {
+#login .dialog-footer .el-button {
   padding: 9px 0 !important;
   width: 290px !important;
 }
-.el-dialog__body {
+#login .el-dialog__body {
   padding: 30px 20px 50px 20px;
 }
 </style>

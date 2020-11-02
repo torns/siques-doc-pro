@@ -1,5 +1,5 @@
 <template>
-  <div :style="isMoreClick ? 'overflow-y:hidden!important;position:fixed' : ''" :id="isHomepage ? 'home' : 'other'">
+  <div :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
@@ -210,13 +210,18 @@
       <div class="h-100">
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
         <!-- 页面视图 -->
-        <router-view @changeStatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
+        <router-view @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
         <!-- </transition> -->
       </div>
     </div>
 
     <!-- 其它页面的底部导航栏 -->
-    <sq-navigation @changestatu="isMoreClick = !isMoreClick" :isMoreClick="isMoreClick"></sq-navigation>
+    <sq-navigation @open="isMoreClick = true" :isMoreClick="isMoreClick">
+      <sq-extendBar color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
+        <!-- 其它页面的弹出栏 -->
+        <div>测试</div>
+      </sq-extendBar>
+    </sq-navigation>
 
     <!-- 首页的登录弹窗 -->
     <div @click.stop>
@@ -231,9 +236,9 @@ import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import navigation from '~/components/Singlton/TheNavigation.vue'
 import login from '~/components/Dialog/UserLogin.vue'
 import click from '~/plugins/click.js'
-
+import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
 @Component({
-  components: { 'sq-navigation': navigation, 'sq-login': login }
+  components: { 'sq-navigation': navigation, 'sq-login': login, 'sq-extendBar': extendBar }
 })
 export default class Home extends Vue {
   asyncData({ params, query, route, store }) {

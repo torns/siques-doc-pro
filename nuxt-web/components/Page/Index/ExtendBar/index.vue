@@ -1,24 +1,27 @@
 <template>
-  <div class="extend-bar">
+  <el-dialog :style="`background:${color};`" :append-to-body="true" id="extend-bar" :visible.sync="$attrs.statu" fullscreen :before-close="handleClose">
     <slot></slot>
-  </div>
+  </el-dialog>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 @Component({})
-export default class ExtendBar extends Vue {}
+export default class ExtendBar extends Vue {
+  @Prop({
+    type: String,
+    default: 'black'
+  })
+  color
+
+  handleClose() {
+    this.$emit('handleClose')
+  }
+}
 </script>
 
-<style lang="scss" scoped>
-.extend-bar {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 55px;
-  left: 0;
-  z-index: 100;
-  color: white;
-  background-color: black;
+<style lang="scss">
+#extend-bar .el-dialog {
+  background: none;
 }
 </style>
