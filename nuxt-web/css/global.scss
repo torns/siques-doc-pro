@@ -34,9 +34,9 @@
 }
 
 //重置图标大小？
-.svg-inline--fa {
-  width: auto !important;
-}
+// .svg-inline--fa {
+//   width: auto !important;
+// }
 
 //界面防抖
 html,
@@ -48,6 +48,7 @@ body {
   font-family: 'EB Garamond', 'Noto Serif SC', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
+  // 流畅的滚动
   -webkit-overflow-scrolling: touch;
   overflow: auto;
   box-sizing: border-box;
@@ -71,6 +72,7 @@ body {
   opacity: 0;
 }
 
+// 首页搜索输入框
 .header input {
   background-color: rgba(0, 0, 0, 0.1);
 }

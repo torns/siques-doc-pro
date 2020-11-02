@@ -1,5 +1,5 @@
 <template>
-  <div :style="`${isMoreClick ? 'overflow-y: hidden;' : ''}`" :id="isHomepage ? 'home' : 'other'">
+  <div :style="`${isMoreClick ? 'overflow: hidden;' : ''}`" :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
@@ -271,7 +271,7 @@ export default class Home extends Vue {
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
-      document.getElementsByTagName('body')[0].setAttribute('style', 'overflow-y:hidden')
+      document.getElementsByTagName('body')[0].setAttribute('style', 'overflow:hidden;position:fixed;')
       document.documentElement.style.overflow = 'hidden'
     } else {
       document.getElementsByTagName('body')[0].removeAttribute('style')
@@ -437,20 +437,6 @@ export default class Home extends Vue {
   padding-left: 10px !important;
 }
 
-#home .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
-#home .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-  color: #009a61;
-}
-
-.el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
-.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-  color: #009a61;
-}
-
-#home .el-menu--horizontal > .el-menu-item {
-  color: #ffffff;
-}
-
 .el-popover {
   &.message {
     height: 440px !important;
@@ -477,11 +463,5 @@ export default class Home extends Vue {
 
 .el-menu.el-menu--horizontal {
   border-bottom: none !important;
-}
-
-#home {
-  overflow-y: auto;
-  overflow-x: hidden !important;
-  height: 100vh;
 }
 </style>

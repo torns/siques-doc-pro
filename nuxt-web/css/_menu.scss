@@ -58,6 +58,12 @@
   }
 }
 
+#home {
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  height: 100vh;
+}
+
 #menu {
   color: white;
   background-color: #000000;
