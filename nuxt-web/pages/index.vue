@@ -1,5 +1,5 @@
 <template>
-  <div :id="isHomepage ? 'home' : 'other'">
+  <div :style="`${isMoreClick ? 'overflow-y: hidden!important;' : ''}`" :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
@@ -216,8 +216,15 @@
     </div>
 
     <!-- 其它页面的底部导航栏 -->
-    <sq-navigation @open="isMoreClick = true" :isMoreClick="isMoreClick">
-      <sq-extendBar color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
+    <sq-navigation
+      @changestatu="
+        (t) => {
+          isMoreClick = t
+        }
+      "
+      :isMoreClick="isMoreClick"
+    >
+      <sq-extendBar extension="bottom: 48px;" color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
         <!-- 其它页面的弹出栏 -->
         <div>测试</div>
       </sq-extendBar>
@@ -240,6 +247,7 @@ import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
 @Component({
   components: { 'sq-navigation': navigation, 'sq-login': login, 'sq-extendBar': extendBar }
 })
+/* eslint-disable */
 export default class Home extends Vue {
   asyncData({ params, query, route, store }) {
     const http = Vue.prototype.$http
@@ -259,6 +267,17 @@ export default class Home extends Vue {
   topRadio = 'message'
   search = ''
   userLetters = []
+
+  @Watch('isMoreClick')
+  isMoreClicked(newval: any, oldval: any) {
+    if (newval) {
+      document.getElementsByTagName('body')[0].setAttribute('style', 'overflow-y:hidden!important')
+    } else {
+      if (document.getElementsByTagName('body')[0].getAttribute('style') != null) {
+        document.getElementsByTagName('body')[0].removeAttribute('style')
+      }
+    }
+  }
 
   @Watch('isRegister')
   isStatuChnanged(newval: any, oldval: any) {
@@ -462,7 +481,7 @@ export default class Home extends Vue {
 
 #home {
   overflow-y: auto;
-  overflow-x: hidden !important;
+  // overflow-x: hidden !important;
   height: 100vh;
 }
 </style>

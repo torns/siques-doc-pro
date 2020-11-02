@@ -120,7 +120,7 @@
     </div>
 
     <!-- 首页的导航栏 -->
-    <sq-extendBar @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick">
+    <sq-extendBar extension="top: 55px;" @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick">
       <a href="#top">
         <!-- 首页左侧边栏 -->
 

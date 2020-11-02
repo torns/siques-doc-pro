@@ -4,13 +4,13 @@
     <div id="navigation" class="visible-sm visible-xs bg-white" style=" z-index: 2;position: fixed;bottom:-2px;width:101vw">
       <nav class="tabbar">
         <div class="d-flex jc-between ai-center h-100">
-          <label v-if="!isMoreClick" class="pl-3 point" @click="$emit('open')" for="menu-1">
+          <label v-if="!isMoreClick" class="pl-3 point" @click="$emit('changestatu', true)" for="menu-1">
             <svg>
               <use xlink:href="#settingsIcon" />
             </svg>
           </label>
 
-          <li v-else class="pl-3 point" @click="$emit('open')">
+          <li v-else class="pl-3 point" @click="$emit('changestatu', false)">
             <svg style="height:25px;width: 25px;">
               <use xlink:href="#offsIcon" />
             </svg>

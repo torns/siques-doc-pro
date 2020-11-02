@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :style="`background:${color};`" :append-to-body="true" id="extend-bar" :visible.sync="$attrs.statu" fullscreen :before-close="handleClose">
+  <el-dialog :modal="false" :lock-scroll="true" :style="`background:${color};${extension}`" :append-to-body="true" id="extend-bar" :visible.sync="$attrs.statu" fullscreen :before-close="handleClose">
     <slot></slot>
   </el-dialog>
 </template>
@@ -13,6 +13,12 @@ export default class ExtendBar extends Vue {
     default: 'black'
   })
   color
+
+  @Prop({
+    type: String,
+    default: ''
+  })
+  extension
 
   handleClose() {
     this.$emit('handleClose')
