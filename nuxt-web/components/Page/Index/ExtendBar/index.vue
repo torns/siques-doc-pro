@@ -12,7 +12,7 @@ export default class ExtendBar extends Vue {}
 
 <style lang="scss" scoped>
 .extend-bar {
-  width: 100vh;
+  width: 100vw;
   height: 100vh;
   position: absolute;
   top: 55px;

@@ -40,30 +40,8 @@
         <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
           <div class=" xs d-flex " style="flex-direction: row-reverse;">
             <a href="#top">
-              <ul
-                class="text-left fs-xm  sq-leftside-link text-gray-1 flex-wrap"
-                style="
-    display: flex;"
-              >
-                <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
-                  <i :class="`text-${link.alias == category ? 'white' : link.color} fa   fa-${link.icon}`"></i>
-
-                  <span class="pl-1"> {{ link.name }}</span>
-                </li>
-
-                <div class="pl-3 py-2 xm ">技术频道</div>
-                <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
-                  <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
-                  <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
-                  <span class="pl-1">{{ link.name }}</span>
-                </li>
-                <router-link :to="`/tags`" class="w-100 " tag="li">
-                  <div class="pl-3   py-2 hover-2">
-                    <i class="fa fa-tag pr-1"></i>
-                    更多标签
-                  </div>
-                </router-link>
-              </ul>
+              <!-- 首页左侧边栏 -->
+              <sq-leftBar :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
             </a>
           </div>
         </el-col>
@@ -135,40 +113,20 @@
         </el-col>
 
         <el-col :xs="0" :sm="6" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
-          <sq-indexBar></sq-indexBar>
+          <!-- 首页右-侧边栏 -->
+          <sq-rightBar></sq-rightBar>
         </el-col>
       </el-row>
     </div>
-    <sq-extendBar :statu="$attrs.isMoreClick" v-if="$attrs.isMoreClick">
-      <div class="d-flex " style="flex-direction: row-reverse;">
-        <a href="#top">
-          <ul
-            class="text-left fs-xm  sq-leftside-link text-white flex-wrap"
-            style="
-    display: flex;"
-          >
-            <li @click="handleCategory(link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
-              <i :class="`text-white fa   fa-${link.icon}`"></i>
 
-              <span class="pl-1"> {{ link.name }}</span>
-            </li>
-
-            <div class="pl-3 py-2 xm ">技术频道</div>
-            <li @click="handleCategory(link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
-              <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
-              <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
-              <span class="pl-1">{{ link.name }}</span>
-            </li>
-            <router-link :to="`/tags`" class="w-100 " tag="li">
-              <div class="pl-3   py-2 hover-2">
-                <i class="fa fa-tag pr-1"></i>
-                更多标签
-              </div>
-            </router-link>
-          </ul>
-        </a>
-      </div>
+    <!-- 首页的导航栏 -->
+    <sq-extendBar v-if="$attrs.isMoreClick" :statu="$attrs.isMoreClick">
+      <a href="#top">
+        <!-- 首页左侧边栏 -->
+        <sq-leftBar textColor="white" color="text-white" :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
+      </a>
     </sq-extendBar>
+
     <sq-footer :topBorder="true"> </sq-footer>
   </div>
 </template>
@@ -178,15 +136,18 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { listIntercep } from '../../plugins/utils.js'
 import fetchdata from '../../plugins/fetchdata'
-import sidebar from '~/components/Page/Index/SideBar/index.vue'
+import leftBar from '~/components/Page/Index/SideBar/leftWay.vue'
+import rightBar from '~/components/Page/Index/SideBar/rightWay.vue'
 import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 import banner from '~/components/Page/Index/IndexBanner.vue'
 import typer from '~/components/Page/Index/IndexTyper.vue'
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
 import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
+
 @Component({
   components: {
-    'sq-indexBar': sidebar,
+    'sq-leftBar': leftBar,
+    'sq-rightBar': rightBar,
     'sq-down': scrolldown,
     'sq-banner': banner,
     'sq-typer': typer,
@@ -251,115 +212,6 @@ export default class AppPage extends Vue {
     }
   }
 
-  links = [
-    {
-      name: '最近更新',
-      alias: 'new',
-      sort: 'created',
-      icon: 'lastfm',
-      color: 'dark'
-    },
-    {
-      name: '我的订阅',
-      taglist: this.taglists,
-      listId: true,
-      sort: 'liked',
-      icon: 'subscript',
-      color: 'dark'
-    },
-    {
-      name: '近期热门',
-      alias: 'hot',
-      sort: 'liked',
-      icon: 'fire-extinguisher',
-      color: 'dark'
-    }
-  ]
-
-  techChanel = [
-    {
-      name: '小视频',
-      alias: 'video',
-      sort: 'created',
-      fontawesome: true,
-      icon: 'fa-youtube-play',
-      color: 'red',
-      type: 'video'
-    },
-    {
-      name: '前端',
-      alias: 'frontEnd',
-      taglist: ['frontEnd'],
-      sort: 'created',
-      icon: 'js',
-      color: 'yellow-1'
-    },
-    {
-      name: '后端',
-      alias: 'backEnd',
-      taglist: ['cloudcomputing', 'database', 'server', 'JavaDev', 'backEnd'],
-      sort: 'created',
-      icon: 'storage',
-      color: 'blue-1'
-    },
-    {
-      name: '工具',
-      alias: 'tools',
-      taglist: ['tools'],
-      sort: 'created',
-      icon: 'tools',
-      color: 'blue'
-    },
-    {
-      name: 'Node',
-      alias: 'node',
-      tag: 'node.js',
-      sort: 'created',
-      icon: 'node-js',
-      color: 'blue'
-    },
-    {
-      name: 'Vue',
-      alias: 'vue',
-      tag: 'vue.js',
-      sort: 'created',
-      icon: 'vuejs',
-      color: 'green'
-    },
-    {
-      name: '小程序',
-      alias: 'miniProgram',
-      taglist: ['miniProgram'],
-      sort: 'created',
-      icon: 'xiaochengxu',
-      color: 'green'
-    },
-    {
-      name: 'Nuxt',
-      alias: 'nuxt.js',
-      tag: 'nuxt.js',
-      sort: 'created',
-      icon: 'nuxt-dot-js',
-      color: 'green'
-    },
-    {
-      name: 'Nest',
-      alias: 'nest.js',
-      tag: 'nest.js',
-      sort: 'created',
-      icon: 'file_type_nestjs',
-      color: 'red'
-    },
-    {
-      name: '行业',
-      alias: 'info',
-      tag: 'info',
-      sort: 'created',
-      icon: 'hangye',
-      color: 'yellow'
-    }
-  ]
-
   dataSearch() {
     this.$router.push(`/search/${this.search}`)
     this.search = ''
@@ -391,7 +243,7 @@ export default class AppPage extends Vue {
   }
 
   async handleCategory(links: any) {
-    // this.$attrs.isMoreClick = 'false'
+    // 改变父组件状态
     this.$emit('changeStatu', false)
 
     const { alias, name, listId, tag, taglist, sort, type } = links

@@ -1,5 +1,5 @@
 <template>
-  <div :style="isMoreClick ? 'overflow-y:hidden!important;position: fixed;' : ''" :id="isHomepage ? 'home' : 'other'">
+  <div :style="isMoreClick ? 'overflow-y:hidden!important;position:fixed' : ''" :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
@@ -209,12 +209,16 @@
 
       <div class="h-100">
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
+        <!-- 页面视图 -->
         <router-view @changeStatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
         <!-- </transition> -->
       </div>
     </div>
 
+    <!-- 其它页面的底部导航栏 -->
     <sq-navigation @changestatu="isMoreClick = !isMoreClick" :isMoreClick="isMoreClick"></sq-navigation>
+
+    <!-- 首页的登录弹窗 -->
     <div @click.stop>
       <sq-login ref="login" @click.stop></sq-login>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isHomepage" id="navigation" class="visible-sm visible-xs bg-white" style=" z-index: 1;position: fixed;bottom:-2px;width:101vw">
+  <div v-if="!isHomepage" id="navigation" class="visible-sm visible-xs bg-white" style=" z-index: 2;position: fixed;bottom:-2px;width:101vw">
     <nav class="tabbar">
       <div class="d-flex jc-between ai-center h-100">
         <label v-if="!isMoreClick" class="pl-3 point" @click="$emit('changestatu')" for="menu-1">
@@ -36,7 +36,7 @@
     </svg>
 
     <div v-if="isMoreClick" @touchmove.prevent class="extend-bar ">
-      <div class="point" @click="$router.push('/')">返回首页</div>
+      <div class="pl-3 py-2  ">技术频道</div>
     </div>
   </div>
 </template>
@@ -76,13 +76,13 @@ export default class TheNavigation extends Vue {
 }
 
 .extend-bar {
-  width: 100vh;
   height: 100vh;
+  width: 100vw;
   position: absolute;
   left: 0;
-  z-index: -1;
-  color: balck;
+  z-index: 0;
   background-color: white;
-  bottom: 5px;
+  bottom: 50px;
+  padding-top: 50px;
 }
 </style>
