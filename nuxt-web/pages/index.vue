@@ -210,7 +210,10 @@
       <div class="h-100">
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
         <!-- 页面视图 -->
-        <router-view @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
+
+        <keep-alive>
+          <router-view @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
+        </keep-alive>
         <!-- </transition> -->
       </div>
     </div>

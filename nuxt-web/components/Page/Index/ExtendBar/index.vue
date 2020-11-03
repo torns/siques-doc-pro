@@ -30,4 +30,8 @@ export default class ExtendBar extends Vue {
 #extend-bar .el-dialog {
   background: none;
 }
+
+#extend-bar .el-dialog__body {
+  height: 100vh;
+}
 </style>

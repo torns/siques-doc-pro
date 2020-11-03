@@ -56,8 +56,8 @@
               <ul style="overflow: auto;">
                 <div v-for="(post, $index) in posts" :key="$index" class="infinite-list-item pb-3">
                   <div class="d-flex ai-center jc-between">
-                    <div class=" ">
-                      <div>
+                    <div>
+                      <div class="title">
                         <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point   fs-lg">{{ post.title }}</router-link>
                       </div>
                       <div>
