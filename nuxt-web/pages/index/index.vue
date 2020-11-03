@@ -231,6 +231,7 @@ export default class AppPage extends Vue {
     this.page += 1
     let list = ''
     list = listIntercep(this.taglist)
+
     fetchdata({
       resource: `/posts/all`,
       page: this.page,
@@ -254,7 +255,7 @@ export default class AppPage extends Vue {
     this.taglist = taglist
     this.sort = sort
     this.page = 1
-    this.type = type
+    this.type = type ? type : 'post'
     this.count = 20
     let list = ''
     list = listIntercep(this.taglist)
@@ -265,6 +266,7 @@ export default class AppPage extends Vue {
       (taglist ? `&taglist=${list}` : '') +
       (listId ? `&listId=${listId}` : '') +
       (type ? `&type=${type}` : '&type=post')
+
     const res = await this.$http.get(link)
     this.total = res.data[1]
     this.posts = res.data[0]
