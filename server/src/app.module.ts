@@ -35,6 +35,8 @@ dotenv.config();
       host: process.env.TYPEORM_HOST,
       charset: 'utf8mb4',
       port: 3306,
+      // 真坑这里
+      timezone: '+8:00',
       username: 'nest',
       password: process.env.TYPEORM_PASSWORD,
       database: 'nest',

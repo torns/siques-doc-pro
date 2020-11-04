@@ -103,7 +103,7 @@
 
                         <div>
                           <i class="fa fa-calendar-check-o text-blue"></i>
-                          {{ $dayjs(post.created).format('YYYY年MM月DD日 HH:MM:ss') }}
+                          {{ $dayjs(post.created).format('YYYY年MM月DD日 HH:mm:ss') }}
                         </div>
                       </div>
                     </div>
@@ -241,9 +241,9 @@ export default class AppPage extends Vue {
     }
   }
 
-  recordScrollPosition(e) {
-    this.$store.commit('setScrollTop', { name: this.$route.path, top: e.target.scrollTop })
-  }
+  // recordScrollPosition(e) {
+  //   this.$store.commit('setScrollTop', { name: this.$route.path, top: e.target.scrollTop })
+  // }
 
   // debounce = _.debounce(this.recordScrollPosition, 10)
   homeTop
@@ -251,12 +251,13 @@ export default class AppPage extends Vue {
     // do something
     console.log('activated home')
     document.documentElement.scrollTop = this.homeTop || 0
+    document.body.scrollTop = this.homeTop || 0
   }
 
   beforeRouteLeave(to, from, next) {
     console.log('leave')
 
-    this.homeTop = document.documentElement.scrollTop || 0
+    this.homeTop = document.documentElement.scrollTop || document.body.scrollTop || 0
     next()
   }
 

@@ -367,11 +367,12 @@ export default class Home extends Vue {
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
-      this.scrollTop = document.documentElement.scrollTop
+      this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0
       document.getElementById('app').setAttribute('style', 'position:fixed;')
     } else {
       document.getElementById('app').removeAttribute('style')
       // 还原滚动距离
+      document.body.scrollTop = this.scrollTop
       document.documentElement.scrollTop = this.scrollTop
     }
   }

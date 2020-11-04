@@ -11,14 +11,14 @@
             >
               <div class="d-flex jc-between ai-baseline">
                 <div v-html="post.title" class="moment-title"></div>
-                <div style="white-space: nowrap;" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
+                <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
               <div class="moment-img">
                 <el-image
                   v-if="post.cover != null"
                   :src="post.cover[0]"
                   :preview-src-list="post.cover"
-                  style="width: 200px;"
+                  style="width: 200px"
                 >
                 </el-image>
               </div>
@@ -37,6 +37,7 @@
       </el-row>
 
       <div v-if="remain > 0" @click="onload" class="text-center point">点击查看更多热文</div>
+
       <div v-else class="text-center text-gray">我是有底线的</div>
     </div>
 
