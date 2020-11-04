@@ -65,8 +65,8 @@ export default class Moment extends Vue {
 
   posts
   total = 0
-  limit = 20
-  page = 1
+  limit: any = 20
+  page: any = 1
 
   get remain() {
     return this.total - this.page * this.limit
@@ -91,7 +91,7 @@ export default class Moment extends Vue {
       pageSize: this.limit,
       sort: 'created',
       type: 'tfNews',
-      body: 'true',
+      body: true,
       success: this.fetchDataSuccess
     })
   }

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isHomepage" v-infinite-scroll="load" class="infinite-list " infinite-scroll-disabled="disabled" infinite-scroll-distance="0">
+  <div v-if="isHomepage">
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
       <sq-banner
@@ -54,7 +54,7 @@
               <el-divider></el-divider>
 
               <ul style="overflow: auto;">
-                <div v-for="(post, $index) in posts" :key="$index" class="infinite-list-item pb-3">
+                <div v-for="(post, $index) in posts" :key="$index" class="pb-3">
                   <div class="d-flex ai-center jc-between">
                     <div>
                       <div class="title">
@@ -104,8 +104,11 @@
                 <div v-if="loading" class="my-3 text-primary fs-xl">
                   <sq-holder :count="8" :show="true"></sq-holder>
                 </div>
-                <div v-if="noMore" class="my-3 text-primary fs-sm">
-                  (ﾟ∀ﾟ )没有更多内容了
+                <div class="my-3 text-gray   text-center">
+                  <div v-if="noMore">
+                    我是有底线的
+                  </div>
+                  <div v-else @click="onload" class="point">点击查看更多热文</div>
                 </div>
               </ul>
             </div>
@@ -226,7 +229,7 @@ export default class AppPage extends Vue {
     }, 500)
   }
 
-  load() {
+  onload() {
     this.loading = true
     this.page += 1
     let list = ''
