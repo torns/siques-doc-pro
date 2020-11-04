@@ -30,10 +30,10 @@ export default class smallCat extends Vue {
   }
 
   beforeMount() {
-    this.init(this.pupils)
+    this.init()
   }
 
-  init(pupils: any) {
+  init() {
     document.addEventListener('mousemove', this.active)
   }
 

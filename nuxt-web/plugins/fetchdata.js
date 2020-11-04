@@ -3,7 +3,21 @@ import vue from 'vue'
 
 const http = vue.prototype.$http
 
-async function fetchData({ resource = '', page = 0, pageSize = '', search = '', sort = '', tags = null, taglist = '', type = '', success = (res) => {}, fail = () => {}, complete = () => {} }) {
+async function fetchData({
+  body = false,
+  avator = false,
+  resource = '',
+  page = 0,
+  pageSize = '',
+  search = '',
+  sort = '',
+  tags = null,
+  taglist = '',
+  type = '',
+  success = (res) => {},
+  fail = () => {},
+  complete = () => {}
+}) {
   const queryParams = {}
 
   if (page) queryParams.page = page
@@ -13,7 +27,8 @@ async function fetchData({ resource = '', page = 0, pageSize = '', search = '', 
   if (tags) queryParams.tags = tags
   if (taglist) queryParams.taglist = taglist
   if (type) queryParams.type = type
-
+  if (body) queryParams.body = body
+  if (avator) queryParams.avator = avator
   // eslint-disable-next-line no-undef
   const url = BuildUrl(process.env.API_URL, {
     path: resource,

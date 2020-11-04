@@ -162,6 +162,7 @@ export class PostService {
       order,
       random,
       avator,
+      body,
     } = options;
     // console.log(sort, tags, categories, taglist, type);
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
@@ -199,6 +200,10 @@ export class PostService {
       if (type == 'post') {
         queryBuilder.andWhere('post.isPublished =1');
       }
+    }
+
+    if (body) {
+      queryBuilder.addSelect('post.body');
     }
 
     const count = await queryBuilder.getCount();

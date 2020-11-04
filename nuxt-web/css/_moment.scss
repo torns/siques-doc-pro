@@ -1,0 +1,13 @@
+.moment_container {
+  margin-right: auto;
+  margin-left: auto;
+  @media (min-width: 768px) {
+    width: 600px;
+  }
+  @media (min-width: 992px) {
+    width: 700px;
+  }
+  @media (min-width: 1200px) {
+    width: 820px;
+  }
+}

@@ -188,5 +188,5 @@
   -moz-animation: hideMenu 1s; /* Firefox */
   -webkit-animation: hideMenu 1s; /* Safari and Chrome */
   -o-animation: hideMenu 1s; /* Opera */
-  z-index: 10 !important;
+  z-index: -1 !important;
 }

@@ -11,16 +11,21 @@
           <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/">主页</router-link>
           </li>
-          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/collection' ? 'show_underline' : ''}`">
+          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/collection' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/collection">专栏</router-link>
           </li>
-          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/tags' ? 'show_underline' : ''}`">
+          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/tags' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/tags">标签</router-link>
           </li>
 
-          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/n' ? 'show_underline' : ''}`">
+          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/n' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/n">笔记</router-link>
           </li>
+
+          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/moment' ? 'show_underline' : ''}`">
+            <router-link tag="span" to="/moment">24小时</router-link>
+          </li>
+
           <li class="nav-top-list__rightInfo">
             <div class="d-flex ai-center">
               <div class="write-hover mr-5">

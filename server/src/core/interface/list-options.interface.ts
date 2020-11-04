@@ -12,5 +12,6 @@ export interface ListOptionsInterface {
   collection: boolean;
   random: boolean;
   avator: boolean;
+  body: boolean;
   order: 'ASC' | 'DESC';
 }

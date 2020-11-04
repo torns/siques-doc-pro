@@ -3,4 +3,5 @@ export enum Posttype {
   QUESTION = 'question',
   NOTE = 'note',
   VIDEO = 'video',
+  TFNEWS = 'tfNews',
 }
