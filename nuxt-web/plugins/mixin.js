@@ -4,9 +4,7 @@ Vue.mixin({
   created: function() {},
 
   watch: {
-    $route: function() {
-      window.scrollTo(0, 0)
-    }
+    $route: async function() {}
   },
 
   methods: {}

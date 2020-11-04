@@ -79,6 +79,7 @@ const install = (Vue, options) => {
     inserted(el) {},
     componentUpdated(el, binding) {},
     unbind(el) {
+      scrollSpyElements.length = 0
       window.removeEventListener('scroll', onScroll)
     }
   })

@@ -7,6 +7,7 @@ export const state = () => ({
   selectedNoteBookId: '',
   selectedNoteId: '',
   time: 0,
+  routerScrollTop: {},
   tags: [],
   imageLinks: [],
   pageImages: [
@@ -19,6 +20,12 @@ export const state = () => ({
 })
 
 export const mutations = {
+  setScrollTop(state, data) {
+    const { name, top } = data
+
+    state.routerScrollTop[name] = top
+  },
+  // 后端返回验证码，这个乱来的，不可信
   setCode(state, data) {
     state.bakendCode = data
   },
@@ -137,6 +144,9 @@ export const getters = {}
 // 验证
 
 export const actions = {
+  getScrollTop({ state, commit }, data) {
+    return state.routerScrollTop[data]
+  },
   async toggleImage({ state, commit }, data) {
     let ins = data.index
     const path = data.path

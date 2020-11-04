@@ -217,7 +217,7 @@
         <!-- 页面视图 -->
 
         <keep-alive>
-          <router-view @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
+          <router-view style="overflow-x:hidden" @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
         </keep-alive>
         <!-- </transition> -->
       </div>
@@ -232,9 +232,48 @@
       "
       :isMoreClick="isMoreClick"
     >
-      <sq-extendBar extension="bottom: 48px;" color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
+      <sq-extendBar extension="bottom: 47px;" color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
         <!-- 其它页面的弹出栏 -->
-        <div>测试</div>
+        <div
+          class="point pb-2"
+          @click="
+            $router.push('/moment')
+
+            isMoreClick = false
+          "
+        >
+          24小时
+        </div>
+        <div
+          class="point pb-2"
+          @click="
+            $router.push('/collection')
+
+            isMoreClick = false
+          "
+        >
+          专栏
+        </div>
+        <div
+          class="point pb-2"
+          @click="
+            $router.push('/n')
+
+            isMoreClick = false
+          "
+        >
+          笔记
+        </div>
+        <div
+          class="point pb-2"
+          @click="
+            $router.push('/tags')
+
+            isMoreClick = false
+          "
+        >
+          标签
+        </div>
       </sq-extendBar>
     </sq-navigation>
 
@@ -269,21 +308,24 @@ export default class Home extends Vue {
     }
   }
 
-  getScrollData = true
   isRegister: boolean = false
   isMoreClick = false
   topRadio = 'message'
   search = ''
   userLetters = []
+  scrollTop = 0
 
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
+      // 将当前滚动记录先记录起来
+      this.$store.commit('setScrollTop', { name: this.$route.path, top: document.documentElement.scrollTop })
+      this.scrollTop = document.documentElement.scrollTop
       document.getElementById('app').setAttribute('style', 'position:fixed;')
-      // document.documentElement.style.overflow = 'hidden'
     } else {
       document.getElementById('app').removeAttribute('style')
-      // document.documentElement.style.overflow = 'auto'
+      // 还原滚动距离
+      document.documentElement.scrollTop = this.scrollTop
     }
   }
 

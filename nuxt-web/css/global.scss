@@ -51,16 +51,14 @@ body {
   scroll-behavior: smooth;
   // 流畅的滚动
   -webkit-overflow-scrolling: touch;
-  overflow: auto;
   box-sizing: border-box;
   flex-wrap: wrap;
-  word-break: break-all;
   :focus {
     outline: none;
   }
 }
 
-body {
+html {
   overflow-x: hidden;
 }
 

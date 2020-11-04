@@ -137,6 +137,7 @@ export default {
     { src: '@/plugins/element-ui', ssr: true },
     '@/plugins/directive',
     '@/plugins/global.ts',
+    '@/plugins/route.js',
     { src: '@/plugins/markdown', ssr: true },
     { src: '@/plugins/http', ssr: true },
     { src: '@/plugins/scrollAnimate', ssr: false },
@@ -188,6 +189,10 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+
+  router: {
+    middleware: ['scrollTop']
+  },
 
   auth: {
     redirect: {

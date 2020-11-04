@@ -59,9 +59,9 @@
 }
 
 #home {
-  overflow-y: auto;
-  overflow-x: hidden !important;
-  height: 100vh;
+  // overflow-y: auto;
+  // overflow-x: hidden !important;
+  // height: 100vh;
 }
 
 #menu {
@@ -70,9 +70,6 @@
 }
 
 #other {
-  // overflow-y: auto;
-  // overflow-x: hidden !important;
-  // height: 100vh;
   #menu {
     z-index: -1;
     color: #27282d;
