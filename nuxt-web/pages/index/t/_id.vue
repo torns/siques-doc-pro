@@ -7,18 +7,30 @@
         </h1>
         <div>{{ tagInfo.info.description }}</div>
       </div>
-      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
+      <sq-wave :background="`#00000000`" class="absolute" style="margin-top:-9em;width:100%;bottom:0;"></sq-wave>
     </div>
 
     <div>
-      <video style="height:115vh;object-fit: cover;width:100%;" autoplay loop muted playsinline src="https://shuxie.oss-accelerate.aliyuncs.com/public/t/cover1.mp4"></video>
+      <video
+        style="height:115vh;object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+        src="https://shuxie.oss-accelerate.aliyuncs.com/public/t/cover1.mp4"
+      ></video>
     </div>
 
     <div style="margin-top:-6em" class="note_container h-100 pt-4 px-3">
       <sq-pannel :data="posts"></sq-pannel>
     </div>
 
-    <sq-pagination :href="`${$route.path}?page=1`" @current-change="handleChange" :currentPage="currentPage" :maxLen="maxLen"></sq-pagination>
+    <sq-pagination
+      :href="`${$route.path}?page=1`"
+      @current-change="handleChange"
+      :currentPage="currentPage"
+      :maxLen="maxLen"
+    ></sq-pagination>
     <sq-footer></sq-footer>
   </div>
 </template>

@@ -10,7 +10,9 @@
             </div>
             <div class="d-flex ai-baseline text-gray">
               <div class="text-primary pr-2">
-                <router-link :to="`/u/${note.user.id}`" tag="div" class="point hoverlink">{{ note.user.name }}</router-link>
+                <router-link :to="`/u/${note.user.id}`" tag="div" class="point hoverlink">{{
+                  note.user.name
+                }}</router-link>
               </div>
               <div class="text-gray pr-2">{{ $dayjs(note.created).format('M月D日') }}发布</div>
               <div v-show="hasAccess" class="d-flex ai-baseline ">
@@ -19,7 +21,13 @@
               </div>
             </div>
             <div>
-              <el-tag v-for="(tag, index) in note.tags" :key="index" class="mr-2 mb-2 point hover-2" type="plain" size="mini">
+              <el-tag
+                v-for="(tag, index) in note.tags"
+                :key="index"
+                class="mr-2 mb-2 point hover-2"
+                type="plain"
+                size="mini"
+              >
                 <router-link :to="`/t/${tag.id}`" tag="div">{{ tag.name }}</router-link>
               </el-tag>
             </div>
@@ -102,7 +110,13 @@ export default class Note extends Vue {
   }
 
   get hasAccess(): any {
-    return this.$store.state.auth ? (this.$store.state.auth.user ? (this.$store.state.auth.user.id ? this.note.user.id === this.$store.state.auth.user.id : false) : false) : false
+    return this.$store.state.auth
+      ? this.$store.state.auth.user
+        ? this.$store.state.auth.user.id
+          ? this.note.user.id === this.$store.state.auth.user.id
+          : false
+        : false
+      : false
   }
 
   get id(): any {

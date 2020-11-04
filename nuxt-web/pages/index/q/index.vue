@@ -7,7 +7,12 @@
             <el-tab-pane label="最新问答" name="first">
               <div>
                 <ul>
-                  <li v-for="(question, index) in questions" :key="index" class="d-flex ai-center bg-light-1 " style="height:70px">
+                  <li
+                    v-for="(question, index) in questions"
+                    :key="index"
+                    class="d-flex ai-center bg-light-1 "
+                    style="height:70px"
+                  >
                     <div class="d-flex ai-center px-2 ">
                       <div class="pr-3 text-gray">
                         <div class="px-2 fs-xs">{{ question.liked }}</div>

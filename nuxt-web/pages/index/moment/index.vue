@@ -5,19 +5,28 @@
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div class="moment-data">今天</div>
           <div v-for="post in posts" :key="post.id" class="mb-5 moment-item-wrap moment-items relative">
-            <div class="moment-item" :style="`overflow: ${post.showMore ? 'auto' : 'hidden'};height:${post.showMore ? '100%' : '400px'};`">
+            <div
+              :style="`overflow: ${post.showMore ? 'auto' : 'hidden'};height:${post.showMore ? '100%' : '400px'};`"
+              class="moment-item"
+            >
               <div class="d-flex jc-between ai-baseline">
-                <div class="moment-title" v-html="post.title"></div>
+                <div v-html="post.title" class="moment-title"></div>
                 <div style="white-space: nowrap;" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
               <div class="moment-img">
-                <el-image style="width: 200px;" v-if="post.cover != null" :src="post.cover[0]" :preview-src-list="post.cover"> </el-image>
+                <el-image
+                  v-if="post.cover != null"
+                  :src="post.cover[0]"
+                  :preview-src-list="post.cover"
+                  style="width: 200px;"
+                >
+                </el-image>
               </div>
 
-              <div class="plain-text-wrap" v-html="post.body"></div>
+              <div v-html="post.body" class="plain-text-wrap"></div>
             </div>
 
-            <div class="open-btn point" id="btncontain" @click="post.showMore = !post.showMore">
+            <div id="btncontain" @click="post.showMore = !post.showMore" class="open-btn point">
               <a v-if="!post.showMore">
                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </a>
@@ -28,7 +37,7 @@
       </el-row>
 
       <div v-if="remain > 0" @click="onload" class="text-center point">点击查看更多热文</div>
-      <div class="text-center text-gray" v-else>我是有底线的</div>
+      <div v-else class="text-center text-gray">我是有底线的</div>
     </div>
 
     <sq-footer class="pt-5"></sq-footer>

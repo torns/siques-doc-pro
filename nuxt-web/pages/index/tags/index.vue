@@ -7,11 +7,18 @@
         </h1>
         <div class="lh-2" style="width:300px;margin:0 auto">标签不仅能组织和归类你的内容，还能关联相似的内容</div>
       </div>
-      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
+      <sq-wave :background="`#00000000`" class="absolute" style="margin-top:-9em;width:100%;bottom:0;"></sq-wave>
     </div>
 
     <div>
-      <video style="height:115vh;object-fit: cover;width:100%;" autoplay loop muted playsinline src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4"></video>
+      <video
+        style="height:115vh;object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/tags/cover2.mp4"
+      ></video>
     </div>
 
     <div class="pt-5">
@@ -44,7 +51,15 @@
                   </div>
                   <ul class="d-flex flex-wrap" style="width:95%">
                     <li v-for="tag in title.tags" :key="tag.id" class="bg-3 mr-1 my-1  fs-xm point">
-                      <el-popover :open-delay="500" :close-delay="1000" @show="show(tag.id)" popper-class="tag" placement="top" width="250" trigger="hover">
+                      <el-popover
+                        :open-delay="500"
+                        :close-delay="1000"
+                        @show="show(tag.id)"
+                        popper-class="tag"
+                        placement="top"
+                        width="250"
+                        trigger="hover"
+                      >
                         <div v-if="taginfo" class="px-3 py-2">
                           <div>
                             <div style="font-weight:700" class="fs-md">
@@ -61,15 +76,23 @@
                             </div>
                             <div>
                               {{ taginfo.count }}人
-                              <el-button :type="isTagFollowed ? 'plain' : 'primary'" @click="!isTagFollowed ? storeUserTag(taginfo.info.id) : deleteUserTag(taginfo.info.id)" size="mini">{{
-                                isTagFollowed ? '已关注' : '关注'
-                              }}</el-button>
+                              <el-button
+                                :type="isTagFollowed ? 'plain' : 'primary'"
+                                @click="!isTagFollowed ? storeUserTag(taginfo.info.id) : deleteUserTag(taginfo.info.id)"
+                                size="mini"
+                                >{{ isTagFollowed ? '已关注' : '关注' }}</el-button
+                              >
                             </div>
                           </div>
                         </div>
 
                         <slot slot="reference">
-                          <nuxt-link :to="`/t/${tag.id}`" style="display: -webkit-inline-box;-webkit-box-align: baseline;" tag="a" class="text-primary hover-3">
+                          <nuxt-link
+                            :to="`/t/${tag.id}`"
+                            style="display: -webkit-inline-box;-webkit-box-align: baseline;"
+                            tag="a"
+                            class="text-primary hover-3"
+                          >
                             <i :class="` fs-xm fa fa-${tag.name} px-1`"></i>
                             <div style="padding:2px 8px 2px 0;">
                               {{ tag.name }}

@@ -3,21 +3,26 @@
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
       <sq-banner
-        ><div class="container" style="height:0">
+        ><div class="container" style="height: 0">
           <el-row :gutter="0" class="d-flex jc-center">
-            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down "> </el-col>
+            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down"> </el-col>
             <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
-              <div class=" d-flex jc-around header reTop" style="position: relative;">
-                <div style="width: 100%;max-width: 380px;">
-                  <div class="text-white pb-3 text-center" style="font-size:32px">从思考, 到创造</div>
+              <div class="d-flex jc-around header reTop" style="position: relative">
+                <div style="width: 100%; max-width: 380px">
+                  <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
-                    <el-input v-model="search" @keyup.enter.native="dataSearch" size="medium" placeholder="搜索你喜欢的">
+                    <el-input
+                      v-model="search"
+                      @keyup.enter.native="dataSearch"
+                      size="medium"
+                      placeholder="搜索你喜欢的"
+                    >
                       <el-button slot="append" @click="dataSearch">
                         <i class="fa fa-search"></i>
                       </el-button>
                     </el-input>
 
-                    <div class="text-white text-center pt-3 fs-md ">
+                    <div class="text-white text-center pt-3 fs-md">
                       热门搜索：<span @click="$router.push(`/search/vue`)" class="point hoverlink">Vue </span>
                       <span @click="$router.push(`/search/nuxtjs`)" class="point hoverlink">nuxtjs</span>
                       <span @click="$router.push(`/search/nestjs`)" class="point hoverlink">nestjs</span>
@@ -30,15 +35,15 @@
               </div>
             </el-col>
             <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down">
-              <div style="position: relative;top: 60%;" class="fs-xm hover-1 text-right text-white pt-2"></div>
+              <div style="position: relative; top: 60%" class="fs-xm hover-1 text-right text-white pt-2"></div>
             </el-col>
           </el-row></div
       ></sq-banner>
     </div>
-    <div class="container" style="min-height: 100vh;">
-      <el-row :gutter="0" class="d-flex xm-flex-wrap  pt-4">
+    <div class="container" style="min-height: 100vh">
+      <el-row :gutter="0" class="d-flex xm-flex-wrap pt-4">
         <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
-          <div class=" xs d-flex " style="flex-direction: row-reverse;">
+          <div class="xs d-flex" style="flex-direction: row-reverse">
             <a href="#top">
               <!-- 首页左侧边栏 -->
               <sq-leftBar :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
@@ -53,15 +58,24 @@
 
               <el-divider></el-divider>
 
-              <ul style="overflow: auto;">
+              <ul style="overflow: auto">
                 <div v-for="(post, $index) in posts" :key="$index" class="pb-3">
                   <div class="d-flex ai-center jc-between">
                     <div>
                       <div class="title">
-                        <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point   fs-lg">{{ post.title }}</router-link>
+                        <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point fs-lg">{{
+                          post.title
+                        }}</router-link>
                       </div>
                       <div>
-                        <el-tag v-for="tag in post.tags" :key="tag.id" effect="plain" size="mini" type="primary" class="mt-2 mr-2 hover-4 hover-2 point ">
+                        <el-tag
+                          v-for="tag in post.tags"
+                          :key="tag.id"
+                          effect="plain"
+                          size="mini"
+                          type="primary"
+                          class="mt-2 mr-2 hover-4 hover-2 point"
+                        >
                           <router-link :to="`/t/${tag.id}`" tag="a">{{ tag.name }}</router-link>
                         </el-tag>
                       </div>
@@ -74,9 +88,9 @@
 
                       <div class="d-flex mb-4 pt-2 ai-center fs-xm">
                         <div class="d-flex point ai-center">
-                          <i class="fs-xl el-icon-success hover-1  text-primary"></i>
+                          <i class="fs-xl el-icon-success hover-1 text-primary"></i>
 
-                          <div class="pl-1 pr-3 ">
+                          <div class="pl-1 pr-3">
                             <div>
                               <span class="text-primary hoverlink font-bold">× {{ post.liked }} </span>
                               <span>· 赞</span>
@@ -95,7 +109,13 @@
                     </div>
                     <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
                       <router-link :to="`/p/${post.id}`">
-                        <el-image :src="post.cover" style="width: 140px; height: 90px" class="border-radius shadow-1 border-dash" fit="cover" lazy></el-image>
+                        <el-image
+                          :src="post.cover"
+                          style="width: 140px; height: 90px"
+                          class="border-radius shadow-1 border-dash"
+                          fit="cover"
+                          lazy
+                        ></el-image>
                       </router-link>
                     </div>
                   </div>
@@ -104,10 +124,8 @@
                 <div v-if="loading" class="my-3 text-primary fs-xl">
                   <sq-holder :count="8" :show="true"></sq-holder>
                 </div>
-                <div class="my-3 text-gray   text-center">
-                  <div v-if="noMore">
-                    我是有底线的
-                  </div>
+                <div class="my-3 text-gray text-center">
+                  <div v-if="noMore">我是有底线的</div>
                   <div v-else @click="onload" class="point">点击查看更多热文</div>
                 </div>
               </ul>
@@ -123,11 +141,17 @@
     </div>
 
     <!-- 首页的导航栏 -->
-    <sq-extendBar extension="top: 55px;" @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick">
+    <sq-extendBar @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick" extension="top: 55px;">
       <a href="#top">
         <!-- 首页左侧边栏 -->
 
-        <sq-leftBar textColor="white" color="text-white" :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
+        <sq-leftBar
+          :category="category"
+          :taglists="taglists"
+          @handleclick="handleCategory"
+          text-color="white"
+          color="text-white"
+        ></sq-leftBar>
       </a>
     </sq-extendBar>
 
@@ -138,6 +162,7 @@
 <script lang="ts">
 /* eslint-disable */
 import { Vue, Component } from 'nuxt-property-decorator'
+import _ from 'lodash'
 import { listIntercep } from '../../plugins/utils.js'
 import fetchdata from '../../plugins/fetchdata'
 import leftBar from '~/components/Page/Index/SideBar/leftWay.vue'
@@ -156,8 +181,8 @@ import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
     'sq-banner': banner,
     'sq-typer': typer,
     'sq-holder': placeholder,
-    'sq-extendBar': extendBar
-  }
+    'sq-extendBar': extendBar,
+  },
 })
 export default class AppPage extends Vue {
   async asyncData() {
@@ -176,7 +201,7 @@ export default class AppPage extends Vue {
     // const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
       posts: res.data[0],
-      total: res.data[1]
+      total: res.data[1],
       // hotTags: res1.data,
       // hotComments: res2.data,
       // hotNotebooks: res3.data
@@ -216,6 +241,25 @@ export default class AppPage extends Vue {
     }
   }
 
+  recordScrollPosition(e) {
+    this.$store.commit('setScrollTop', { name: this.$route.path, top: e.target.scrollTop })
+  }
+
+  // debounce = _.debounce(this.recordScrollPosition, 10)
+  homeTop
+  activated() {
+    // do something
+    console.log('activated home')
+    document.documentElement.scrollTop = this.homeTop || 0
+  }
+
+  beforeRouteLeave(to, from, next) {
+    console.log('leave')
+
+    this.homeTop = document.documentElement.scrollTop || 0
+    next()
+  }
+
   dataSearch() {
     this.$router.push(`/search/${this.search}`)
     this.search = ''
@@ -243,7 +287,7 @@ export default class AppPage extends Vue {
       tags: this.tag,
       taglist: list,
       type: this.type,
-      success: this.fetchDataSuccess
+      success: this.fetchDataSuccess,
     })
   }
 

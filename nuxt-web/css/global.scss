@@ -50,6 +50,7 @@ body {
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   // 流畅的滚动
+  word-break: break-all;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   flex-wrap: wrap;
@@ -115,19 +116,19 @@ li {
     width: 970px;
     .favicon {
       object-fit: contain;
-      &:hover {
-        &::before {
-          content: '';
-          background: url(../static/tip.png) no-repeat;
-          position: absolute;
-          top: 98%;
-          right: 4%;
-          width: 160px;
-          z-index: 1;
-          height: inherit;
-          background-size: contain;
-        }
-      }
+      // &:hover {
+      //   &::before {
+      //     content: '';
+      //     background: url(../static/tip.png) no-repeat;
+      //     position: absolute;
+      //     top: 98%;
+      //     right: 4%;
+      //     width: 160px;
+      //     z-index: 1;
+      //     height: inherit;
+      //     background-size: contain;
+      //   }
+      // }
     }
   }
   @media (min-width: 1200px) {

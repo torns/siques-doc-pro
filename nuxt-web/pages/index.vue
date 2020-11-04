@@ -2,10 +2,22 @@
   <div :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
-        <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center  relative">
+        <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center relative">
           <li class="favicon xs-flex-1 d-flex ai-center point">
-            <img v-if="isHomepage" @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:40px;" />
-            <img v-else @click="$router.push('/')" src="~/static/banner1.png" alt="Logo" style="object-fit:cover;height:40px;" />
+            <img
+              v-if="isHomepage"
+              @click="$router.push('/')"
+              src="~/static/banner.png"
+              alt="Logo"
+              style="object-fit: cover; height: 40px"
+            />
+            <img
+              v-else
+              @click="$router.push('/')"
+              src="~/static/banner1.png"
+              alt="Logo"
+              style="object-fit: cover; height: 40px"
+            />
           </li>
 
           <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
@@ -43,7 +55,7 @@
                     写稿
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </span> -->
-                  <div class="  round_button   ">
+                  <div class="round_button">
                     <div>写稿</div>
                   </div>
                   <el-dropdown-menu slot="dropdown">
@@ -53,26 +65,35 @@
                 </el-dropdown>
               </div>
 
-              <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" v-if="$store.state.UserNotExist == false" class="xs">
-                <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '" style="font-size:16px;">
+              <el-dropdown
+                :show-timeout="0"
+                :hide-timeout="300"
+                @command="handleCommand"
+                v-if="$store.state.UserNotExist == false"
+                class="xs"
+              >
+                <span
+                  :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '"
+                  style="font-size: 16px"
+                >
                   <span>
                     <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
                       <img
-                        v-if="this.$store.state.auth.user.avator[0] != null && this.$store.state.auth.user.avator[0].url !== null"
+                        v-if="
+                          this.$store.state.auth.user.avator[0] != null &&
+                            this.$store.state.auth.user.avator[0].url !== null
+                        "
                         :src="this.$store.state.auth.user.avator[0].url"
-                        style="background-color:white;"
+                        style="background-color: white"
                       />
 
-                      <img v-else src="~/static/avator.jpg" /> </el-avatar
-                  ></span>
+                      <img v-else src="~/static/avator.jpg" />
+                    </el-avatar>
+                  </span>
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="/u">
-                    <span>
-                      我的主页
-                    </span></el-dropdown-item
-                  >
+                  <el-dropdown-item command="/u"> <span> 我的主页 </span></el-dropdown-item>
                   <el-dropdown-item command="/logout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -161,50 +182,73 @@
         -->
       </nav>
 
-      <nav v-if="isHomepage" id="menu" style="display:none" @click.stop :class="(isHomepage ? '' : 'fixed') + ' visible-xs  w-100'">
-        <ul style="height:60px;margin:0 auto;" class="container d-flex ai-center jc-between relative">
+      <nav
+        id="menu"
+        v-if="isHomepage"
+        @click.stop
+        :class="(isHomepage ? '' : 'fixed') + ' visible-xs  w-100'"
+        style="display: none"
+      >
+        <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center jc-between relative">
           <!-- 左侧更多按钮 -->
-          <li v-if="!isMoreClick" class="pl-3" @click="isMoreClick = !isMoreClick">
-            <svg style="height:30px;width: 30px;">
+          <li v-if="!isMoreClick" @click="isMoreClick = !isMoreClick" class="pl-3">
+            <svg style="height: 30px; width: 30px">
               <use xlink:href="#settingsIcon" />
             </svg>
           </li>
 
-          <li v-else class="pl-3" @click="isMoreClick = !isMoreClick">
-            <svg style="height:25px;width: 25px;">
+          <li v-else @click="isMoreClick = !isMoreClick" class="pl-3">
+            <svg style="height: 25px; width: 25px">
               <use xlink:href="#offIcon" />
             </svg>
           </li>
 
           <li class="favicon d-flex ai-center point">
-            <img @click="$router.push('/')" src="~/static/banner.png" alt="Logo" style="object-fit:cover;height:36px;" />
+            <img
+              @click="$router.push('/')"
+              src="~/static/banner.png"
+              alt="Logo"
+              style="object-fit: cover; height: 36px"
+            />
           </li>
-          <li class="pr-3" @click="$router.push('/search')">
-            <svg style="height:30px;width: 30px;">
+          <li @click="$router.push('/search')" class="pr-3">
+            <svg style="height: 30px; width: 30px">
               <use xlink:href="#searchIcon" />
             </svg>
           </li>
         </ul>
       </nav>
 
-      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" id="settingsIcon" fill="currentColor">
-          <path d="M159.744 101.888h217.6c51.2 0 76.8 25.6 76.8 76.8v217.6c0 51.2-25.6 76.8-76.8 76.8H159.744c-51.2 0-76.8-25.6-76.8-76.8V178.688c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
-          <path d="M750.592 71.68c136.704 0 204.8 68.096 204.8 204.8s-68.096 204.8-204.8 204.8-204.8-68.096-204.8-204.8c0-136.192 68.608-204.8 204.8-204.8z" fill="#997CD8" />
-          <path d="M652.8 581.12H870.4c51.2 0 76.8 25.6 76.8 76.8V875.52c0 51.2-25.6 76.8-76.8 76.8h-217.6c-51.2 0-76.8-25.6-76.8-76.8v-217.6c0-51.2 25.6-76.8 76.8-76.8z" fill="#D1D1D1" />
+      <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+        <symbol id="settingsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor">
+          <path
+            d="M159.744 101.888h217.6c51.2 0 76.8 25.6 76.8 76.8v217.6c0 51.2-25.6 76.8-76.8 76.8H159.744c-51.2 0-76.8-25.6-76.8-76.8V178.688c0-51.2 25.6-76.8 76.8-76.8z"
+            fill="#D1D1D1"
+          />
+          <path
+            d="M750.592 71.68c136.704 0 204.8 68.096 204.8 204.8s-68.096 204.8-204.8 204.8-204.8-68.096-204.8-204.8c0-136.192 68.608-204.8 204.8-204.8z"
+            fill="#997CD8"
+          />
+          <path
+            d="M652.8 581.12H870.4c51.2 0 76.8 25.6 76.8 76.8V875.52c0 51.2-25.6 76.8-76.8 76.8h-217.6c-51.2 0-76.8-25.6-76.8-76.8v-217.6c0-51.2 25.6-76.8 76.8-76.8z"
+            fill="#D1D1D1"
+          />
           <path
             d="M311.296 607.232L471.04 874.496c12.8 20.992 5.632 48.64-15.36 61.44-7.168 4.096-14.848 6.144-23.04 6.144H113.152c-24.576 0-45.056-19.968-45.056-44.544 0-8.192 2.048-15.872 6.144-23.04l159.744-267.264c12.8-20.992 39.936-28.16 61.44-15.36 6.656 3.584 12.288 8.704 15.872 15.36z"
           />
         </symbol>
 
-        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" id="offIcon" fill="currentColor">
+        <symbol id="offIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor">
           <circle cx="12" cy="12" r="1.5" />
           <path d="M116.713739 0l367.371131 367.393391-93.005913 93.005913L23.685565 93.050435z" fill="#FF6D00" />
-          <path d="M598.127304 481.413565L1044.257391 927.565913l-93.005913 93.005913L505.09913 574.441739z" fill="#fff" />
+          <path
+            d="M598.127304 481.413565L1044.257391 927.565913l-93.005913 93.005913L505.09913 574.441739z"
+            fill="#fff"
+          />
           <path d="M1030.566957 94.45287L105.516522 1019.503304 12.488348 926.497391 937.561043 1.424696z" />
         </symbol>
 
-        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 -100 900 1200" id="searchIcon" fill="currentColor">
+        <symbol id="searchIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -100 900 1200" fill="currentColor">
           <circle cx="12" cy="12" r="1.5" />
           <path
             d="M799.117225 727.668111A446.399272 446.399272 0 0 0 896.675651 448.449169a51.046313 51.046313 0 1 0-102.165758 0 346.134953 346.134953 0 1 1-39.345152-160.525295 51.046313 51.046313 0 1 0 90.464597-47.462832 448.300711 448.300711 0 1 0-118.035456 558.730412c1.316381 1.828306 2.92529 3.58348 4.534199 5.19239l204.624044 204.624044a51.046313 51.046313 0 0 0 72.181534-72.181534l-204.624044-204.624043a51.558238 51.558238 0 0 0-5.119258-4.5342z"
@@ -216,8 +260,13 @@
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
         <!-- 页面视图 -->
 
-        <keep-alive>
-          <router-view style="overflow-x:hidden" @changestatu="isMoreClick = false" :isMoreClick="isMoreClick" :key="$route.path"></router-view>
+        <keep-alive include="AppPage">
+          <router-view
+            @changestatu="isMoreClick = false"
+            :isMoreClick="isMoreClick"
+            :key="$route.path"
+            style="overflow-x: hidden"
+          ></router-view>
         </keep-alive>
         <!-- </transition> -->
       </div>
@@ -232,45 +281,45 @@
       "
       :isMoreClick="isMoreClick"
     >
-      <sq-extendBar extension="bottom: 47px;" color="white" @handleClose="isMoreClick = false" :statu="isMoreClick">
+      <sq-extendBar @handleClose="isMoreClick = false" :statu="isMoreClick" extension="bottom: 47px;" color="white">
         <!-- 其它页面的弹出栏 -->
         <div
-          class="point pb-2"
           @click="
             $router.push('/moment')
 
             isMoreClick = false
           "
+          class="point pb-2"
         >
           24小时
         </div>
         <div
-          class="point pb-2"
           @click="
             $router.push('/collection')
 
             isMoreClick = false
           "
+          class="point pb-2"
         >
           专栏
         </div>
         <div
-          class="point pb-2"
           @click="
             $router.push('/n')
 
             isMoreClick = false
           "
+          class="point pb-2"
         >
           笔记
         </div>
         <div
-          class="point pb-2"
           @click="
             $router.push('/tags')
 
             isMoreClick = false
           "
+          class="point pb-2"
         >
           标签
         </div>
@@ -303,7 +352,7 @@ export default class Home extends Vue {
 
   head() {
     return {
-      title: '思趣网'
+      title: '思趣网',
       // script: []
     }
   }
@@ -318,8 +367,6 @@ export default class Home extends Vue {
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
-      // 将当前滚动记录先记录起来
-      this.$store.commit('setScrollTop', { name: this.$route.path, top: document.documentElement.scrollTop })
       this.scrollTop = document.documentElement.scrollTop
       document.getElementById('app').setAttribute('style', 'position:fixed;')
     } else {

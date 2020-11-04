@@ -1,22 +1,55 @@
 <template>
   <el-row :gutter="43" class="pt-5 collection">
     <transition-group name="list-complete" tag="span">
-      <el-col class="py-3 pb-4 list-complete-item" v-for="(post, index) in $attrs.data" :key="post.id" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+      <el-col
+        v-for="(post, index) in $attrs.data"
+        :key="post.id"
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :lg="24"
+        :xl="24"
+        class="py-3 pb-4 list-complete-item"
+      >
         <el-row class="collection_wrapper w-100 d-flex flex-wrap ">
-          <el-col :class="index % 2 == 1 ? 'order-lg-last' : 'order-lg-first'" :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-col
+            :class="index % 2 == 1 ? 'order-lg-last' : 'order-lg-first'"
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            :xl="12"
+          >
             <div class="cover point">
-              <router-link target="_blank" class="pannel-image point" :to="`/p/${post.id}`">
-                <el-image class="hover w-100" style="height:400px;border-radius:20px;" :src="post.collection.cover ? post.collection.cover : getRandomUrl(index)" fit="cover"></el-image>
+              <router-link :to="`/p/${post.id}`" target="_blank" class="pannel-image point">
+                <el-image
+                  :src="post.collection.cover ? post.collection.cover : getRandomUrl(index)"
+                  class="hover w-100"
+                  style="height:400px;border-radius:20px;"
+                  fit="cover"
+                ></el-image>
               </router-link>
             </div>
           </el-col>
-          <el-col :class="`${index % 2 == 0 ? 'order-lg-first' : 'order-lg-last'} d-flex flex-column jc-center order-lg-first`" :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-col
+            :class="
+              `${index % 2 == 0 ? 'order-lg-first' : 'order-lg-last'} d-flex flex-column jc-center order-lg-first`
+            "
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            :xl="12"
+          >
             <div class="description   ">
               <div class="pl-3">
                 <div class="header py-1  text-gray fs-xm">
-                  <i class="fa fa-leaf   pr-2"></i><span class="point" @click="$router.push(`/t/${post.tags[0] ? post.tags[0].id : '1'}`)">{{ post.tags[0] ? post.tags[0].name : '' }}</span>
+                  <i class="fa fa-leaf   pr-2"></i
+                  ><span @click="$router.push(`/t/${post.tags[0] ? post.tags[0].id : '1'}`)" class="point">{{
+                    post.tags[0] ? post.tags[0].name : ''
+                  }}</span>
                 </div>
-                <router-link target="_blank" class="pannel-image point" :to="`/p/${post.id}`">
+                <router-link :to="`/p/${post.id}`" target="_blank" class="pannel-image point">
                   <h3 class="title pb-2  fs-xll ellipsis-1">{{ post.title }}</h3>
                 </router-link>
                 <div class="pr-3">

@@ -1,7 +1,16 @@
 <template>
   <el-row :gutter="43">
     <transition-group name="list-complete" tag="span">
-      <el-col class="py-3 pb-6 list-complete-item" v-for="(note, index) in $attrs.data" :key="note.id" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+      <el-col
+        v-for="(note, index) in $attrs.data"
+        :key="note.id"
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="8"
+        :xl="8"
+        class="py-3 pb-6 list-complete-item"
+      >
         <div class="w-100 shadow-2 d-flex flex-column card-shadow" style="height:520px;border-radius:15px">
           <div class="pannel-head relative">
             <div class="pannel-tag absolute ">
@@ -9,8 +18,14 @@
                 {{ note.tags[0] ? note.tags[0].name : '♥' }}
               </div>
             </div>
-            <router-link class="pannel-image point" :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`">
-              <el-image class="w-100 image-hover" style="border-radius: 15px 15px 0 0;height:220px;" fit="cover" :src="note.cover || getRandomUrl(index)"> </el-image>
+            <router-link :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`" class="pannel-image point">
+              <el-image
+                :src="note.cover || getRandomUrl(index)"
+                class="w-100 image-hover"
+                style="border-radius: 15px 15px 0 0;height:220px;"
+                fit="cover"
+              >
+              </el-image>
             </router-link>
           </div>
           <div class="pannel-body flex-1 text-center text-dark">
@@ -19,7 +34,9 @@
               <span>{{ $dayjs(note.created).format('YYYY-MM-DD') }}</span>
             </div>
             <h1>
-              <router-link :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`" class="ellipsis-1 title px-3">{{ note.title }}</router-link>
+              <router-link :to="`/${note.type == 'post' ? `p` : 'n'}/${note.id}`" class="ellipsis-1 title px-3">{{
+                note.title
+              }}</router-link>
             </h1>
             <div class="description text-gray ellipsis-3 pt-3">{{ note.alias }}...</div>
           </div>
@@ -27,7 +44,12 @@
             <div class="d-flex ai-center">
               <div class="px-3">
                 <router-link :to="`/u/${note.user.id}`">
-                  <el-avatar :size="40" :src="note.user.avator[0] ? note.user.avator[0].url : ''" class="shadow-2 note_avatar" style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;">
+                  <el-avatar
+                    :size="40"
+                    :src="note.user.avator[0] ? note.user.avator[0].url : ''"
+                    class="shadow-2 note_avatar"
+                    style="background-color: white ;border: 1px solid #de7d7d;padding: 3px;"
+                  >
                     <img src="~/static/avator.jpg" />
                   </el-avatar>
                 </router-link>

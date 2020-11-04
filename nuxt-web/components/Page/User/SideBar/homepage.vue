@@ -24,9 +24,22 @@
           </div>
         </div>
         <sq-tag ref="reference" @add="addTag" cunstom="sq-tag" positon="left-start"></sq-tag>
-        <div v-if="!isInputShow" class="bg-light ai-center jc-center d-flex mt-3" style="height:110px;border:1px dashed #DDDDDD;">
+        <div
+          v-if="!isInputShow"
+          class="bg-light ai-center jc-center d-flex mt-3"
+          style="height:110px;border:1px dashed #DDDDDD;"
+        >
           <div v-if="originTag != ''" class="flex-wrap">
-            <el-tag v-for="tag in originTag" :key="tag.id" :closable="id ? false : true" @close="handleClose(tag)" class="mx-1 my-2" type="primary" size="small">{{ tag.name }}</el-tag>
+            <el-tag
+              v-for="tag in originTag"
+              :key="tag.id"
+              :closable="id ? false : true"
+              @close="handleClose(tag)"
+              class="mx-1 my-2"
+              type="primary"
+              size="small"
+              >{{ tag.name }}</el-tag
+            >
           </div>
           <div v-else class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，
@@ -36,7 +49,12 @@
         </div>
         <div v-else>
           <el-select v-model="skillTag" multiple filterable placeholder="多个用逗号分隔，最多十个">
-            <el-option v-for="item in this.$refs.reference.tags" :key="item.name" :label="item.name" :value="item.id"></el-option>
+            <el-option
+              v-for="item in this.$refs.reference.tags"
+              :key="item.name"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
           <div class="text-left pt-3">
             <el-button @click="isInputShow = false" size="mini" type="plain">取消</el-button>

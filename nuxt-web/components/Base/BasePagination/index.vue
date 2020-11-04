@@ -1,14 +1,22 @@
 <template>
-  <nav class="pagination" id="pagination">
+  <nav id="pagination" class="pagination">
     <h2 class="screen-reader-text">Posts Navigation</h2>
     <div class="inner relative ">
-      <a v-if="$attrs.currentPage != 1" class="newer-posts arrow-left point" @click="handleCurrentChange($attrs.currentPage - 1)">
+      <a
+        v-if="$attrs.currentPage != 1"
+        @click="handleCurrentChange($attrs.currentPage - 1)"
+        class="newer-posts arrow-left point"
+      >
         <span class="screen-reader-text"></span>
       </a>
       <span class="page-number">
-        <a class="point" :href="$attrs.href">PAGE {{ $attrs.currentPage }} OF {{ maxPage }} </a>
+        <a :href="$attrs.href" class="point">PAGE {{ $attrs.currentPage }} OF {{ maxPage }} </a>
       </span>
-      <a v-if="$attrs.currentPage != maxPage" class="older-posts arrow-right point" @click="handleCurrentChange($attrs.currentPage + 1)">
+      <a
+        v-if="$attrs.currentPage != maxPage"
+        @click="handleCurrentChange($attrs.currentPage + 1)"
+        class="older-posts arrow-right point"
+      >
         <span class="screen-reader-text"></span>
       </a>
     </div>

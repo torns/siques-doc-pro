@@ -7,7 +7,13 @@
             <el-input v-model="bookmark.title" placeholder="最多输入32个字" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item style="font-weight:600" label="描述" label-position="top">
-            <el-input v-model="bookmark.description" :rows="2" placeholder="最多输入256个字" type="textarea" autocomplete="off"></el-input>
+            <el-input
+              v-model="bookmark.description"
+              :rows="2"
+              placeholder="最多输入256个字"
+              type="textarea"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div class="text-right pt-5">

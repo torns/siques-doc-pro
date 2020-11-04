@@ -28,7 +28,8 @@ export default {
       {
         hid: 'keywords',
         name: 'keywords',
-        content: '思趣,开发者社区,技术新闻资讯,技术笔记,技术号,技术圈,开源社区,程序员,云计算,AI,区块链,前端,后端,小程序,软件开发,编程,nuxtjs,flutter,nestjs,javascript,php,python,java,ios,android'
+        content:
+          '思趣,开发者社区,技术新闻资讯,技术笔记,技术号,技术圈,开源社区,程序员,云计算,AI,区块链,前端,后端,小程序,软件开发,编程,nuxtjs,flutter,nestjs,javascript,php,python,java,ios,android'
       }
     ],
 
@@ -53,7 +54,10 @@ export default {
       },
       {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
-        src: process.env.NODE_ENV == 'production' ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
+        src:
+          process.env.NODE_ENV == 'production'
+            ? 'https://cdn.siques.cn/libs/js/vue.min.js'
+            : 'https://cdn.siques.cn/libs/js/vue.js'
       },
       {
         src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',

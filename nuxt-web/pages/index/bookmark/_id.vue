@@ -30,7 +30,9 @@
                           </div>
                           <div>{{ $dayjs(post.created).format('M月D号') }}</div>
                         </div>
-                        <router-link :to="`/p/${post.id}`" class="hover-4 point" tag="div"> {{ post.title }}</router-link>
+                        <router-link :to="`/p/${post.id}`" class="hover-4 point" tag="div">
+                          {{ post.title }}</router-link
+                        >
                       </div>
                     </div>
                     <div class="pr-5">

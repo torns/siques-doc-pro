@@ -32,7 +32,9 @@
             <div v-for="(follow, i) in follows" :key="follow.id">
               <div class="d-flex  jc-between">
                 <div class="d-flex ai-center">
-                  <el-avatar :size="35" :src="follow.avator[0] ? follow.avator[0].url : ''" class="mr-3 "><img src="~/static/avator.jpg" alt=""/></el-avatar>
+                  <el-avatar :size="35" :src="follow.avator[0] ? follow.avator[0].url : ''" class="mr-3 "
+                    ><img src="~/static/avator.jpg" alt=""
+                  /></el-avatar>
                   <div class="text-primary point hoverlink">
                     <router-link :to="`/u/${follow.id}`" tag="li"> {{ follow.name }}</router-link>
                   </div>
@@ -175,7 +177,9 @@ export default class Follows extends Vue {
 
   async fetchInterestColletion() {
     let res
-    this.id ? (res = await this.$http.get(`users/${this.id}/collection`)) : (res = await this.$http.get(`users/${this.$store.state.auth.user.id}/collection`))
+    this.id
+      ? (res = await this.$http.get(`users/${this.id}/collection`))
+      : (res = await this.$http.get(`users/${this.$store.state.auth.user.id}/collection`))
     this.collections = res.data
   }
 }

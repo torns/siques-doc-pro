@@ -1,7 +1,10 @@
 <template>
   <div>
     <div>
-      <div class="absolute d-flex jc-center flex-column ai-center " style="z-index:5!important; width: 80%;top: 7%;left:10%;">
+      <div
+        class="absolute d-flex jc-center flex-column ai-center "
+        style="z-index:5!important; width: 80%;top: 7%;left:10%;"
+      >
         <div class="fs-md">
           <!-- <div class="d-flex">
             <div class="pr-2" v-for="tag in post.tags" :key="tag.id">
@@ -51,7 +54,7 @@
 
       <div class="blur ">
         <div class=" relative ">
-          <el-image fit="cover" :src="post.cover" style="height:32vh;" class="w-100"> </el-image>
+          <el-image :src="post.cover" fit="cover" style="height:32vh;" class="w-100"> </el-image>
         </div>
       </div>
 
@@ -119,7 +122,9 @@
                         <div class="flex-1">
                           <div class="d-flex ai-center jc-between">
                             <div style="font-weight:600" class="text-primary hover-4 ">
-                              <router-link :to="`/u/${comment.user.id}`" tag="div" class="point fs-lg">{{ comment.user.name }}</router-link>
+                              <router-link :to="`/u/${comment.user.id}`" tag="div" class="point fs-lg">{{
+                                comment.user.name
+                              }}</router-link>
                             </div>
                             <div class="fs-xxs text-gray">
                               {{ $dayjs(comment.created).format('YYYY-MM-DD') }}
@@ -134,7 +139,10 @@
 
                             <div v-if="comment.user.owner" class="d-flex ai-center">
                               <el-tooltip content="编辑" effect="dark">
-                                <div @click="showCommentPanel('edit', comment.id, '', comment.user.name)" class="opacity40 px-2 point">
+                                <div
+                                  @click="showCommentPanel('edit', comment.id, '', comment.user.name)"
+                                  class="opacity40 px-2 point"
+                                >
                                   <i class=" fa fa-pencil-square-o"></i>
                                 </div>
                               </el-tooltip>
@@ -145,7 +153,10 @@
                                 </div>
                               </el-tooltip>
                             </div>
-                            <div @click="showCommentPanel('reply', comment.id, comment.user.id, comment.user.name)" class="text-primary px-2 point">
+                            <div
+                              @click="showCommentPanel('reply', comment.id, comment.user.id, comment.user.name)"
+                              class="text-primary px-2 point"
+                            >
                               回复
                             </div>
                           </div>
@@ -171,7 +182,10 @@
 
                             <div v-if="reply.owner" class="d-flex">
                               <el-tooltip content="编辑" effect="dark">
-                                <div @click="showCommentPanel('editReply', reply.id, '', reply.from_uid.name)" class="opacity40 px-2 point">
+                                <div
+                                  @click="showCommentPanel('editReply', reply.id, '', reply.from_uid.name)"
+                                  class="opacity40 px-2 point"
+                                >
                                   <i class=" fa fa-pencil-square-o"></i>
                                 </div>
                               </el-tooltip>
@@ -182,7 +196,10 @@
                                 </div>
                               </el-tooltip>
                             </div>
-                            <div @click="showCommentPanel('reply', comment.id, reply.from_uid.id, reply.from_uid.name)" class="text-primary px-2 point">
+                            <div
+                              @click="showCommentPanel('reply', comment.id, reply.from_uid.id, reply.from_uid.name)"
+                              class="text-primary px-2 point"
+                            >
                               回复
                             </div>
                           </div>
@@ -215,7 +232,7 @@
       :show="show"
     ></sq-comment>
 
-    <sq-navigation class="my-4" :data="recommendPost"></sq-navigation>
+    <sq-navigation :data="recommendPost" class="my-4"></sq-navigation>
     <!-- <sq-searchbtn></sq-searchbtn> -->
     <sq-sidemenu>
       <sq-toc></sq-toc>

@@ -1,7 +1,17 @@
 <template>
   <div class="d-flex flex-column pr-2">
     <div>
-      <el-select v-model="tagSearch" :remote-method="remoteMethod" :loading="loading" size="mini" multiple filterable remote reserve-keyword placeholder="添加关注的标签">
+      <el-select
+        v-model="tagSearch"
+        :remote-method="remoteMethod"
+        :loading="loading"
+        size="mini"
+        multiple
+        filterable
+        remote
+        reserve-keyword
+        placeholder="添加关注的标签"
+      >
         <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"> </el-option>
       </el-select>
     </div>

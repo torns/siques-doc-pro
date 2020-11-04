@@ -15,7 +15,8 @@
           </el-col>
           <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
             <el-tabs v-model="searchType" stretch>
-              <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label" :name="tab.alias"> </el-tab-pane>
+              <el-tab-pane v-for="(tab, index) in tabs" :key="index" :label="tab.label" :name="tab.alias">
+              </el-tab-pane>
             </el-tabs>
           </el-col>
         </el-row>
@@ -31,7 +32,9 @@
               <div>
                 <div v-for="post in data[0]" :key="post.id" class="text-gray-1">
                   <div class="point pt-4">
-                    <router-link :to="`${link(post)}`" tag="a" class="hoverlink text-primary ">{{ post.title }}</router-link>
+                    <router-link :to="`${link(post)}`" tag="a" class="hoverlink text-primary ">{{
+                      post.title
+                    }}</router-link>
                   </div>
                   <div class="py-2 fs-xm ">{{ post.alias }}</div>
                   <div class="d-flex fs-xm ">

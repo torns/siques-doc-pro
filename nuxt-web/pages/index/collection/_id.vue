@@ -17,7 +17,9 @@
               <div class="fs-xll pl-2">{{ collections.name }}</div>
             </div>
             <div>
-              <el-button @click="interestCollect(collections.id)" type="primary" size="mini">关注 | {{ collections.interest }}</el-button>
+              <el-button @click="interestCollect(collections.id)" type="primary" size="mini"
+                >关注 | {{ collections.interest }}</el-button
+              >
             </div>
           </div>
           <el-divider></el-divider>
@@ -26,7 +28,11 @@
               <div v-for="(post, index) in collections.posts" :key="index">
                 <div class="d-flex">
                   <div class="pr-3">
-                    <el-button @click="like(post.id, index)" style="padding-left:18px;padding-right:18px;width:10px;height:45px" type="plain">
+                    <el-button
+                      @click="like(post.id, index)"
+                      style="padding-left:18px;padding-right:18px;width:10px;height:45px"
+                      type="plain"
+                    >
                       <div class="d-flex flex-column ai-center" style="position: relative;top: -6px;">
                         <i class="el-icon-caret-top"></i>
                         <div>{{ post.liked }}</div>
@@ -41,7 +47,9 @@
                     </div>
                     <div class="d-flex ai-baseline py-2">
                       <div class="text-primary pr-2">
-                        <router-link :to="`/u/${collections.user.id}`" tag="li">{{ collections.user.name }}</router-link>
+                        <router-link :to="`/u/${collections.user.id}`" tag="li">{{
+                          collections.user.name
+                        }}</router-link>
                       </div>
                       <div class="pr-2 fs-xm text-gray-1">
                         {{ $dayjs(post.created).fromNow() + $dayjs(post.created).format('(M月D号)') }}

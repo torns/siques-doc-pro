@@ -2,7 +2,11 @@
   <div>
     <div id="editorSection" class="text-left" />
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-    <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight">
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated tada"
+      leave-active-class="animated bounceOutRight"
+    >
       <div v-if="isSaving" class="pt-2 fs-7">保存中...</div>
     </transition>
   </div>

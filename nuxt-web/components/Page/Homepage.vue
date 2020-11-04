@@ -21,7 +21,10 @@
       </div>
 
       <div v-else style="height:200px" class="d-flex ai-center">
-        <div class="d-flex bg-light ai-center jc-center border-dash border-radius" style="height:80%;width:80%;margin:0 auto;">
+        <div
+          class="d-flex bg-light ai-center jc-center border-dash border-radius"
+          style="height:80%;width:80%;margin:0 auto;"
+        >
           (ﾟ∀ﾟ ) 暂时没有任何数据
         </div>
       </div>
@@ -32,7 +35,12 @@
     </div>
     <div class="body border-solid">
       <div style="min-height:200px">
-        <div v-for="action in actions" :key="action.id" style="width: -webkit-fill-available;" class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2">
+        <div
+          v-for="action in actions"
+          :key="action.id"
+          style="width: -webkit-fill-available;"
+          class="d-flex jc-center flex-column border-bottom mx-3 my-2 py-2"
+        >
           <div v-if="action.type != 'followuser' && action.type != 'privateletter'" class="d-flex jc-between">
             <div>
               <div class="text-gray fs-xm ">
@@ -43,7 +51,9 @@
                 {{ $dayjs(action.created).format('M月D日 H:mm') }}
               </div>
               <div class="text-primary py-1 hoverlink point">
-                <router-link :to="`${link(action) + action.to_Post.id}`" tag="div"> {{ action.to_Post.title }}</router-link>
+                <router-link :to="`${link(action) + action.to_Post.id}`" tag="div">
+                  {{ action.to_Post.title }}</router-link
+                >
               </div>
               <div class="d-flex ">
                 <div class="fs-xm text-gray pr-3">关注 {{ action.to_Post.concerned }}</div>
@@ -70,7 +80,9 @@
               </div>
 
               <div>
-                <router-link :to="`/u/${action.to_uid.id}`" class="point hoverlink" tag="div"> {{ action.to_uid.name }}</router-link>
+                <router-link :to="`/u/${action.to_uid.id}`" class="point hoverlink" tag="div">
+                  {{ action.to_uid.name }}</router-link
+                >
                 <div class="fs-xs text-gray py-1">
                   {{ action.to_uid.introduction || '这个用户太懒,什么都没有留下' }}
                 </div>

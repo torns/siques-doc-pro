@@ -10,7 +10,11 @@
           <div v-if="edit" class="text-gray-1 ">
             编辑模式
           </div>
-          <div @click="panelOff" class="fa fs-xl  fa-angle-double-down hover-1 point col-33" style="text-align:end"></div>
+          <div
+            @click="panelOff"
+            class="fa fs-xl  fa-angle-double-down hover-1 point col-33"
+            style="text-align:end"
+          ></div>
         </div>
         <markdown ref="markdown" name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
         <div class="py-2">

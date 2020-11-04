@@ -8,7 +8,16 @@
             <div class="d-flex jc-between tags text-left my-3">
               <div>
                 <div class="d-flex">
-                  <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
+                  <el-tag
+                    :key="tag.name"
+                    v-for="tag in dynamicTags"
+                    :disable-transitions="false"
+                    @close="handleClose(tag.name, tag.id)"
+                    class="mr-2"
+                    effect="plain"
+                    closable
+                    >{{ tag.name }}</el-tag
+                  >
 
                   <sq-tag ref="tag" :position="`bottom`" @add="addTag">
                     <el-button @click="showtagDialog" class="button-new-tag" size="small">+ 添加标签</el-button>
@@ -17,7 +26,12 @@
               </div>
               <el-select v-model="model" size="mini" placeholder="提问模板(可选)">
                 <el-option-group v-for="group in options" :key="group.label" :label="group.label">
-                  <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  <el-option
+                    v-for="item in group.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-option-group>
               </el-select>
             </div>

@@ -9,7 +9,13 @@
                 <div class="point">
                   <el-avatar :size="157.5" class="shadow-1">
                     <img
-                      v-if="id ? avatorUrl : this.$store.state.auth.user.avator.length !== 0 ? this.$store.state.auth.user.avator[0].url : false"
+                      v-if="
+                        id
+                          ? avatorUrl
+                          : this.$store.state.auth.user.avator.length !== 0
+                          ? this.$store.state.auth.user.avator[0].url
+                          : false
+                      "
                       :src="id ? avatorUrl : this.$store.state.auth.user.avator[0].url"
                       style="background-color:white;height: inherit;width: inherit;"
                       class="avatar"
@@ -61,7 +67,12 @@
               <ul class="opacity60 ">
                 <li v-for="(link, index) in messageLinks" :key="index" class="pb-2 fs-xm hoverlink ">
                   <div v-if="show && showname == link.alias && !id" style="height:30px" class="d-flex ai-center ">
-                    <el-input v-model="messageBox" :placeholder="link.placeholder" size="mini" style="width:200px;"></el-input>
+                    <el-input
+                      v-model="messageBox"
+                      :placeholder="link.placeholder"
+                      size="mini"
+                      style="width:200px;"
+                    ></el-input>
                     <el-button @click="save(link.alias)" class="ml-3" type="text">保存</el-button>
                   </div>
 
@@ -89,7 +100,10 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="10">
               <div class="border-radius">
-                <div class="profile__heading--desc-heading" style="height:32px;background-color: #E3E3E3;border-radius: 5px 5px 0 0;"></div>
+                <div
+                  class="profile__heading--desc-heading"
+                  style="height:32px;background-color: #E3E3E3;border-radius: 5px 5px 0 0;"
+                ></div>
 
                 <div class="profile__heading--desc-body px-2" style="height:210px;background-color: #EEEEEE;">
                   <div v-if="!id">
@@ -118,7 +132,9 @@
             <div>
               <div class="d-flex flex-column jc-around">
                 <div v-if="id && id != userId" class="d-flex jc-center pb-2">
-                  <el-button @click="followUser" size="small" type="primary"> {{ isUser && isfan ? '已' : '加' }}关注</el-button>
+                  <el-button @click="followUser" size="small" type="primary">
+                    {{ isUser && isfan ? '已' : '加' }}关注</el-button
+                  >
                   <el-button @click="sendMessage" size="small" type="plain">发私信</el-button>
                 </div>
 
@@ -150,7 +166,12 @@
                 <el-divider></el-divider>
               </div>
               <ul>
-                <li :class="(defaultLink == link.alias ? 'bg-1 ' : '') + ' py-1 pl-2 fs-xm'" v-for="(link, index) in pageLinks" :key="index" @click="changeComponent(link.alias)">
+                <li
+                  :class="(defaultLink == link.alias ? 'bg-1 ' : '') + ' py-1 pl-2 fs-xm'"
+                  v-for="(link, index) in pageLinks"
+                  :key="index"
+                  @click="changeComponent(link.alias)"
+                >
                   <div class="d-flex jc-between">
                     <div>{{ link.name }}</div>
                     <div class="pr-3">{{ link.count }}</div>
@@ -166,7 +187,12 @@
             </el-col>
             <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="pt-2">
               <!-- eslint-disable-next-line vue/require-component-is -->
-              <component :liked="id ? user.liked : $store.state.auth.user.liked" :id="id" :is="sideComponent" class="px-2" />
+              <component
+                :liked="id ? user.liked : $store.state.auth.user.liked"
+                :id="id"
+                :is="sideComponent"
+                class="px-2"
+              />
             </el-col>
           </template>
         </el-row>

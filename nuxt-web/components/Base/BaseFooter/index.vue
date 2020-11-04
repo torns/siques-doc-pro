@@ -11,7 +11,10 @@
         shape-rendering="auto"
       >
         <defs>
-          <path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path>
+          <path
+            id="gentle-wave"
+            d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"
+          ></path>
         </defs>
         <g class="parallax">
           <use xlink:href="#gentle-wave" x="48" y="0"></use>
@@ -23,7 +26,15 @@
     </section>
 
     <div>
-      <el-col style="background-color:#F7F7F7!important" :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="hidden-xs-and-down text-gray fs-sm">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :lg="24"
+        :xl="24"
+        style="background-color:#F7F7F7!important"
+        class="hidden-xs-and-down text-gray fs-sm"
+      >
         <div class="text-center py-5 mb-2">
           <div class="fs-xm pb-2">
             <sq-cat class="pr-3"></sq-cat>
@@ -32,7 +43,14 @@
               <a class="text-gray" rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
             </div>
             <div class="py-1">
-              Copyright <i class="el-icon-star-on" id="heart" style="text-shadow: 0px 2px 4px rgba(0,0,0,0.12), 0px 0px 6px rgba(0,0,0,0.04);"> </i> 2018-{{ new Date().getFullYear() }} Siques
+              Copyright
+              <i
+                id="heart"
+                class="el-icon-star-on"
+                style="text-shadow: 0px 2px 4px rgba(0,0,0,0.12), 0px 0px 6px rgba(0,0,0,0.04);"
+              >
+              </i>
+              2018-{{ new Date().getFullYear() }} Siques
             </div>
             <div>
               <span style="font-family: fantasy;"> Powered by</span>
@@ -49,9 +67,13 @@
               <i slot="reference" class="fa fa-weixin pr-2 text-green point"></i>
             </el-popover>
 
-            <a href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes"> <i class="fa fa-qq text-blue pr-2"></i></a>
+            <a href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes">
+              <i class="fa fa-qq text-blue pr-2"></i
+            ></a>
 
-            <a href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1"> <i class="fa fa-weibo text-red pr-2"></i></a>
+            <a href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+              <i class="fa fa-weibo text-red pr-2"></i
+            ></a>
             <a href="https://github.com/ericheshenghao?tab=repositories">
               <i class="fa fa-github pr-2"></i>
             </a>

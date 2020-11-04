@@ -1,11 +1,12 @@
 <template>
+  <!-- eslint-disable -->
   <div :class="`record bg-light h-100 ${showTips ? '_mask' : ''}`">
-    <el-drawer style="overflow-x: hidden;" :show-close="true" :visible.sync="drawer" :modal="false" title="所有笔记本" size="550px">
+    <el-drawer style="overflow-x: hidden" :show-close="true" :visible.sync="drawer" :modal="false" title="所有笔记本" size="550px">
       <div class="px-4 d-flex jc-between">
         <div><el-button @click="createNoteBook" type="text">新建笔记本</el-button></div>
         <div></div>
       </div>
-      <div class="d-flex jc-between ">
+      <div class="d-flex jc-between">
         <div class="relative" v-if="selectedNotebook != 0 && noteBooks.length != 0">
           <a class="newer-posts arrow-left point" @click="changeNote('pre')">
             <span class="screen-reader-text"></span>
@@ -30,15 +31,15 @@
             </div>
           </div>
           <!-- class="d-flex jc-between flex-wrap flex-column" -->
-          <div slot="reference" class="d-flex jc-between flex-wrap flex-column" style="height:300px">
-            <div style="padding: 0px 10em;" v-for="(noteBook, index) in noteBooks" :key="noteBook.id" @click="showAllNotebook">
+          <div slot="reference" class="d-flex jc-between flex-wrap flex-column" style="height: 300px">
+            <div style="padding: 0px 10em" v-for="(noteBook, index) in noteBooks" :key="noteBook.id" @click="showAllNotebook">
               <transition :duration="{ enter: 500, leave: 200 }" enter-active-class="animated fadeIn " leave-active-class="animated fadeOut ">
-                <sq-bookface class="point " v-show="selectedNotebook == index" :title="noteBook.name" :index="index"> </sq-bookface>
+                <sq-bookface class="point" v-show="selectedNotebook == index" :title="noteBook.name" :index="index"> </sq-bookface>
               </transition>
             </div>
           </div>
         </el-popover>
-        <div v-if="selectedNotebook < noteBooks.length - 1" class="relative" style="right: 14%;">
+        <div v-if="selectedNotebook < noteBooks.length - 1" class="relative" style="right: 14%">
           <a class="newer-posts arrow-right point" @click="changeNote('pro')">
             <span class="screen-reader-text"></span>
           </a>
@@ -50,11 +51,11 @@
       <div class="pt-3">
         <transition-group name="note-complete" tag="span">
           <div class="note-complete-item" v-for="(note, index) in noteList" :key="note.id">
-            <div :class="`bg-2 d-flex ai-baseline jc-between hover-3 ${note.id == $route.params.id ? ' border-l' : ''}`" style="line-height: 35px;">
-              <nuxt-link :to="`/record/${note.id}`" tag="li" class="ellipsis-1 px-3  py-2 flex-1 ">
+            <div :class="`bg-2 d-flex ai-baseline jc-between hover-3 ${note.id == $route.params.id ? ' border-l' : ''}`" style="line-height: 35px">
+              <nuxt-link :to="`/record/${note.id}`" tag="li" class="ellipsis-1 px-3 py-2 flex-1">
                 {{ note.title }}
               </nuxt-link>
-              <el-dropdown class="pr-3 point " @command="handleNotePost" trigger="click">
+              <el-dropdown class="pr-3 point" @command="handleNotePost" trigger="click">
                 <span>
                   <i class="el-icon-s-tools el-icon--right"></i>
                 </span>
@@ -109,9 +110,7 @@
                 content="点击立即新建笔记本,创建属于你的专属笔记"
                 v-model="showTips"
               >
-                <el-button slot="reference" @click="drawer = true" type="primary" size="small" style="margin-left: 16px;">
-                  我的笔记本
-                </el-button>
+                <el-button slot="reference" @click="drawer = true" type="primary" size="small" style="margin-left: 16px"> 我的笔记本 </el-button>
               </el-popover>
             </div>
             <markdown ref="markdown" @submit="submitNote" name="发布笔记" height="60vh"></markdown>
@@ -143,14 +142,14 @@ export default class Index extends Vue {
     }
 
     return {
-      selectedNotebook: selectedNotebook
+      selectedNotebook: selectedNotebook,
       // 默认所有的笔记(需要完善)
     }
   }
 
   head() {
     return {
-      title: '记笔记'
+      title: '记笔记',
     }
   }
 
@@ -297,14 +296,14 @@ export default class Index extends Vue {
         this.$notify({
           type: 'error',
           title: '错误',
-          message: '已添加该标签'
+          message: '已添加该标签',
         })
       }
     } else {
       this.$notify({
         type: 'error',
         title: '错误',
-        message: '已超出最大标签数'
+        message: '已超出最大标签数',
       })
     }
   }
@@ -317,14 +316,14 @@ export default class Index extends Vue {
       const body = {
         title: now,
         collection: collection.id,
-        type: 'note'
+        type: 'note',
       }
       const res = await this.$http.post(`/posts/`, body)
       const { id } = res.data
       this.$notify({
         title: '成功',
         type: 'success',
-        message: '发布成功,可以写啦'
+        message: '发布成功,可以写啦',
       })
       this.$router.push(`/record/${id}`)
       this.$store.commit('increLen', 'note')
@@ -332,7 +331,7 @@ export default class Index extends Vue {
       this.$notify({
         title: '提示',
         type: 'info',
-        message: '请先创建笔记本'
+        message: '请先创建笔记本',
       })
     }
   }
@@ -343,23 +342,23 @@ export default class Index extends Vue {
         this.$prompt('请输入标题', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          inputValue: command.name
+          inputValue: command.name,
         })
           .then(async ({ value }: any) => {
             await this.$http.put(`/collections/${command.id}`, {
-              name: value
+              name: value,
             })
             this.fetchNoteBooks()
             this.$notify({
               title: '成功',
               type: 'success',
-              message: '修改成功 '
+              message: '修改成功 ',
             })
           })
           .catch(() => {
             this.$message({
               type: 'info',
-              message: '取消输入'
+              message: '取消输入',
             })
           })
         break
@@ -368,7 +367,7 @@ export default class Index extends Vue {
         this.$confirm('此操作将永久删除该文集，是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         })
           .then(async () => {
             await this.$http.delete(`/collections/${command.id}`)
@@ -389,7 +388,7 @@ export default class Index extends Vue {
         this.$prompt('请输入标题', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          inputValue: command.name
+          inputValue: command.name,
         })
           .then(async ({ value }: any) => {
             await this.$http.put(`/posts/${command.id}`, { title: value })
@@ -399,13 +398,13 @@ export default class Index extends Vue {
             this.$notify({
               title: '成功',
               type: 'success',
-              message: '修改成功 '
+              message: '修改成功 ',
             })
           })
           .catch(() => {
             this.$message({
               type: 'info',
-              message: '取消输入'
+              message: '取消输入',
             })
           })
         break
@@ -416,7 +415,7 @@ export default class Index extends Vue {
         this.$notify({
           title: '成功',
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
 
         this.$store.commit('delSelectedNote')
@@ -437,13 +436,13 @@ export default class Index extends Vue {
           title: this.title,
           body: data,
 
-          type: 'note'
+          type: 'note',
         }
         await this.$http.put(`/posts/${this.id}`, body)
         this.$notify({
           title: '成功',
           type: 'success',
-          message: '更新成功'
+          message: '更新成功',
         })
       } else {
         const collection: any = this.noteBooks[this.selectedNotebook]
@@ -459,14 +458,14 @@ export default class Index extends Vue {
           body: data,
           collection: collection.id,
           type: 'note',
-          tags: this.dynamicTags
+          tags: this.dynamicTags,
         }
         const res = await this.$http.post(`/posts/`, body)
         const { id } = res.data
         this.$notify({
           title: '成功',
           type: 'success',
-          message: '发布成功'
+          message: '发布成功',
         })
         this.$router.push(`/record/${id}`)
         this.$store.commit('increLen', 'note')
@@ -475,7 +474,7 @@ export default class Index extends Vue {
       this.$notify({
         title: '提示',
         type: 'info',
-        message: '标题不能为空'
+        message: '标题不能为空',
       })
     }
   }
@@ -483,21 +482,21 @@ export default class Index extends Vue {
   createNoteBook() {
     this.$prompt('请输入标题', '提示', {
       confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      cancelButtonText: '取消',
     })
       .then(async ({ value }: any) => {
         if (value === '') {
           return this.$notify({
             title: '错误',
             type: 'error',
-            message: '名字不能为空'
+            message: '名字不能为空',
           })
         }
         const res = await this.$http.post('/collections', { name: value, type: 'note' })
         this.$notify({
           title: '成功',
           type: 'success',
-          message: '添加成功'
+          message: '添加成功',
         })
 
         this.fetchNoteBooks(() => {
@@ -509,7 +508,7 @@ export default class Index extends Vue {
         console.log(e)
         this.$message({
           type: 'info',
-          message: '取消输入'
+          message: '取消输入',
         })
       })
   }
@@ -520,7 +519,7 @@ export default class Index extends Vue {
       this.$notify({
         title: '成功',
         type: 'success',
-        message: '移动成功 '
+        message: '移动成功 ',
       })
       this.fetchNoteBooks()
     }

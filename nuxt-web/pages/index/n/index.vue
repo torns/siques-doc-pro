@@ -3,7 +3,7 @@
     <div class="noteMask pagination_img note_body" style="height:115vh;">
       <div class="text-white relative" style="left:50%;top:40%;left: -1%;z-index:5;text-align: center;">
         <div class="inner relative ">
-          <a class="newer-image arrow-left point" @click="toggleBefore">
+          <a @click="toggleBefore" class="newer-image arrow-left point">
             <span class="screen-reader-text"></span>
           </a>
           <h1>
@@ -11,21 +11,33 @@
           </h1>
           <div>点点滴滴记录生活美好</div>
         </div>
-        <a class="older-image arrow-right point hover" @click="toggleAfter">
+        <a @click="toggleAfter" class="older-image arrow-right point hover">
           <span class="screen-reader-text"></span>
         </a>
       </div>
-      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
+      <sq-wave :background="`#00000000`" class="absolute" style="margin-top:-9em;width:100%;bottom:0;"></sq-wave>
     </div>
 
     <div>
-      <video style="height:115vh; object-fit: cover;width:100%;" autoplay loop muted playsinline :src="imageLink"></video>
+      <video
+        :src="imageLink"
+        style="height:115vh; object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
     </div>
     <div style="margin-top:-6em" class="note_container h-100 pt-4 px-3">
       <sq-pannel :data="notes"></sq-pannel>
     </div>
 
-    <sq-pagination :href="`${$route.path}?page=1`" @current-change="handleCurrentChange" :currentPage="currentPage" :maxLen="maxLen"></sq-pagination>
+    <sq-pagination
+      :href="`${$route.path}?page=1`"
+      @current-change="handleCurrentChange"
+      :currentPage="currentPage"
+      :maxLen="maxLen"
+    ></sq-pagination>
     <sq-footer></sq-footer>
   </div>
 </template>
@@ -42,7 +54,9 @@ export default class NotesIndex extends Vue {
   async asyncData({ params, query, route, store }: any) {
     const http = Vue.prototype.$http
 
-    const res = await http.get(`/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&type=note&sort=created&avator=true`)
+    const res = await http.get(
+      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&type=note&sort=created&avator=true`
+    )
     // console.log(res.data[0])
     const obj = await store.dispatch('getImage', route.path)
     console.log(obj)

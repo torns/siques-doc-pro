@@ -36,7 +36,9 @@
                     <div class="d-flex ai-baseline">
                       <div class="pr-2">{{ question.user.name }}</div>
                       <el-button @click="follow(question.user.id)" type="text" class="btn">关注</el-button>
-                      <el-button v-if="isowner" @click="$router.push(`/ask/${question.id}`)" type="text">编辑</el-button>
+                      <el-button v-if="isowner" @click="$router.push(`/ask/${question.id}`)" type="text"
+                        >编辑</el-button
+                      >
                     </div>
                     <div class="d-flex fs-xm">
                       <div class="pr-2">
@@ -68,7 +70,9 @@
                     {{ liked }} 赞
                   </el-button>
 
-                  <el-button @click="followQue" class="hover-3" type="plain"> <i class="pr-2  iconfont icon-note"></i>{{ question.concerned }}关注 </el-button>
+                  <el-button @click="followQue" class="hover-3" type="plain">
+                    <i class="pr-2  iconfont icon-note"></i>{{ question.concerned }}关注
+                  </el-button>
                   <el-button @click="showCommentPanel = !showCommentPanel" type="text">评论</el-button>
                   <span class="px-2">·</span>
 
@@ -112,7 +116,9 @@
                       icon-color="red"
                       title="确定要采纳此答案？(不可修改)"
                     >
-                      <el-button slot="reference" size="small" type="plain"> <i class="fa fa-check-square-o pr-2"> </i>采纳回答</el-button>
+                      <el-button slot="reference" size="small" type="plain">
+                        <i class="fa fa-check-square-o pr-2"> </i>采纳回答</el-button
+                      >
                     </el-popconfirm>
                     <div v-else>
                       <div v-if="adoptAnswerId === answer.id">
@@ -137,7 +143,9 @@
                   <div class="mx-3" style="min-width:0;">
                     <el-input v-model="replyData" size="mini" placeholder="撰写评论"></el-input>
                     <div class="text-right mt-2">
-                      <el-button @click="sendReply(answer.id, answer.user.id)" size="mini" type="primary">提交评论</el-button>
+                      <el-button @click="sendReply(answer.id, answer.user.id)" size="mini" type="primary"
+                        >提交评论</el-button
+                      >
                     </div>
                   </div>
                 </div>
@@ -145,7 +153,9 @@
                   <div class="mx-3 pt-3 ">
                     <div v-for="reply in answer.reply" :key="reply.id">
                       <span class="text-primary font-bold">
-                        <router-link :to="`/u/${reply.from_uid.id}`" tag="span" class="point hoverlink">{{ reply.from_uid.name }}</router-link>
+                        <router-link :to="`/u/${reply.from_uid.id}`" tag="span" class="point hoverlink">{{
+                          reply.from_uid.name
+                        }}</router-link>
                         <span style="font-weight:400" class="fs-xm">
                           :@
                           {{ reply.to_uid.name }}</span
@@ -153,7 +163,9 @@
                       </span>
                       <span> {{ reply.body }}</span>
                       <div class="py-1">
-                        <el-link @click="replyLike" type="text"><i class="fa fa-thumbs-o-up"></i> {{ reply.liked }} </el-link>
+                        <el-link @click="replyLike" type="text"
+                          ><i class="fa fa-thumbs-o-up"></i> {{ reply.liked }}
+                        </el-link>
                         <span>·</span>
                         <el-button
                           @click="
@@ -169,7 +181,9 @@
                       <div v-if="showReply == reply.id">
                         <el-input v-model="replyData" size="mini" placeholder="回复内容"></el-input>
                         <div class="text-right mt-3">
-                          <el-button @click="sendReply(answer.id, reply.from_uid.id)" size="mini" type="primary">提交评论</el-button>
+                          <el-button @click="sendReply(answer.id, reply.from_uid.id)" size="mini" type="primary"
+                            >提交评论</el-button
+                          >
                         </div>
                       </div>
                     </div>

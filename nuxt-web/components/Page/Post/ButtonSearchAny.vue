@@ -1,7 +1,7 @@
 <template>
   <div class="btn-contanier">
     <div v-drag="`left`" class="search__box">
-      <input class="search__txt" type="text" v-model="query" name placeholder="Type to search(vue)" />
+      <input v-model="query" class="search__txt" type="text" name placeholder="Type to search(vue)" />
       <a class="search__btn">
         <i class="fa fa-search" style="font-size:8px"></i>
       </a>

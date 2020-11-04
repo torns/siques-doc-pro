@@ -13,7 +13,13 @@
               <div v-if="show">
                 <el-input v-focus="show" v-model="newCollection" placeholder="请输入文集名..."></el-input>
                 <div style="height:30px;" class="d-flex my-1 ai-center jc-around">
-                  <el-button @click="createCollect" style="padding:5px 25px!important;border:1px solid #009a61;border-radius:16px" type="plain" size="mini">提交</el-button>
+                  <el-button
+                    @click="createCollect"
+                    style="padding:5px 25px!important;border:1px solid #009a61;border-radius:16px"
+                    type="plain"
+                    size="mini"
+                    >提交</el-button
+                  >
                   <el-button
                     @click="
                       show = !show
@@ -25,7 +31,11 @@
                 </div>
               </div>
             </transition>
-            <ul :class="selectedCollection == collect.id ? 'lh-3 pr-3 bd-left' : 'lh-3 pr-3'" v-for="collect in collections" :key="collect.id">
+            <ul
+              :class="selectedCollection == collect.id ? 'lh-3 pr-3 bd-left' : 'lh-3 pr-3'"
+              v-for="collect in collections"
+              :key="collect.id"
+            >
               <el-popover :close-delay="100" placement="left" width="200" trigger="hover">
                 <img v-if="collect.cover" :src="collect.cover" class="w-100" />
                 <div v-else>
@@ -41,13 +51,26 @@
                       <i class="el-icon-s-tools el-icon--right text-white"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="{ change: collect.id, name: collect.name }" icon="el-icon-edit-outline">修改文集名称</el-dropdown-item>
+                      <el-dropdown-item
+                        :command="{ change: collect.id, name: collect.name }"
+                        icon="el-icon-edit-outline"
+                        >修改文集名称</el-dropdown-item
+                      >
 
-                      <el-upload :http-request="uploadCover" :show-file-list="false" :on-success="handleCoverSuccess" action="string">
-                        <el-dropdown-item :command="{ addCover: collect.id }" icon="el-icon-edit-outline">添加封面</el-dropdown-item>
+                      <el-upload
+                        :http-request="uploadCover"
+                        :show-file-list="false"
+                        :on-success="handleCoverSuccess"
+                        action="string"
+                      >
+                        <el-dropdown-item :command="{ addCover: collect.id }" icon="el-icon-edit-outline"
+                          >添加封面</el-dropdown-item
+                        >
                       </el-upload>
 
-                      <el-dropdown-item :command="{ delete: collect.id }" icon="el-icon-delete">删除文集</el-dropdown-item>
+                      <el-dropdown-item :command="{ delete: collect.id }" icon="el-icon-delete"
+                        >删除文集</el-dropdown-item
+                      >
                     </el-dropdown-menu>
                   </el-dropdown>
                 </li>
@@ -73,7 +96,14 @@
           </div>
         </div>
       </el-aside>
-      <el-aside id="post" ref="content" :width="width" v-draggable="`drag`" :class="`postlist ${canHover ? 'expand' : ''}`" style="background-color:white;color:#333;z-index: 4;">
+      <el-aside
+        id="post"
+        ref="content"
+        :width="width"
+        v-draggable="`drag`"
+        :class="`postlist ${canHover ? 'expand' : ''}`"
+        style="background-color:white;color:#333;z-index: 4;"
+      >
         <div class="d-flex ai-center jc-between">
           <div @click="creatPost" class="creatpost point pl-4 ellipsis-1">
             <i class="el-icon-circle-plus pr-2"></i>
@@ -82,8 +112,20 @@
         </div>
 
         <div>
-          <li v-for="post in posts" :key="post.id" :class="selectedPost == post.id ? 'post-bd-left' : ''" style="min-width:200px">
-            <el-popover :disabled="!canHover ? true : false" :content="post.title" placement="left" title="标题" width="200" trigger="hover">
+          <li
+            v-for="post in posts"
+            :key="post.id"
+            :class="selectedPost == post.id ? 'post-bd-left' : ''"
+            style="min-width:200px"
+          >
+            <el-popover
+              :disabled="!canHover ? true : false"
+              :content="post.title"
+              placement="left"
+              title="标题"
+              width="200"
+              trigger="hover"
+            >
               <li slot="reference" @click="selectPost(post.id)" type="primary">
                 <span class="d-flex jc-between hover-4">
                   <i class="el-icon-document fs-ll pt-4 pl-2 ml-1"></i>
@@ -97,29 +139,55 @@
                       <i class="el-icon-s-tools el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="{ type: 'changeTitle', id: post.id, name: post.title }" icon="el-icon-chat-dot-round">修改文章标题</el-dropdown-item>
+                      <el-dropdown-item
+                        :command="{ type: 'changeTitle', id: post.id, name: post.title }"
+                        icon="el-icon-chat-dot-round"
+                        >修改文章标题</el-dropdown-item
+                      >
 
-                      <el-popover placement="left" width="200" :offset="200" trigger="click">
+                      <el-popover :offset="200" placement="left" width="200" trigger="click">
                         <div class="pb-2">移动到(点击框外可取消)</div>
                         <el-select v-model="movedCollection" placeholder="请选择">
-                          <el-option :disabled="selectedCollection == item.id" v-for="item in collections" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+                          <el-option
+                            :disabled="selectedCollection == item.id"
+                            v-for="item in collections"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                          >
+                          </el-option>
                         </el-select>
 
                         <div class="pt-3" style="text-align: right; margin: 0">
                           <!-- <el-button size="mini" type="text" >取消</el-button> -->
-                          <el-button type="primary" size="mini" @click="handlePostMove">确定</el-button>
+                          <el-button @click="handlePostMove" type="primary" size="mini">确定</el-button>
                         </div>
-                        <el-dropdown-item slot="reference" :command="{ type: 'movePost', id: post.id, name: post.title }" icon="el-icon-edit-outline">移动文章</el-dropdown-item>
+                        <el-dropdown-item
+                          slot="reference"
+                          :command="{ type: 'movePost', id: post.id, name: post.title }"
+                          icon="el-icon-edit-outline"
+                          >移动文章</el-dropdown-item
+                        >
                       </el-popover>
 
-                      <el-dropdown-item :command="{ type: 'delPost', id: post.id }" icon="el-icon-delete">删除文章</el-dropdown-item>
+                      <el-dropdown-item :command="{ type: 'delPost', id: post.id }" icon="el-icon-delete"
+                        >删除文章</el-dropdown-item
+                      >
                     </el-dropdown-menu>
                   </el-dropdown>
                 </span>
               </li>
             </el-popover>
           </li>
-          <span :style="canHover ? 'margin:auto;position: absolute;right: 0px;top: 16px;z-index:4;' : 'position: absolute;right: 0px;top: 16px;z-index:4;'" @click="changeWidth" class="point pr-2">
+          <span
+            :style="
+              canHover
+                ? 'margin:auto;position: absolute;right: 0px;top: 16px;z-index:4;'
+                : 'position: absolute;right: 0px;top: 16px;z-index:4;'
+            "
+            @click="changeWidth"
+            class="point pr-2"
+          >
             <el-tooltip :content="canHover ? '展开' : '收起'" placement="right" effect="dark">
               <el-button :icon="canHover ? 'el-icon-caret-right' : 'el-icon-caret-left'" size="mini" circle></el-button>
             </el-tooltip>
@@ -131,8 +199,10 @@
         <div :class="`resize-bar ${canHover ? 'open' : ''}`"></div>
       </div>
 
-      <el-main :style="!selectedPost ? 'display:flex;flex-direction:row;justify-content:center;align-items:center;' : ''">
-        <div class="pr-2 mr-1" v-show="!selectEditor">
+      <el-main
+        :style="!selectedPost ? 'display:flex;flex-direction:row;justify-content:center;align-items:center;' : ''"
+      >
+        <div v-show="!selectEditor" class="pr-2 mr-1">
           <div v-if="selectedPost">
             <div class="my-2 pt-1">
               <el-input v-focus v-model="title" size="medium" placeholder></el-input>
@@ -140,19 +210,34 @@
             <div>{{ isPublished == 0 ? '未发布' : '已发布' }}</div>
             <div class="d-flex jc-between tags text-left my-3">
               <div class="d-flex ">
-                <el-tag :key="tag.name" v-for="tag in dynamicTags" :disable-transitions="false" @close="handleClose(tag.name, tag.id)" class="mr-2" effect="plain" closable>{{ tag.name }}</el-tag>
+                <el-tag
+                  :key="tag.name"
+                  v-for="tag in dynamicTags"
+                  :disable-transitions="false"
+                  @close="handleClose(tag.name, tag.id)"
+                  class="mr-2"
+                  effect="plain"
+                  closable
+                  >{{ tag.name }}</el-tag
+                >
 
                 <sq-tag ref="tag" :ishow="showtag" :position="`bottom`" @add="addTag">
                   <el-button @click="showtag = true" class="button-new-tag" size="small">+ 添加标签</el-button>
                 </sq-tag>
               </div>
               <!-- 主动发布文章 -->
-              <el-button type="primary" size="mini" @click="updatePost($refs.markdown.value, true)">发布文章</el-button>
+              <el-button @click="updatePost($refs.markdown.value, true)" type="primary" size="mini">发布文章</el-button>
             </div>
             <!-- 仅仅保存文章 -->
             <!-- <tinymce ref="tinymce" v-show="selectEditor" @submit="updatePost"></tinymce> -->
 
-            <markdown :selectedPost="selectedPost" ref="markdown" @submit="updatePost" height="70vh" name="发布文章"></markdown>
+            <markdown
+              ref="markdown"
+              :selectedPost="selectedPost"
+              @submit="updatePost"
+              height="70vh"
+              name="发布文章"
+            ></markdown>
           </div>
           <div v-else class="bg" style="flex:1">思趣</div>
         </div>

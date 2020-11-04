@@ -1,5 +1,14 @@
 <template>
-  <el-dialog :modal="false" :lock-scroll="true" :style="`background:${color};${extension}`" :append-to-body="true" id="extend-bar" :visible.sync="$attrs.statu" fullscreen :before-close="handleClose">
+  <el-dialog
+    id="extend-bar"
+    :modal="false"
+    :lock-scroll="true"
+    :style="`background:${color};${extension}`"
+    :append-to-body="true"
+    :visible.sync="$attrs.statu"
+    :before-close="handleClose"
+    fullscreen
+  >
     <slot></slot>
   </el-dialog>
 </template>

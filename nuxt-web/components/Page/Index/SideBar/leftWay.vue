@@ -4,16 +4,29 @@
     style="
     display: flex;"
   >
-    <li @click="$emit('handleclick', link)" v-for="link in links" :key="link.alias" :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`">
+    <li
+      @click="$emit('handleclick', link)"
+      v-for="link in links"
+      :key="link.alias"
+      :class="(link.alias == category ? 'bg-1 ' : 'hover-2 ') + `w-100  pl-3 py-2`"
+    >
       <i :class="`text-${link.alias == category ? 'white' : link.color} fa   fa-${link.icon}`"></i>
 
       <span class="pl-1"> {{ link.name }}</span>
     </li>
 
     <div class="pl-3 py-2 xm ">技术频道</div>
-    <li @click="$emit('handleclick', link)" v-for="link in techChanel" :key="link.alias" :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `">
+    <li
+      @click="$emit('handleclick', link)"
+      v-for="link in techChanel"
+      :key="link.alias"
+      :class="(link.alias == category ? `bg-1 ` : 'hover-2 ') + `w-100  pl-3 py-2 `"
+    >
       <i :class="`text-${link.alias == category ? 'white' : link.color} fs-md  iconfont   icon-${link.icon}`"></i>
-      <i v-if="link.fontawesome" :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"></i>
+      <i
+        v-if="link.fontawesome"
+        :class="`text-${link.alias == category ? 'white' : link.color} fs-md fa ${link.icon}`"
+      ></i>
       <span class="pl-1">{{ link.name }}</span>
     </li>
     <router-link :to="`/tags`" class="w-100 " tag="li">

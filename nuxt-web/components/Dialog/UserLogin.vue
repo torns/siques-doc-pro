@@ -1,5 +1,13 @@
 <template>
-  <el-dialog id="login" :title="isRegister ? '注册' : '登录'" :visible="$store.state.loginFormVisible" @close="closeLoginForm" custom-class="login" style="margin: 0 auto" width="90%">
+  <el-dialog
+    id="login"
+    :title="isRegister ? '注册' : '登录'"
+    :visible="$store.state.loginFormVisible"
+    @close="closeLoginForm"
+    custom-class="login"
+    style="margin: 0 auto"
+    width="90%"
+  >
     <div>
       <el-form ref="RegisterDto" v-show="isRegister" :model="RegisterDto" :rules="rules" status-icon>
         <el-form-item :label-width="formLabelWidth" class="pb-2" label="你的名字" prop="name">
@@ -8,7 +16,13 @@
           </el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" class="pb-2" label="手机号" prop="phonenumber">
-          <el-input v-model.number="RegisterDto.phonenumber" :maxlength="11" height="10" placeholder="11位手机号" autocomplete="off">
+          <el-input
+            v-model.number="RegisterDto.phonenumber"
+            :maxlength="11"
+            height="10"
+            placeholder="11位手机号"
+            autocomplete="off"
+          >
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
@@ -19,7 +33,9 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" class="pt-2" label="验证码" prop="verification">
           <el-input v-model="RegisterDto.verification" placeholder="验证码" autocomplete="off">
-            <el-button slot="append" @click="getCode" type="primary">{{ this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码' }}</el-button>
+            <el-button slot="append" @click="getCode" type="primary">{{
+              this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码'
+            }}</el-button>
           </el-input>
         </el-form-item>
       </el-form>

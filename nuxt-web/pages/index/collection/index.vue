@@ -7,17 +7,29 @@
         </h1>
         <div>点点滴滴记录代码日常</div>
       </div>
-      <sq-wave class="absolute" style="margin-top:-9em;width:100%;bottom:0;" :background="`#00000000`"></sq-wave>
+      <sq-wave :background="`#00000000`" class="absolute" style="margin-top:-9em;width:100%;bottom:0;"></sq-wave>
     </div>
 
     <div>
-      <video style="height:115vh;object-fit: cover;width:100%;" autoplay loop muted playsinline src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4"></video>
+      <video
+        style="height:115vh;object-fit: cover;width:100%;"
+        autoplay
+        loop
+        muted
+        playsinline
+        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/public/collection/cover3.mp4"
+      ></video>
     </div>
     <div style="margin-top:-10em" class="collection_container h-100 pt-4 ">
       <sq-panel :data="posts"></sq-panel>
     </div>
 
-    <sq-pagination :href="`${$route.path}?page=1`" @current-change="handleCurrentChange" :currentPage="currentPage" :maxLen="maxLen"></sq-pagination>
+    <sq-pagination
+      :href="`${$route.path}?page=1`"
+      @current-change="handleCurrentChange"
+      :currentPage="currentPage"
+      :maxLen="maxLen"
+    ></sq-pagination>
     <sq-footer class="pt-5"></sq-footer>
   </div>
 </template>
@@ -36,12 +48,20 @@ import config from '~/plugins/config/website.js'
 })
 export default class CollectionIndex extends Vue {
   async asyncData({ params, store, route }: any) {
-    const Taglist = store.state.auth ? (store.state.auth.user ? (store.state.auth.user.tags ? store.state.auth.user.tags : null) : null) : null
+    const Taglist = store.state.auth
+      ? store.state.auth.user
+        ? store.state.auth.user.tags
+          ? store.state.auth.user.tags
+          : null
+        : null
+      : null
     const List = listIntercep(Taglist)
     const http = Vue.prototype.$http
 
     const link =
-      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&sort=${route.query.sort ? route.query.sort : 'created'}` +
+      `/posts/all?limit=10&page=${route.query.page ? route.query.page : 1}&sort=${
+        route.query.sort ? route.query.sort : 'created'
+      }` +
       (Taglist ? `&taglist=${List}` : '') +
       `&listId=true&collection=true&type=post&avator=true`
     const res = await http.get(link)
