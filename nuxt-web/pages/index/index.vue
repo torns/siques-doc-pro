@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isHomepage">
+  <div>
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
       <sq-banner
@@ -241,23 +241,35 @@ export default class AppPage extends Vue {
     }
   }
 
-  // recordScrollPosition(e) {
-  //   this.$store.commit('setScrollTop', { name: this.$route.path, top: e.target.scrollTop })
+  // debounce = _.debounce(this.recordScrollPosition, 10)
+  homeTop = 0
+
+  // activated() {
+  //   // do something
+  //   console.log('activated home')
+  //   document.body.scrollTop = this.homeTop
+  //   document.documentElement.scrollTop = this.homeTop
   // }
 
-  // debounce = _.debounce(this.recordScrollPosition, 10)
-  homeTop
-  activated() {
-    // do something
-    console.log('activated home')
-    document.documentElement.scrollTop = this.homeTop || 0
-    document.body.scrollTop = this.homeTop || 0
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (typeof document != 'undefined') {
+        console.log('activated home')
+        document.body.scrollTop = vm.$store.state.routerScrollTop['/']
+        document.documentElement.scrollTop = vm.$store.state.routerScrollTop['/']
+      }
+    })
   }
 
   beforeRouteLeave(to, from, next) {
     console.log('leave')
 
-    this.homeTop = document.documentElement.scrollTop || document.body.scrollTop || 0
+    // this.homeTop = document.documentElement.scrollTop || document.body.scrollTop || 0
+
+    this.$store.commit('setScrollTop', {
+      name: this.$route.path,
+      top: document.documentElement.scrollTop || document.body.scrollTop || 0,
+    })
     next()
   }
 

@@ -13,7 +13,7 @@
                 <div v-html="post.title" class="moment-title"></div>
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
-              <div class="moment-img">
+              <div v-if="!post.showMore" class="moment-img">
                 <el-image
                   v-if="post.cover != null"
                   :src="post.cover[0]"
@@ -47,7 +47,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import mediumZoom from 'medium-zoom'
 import fetchdata from '~/plugins/fetchdata'
+
+const mediumzoom = () => {
+  mediumZoom(document.querySelectorAll('.plain-text-wrap img'))
+}
+
 @Component({})
 export default class Moment extends Vue {
   async asyncData() {
@@ -80,6 +86,12 @@ export default class Moment extends Vue {
 
   get remain() {
     return this.total - this.page * this.limit
+  }
+
+  mounted() {
+    this.$nextTick(() => {
+      mediumzoom()
+    })
   }
 
   fetchDataSuccess(res: any) {
@@ -166,6 +178,17 @@ export default class Moment extends Vue {
 }
 .moment-items {
   padding: 10px;
+}
+
+.plain-text-wrap {
+  img {
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  pre code {
+    white-space: break-spaces;
+  }
 }
 
 .moment-data {
