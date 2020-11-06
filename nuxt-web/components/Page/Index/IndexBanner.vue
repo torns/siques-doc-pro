@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import canav from './Canva/cool'
+import canav from './Canva/star'
 import wave from '~/components/Base/BaseWave/index.vue'
 
 @Component({

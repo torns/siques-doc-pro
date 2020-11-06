@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default (window) => {
   const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
@@ -7,17 +8,9 @@ export default (window) => {
   let w = (canvas.width = window.innerWidth * RESOLUTION)
   let h = (canvas.height = window.innerHeight * RESOLUTION - 200)
 
-  const PARTICLE_COUNT = 150
-  let CONNECT_DISTANCE = w * 0.05
+  const PARTICLE_COUNT = 50
+  let CONNECT_DISTANCE = w * 0.06
   let FORCE_DISTANCE = w * 0.1
-
-  if (w < 500) {
-    CONNECT_DISTANCE = w * 0.17
-    FORCE_DISTANCE = w * 0.3
-  } else if (w < 900) {
-    CONNECT_DISTANCE = w * 0.1
-    FORCE_DISTANCE = w * 0.18
-  }
 
   const r = (n = 1) => Math.random() * n
   const PI = Math.PI
@@ -127,7 +120,7 @@ export default (window) => {
     render()
     const stop = window.requestAnimationFrame(loop)
 
-    const canvas = document.getElementById('canv')
+    const canvas = document.getElementById('canvas')
     if (canvas == null) cancelAnimationFrame(stop)
   }
 
