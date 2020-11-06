@@ -1,7 +1,7 @@
 <template>
   <!-- 其它页面的导航栏 -->
   <div v-if="!isHomepage">
-    <div id="navigation" class="visible-xs " style=" z-index: 2;position: absolute;top:0;width:100vw">
+    <div id="navigation" class="visible-xs " style=" z-index: 2;position: absolute;top:0;width:100%">
       <nav class="tabbar">
         <div class="d-flex jc-between ai-center h-100">
           <label v-if="!isMoreClick" @click="$emit('changestatu', true)" class="pl-3 point" for="menu-1">

@@ -67,9 +67,9 @@ export default (windows) => {
 
   function resize() {
     canvas.width = window.innerWidth
-    canvas.height = window.innerHeight - 200
+    // canvas.height = window.innerHeight - 200
     centerX = window.innerWidth * 0.5
-    centerY = (window.innerHeight - 200) * 0.5
+    // centerY = (window.innerHeight - 200) * 0.5
   }
 
   function random(min, max) {

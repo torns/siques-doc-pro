@@ -10,6 +10,7 @@
 @import 'menu.scss';
 @import 'toc.scss';
 @import 'moment';
+@import 'index';
 // @import 'gitlab.scss';
 // reset
 // 防止自己撑大
@@ -60,10 +61,6 @@ body {
     outline: none;
   }
 }
-
-// html {
-//   overflow-x: hidden;
-// }
 
 .page-enter-active,
 .page-leave-active {

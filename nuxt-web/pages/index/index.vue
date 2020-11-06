@@ -42,7 +42,7 @@
     </div>
     <div class="container" style="min-height: 100vh">
       <el-row :gutter="0" class="d-flex xm-flex-wrap pt-4">
-        <el-col :xs="24" :sm="24" :md="5" :lg="5" :xl="5" class=" ">
+        <el-col :xs="0" :sm="1" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
           <div class="xs d-flex" style="flex-direction: row-reverse">
             <a href="#top">
               <!-- 首页左侧边栏 -->
@@ -50,17 +50,49 @@
             </a>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14" class="px-2 mx-1">
+        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
           <sq-typer id="top"></sq-typer>
           <div>
             <div>
-              <div class="pt-3">{{ name }}</div>
+              <section class="new-title">
+                <span>{{ name }}</span>
+              </section>
 
-              <el-divider></el-divider>
+              <div class="news-list-module" style="overflow: auto">
+                <div v-for="(post, $index) in posts" :key="$index">
+                  <article :id="post.id" :class="`item ${post.cover ? '' : 'wire'}`">
+                    <section class="row">
+                      <section v-if="post.cover" class="news-img point">
+                        <router-link :to="`/p/${post.id}`" tag="a" target="_blank" :title="post.title">
+                          <img :src="post.cover" alt="cover"
+                        /></router-link>
+                      </section>
+                      <section :class="`${post.cover ? 'news-detail' : 'content'}`">
+                        <section class="item-tag-list d-flex">
+                          <div v-for="tag in post.tags" :key="tag.id">
+                            <router-link class="tag ellipsis-1" target="_blank" :to="`/t/${tag.id}`" tag="a"
+                              ><i class="fa fa-tags"></i> <span>{{ tag.name }}</span></router-link
+                            >
+                          </div>
+                        </section>
 
-              <ul style="overflow: auto">
-                <div v-for="(post, $index) in posts" :key="$index" class="pb-3">
-                  <div class="d-flex ai-center jc-between">
+                        <p class="title">
+                          <router-link :to="`/p/${post.id}`" tag="a" target="_blank" :title="post.title">{{
+                            post.title
+                          }}</router-link>
+                        </p>
+                        <p class="desc">{{ post.alias }}...</p>
+                        <section class="author ">
+                          <nuxt-link class="name" :to="`u/${post.user.id}`" tag="a"
+                            ><span>{{ post.user.name + ' ' }}</span>
+                          </nuxt-link>
+                          <span> · </span>
+                          <span class="time"> {{ $dayjs(post.created).fromNow() }}</span>
+                        </section>
+                      </section>
+                    </section>
+                  </article>
+                  <!-- <div class="d-flex ai-center jc-between">
                     <div>
                       <div class="title">
                         <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point fs-lg">{{
@@ -81,7 +113,7 @@
                       </div>
                       <div>
                         <div class="text-gray fs-xm lh-2 pt-2">
-                          <!-- 过滤 -->
+                         
                           <span>{{ post.alias }}...</span>
                         </div>
                       </div>
@@ -116,8 +148,8 @@
                           fit="cover"
                         ></el-image>
                       </router-link>
-                    </div>
-                  </div>
+                    </div> 
+                 </div> -->
                 </div>
 
                 <div v-if="loading" class="my-3 text-primary fs-xl">
@@ -127,12 +159,12 @@
                   <div v-if="noMore">我是有底线的</div>
                   <div v-else @click="onload" class="point">点击查看更多热文</div>
                 </div>
-              </ul>
+              </div>
             </div>
           </div>
         </el-col>
 
-        <el-col :xs="0" :sm="6" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
+        <el-col :xs="0" :sm="1" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
           <!-- 首页右-侧边栏 -->
           <sq-rightBar></sq-rightBar>
         </el-col>
