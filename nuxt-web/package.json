@@ -24,6 +24,7 @@
     "build-url": "^2.0.0",
     "cookieparser": "^0.1.0",
     "dayjs": "^1.8.19",
+    "default-passive-events": "^2.0.0",
     "element-ui": "^2.4.11",
     "lodash": "^4.17.20",
     "markdown-it": "^10.0.0",

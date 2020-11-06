@@ -141,7 +141,7 @@ export default {
     { src: '@/plugins/element-ui', ssr: true },
     '@/plugins/directive',
     '@/plugins/global.ts',
-    '@/plugins/route.js',
+    // '@/plugins/route.js',
     { src: '@/plugins/markdown', ssr: true },
     { src: '@/plugins/http', ssr: true },
     { src: '@/plugins/scrollAnimate', ssr: false },
@@ -194,9 +194,9 @@ export default {
    */
   axios: {},
 
-  router: {
-    middleware: ['scrollTop']
-  },
+  // router: {
+  //   middleware: ['scrollTop']
+  // },
 
   auth: {
     redirect: {

@@ -2,7 +2,7 @@
   <div>
     <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
     <div>
-      <sq-banner
+      <sq-banner v-if="isHomepage"
         ><div class="container" style="height: 0">
           <el-row :gutter="0" class="d-flex jc-center">
             <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down"> </el-col>
