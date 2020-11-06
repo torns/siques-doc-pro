@@ -256,7 +256,7 @@ import { wordcounts } from '../../plugins/utils.js'
 // import tinymce from '~/components/Tinymce/Tinymce.vue'
 
 @Component({})
-export default class index extends Vue {
+export default class PostWrite extends Vue {
   asyncData({ store }: any) {
     // 在 @component 中不可以写 this.$http //
 

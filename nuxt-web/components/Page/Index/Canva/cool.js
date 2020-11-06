@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default (window) => {
-  const canvas = document.getElementById('canv')
+  const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
   let width
   let height
@@ -131,7 +131,9 @@ export default (window) => {
     ]
     for (let i = 0; i < amount; i += 1) {
       let style = styles[(Math.random() ** 2 * styles.length) | 0]
-      lines.push(new Line({ x: width * 0.5, y: height * 0.5 }, style.size, 500 + Math.random() * 1000, style.color, style.style))
+      lines.push(
+        new Line({ x: width * 0.5, y: height * 0.5 }, style.size, 500 + Math.random() * 1000, style.color, style.style)
+      )
     }
     return lines
   }
@@ -139,7 +141,7 @@ export default (window) => {
   function resize() {
     id = cancelAnimationFrame(id)
     width = window.innerWidth
-    height = window.innerHeight
+    height = window.innerHeight - 200
     canvas.width = width
     canvas.height = height
     const lines = generateLines(40)

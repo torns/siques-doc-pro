@@ -327,7 +327,7 @@
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
         <!-- 页面视图 -->
 
-        <keep-alive include="AppPage">
+        <keep-alive exclude="Post,Note,PostWrite,NoteWrite">
           <router-view
             @changestatu="isMoreClick = false"
             :isMoreClick="isMoreClick"

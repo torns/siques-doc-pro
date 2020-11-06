@@ -3,14 +3,14 @@
     <div>
       <slot></slot>
     </div>
-    <canvas id="canv" class="canvas" style="margin-bottom: -10px; background-color: #000; "> </canvas>
+    <canvas id="canvas" class="canvas" style="margin-bottom: -10px; background-color: #000; "> </canvas>
     <sq-wave></sq-wave>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import canav from './Canva/code'
+import canav from './Canva/cool'
 import wave from '~/components/Base/BaseWave/index.vue'
 
 @Component({
@@ -22,7 +22,7 @@ export default class IndexBanner extends Vue {
   // Little Canvas things
 
   get canvas(): any {
-    return document.querySelector('#canv')
+    return document.querySelector('#canvas')
   }
   get window(): any {
     return window

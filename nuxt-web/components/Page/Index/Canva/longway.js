@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default (window) => {
-  var canvas = document.getElementById('canv')
+  var canvas = document.getElementById('canvas')
 
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight

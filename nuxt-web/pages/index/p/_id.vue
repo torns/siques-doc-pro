@@ -3,7 +3,7 @@
     <div>
       <div
         class="absolute d-flex jc-center flex-column ai-center "
-        style="z-index:5!important; width: 80%;top: 7%;left:10%;"
+        style="z-index:5!important; width: 80%;top: 8%;left:10%;"
       >
         <div class="fs-md">
           <!-- <div class="d-flex">

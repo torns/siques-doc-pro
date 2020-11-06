@@ -1,5 +1,5 @@
 export default (window) => {
-  const canvas = document.getElementById('canv')
+  const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
 
   const RESOLUTION = 1
