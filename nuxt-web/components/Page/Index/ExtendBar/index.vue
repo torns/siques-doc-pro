@@ -8,8 +8,12 @@
     :visible.sync="$attrs.statu"
     :before-close="handleClose"
     fullscreen
+    :show-close="false"
   >
-    <slot></slot>
+    <div slot="title"></div>
+    <div class="frosted-glass text-white">
+      <slot></slot>
+    </div>
   </el-dialog>
 </template>
 
@@ -43,4 +47,14 @@ export default class ExtendBar extends Vue {
 #extend-bar .el-dialog__body {
   height: 100vh;
 }
+
+#extend-bar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+// .bg-container {
+//   background-repeat: no-repeat;
+//   background-attachment: fixed;
+//   overflow: hidden;
+// }
 </style>

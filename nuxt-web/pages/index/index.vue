@@ -114,7 +114,6 @@
                           style="width: 140px; height: 90px"
                           class="border-radius shadow-1 border-dash"
                           fit="cover"
-                          lazy
                         ></el-image>
                       </router-link>
                     </div>
@@ -141,7 +140,23 @@
     </div>
 
     <!-- 首页的导航栏 -->
-    <sq-extendBar @handleClose="$emit('changestatu', false)" :statu="$attrs.isMoreClick" extension="top: 55px;">
+    <sq-extendBar
+      @handleClose="$emit('changestatu', false)"
+      :statu="$attrs.isMoreClick"
+      extension=""
+      color="rgba(0, 0, 0, 0.27);"
+    >
+      <li
+        style="    text-align: right;
+    padding-bottom: 30px;
+    padding-right: 10px;"
+        @click="$emit('changestatu', false)"
+        class="pl-3"
+      >
+        <svg style="height: 25px; width: 25px">
+          <use xlink:href="#offIcon" />
+        </svg>
+      </li>
       <a href="#top">
         <!-- 首页左侧边栏 -->
 
@@ -181,8 +196,8 @@ import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
     'sq-banner': banner,
     'sq-typer': typer,
     'sq-holder': placeholder,
-    'sq-extendBar': extendBar,
-  },
+    'sq-extendBar': extendBar
+  }
 })
 export default class AppPage extends Vue {
   async asyncData() {
@@ -201,7 +216,7 @@ export default class AppPage extends Vue {
     // const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
       posts: res.data[0],
-      total: res.data[1],
+      total: res.data[1]
       // hotTags: res1.data,
       // hotComments: res2.data,
       // hotNotebooks: res3.data
@@ -268,7 +283,7 @@ export default class AppPage extends Vue {
 
     this.$store.commit('setScrollTop', {
       name: this.$route.path,
-      top: document.documentElement.scrollTop || document.body.scrollTop || 0,
+      top: document.documentElement.scrollTop || document.body.scrollTop || 0
     })
     next()
   }
@@ -300,7 +315,7 @@ export default class AppPage extends Vue {
       tags: this.tag,
       taglist: list,
       type: this.type,
-      success: this.fetchDataSuccess,
+      success: this.fetchDataSuccess
     })
   }
 

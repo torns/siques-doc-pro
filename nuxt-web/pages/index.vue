@@ -219,6 +219,73 @@
         </ul>
       </nav>
 
+      <!-- 其它页面的底部导航栏 -->
+      <sq-navigation
+        @changestatu="
+          (t) => {
+            isMoreClick = t
+          }
+        "
+        :isMoreClick="isMoreClick"
+      >
+        <sq-extendBar
+          @handleClose="isMoreClick = false"
+          :statu="isMoreClick"
+          extension="top: -2px;"
+          color="rgba(0, 0, 0, 0.27);"
+        >
+          <!-- 其它页面的弹出栏 -->
+          <li
+            style="    text-align: right;
+    padding-bottom: 30px;
+    padding-right: 10px;"
+            @click="isMoreClick = false"
+            class="pl-3"
+          >
+            <svg style="height: 25px; width: 25px">
+              <use xlink:href="#offIcon" />
+            </svg>
+          </li>
+
+          <div
+            @click="
+              $router.push('/moment')
+              isMoreClick = false
+            "
+            class="point pb-2"
+          >
+            24小时
+          </div>
+          <div
+            @click="
+              $router.push('/collection')
+              isMoreClick = false
+            "
+            class="point pb-2"
+          >
+            专栏
+          </div>
+          <div
+            @click="
+              $router.push('/n')
+              isMoreClick = false
+            "
+            class="point pb-2"
+          >
+            笔记
+          </div>
+          <div
+            @click="
+              $router.push('/tags')
+              isMoreClick = false
+            "
+            class="point pb-2"
+          >
+            标签
+          </div>
+        </sq-extendBar>
+      </sq-navigation>
+
       <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
         <symbol id="settingsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor">
           <path
@@ -272,60 +339,6 @@
       </div>
     </div>
 
-    <!-- 其它页面的底部导航栏 -->
-    <sq-navigation
-      @changestatu="
-        (t) => {
-          isMoreClick = t
-        }
-      "
-      :isMoreClick="isMoreClick"
-    >
-      <sq-extendBar @handleClose="isMoreClick = false" :statu="isMoreClick" extension="bottom: 47px;" color="white">
-        <!-- 其它页面的弹出栏 -->
-        <div
-          @click="
-            $router.push('/moment')
-
-            isMoreClick = false
-          "
-          class="point pb-2"
-        >
-          24小时
-        </div>
-        <div
-          @click="
-            $router.push('/collection')
-
-            isMoreClick = false
-          "
-          class="point pb-2"
-        >
-          专栏
-        </div>
-        <div
-          @click="
-            $router.push('/n')
-
-            isMoreClick = false
-          "
-          class="point pb-2"
-        >
-          笔记
-        </div>
-        <div
-          @click="
-            $router.push('/tags')
-
-            isMoreClick = false
-          "
-          class="point pb-2"
-        >
-          标签
-        </div>
-      </sq-extendBar>
-    </sq-navigation>
-
     <!-- 首页的登录弹窗 -->
     <div @click.stop>
       <sq-login ref="login" @click.stop></sq-login>
@@ -352,7 +365,7 @@ export default class Home extends Vue {
 
   head() {
     return {
-      title: '思趣网',
+      title: '思趣网'
       // script: []
     }
   }
@@ -368,8 +381,12 @@ export default class Home extends Vue {
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0
+      // document.getElementsByTagName('body')[0].setAttribute('style', 'overflow:hidden;')
+      // document.getElementsByTagName('html')[0].setAttribute('style', 'overflow:hidden;')
       document.getElementById('app').setAttribute('style', 'position:fixed;')
     } else {
+      // document.getElementsByTagName('body')[0].removeAttribute('style')
+      // document.getElementsByTagName('html')[0].removeAttribute('style')
       document.getElementById('app').removeAttribute('style')
       // 还原滚动距离
       document.body.scrollTop = this.scrollTop

@@ -55,14 +55,15 @@ body {
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   flex-wrap: wrap;
+  // height: 100%;
   :focus {
     outline: none;
   }
 }
 
-html {
-  overflow-x: hidden;
-}
+// html {
+//   overflow-x: hidden;
+// }
 
 .page-enter-active,
 .page-leave-active {

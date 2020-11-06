@@ -1,11 +1,7 @@
 <template>
   <!-- 其它页面的导航栏 -->
   <div v-if="!isHomepage">
-    <div
-      id="navigation"
-      class="visible-sm visible-xs bg-white"
-      style=" z-index: 2;position: fixed;bottom:-2px;width:101vw"
-    >
+    <div id="navigation" class="visible-xs " style=" z-index: 2;position: absolute;top:0;width:100vw">
       <nav class="tabbar">
         <div class="d-flex jc-between ai-center h-100">
           <label v-if="!isMoreClick" @click="$emit('changestatu', true)" class="pl-3 point" for="menu-1">
@@ -21,7 +17,7 @@
           </li>
 
           <label @click="$router.push('/')" class="point">
-            <img style="height:30px" src="~/static/banner1.png" alt="banner" />
+            <img style="height:30px" src="~/static/banner.png" alt="banner" />
           </label>
 
           <label @click="$router.push('/search')" class="pr-3 point" for="menu-3">
@@ -44,6 +40,7 @@
         </symbol>
       </svg>
     </div>
+
     <slot></slot>
   </div>
 </template>

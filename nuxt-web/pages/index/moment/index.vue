@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="moment_container pt-4">
+    <div class="moment_container pt-5">
       <el-row :gutter="0" type="flex">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div class="moment-data">今天</div>
@@ -197,7 +197,7 @@ export default class Moment extends Vue {
   font-weight: 600;
   letter-spacing: 4px;
 
-  padding: 10px;
+  padding: 15px 10px 10px 10px;
 }
 
 .moment-img {
