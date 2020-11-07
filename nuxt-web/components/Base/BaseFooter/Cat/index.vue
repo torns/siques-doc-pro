@@ -34,7 +34,7 @@ export default class smallCat extends Vue {
   }
 
   init() {
-    document.addEventListener('mousemove', this.active)
+    document.addEventListener('mousemove', this.active, false)
   }
 
   active(event) {
@@ -49,8 +49,16 @@ export default class smallCat extends Vue {
     }
   }
 
-  destroyed() {
-    document.removeEventListener('mousemove', this.active)
+  activated() {
+    document.addEventListener('mousemove', this.active, false)
+  }
+
+  deactivated() {
+    document.removeEventListener('mousemove', this.active, false)
+  }
+
+  beforeDestroy() {
+    document.removeEventListener('mousemove', this.active, false)
   }
 }
 </script>

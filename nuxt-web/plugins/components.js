@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
-import 'default-passive-events'
+// import 'default-passive-events'
 
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
