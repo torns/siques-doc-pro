@@ -324,8 +324,13 @@ export default class NoteWrite extends Vue {
         this.$router.push(`/record`)
       } else {
         this.$store.commit('setNote', this.id)
+
+        //
         const ref: any = this.$refs.markdown
-        ref.setContent(res.data.body)
+        this.$nextTick(() => {
+          ref.setContent(res.data.body)
+        })
+
         this.title = res.data.title
         this.dynamicTags = res.data.tags
       }

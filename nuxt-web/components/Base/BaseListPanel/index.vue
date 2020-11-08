@@ -77,6 +77,7 @@ export default class ListPanel extends Vue {
   }
 
   handleCurrentChange(val: any) {
+    console.log(val)
     const page = val
     this.$emit('pageChange', page)
   }

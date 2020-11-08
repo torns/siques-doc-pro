@@ -16,7 +16,7 @@
             style="text-align:end"
           ></div>
         </div>
-        <markdown ref="markdown" name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
+        <markdown mode="mini" ref="markdown" name="回复" icon="iconfont icon-comments" height="40vh"></markdown>
         <div class="py-2">
           <el-button @click="handleSend" size="mini" type="primary"><span class="pl-1">回复</span></el-button>
 
@@ -44,7 +44,7 @@ export default class commentPanel extends Vue {
   @Watch('edit')
   isEdit() {
     if (this.edit === true) {
-      const res = this.ref.getContent()
+      const res = this.ref.getcontent()
       if (res) {
         this.$confirm('确定要放弃编辑?', '提示', {
           confirmButtonText: '是',
@@ -95,7 +95,7 @@ export default class commentPanel extends Vue {
   }
 
   handleSend() {
-    const value = this.ref.value
+    const value = this.ref.getcontent()
     switch (this.$attrs.type) {
       case 'comment':
         this.sendComment(value)

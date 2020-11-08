@@ -30,7 +30,7 @@
           style="height:110px;border:1px dashed #DDDDDD;"
         >
           <div v-if="originTag != ''" class="flex-wrap">
-            <el-tag
+            <div
               v-for="tag in originTag"
               :key="tag.id"
               :closable="id ? false : true"
@@ -38,8 +38,9 @@
               class="mx-1 my-2"
               type="primary"
               size="small"
-              >{{ tag.name }}</el-tag
             >
+              {{ tag.name }}
+            </div>
           </div>
           <div v-else class="text-gray ai-baseline">
             (ﾟ∀ﾟ ) 暂时没有，

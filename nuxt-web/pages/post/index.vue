@@ -102,7 +102,7 @@
         :width="width"
         v-draggable="`drag`"
         :class="`postlist ${canHover ? 'expand' : ''}`"
-        style="background-color:white;color:#333;z-index: 4;"
+        style="background-color:white;color:#333;"
       >
         <div class="d-flex ai-center jc-between">
           <div @click="creatPost" class="creatpost point pl-4 ellipsis-1">
@@ -182,8 +182,8 @@
           <span
             :style="
               canHover
-                ? 'margin:auto;position: absolute;right: 0px;top: 16px;z-index:4;'
-                : 'position: absolute;right: 0px;top: 16px;z-index:4;'
+                ? 'margin:auto;position: absolute;right: 0px;top: 16px; '
+                : 'position: absolute;right: 0px;top: 16px; '
             "
             @click="changeWidth"
             class="point pr-2"
@@ -210,7 +210,7 @@
             <div>{{ isPublished == 0 ? '未发布' : '已发布' }}</div>
             <div class="d-flex jc-between tags text-left my-3">
               <div class="d-flex ">
-                <el-tag
+                <div
                   :key="tag.name"
                   v-for="tag in dynamicTags"
                   :disable-transitions="false"
@@ -218,8 +218,9 @@
                   class="mr-2"
                   effect="plain"
                   closable
-                  >{{ tag.name }}</el-tag
                 >
+                  {{ tag.name }}
+                </div>
 
                 <sq-tag ref="tag" :ishow="showtag" :position="`bottom`" @add="addTag">
                   <el-button @click="showtag = true" class="button-new-tag" size="small">+ 添加标签</el-button>
@@ -760,7 +761,7 @@ export default class PostWrite extends Vue {
   top: 50%;
   left: 0;
   /* text-shadow: 0 0 black; */
-  z-index: 20;
+  z-index: 1;
 }
 .doexpand:after {
   content: '';
@@ -786,7 +787,7 @@ export default class PostWrite extends Vue {
   cursor: pointer;
   margin: 30px auto;
   top: 45.4%;
-  z-index: 1;
+  z-index: 0;
   border-radius: 20px;
 }
 
@@ -794,7 +795,7 @@ export default class PostWrite extends Vue {
   background-color: #e9eef3;
   transform: translateZ(0px);
   width: 15px;
-  z-index: 3;
+
   position: relative;
   cursor: e-resize;
   &-bar {

@@ -3,12 +3,12 @@
     <div class="d-flex jc-between header bg-light border-solid py-1 px-3">
       <div style="line-height:28px">高分内容</div>
       <div>
-        <el-radio-group v-model="sort" size="mini">
+        <!-- <el-radio-group v-model="sort" size="mini">
           <el-radio-button label="概览"></el-radio-button>
           <el-radio-button label="提问"></el-radio-button>
           <el-radio-button label="回答"></el-radio-button>
           <el-radio-button label="文章"></el-radio-button>
-        </el-radio-group>
+        </el-radio-group> -->
       </div>
     </div>
     <div style="min-height:200px" class="body border-solid">

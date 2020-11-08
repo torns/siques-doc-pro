@@ -25,15 +25,15 @@
 
       <div>
         <span class="text-gray fs-xm">排序：</span>
-        <el-radio-group v-model="sort" size="mini">
+        <!-- <el-radio-group v-model="sort" size="mini">
           <el-radio-button label="时间" value="created"></el-radio-button>
           <el-radio-button label="得票" value="liked"></el-radio-button>
-        </el-radio-group>
+        </el-radio-group> -->
       </div>
     </div>
     <el-divider></el-divider>
 
-    <list-panel @pageChange="fetch" :posts="posts" :len="len" post collection="true"></list-panel>
+    <list-panel @pageChange="fetchUserPost" :posts="posts" :len="len" post collection="true"></list-panel>
   </div>
 </template>
 
@@ -55,20 +55,20 @@ export default class PageComponent extends Vue {
   mypageActiveName: string = 'mypost'
 
   mounted() {
-    this.fetch()
+    this.fetchUserPost()
     this.fetchCollect()
   }
 
   @Watch('sort')
   isSortChange() {
-    this.fetch(this.page)
+    this.fetchUserPost(this.page)
   }
 
   get sorts() {
     return this.sort === '时间' ? 'created' : 'liked'
   }
 
-  async fetch(page?: any, limit?: any) {
+  async fetchUserPost(page?: any, limit?: any) {
     this.page = page
     if (this.id) {
       const res = await this.$http.get(`/posts/${this.id}/user?type=post&page=${page || ''}`)

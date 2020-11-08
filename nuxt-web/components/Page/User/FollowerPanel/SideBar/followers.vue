@@ -9,10 +9,10 @@
         <div class="d-flex jc-between py-4 px-3">
           <div>
             <router-link :to="`/t/${data.id}`" tag="div">
-              <el-tag class="point" size="mini" type="primary hover-3">
+              <div class="point" size="mini" type="primary hover-3">
                 <i :class="`fa fa-${data.name} `"></i>
                 <span class="pr-1">{{ data.name }}</span>
-              </el-tag></router-link
+              </div></router-link
             >
             <div class="fs-xm text-gray">{{ data.interest }}关注</div>
           </div>

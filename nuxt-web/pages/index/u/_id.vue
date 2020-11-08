@@ -22,7 +22,7 @@
                     />
                     <img v-else src="~/static/avator.jpg" />
                   </el-avatar>
-                  <el-upload
+                  <!-- <el-upload
                     :http-request="uploadAvator"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -31,7 +31,7 @@
                     action="string"
                   >
                     <el-button v-if="!id" size="small" type="text">上传头像</el-button>
-                  </el-upload>
+                  </el-upload> -->
                 </div>
 
                 <ul class="icon-list d-flex jc-between   pt-2">

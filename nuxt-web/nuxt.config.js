@@ -34,11 +34,13 @@ export default {
     ],
 
     script: [
-      // {
-      //   src: 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js',
-      //   async: 'async'
-      // },
-      { src: 'https://cdn.siques.cn/libs/js/tui-editor-Editor-full.min.js', defer: true },
+      { src: 'https://cdn.siques.cn/libs/js/editormd.min.js', defer: true },
+      // { src: 'https://cdn.siques.cn/libs/js/codemirror/codemirror.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/codemirror/modes.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/codemirror/addons.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/marked.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/prettify.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
@@ -46,7 +48,7 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/typescript.min.js'
       },
       {
-        src: 'https://cdn.bootcss.com/highlight.js/9.18.1/languages/dart.min.js'
+        src: 'https://cdn.siques.cn/libs/js/dart.min.js'
       },
 
       {
@@ -59,10 +61,10 @@ export default {
             ? 'https://cdn.siques.cn/libs/js/vue.min.js'
             : 'https://cdn.siques.cn/libs/js/vue.js'
       },
-      {
-        src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
-        ssr: true
-      },
+      // {
+      //   src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
+      //   ssr: true
+      // },
       {
         src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
       },
@@ -88,37 +90,32 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
       { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
-      },
       // {
       //   rel: 'stylesheet',
-      //   href: 'https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-dark.min.css'
+      //   href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
       // },
       {
         rel: 'stylesheet',
-        href: 'https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.0/styles/github.min.css'
+        href: 'https://cdn.siques.cn/libs/css/katex.min.css',
+        async: true
       },
       {
         rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/element-ui/2.13.2/theme-chalk/index.css'
+        href: 'https://cdn.siques.cn/libs/css/github.min.css'
       },
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://cdn.siques.cn/libs/css/element-ui/2.13.2/theme-chalk/index.css'
+      // },
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
+      // },
+
       {
         rel: 'stylesheet',
-        href: 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/codemirror.css'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/tui-editor.css'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/tui-editor-contents.css'
+        href: 'https://cdn.siques.cn/libs/css/editormd.css',
+        async: true
       }
     ]
   },
@@ -229,7 +226,7 @@ export default {
      */
     // 开启打包分析
     babel: {
-      // plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
+      plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
     },
 
     // analyze: true,
@@ -246,7 +243,7 @@ export default {
         config.externals = config.externals || {}
         Object.assign(config.externals, {
           vue: 'Vue',
-          'element-ui': 'ELEMENT',
+          // 'element-ui': 'ELEMENT',
           lodash: '_',
           'vue-router': 'VueRouter',
           vuex: 'Vuex',

@@ -5,10 +5,10 @@
 
       <div>
         <span class="text-gray fs-xm">排序：</span>
-        <el-radio-group v-model="radio4" size="mini">
+        <!-- <el-radio-group v-model="radio4" size="mini">
           <el-radio-button label="时间"></el-radio-button>
           <el-radio-button label="得票"></el-radio-button>
-        </el-radio-group>
+        </el-radio-group> -->
       </div>
     </div>
     <el-divider></el-divider>

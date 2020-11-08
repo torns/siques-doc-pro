@@ -7,9 +7,9 @@
             <div v-for="tag in userTags" :key="tag.id">
               <div class="d-flex ai-between jc-between">
                 <div class="ellipsis-1">
-                  <el-tag size="mini" type="primary" effect="light" class="hover-3 point mb-2">
+                  <div size="mini" type="primary" effect="light" class=" point mb-2">
                     <router-link :to="`/t/${tag.id}`" tag="div">{{ tag.name }} </router-link>
-                  </el-tag>
+                  </div>
 
                   <div class="pr-6  fs-xm">
                     {{ tag.description }}

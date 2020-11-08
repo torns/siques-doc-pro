@@ -61,7 +61,7 @@
       <div class="post_container  pb-3">
         <el-row :gutter="0" type="flex">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <article id="article" class="markdown-body bg-white ">
+            <article id="article" class=" bg-white ">
               <div>
                 <div v-if="post.title" style="padding:25px">
                   <div

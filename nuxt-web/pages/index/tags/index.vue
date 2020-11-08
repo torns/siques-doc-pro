@@ -36,7 +36,7 @@
                 <div v-if="userTags" class="pt-2 d-flex">
                   <div v-for="tag in userTags" :key="tag.id">
                     <nuxt-link :to="`/t/${tag.id}`" tag="div">
-                      <el-tag size="small" type="plain" class="mr-1 hover-3 point">{{ tag.name }}</el-tag>
+                      <div size="small" type="plain" class="mr-1  point">{{ tag.name }}</div>
                     </nuxt-link>
                   </div>
                 </div>
