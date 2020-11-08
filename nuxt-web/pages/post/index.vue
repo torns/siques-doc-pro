@@ -343,12 +343,20 @@ export default class PostWrite extends Vue {
 
   // true是tinymce
   changeWidth() {
+    const myEvent = new Event('resize')
     if (this.width.split('px')[0] >= '300') {
       this.width = '0'
       this.canHover = true
+
+      setTimeout(() => {
+        window.dispatchEvent(myEvent)
+      }, 400)
     } else {
       this.width = '300px'
       this.canHover = false
+      setTimeout(() => {
+        window.dispatchEvent(myEvent)
+      }, 200)
     }
   }
 

@@ -9,6 +9,7 @@
               :src="posts[0].cover ? posts[0].cover : link[getRandomUrl()].url"
               style="width: 50vw;height:350px"
               fit="cover"
+              lazy
             ></el-image>
           </div>
           <div class="nav-inside">
@@ -27,6 +28,7 @@
               :src="posts[1].cover ? posts[1].cover : link[getRandomUrl()].url"
               style="width: 50vw;height:350px"
               fit="cover"
+              lazy
             ></el-image>
           </div>
           <div class="nav-inside" style="text-align: right;">

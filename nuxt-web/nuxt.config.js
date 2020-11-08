@@ -42,13 +42,16 @@ export default {
       // { src: 'https://cdn.siques.cn/libs/js/prettify.min.js' },
       // { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       {
-        src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
+        src: 'https://cdn.siques.cn/libs/js/highlight.min.js',
+        defer: true
       },
       {
-        src: 'https://cdn.siques.cn/libs/js/typescript.min.js'
+        src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
+        defer: true
       },
       {
-        src: 'https://cdn.siques.cn/libs/js/dart.min.js'
+        src: 'https://cdn.siques.cn/libs/js/dart.min.js',
+        defer: true
       },
 
       {
@@ -79,7 +82,7 @@ export default {
       },
       {
         src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
-        ssr: true
+        defer: true
       }
       // {
       //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
@@ -96,26 +99,16 @@ export default {
       // },
       {
         rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/katex.min.css',
-        async: true
+        href: 'https://cdn.siques.cn/libs/css/katex.min.css'
       },
       {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/github.min.css'
       },
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://cdn.siques.cn/libs/css/element-ui/2.13.2/theme-chalk/index.css'
-      // },
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'
-      // },
 
       {
         rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/editormd.css',
-        async: true
+        href: 'https://cdn.siques.cn/libs/css/editormd.css'
       }
     ]
   },
@@ -162,7 +155,7 @@ export default {
    ** Nuxt.js modules
    */
   render: {
-    resourceHints: false
+    resourceHints: true
   },
 
   modules: [

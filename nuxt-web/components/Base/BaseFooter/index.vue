@@ -62,19 +62,23 @@
             </div>
           </div>
           <div style="">
-            <el-popover :close-delay="800" placement="top" width="130" trigger="hover">
-              <img style="width:123px" src="https://cdn.siques.cn/weixin.jpg" alt="" />
-              <i slot="reference" class="fa fa-weixin pr-2 text-green point"></i>
-            </el-popover>
+            <!-- <el-popover :close-delay="800" placement="top" width="130" trigger="hover"> -->
+            <!-- <img style="width:123px" src="https://cdn.siques.cn/weixin.jpg" alt="" /> -->
+            <i slot="reference" class="fa fa-weixin pr-2 text-green point"></i>
+            <!-- </el-popover> -->
 
-            <a href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes">
+            <a rel="noopener" href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes" target="_blank">
               <i class="fa fa-qq text-blue pr-2"></i
             ></a>
 
-            <a href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+            <a
+              rel="noopener"
+              href="https://weibo.com/5496460358/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1"
+              target="_blank"
+            >
               <i class="fa fa-weibo text-red pr-2"></i
             ></a>
-            <a href="https://github.com/ericheshenghao?tab=repositories">
+            <a rel="noopener" href="https://github.com/ericheshenghao?tab=repositories" target="_blank">
               <i class="fa fa-github pr-2"></i>
             </a>
           </div>

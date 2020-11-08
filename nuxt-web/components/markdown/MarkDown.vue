@@ -2,9 +2,9 @@
   <div>
     <div>
       <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-      <div id="editor" style="z-index:2;width:100%important" class="bg-white">
+      <div id="editor" class="editor-body bg-white" style="z-index:2;">
         <!-- Tips: Editor.md can auto append a `<textarea>` tag -->
-        <textarea style="display:none;"> </textarea>
+        <!-- <textarea style="display:none;"> </textarea> -->
       </div>
       <div v-if="isSaving" class="pt-2 fs-7">保存中...</div>
     </div>
@@ -65,6 +65,11 @@ export default class MarkDown extends Vue {
       this.pasteUpload()
       this.dropUpload()
     })
+
+    this.editor.on('resize', () => {
+      console.log('resize')
+    })
+
     // this.editor.on('change', () => {
     //   this.value = this.getcontent()
     // })
@@ -227,16 +232,22 @@ export default class MarkDown extends Vue {
     if (this.instance.cm === undefined) {
       setTimeout(() => {
         this.setContent(value)
-      }, 100)
+        return
+      }, 300)
+    } else {
+      this.value = value
+      this.instance.setMarkdown(value)
 
-      return
-    }
-    this.instance.setMarkdown(value)
-    if (typeof this.timer === 'number') {
-      clearTimeout(this.timer)
-    }
+      const myEvent = new Event('resize')
 
-    this.timer = setTimeout(this.updateContent, 1000)
+      window.dispatchEvent(myEvent)
+
+      if (typeof this.timer === 'number') {
+        clearTimeout(this.timer)
+      }
+
+      this.timer = setTimeout(this.updateContent, 1000)
+    }
   }
 
   updateContent() {
@@ -256,4 +267,8 @@ export default class MarkDown extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.editor-body {
+  width: 100% !important;
+}
+</style>
