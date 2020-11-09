@@ -23,7 +23,8 @@ export class FileService {
 
   async storeAli(file, id: number) {
     const now = new Date();
-    const date = dayjs(now).format('YYYY-MM-DD');
+    // 以月份为单位存储
+    const date = dayjs(now).format('YYYY-MM');
 
     //文章上传图片
 

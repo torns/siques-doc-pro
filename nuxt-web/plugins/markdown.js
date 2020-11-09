@@ -1,6 +1,8 @@
 import markdownItAnchor from 'markdown-it-anchor'
 import markdownItFootnote from 'markdown-it-footnote'
+import mk from '@iktakahiro/markdown-it-katex'
 import linkjs from './markdown/link'
+
 // import { slugify } from 'transliteration'
 // const slugify = require('transliteration').slugify
 
@@ -27,5 +29,6 @@ const md = require('markdown-it')({
     target: '_blank',
     rel: 'noopener noreferrer'
   })
+  .use(mk)
 
 export default md

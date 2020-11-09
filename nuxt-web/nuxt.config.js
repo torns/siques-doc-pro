@@ -84,6 +84,7 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
         defer: true
       },
+
       {
         src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
       }
@@ -113,6 +114,10 @@ export default {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/editormd.css'
       }
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
+      // }
     ]
   },
   /*

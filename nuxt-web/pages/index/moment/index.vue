@@ -18,6 +18,7 @@
                   v-if="post.cover != null"
                   :src="post.cover[0]"
                   :preview-src-list="post.cover"
+                  lazy
                   style="width: 200px"
                 >
                 </el-image>

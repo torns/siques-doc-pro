@@ -1,6 +1,10 @@
 import OSS from 'ali-oss';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 let bucket = '';
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'production') bucket = 'shuxie';
 else bucket = 'shuxie-dev';
 

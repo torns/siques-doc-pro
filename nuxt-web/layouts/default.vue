@@ -21,13 +21,13 @@ export default {
 
   watch: {
     $route(to, from) {
-      // if (to.path !== from.path) {
-      //   var that = this
-      //   that.show = true
-      //   setTimeout(() => {
-      //     that.show = false
-      //   }, 0)
-      // }
+      if (to.path !== from.path) {
+        var that = this
+        // that.show = true
+        setTimeout(() => {
+          that.show = false
+        }, 0)
+      }
     }
   },
 
@@ -42,8 +42,9 @@ export default {
 }
 </script>
 <style>
-/* html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+html {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -58,5 +59,5 @@ export default {
 *:after {
   box-sizing: border-box;
   margin: 0;
-} */
+}
 </style>

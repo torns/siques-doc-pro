@@ -185,7 +185,7 @@ export default class MarkDown extends Vue {
     await setTimeout(async () => {
       res = await this.$http.post('/files/ali', params, config)
 
-      let url = res.data.url
+      let url = res.data.url.replace('shuxie.oss-cn-hangzhou.aliyuncs.com', 'cdn.siques.cn')
 
       console.log(file.type)
       if (file.type.indexOf('video') !== -1) {
