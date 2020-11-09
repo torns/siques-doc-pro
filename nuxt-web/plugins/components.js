@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
 // import 'default-passive-events'
-
+import VueLazyload from 'vue-lazyload'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 
@@ -17,6 +17,7 @@ import pagination from '~/components/Base/BasePagination/index.vue'
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
+Vue.use(VueLazyload)
 Vue.prototype.$dayjs = dayjs
 Vue.component('markdown', markdown)
 Vue.component('sq-wave', wave)

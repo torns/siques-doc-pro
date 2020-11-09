@@ -83,6 +83,9 @@ export default {
       {
         src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
         defer: true
+      },
+      {
+        src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
       }
       // {
       //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
@@ -115,7 +118,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#4CAF50' },
   /*
    ** Global CSS
    */
@@ -242,7 +245,8 @@ export default {
           vuex: 'Vuex',
           'vue-meta': 'VueMeta',
           transliteration: 'SlugifyFunction',
-          'markdown-it': 'markdownit'
+          'markdown-it': 'markdownit',
+          'vue-lazyload': 'VueLazyload'
         })
       }
     }

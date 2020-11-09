@@ -64,7 +64,7 @@
                     <section class="row">
                       <section v-if="post.cover" class="news-img point">
                         <router-link :to="`/p/${post.id}`" tag="a" target="_blank" :title="post.title">
-                          <img :src="post.cover" alt="cover"
+                          <img v-lazy="post.cover" alt="cover"
                         /></router-link>
                       </section>
                       <section :class="`${post.cover ? 'news-detail' : 'content'}`">

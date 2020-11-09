@@ -21,13 +21,13 @@ export default {
 
   watch: {
     $route(to, from) {
-      if (to.path !== from.path) {
-        var that = this
-        that.show = true
-        setTimeout(() => {
-          that.show = false
-        }, 800)
-      }
+      // if (to.path !== from.path) {
+      //   var that = this
+      //   that.show = true
+      //   setTimeout(() => {
+      //     that.show = false
+      //   }, 0)
+      // }
     }
   },
 
@@ -35,14 +35,14 @@ export default {
     setTimeout(() => {
       var that = this
       that.show = false
-    }, 1500)
+    }, 800)
   },
 
   methods: {}
 }
 </script>
 <style>
-html {
+/* html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
@@ -58,5 +58,5 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
-}
+} */
 </style>
