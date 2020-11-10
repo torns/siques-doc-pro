@@ -1,10 +1,18 @@
 <template>
   <div class="sidebar">
     <div id="toc">
-      <div class=" py-3 " style="overflow-y: unset; min-height:100px;width:250px">
-        <div>
+      <div class=" py-3 text-white" style="overflow-y: unset; min-height:100px;width:250px">
+        <div style="font-size: initial;">
           <!-- 滚动激活区域 -->
-          <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
+
+          <!-- <div class="toc-title">{{ title }}</div> -->
+          <!-- <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav> -->
+          <!-- <el-divider></el-divider> -->
+
+          <div v-for="post in collectionPosts" :key="post.id">
+            <router-link :to="`/p/${post.id}`" tag="a" class="point">{{ post.title }}</router-link>
+            <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column" v-if="post.title == title"></nav>
+          </div>
         </div>
       </div>
     </div>
@@ -16,6 +24,20 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({})
 export default class TocBar extends Vue {
+  @Prop({
+    type: String,
+    default: '',
+    required: false
+  })
+  title
+
+  @Prop({
+    type: Array,
+    default: [],
+    required: false
+  })
+  collectionPosts
+
   mounted() {}
 }
 </script>
@@ -24,5 +46,10 @@ export default class TocBar extends Vue {
 .sidebar {
   width: 250px;
   height: auto;
+}
+#toc a {
+  color: #9e9e9e;
+  font-weight: 600;
+  text-decoration: underline;
 }
 </style>

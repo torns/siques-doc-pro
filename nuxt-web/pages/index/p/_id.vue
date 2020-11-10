@@ -52,7 +52,7 @@
         ></sq-down> -->
       </div>
 
-      <div class="blur ">
+      <div class="post-blur">
         <div class=" relative ">
           <el-image :src="post.cover" fit="cover" style="height:32vh;" class="w-100"> </el-image>
         </div>
@@ -235,7 +235,7 @@
     <sq-navigation :data="recommendPost" class="my-4"></sq-navigation>
     <!-- <sq-searchbtn></sq-searchbtn> -->
     <sq-sidemenu>
-      <sq-toc></sq-toc>
+      <sq-toc :title="post.title" :collectionPosts="collectionPosts"></sq-toc>
     </sq-sidemenu>
     <sq-footer></sq-footer>
   </div>
@@ -286,11 +286,12 @@ export default class Post extends Vue {
     if (res.data.status === 404) {
       redirect('/error')
     }
+
     res.data.body = md.render(res.data.body)
 
     const res1 = await http.get(`/posts/all?random=true&limit=2&type=post`)
 
-    // const res2 = await http.get(`collections/1/recommend`)
+    const res2 = await http.get(`collections/${res.data.collection.id}`)
 
     const res3 = await http.get(`posts/${params.id}/comments`)
 
@@ -317,7 +318,7 @@ export default class Post extends Vue {
     return {
       post: res.data,
       recommendPost: res1.data[0],
-      // recommendCollection: res2.data,
+      collectionPosts: res2.data.posts,
       fetchedComment: res3.data
     }
   }
@@ -338,6 +339,7 @@ export default class Post extends Vue {
 
   post: any = ''
   recommendPost = []
+
   liked: number = 0
   edit = false
   fetchedComment = ''
@@ -548,5 +550,9 @@ export default class Post extends Vue {
 
 .el-avatar > img {
   border-radius: 50%;
+}
+
+.post-blur .el-image__inner {
+  filter: blur(5px);
 }
 </style>

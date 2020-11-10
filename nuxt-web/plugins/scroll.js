@@ -76,7 +76,19 @@ const install = (Vue, options) => {
         window.addEventListener('scroll', onScroll)
       }
     },
-    inserted(el) {},
+    inserted(el) {
+      scrollSpyElements.length = 0
+      for (let index = 0; index < el.children.length; index++) {
+        const element = el.children[index]
+        if (options.sectionSelector.includes(element.localName)) {
+          scrollSpyElements.push(element)
+        }
+      }
+
+      if (scrollSpyElements.length != 0) {
+        window.addEventListener('scroll', onScroll)
+      }
+    },
     componentUpdated(el, binding) {},
     unbind(el) {
       scrollSpyElements.length = 0
@@ -150,6 +162,7 @@ const install = (Vue, options) => {
   }
 
   Vue.directive('scroll-spy-active', {
+    bind: scrollSpyActive,
     inserted: scrollSpyActive,
     componentUpdated: scrollSpyActive
   })

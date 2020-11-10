@@ -58,6 +58,7 @@ export class CollectionService {
       .where('collection.id=:id', { id })
       .leftJoinAndSelect('collection.posts', 'posts')
       .orderBy('posts.created', 'DESC')
+      .where('posts.isPublished=1')
       .leftJoin('collection.user', 'user')
       .addSelect(['user.introduction', 'user.name', 'user.id'])
       .leftJoinAndSelect('user.avator', 'avator')
