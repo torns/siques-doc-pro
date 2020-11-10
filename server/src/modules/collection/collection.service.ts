@@ -54,11 +54,12 @@ export class CollectionService {
   }
 
   async getCollection(id: number) {
+    console.log(id);
     return await this.CollectionRepository.createQueryBuilder('collection')
       .where('collection.id=:id', { id })
       .leftJoinAndSelect('collection.posts', 'posts')
+      .andWhere('posts.isPublished=1')
       .orderBy('posts.created', 'DESC')
-      .where('posts.isPublished=1')
       .leftJoin('collection.user', 'user')
       .addSelect(['user.introduction', 'user.name', 'user.id'])
       .leftJoinAndSelect('user.avator', 'avator')

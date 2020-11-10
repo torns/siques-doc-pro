@@ -10,7 +10,9 @@
           <!-- <el-divider></el-divider> -->
 
           <div v-for="post in collectionPosts" :key="post.id">
-            <router-link :to="`/p/${post.id}`" tag="a" class="point">{{ post.title }}</router-link>
+            <router-link :to="`/p/${post.id}`" tag="a" :class="`point ${post.title == title ? 'title-active' : ''}`">{{
+              post.title
+            }}</router-link>
             <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column" v-if="post.title == title"></nav>
           </div>
         </div>
@@ -47,9 +49,18 @@ export default class TocBar extends Vue {
   width: 250px;
   height: auto;
 }
+#toc .title-active {
+  color: #1bbc8c !important;
+}
+
 #toc a {
   color: #9e9e9e;
   font-weight: 600;
-  text-decoration: underline;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  padding: 2px 0;
 }
 </style>

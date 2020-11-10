@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     id="extend-bar"
-    :modal="false"
+    :modal="true"
     :lock-scroll="true"
     :style="`background:${color};${extension}`"
     :append-to-body="true"

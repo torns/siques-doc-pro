@@ -138,11 +138,18 @@ li {
 .post_container {
   margin-right: auto;
   margin-left: auto;
+  // @media (min-width: 768px) {
+  //   width: 750px;
+  // }
+  // @media (min-width: 992px) {
+  //   width: 970px;
+  // }
+  // @media (min-width: 1200px) {
+  //   width: 1140px;
+  // }
+
   @media (min-width: 768px) {
-    width: 600px;
-  }
-  @media (min-width: 992px) {
-    width: 700px;
+    width: 750px;
   }
   @media (min-width: 1200px) {
     width: 820px;
@@ -659,4 +666,9 @@ h6 {
 
 code {
   -webkit-overflow-scrolling: auto !important;
+}
+
+// 弹出层遮罩颜色
+.v-modal {
+  background: #00000030 !important;
 }

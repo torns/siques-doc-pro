@@ -63,7 +63,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <article id="article" class=" bg-white ">
               <div>
-                <div v-if="post.title" style="padding:25px">
+                <div v-if="post.title" style="padding: 1.5rem;">
                   <div
                     class="d-flex flex-column menu-button"
                     style="position:absolute;top: 0%;left: 0;
@@ -289,6 +289,7 @@ export default class Post extends Vue {
 
     res.data.body = md.render(res.data.body)
 
+    // console.log(res.data)
     const res1 = await http.get(`/posts/all?random=true&limit=2&type=post`)
 
     const res2 = await http.get(`collections/${res.data.collection.id}`)

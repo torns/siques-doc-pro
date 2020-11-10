@@ -383,11 +383,11 @@ export default class Home extends Vue {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0
       // document.getElementsByTagName('body')[0].setAttribute('style', 'overflow:hidden;')
       // document.getElementsByTagName('html')[0].setAttribute('style', 'overflow:hidden;')
-      document.getElementById('app').setAttribute('style', 'position:fixed;')
+      // document.getElementById('app').setAttribute('style', 'position:fixed;')
     } else {
       // document.getElementsByTagName('body')[0].removeAttribute('style')
       // document.getElementsByTagName('html')[0].removeAttribute('style')
-      document.getElementById('app').removeAttribute('style')
+      // document.getElementById('app').removeAttribute('style')
       // 还原滚动距离
       document.body.scrollTop = this.scrollTop
       document.documentElement.scrollTop = this.scrollTop
@@ -507,6 +507,10 @@ export default class Home extends Vue {
         break
 
       default:
+        if (!this.isUser) {
+          this.$store.commit('toggleLoginForm')
+          break
+        }
         this.$router.push(command)
         break
     }

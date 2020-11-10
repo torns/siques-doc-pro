@@ -1,3 +1,18 @@
+.img-title {
+  text-align: center;
+
+  font-size: 85%;
+  padding-top: 16px;
+  color: #5a5a5a;
+}
+
+.itag {
+  font-size: 86%;
+  top: -1.5px;
+  position: relative;
+
+  left: -6px;
+}
 // 文章详情页样式
 blockquote {
   margin: 1.5em 0;
@@ -20,6 +35,12 @@ h1 {
   font-size: 1.6em !important;
   font-weight: 700 !important;
   // word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  pre {
+    margin: 0.85rem -1.5rem !important;
+  }
 }
 
 .hljs {
@@ -209,7 +230,7 @@ h1 {
     justify-content: center;
 
     display: flex;
-    margin: 1.667em auto;
+    margin: 1.667em 0 0 0;
     // border: 3px solid #f8f8f8;
     // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   }
