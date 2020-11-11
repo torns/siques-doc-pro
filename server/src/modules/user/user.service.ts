@@ -40,34 +40,18 @@ export class UserService {
   ) {}
   async store(data: UserDto) {
     const { phonenumber, uid } = data;
-    const user = await this.userRepository.findOne({ phonenumber });
-    if (user) {
-      throw new BadRequestException('手机号已被注册');
-    }
 
+    // if (user) {
+    //   throw new BadRequestException('手机号已被注册');
+    // }
+    console.log(data);
     const res = await this.userRepository.create(data);
     delete res.id;
     const newUser = await this.userRepository.save(res);
 
-    if (uid) {
-      const entity = await this.thirdRepository
-        .createQueryBuilder('third')
-        .where('third.uid=:uid', { uid })
-        .getOne();
-      if (entity) {
-        await this.userRepository
-          .createQueryBuilder()
-          .relation(User, 'thirdpart')
-          .of(newUser)
-          .add(entity);
-      } else {
-        throw new BadRequestException('请重新拉取信息');
-      }
-    }
-
     this.userInit(newUser.id, newUser);
 
-    return res;
+    return newUser;
   }
 
   // 用户注册结束通知
@@ -191,7 +175,7 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(account: string, password?: boolean) {
+  async findByAccount(account: string, password?: boolean) {
     const querryBuilder = await this.userRepository.createQueryBuilder('user');
     const querryBuilder1 = await this.userRepository.createQueryBuilder('user');
 

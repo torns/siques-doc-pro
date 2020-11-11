@@ -1,7 +1,7 @@
 import { Role } from '../role/role.entity';
 
 export class UserDto {
-  readonly phonenumber: string;
+  phonenumber: string;
   name: string;
   password: string;
   uid: string;

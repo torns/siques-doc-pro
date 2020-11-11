@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload) {
     // console.log(payload)
     const { account } = payload;
-    const entity = await this.userService.findByName(account, false);
+    const entity = await this.userService.findByAccount(account, false);
 
     // 如果token有效，但是未找到用户
     if (!entity) {

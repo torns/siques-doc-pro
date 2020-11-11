@@ -44,9 +44,10 @@ export class AuthController {
     return await this.authService.signThirdToken(id, thirdpart);
   }
 
+  // 短信登录
   @Post('code')
-  async validatePhoneNumber(@Body('phonenumber') number: string) {
-    return await this.authService.validatePhoneNumber(number);
+  async sendVerificationCode(@Body('account') number: string) {
+    return await this.authService.sendVerificationCode(number);
   }
 
   @Get('test')

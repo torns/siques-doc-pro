@@ -50,7 +50,7 @@ export class UserController {
 
   @Get(':id/validate')
   async validateNumber(@Param('id') id: string) {
-    return await this.userService.findByName(id);
+    return await this.userService.findByAccount(id);
   }
 
   // 获取个人信息

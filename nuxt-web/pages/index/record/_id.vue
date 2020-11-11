@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div :class="`record bg-light h-100 ${showTips ? '_mask' : ''}`">
+  <div :class="`record bg-light  ${showTips ? '_mask' : ''}`" style="height:100vh">
     <el-drawer
       style="overflow-x: hidden"
       :show-close="true"

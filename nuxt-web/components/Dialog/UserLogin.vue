@@ -1,63 +1,100 @@
 <template>
   <el-dialog
     id="login"
-    :title="isRegister ? '注册' : '登录'"
+    :title="loginModel.thirdpart == true ? '绑定手机号' : '登录'"
     :visible="$store.state.loginFormVisible"
     @close="closeLoginForm"
     custom-class="login"
     style="margin: 0 auto"
     width="90%"
   >
-    <div>
-      <el-form ref="RegisterDto" v-show="isRegister" :model="RegisterDto" :rules="rules" status-icon>
-        <el-form-item :label-width="formLabelWidth" class="pb-2" label="你的名字" prop="name">
-          <el-input v-model="RegisterDto.name" height="10" placeholder="常用昵称" autocomplete="off" clearable>
-            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="pb-2" label="手机号" prop="phonenumber">
+    <div class="pt-3">
+      <!--  -->
+      <el-form
+        ref="loginByAccountModel"
+        v-show="loginByAccount"
+        :model="loginByAccountModel"
+        :rules="rules"
+        status-icon
+      >
+        <el-form-item :label-width="formLabelWidth" class="pb-2" prop="account">
           <el-input
-            v-model.number="RegisterDto.phonenumber"
-            :maxlength="11"
+            v-model.number="loginByAccountModel.account"
             height="10"
-            placeholder="11位手机号"
+            placeholder="输入手机号"
             autocomplete="off"
           >
             <i slot="prefix" class="el-icon-user-solid pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="pb-2" label="密码" prop="password">
-          <el-input v-model="RegisterDto.password" show-password placeholder="不少于7位" autocomplete="off">
+        <el-form-item :label-width="formLabelWidth" class="pb-2" prop="password">
+          <el-input v-model="loginByAccountModel.password" show-password placeholder="输入密码" autocomplete="off">
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="pt-2" label="验证码" prop="verification">
-          <el-input v-model="RegisterDto.verification" placeholder="验证码" autocomplete="off">
-            <el-button slot="append" @click="getCode" type="primary">{{
+        <div
+          class="point"
+          style="float:right;padding-bottom:15px"
+          v-if="loginByAccount"
+          @click="loginByAccount = false"
+        >
+          手机快捷登录
+        </div>
+      </el-form>
+
+      <el-form ref="loginModel" :model="loginModel" :rules="rules" v-show="!loginByAccount" status-icon>
+        <el-form-item :label-width="formLabelWidth" prop="account">
+          <el-input v-model="loginModel.account" height="10" placeholder="请输入手机号" autocomplete="off">
+            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item :label-width="formLabelWidth" class="pt-2" prop="verification">
+          <el-input
+            :class="isPhoneValid ? 'login-button--active' : ''"
+            v-model="loginModel.verification"
+            placeholder="请输入6位验证码"
+            autocomplete="off"
+          >
+            <el-button slot="append" @click="getCode">{{
               this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码'
             }}</el-button>
           </el-input>
         </el-form-item>
-      </el-form>
 
-      <el-form ref="LoginDto" :model="LoginDto" :rules="rules" v-show="!isRegister" status-icon>
-        <el-form-item :label-width="formLabelWidth" label="账号">
-          <el-input v-model="LoginDto.account" height="10" placeholder="手机号/昵称" autocomplete="off">
-            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
-          <el-input v-model="LoginDto.password" show-password placeholder="请输入密码" autocomplete="off">
+        <!-- <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
+          <el-input v-model="loginModel.password" show-password placeholder="请输入密码" autocomplete="off">
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
-        </el-form-item>
+        </el-form-item> -->
+
+        <div
+          class=" point"
+          style="float:right;padding-bottom:15px"
+          v-if="!loginByAccount"
+          @click="loginByAccount = true"
+        >
+          账号密码登录
+        </div>
       </el-form>
     </div>
 
-    <div class="pt-2 el-form">
+    <div class="pt-3 el-form">
       <div class="dialog-footer pb-2">
-        <el-button @click="register" v-if="isRegister" type="success">注册</el-button>
-        <el-button @click="login" v-else type="success">登录</el-button>
+        <el-button
+          @click="loginByAcc"
+          v-if="loginByAccount"
+          type="success"
+          :class="isPhoneValid && isPassValid ? 'login-button--active' : ''"
+          >登录</el-button
+        >
+        <el-button
+          v-else
+          @click="login"
+          type="success"
+          :class="isPhoneValid && isCodeValid ? 'login-button--active' : ''"
+          >登录</el-button
+        >
       </div>
 
       <div class="dialog-footer d-flex flex-column">
@@ -75,8 +112,8 @@
             </el-tooltip>
           </div>
         </div>
-        <el-button v-if="isRegister" @click="isRegister = false" type="message">已有账号登录</el-button>
-        <el-button v-else @click="isRegister = true" type="message">注册新账号</el-button>
+        <!-- <el-button v-if="loginByAccount" @click="loginByAccount = false" type="message">已有账号登录</el-button>
+        <el-button v-else  type="message">账号密码登录</el-button> -->
       </div>
       <div class="pt-2 text-center" style="margin-bottom:-10px">
         继续即表示同意
@@ -89,18 +126,38 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
+// import cbox from './cbox/index'
 @Component({})
+/* eslint-disable */
 export default class Login extends Vue {
-  isRegister: boolean = false
+  // head() {
+  //   return {
+  //     script: [{ src: 'https://www.yunpian.com/static/official/js/libs/riddler-sdk-0.2.2.js' }]
+  //   }
+  // }
+
+  loginByAccount: boolean = false
 
   url = {}
   // 绑定第三方账号用
   uid = ''
   formLabelWidth: string = '120'
-  bakendCode = '123456'
+
   phoneRegisted = false
 
-  @Watch('isRegister')
+  mounted() {
+    // cbox()
+    this.getUrl()
+
+    if (this.code) {
+      this.signToken()
+    }
+    setTimeout(() => {
+      this.startClock()
+    }, 1000)
+  }
+
+  @Watch('loginByAccount')
   isVisible(newval: any, oldval: any) {
     if (!newval) {
       this.resetForm()
@@ -142,45 +199,58 @@ export default class Login extends Vue {
       return true
     }
   }
+
+  isPhoneValid = false
+  isCodeValid = false
+  isPassValid = false
   async validatePhone(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入手机号'))
+      this.isPhoneValid = false
     }
 
     if (this.phoneLength(value)) {
-      const res = await this.$http.get(`users/${value}/validate`)
-      if (res.data) {
-        callback(new Error('该手机号已被注册'))
-        this.phoneRegisted = true
-      } else {
-        this.phoneRegisted = false
-        callback()
-      }
+      // const res = await this.$http.get(`users/${value}/validate`)
+      // if (res.data) {
+      //   callback(new Error('该手机号已被注册'))
+      //   this.phoneRegisted = true
+      // } else {
+      //   this.phoneRegisted = false
+      //   callback()
+      // }
+      this.isPhoneValid = true
+      callback()
     } else {
-      callback(new Error('不合格的手机号'))
+      callback(new Error('请输入正确的手机号'))
+      this.isPhoneValid = false
     }
   }
 
   validatePass(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入密码'))
+      this.isPassValid = false
     }
 
-    if (this.charLength(value) && this.lowercase(value) && this.number(value)) {
+    if (this.charLength(value)) {
       callback()
+      this.isPassValid = true
     } else {
-      callback(new Error('密码必须包含数字、字母，区分大小写'))
+      callback(new Error('密码太短啦'))
+      this.isPassValid = false
     }
   }
 
   validateCode(rule: any, value: any, callback: any) {
-    if (value === this.$store.state.bakendCode) {
-      callback()
-    } else if (value !== this.$store.state.bakendCode && value !== '') {
-      callback(new Error('验证码不匹配'))
-    }
     if (value === '') {
       callback(new Error('请输入验证码'))
+    }
+
+    if (this.number(value) && value.length == 6) {
+      callback()
+      this.isCodeValid = true
+    } else {
+      callback(new Error('验证码为6位数字'))
     }
   }
 
@@ -190,46 +260,34 @@ export default class Login extends Vue {
     }
   }
 
-  RegisterDto = {
+  loginByAccountModel = {
+    account: '',
+    password: ''
+  }
+
+  loginModel = {
+    account: '',
     name: '',
-    phonenumber: '',
     password: '',
+    thirdpart: false,
     uid: '',
     verification: ''
   }
 
-  LoginDto = {
-    account: '',
-    password: '',
-    thirdpart: false,
-    uid: ''
-  }
-
   rules = {
-    name: [
-      { required: true, message: '请输入姓名', trigger: 'blur' },
-      { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
-      {
-        required: true,
-        pattern: /^[\u4E00-\u9FA5_a-zA-Z0-9.·-]+$/,
-        message: '姓名不支持特殊字符',
-        trigger: 'blur'
-      }
-    ],
-    phonenumber: [{ required: true, validator: this.validatePhone, trigger: 'blur' }],
-    password: [{ required: true, validator: this.validatePass, trigger: 'blur' }],
-    verification: [{ required: true, validator: this.validateCode, trigger: 'blur' }]
-  }
-
-  mounted() {
-    this.getUrl()
-
-    if (this.code) {
-      this.signToken()
-    }
-    setTimeout(() => {
-      this.startClock()
-    }, 1000)
+    // name: [
+    //   { required: true, message: '请输入姓名', trigger: 'blur' },
+    //   { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+    //   {
+    //     required: true,
+    //     pattern: /^[\u4E00-\u9FA5_a-zA-Z0-9.·-]+$/,
+    //     message: '姓名不支持特殊字符',
+    //     trigger: 'blur'
+    //   }
+    // ],
+    account: [{ required: true, validator: this.validatePhone }],
+    password: [{ required: true, validator: this.validatePass }],
+    verification: [{ required: true, validator: this.validateCode }]
   }
 
   get code() {
@@ -246,22 +304,21 @@ export default class Login extends Vue {
     if (this.$route.query.weibo !== undefined) {
       res = await this.$http.get(`/auth/${this.code}/signToken?thirdpart=weibo`)
     }
+
+    this.loginModel.thirdpart = true
+    this.loginModel.uid = res.data.uid
+    this.loginModel.name = res.data.name
     if (res.data.allowThirdpartLogin) {
-      this.LoginDto.thirdpart = true
-      this.LoginDto.uid = res.data.id
-      this.login()
+      // 数据库已存在第三方绑定用户，直接登录
+
+      await this.$auth.loginWith('local', { data: this.loginModel })
+
+      this.$store.commit('UserExist')
+      this.$store.commit('closeLoginForm')
     } else {
-      this.$notify({
-        title: '成功',
-        message: '只差最后一步，完成注册绑定您的帐号',
-        type: 'success',
-        duration: 0
-      })
-      this.isRegister = true
-      this.RegisterDto.name = res.data.name
-      this.RegisterDto.uid = res.data.uid
-      this.RegisterDto.phonenumber = ''
-      this.RegisterDto.password = ''
+      // 需要绑定手机号码
+
+      this.loginByAccount = false
     }
   }
 
@@ -281,35 +338,36 @@ export default class Login extends Vue {
         this.$store.commit('timeDcre', 1)
         if (this.$store.state.time <= 0) {
           clearTimeout(settime)
+          this.$store.state.time = 0
         }
       }, 1000)
     }
   }
-  // 短信验证码
+  // 获取短信验证码
   getCode() {
-    if (this.$store.state.time === 0 && !this.phoneRegisted) {
-      const ref: any = this.$refs.RegisterDto
+    // console.log(123)
+    if (this.$store.state.time === 0) {
+      const ref: any = this.$refs.loginModel
       ref.validate(async (valid: any, index: any) => {
-        if (index.phonenumber === undefined) {
-          const data = { phonenumber: this.RegisterDto.phonenumber }
+        if (this.isPhoneValid) {
+          const data = { account: this.loginModel.account }
           const res = await this.$http.post('auth/code', data)
-          this.$store.commit('setTime', 60)
+          this.$store.commit('setTime', 30)
           this.startClock()
-          this.$store.commit('setCode', JSON.stringify(res.data))
         }
       })
     }
   }
 
   login() {
-    const ref: any = this.$refs.LoginDto
+    const ref: any = this.$refs.loginModel
     ref.validate(async (valid: any) => {
       if (valid) {
-        await this.$auth.loginWith('local', { data: this.LoginDto })
+        await this.$auth.loginWith('local', { data: this.loginModel })
 
         this.$store.commit('UserExist')
         this.$store.commit('closeLoginForm')
-        this.LoginDto.account = ''
+        // this.loginModel.account = ''
       } else {
         // eslint-disable-next-line
         console.log('error submit!!')
@@ -318,38 +376,21 @@ export default class Login extends Vue {
     })
   }
 
-  register() {
-    const ref: any = this.$refs.RegisterDto
+  // 通过账号密码登录
+  loginByAcc() {
+    const ref: any = this.$refs.loginByAccountModel
     ref.validate(async (valid: any) => {
-      if (valid && !this.RegisterDto.uid) {
-        await this.$http.post('/users', this.RegisterDto)
-        this.$notify({
-          title: '',
-          type: 'success',
-          message: '注册成功'
-        })
-        this.isRegister = false
-      } else if (valid && this.RegisterDto.uid) {
-        await this.$http.post('/users', this.RegisterDto)
-        this.$notify({
-          title: '',
-          type: 'success',
-          message: '账号绑定成功'
-        })
-        this.LoginDto.account = this.RegisterDto.name
-        this.LoginDto.password = this.RegisterDto.password
-        this.login()
-      } else {
-        // eslint-disable-next-line
-        console.log('error submit!!')
-        return false
+      if (valid) {
+        await this.$auth.loginWith('local', { data: this.loginByAccountModel })
+        this.$store.commit('UserExist')
+        this.$store.commit('closeLoginForm')
       }
     })
   }
 
   resetForm() {
-    const ref: any = this.$refs.RegisterDto
-    ref.resetFields()
+    // const ref: any = this.$refs.RegisterDto
+    // ref.resetFields()
   }
 
   logout() {
@@ -368,6 +409,23 @@ export default class Login extends Vue {
 
 <style lang="scss">
 //登录相关
+
+.login-button--active .el-input-group__append {
+  background-color: #27282d !important;
+  color: #fff !important;
+}
+
+.login-button--active.el-button--success {
+  color: #fff !important;
+  background-color: #67c23a !important;
+  border-color: #b3e19d;
+}
+
+#login .el-button--success {
+  color: #fff;
+  background-color: #b3e19d;
+  border-color: #b3e19d;
+}
 
 #login .el-form {
   width: 290px !important;

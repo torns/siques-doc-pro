@@ -88,6 +88,7 @@ export default {
       {
         src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
       }
+
       // {
       //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
       //   ssr: true
@@ -96,7 +97,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/icon/iconfont.css' },
-      { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
+      // { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
       // {
       //   rel: 'stylesheet',
       //   href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
@@ -218,6 +219,7 @@ export default {
   /*
    ** Build configuration
    */
+
   build: {
     extractCSS: { allChunks: true },
     transpile: [/^element-ui/],
@@ -227,7 +229,16 @@ export default {
      */
     // 开启打包分析
     babel: {
-      plugins: [['component', { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' }]]
+      plugins: [
+        [
+          'component',
+          {
+            libraryName: 'element-ui',
+            styleLibraryName: 'theme-chalk'
+            // style: false
+          }
+        ]
+      ]
     },
 
     // analyze: true,

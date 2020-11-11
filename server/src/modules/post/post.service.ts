@@ -119,16 +119,16 @@ export class PostService {
 
     queryBuilder.leftJoinAndSelect('post.collection', 'collection');
     queryBuilder.leftJoinAndSelect('post.tags', 'tag');
-
+    queryBuilder.where('post.userId=:id', { id });
     // where筛选
+    console.log(123);
 
     if (tags) {
       queryBuilder.andWhere('tag.name IN(:...tags)', { tags });
     }
-    queryBuilder.where('post.userId=:id', { id });
 
     if (type) {
-      queryBuilder.where('post.type=:type', { type });
+      queryBuilder.andWhere('post.type=:type', { type });
     }
 
     queryBuilder.andWhere('post.isPublished=1');

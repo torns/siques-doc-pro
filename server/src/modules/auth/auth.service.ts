@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from '../user/user.dto';
 import { ThirdPart } from '../thirdpart/third.entity';
-import { Push } from '../push/push.entity';
+
 import { PushService } from '../push/push.service';
 
 @Injectable()
@@ -26,22 +26,53 @@ export class AuthService {
     private readonly pushService: PushService,
   ) {}
 
+  private apikey = 'a15d23ef365095cadfe6e4c77aeec912';
+
+  // 储存账号与code
+  private map = new Map();
+
   async login(data: LoginDto) {
-    let { account, password, thirdpart, uid } = data;
+    let { account, thirdpart, password, name, uid, verification } = data;
 
     let entity: User;
-    if (thirdpart) {
-      entity = await this.userRepository.findOne(uid);
-      account = entity.name;
-    } else {
-      entity = await this.userService.findByName(account, true);
-      if (!entity) {
-        throw new UnauthorizedException('用户不存在');
-      }
+
+    // 账号密码登录
+    if (password) {
+      entity = await this.userService.findByAccount(account, true);
 
       if (!(await entity.comparePassword(password))) {
         throw new UnauthorizedException('密码不匹配');
       }
+    }
+
+    // console.log(data);
+    // 手机登录
+    if (account && verification && !thirdpart) {
+      if (this.loginByPhone(account, verification)) {
+        entity = await this.userService.findByAccount(account, false);
+
+        if (!entity) {
+          entity = await this.registerNewUser(account);
+        }
+      } else {
+        throw new UnauthorizedException('验证码不正确');
+      }
+
+      // 老用户，直接登录
+    }
+    // 第三方登录
+    if (thirdpart && uid) {
+      // 确认是否已绑定, 如果没有用户与此uid绑定，则继续
+      entity = await this.getBindedUser(uid);
+
+      // console.log(entity);
+      // 未绑定用户，则判断传进来的号码是否已注册否则新增，只有再绑定时才会有手机号
+      // 已注册则与该uid绑定，没有则创建新用户
+      if (entity === undefined) {
+        entity = await this.findOrStoreNewUser(account, name, uid);
+      }
+
+      account = entity.name;
     }
 
     const { id } = entity;
@@ -53,27 +84,117 @@ export class AuthService {
     };
   }
 
-  async validatePhoneNumber(number: string) {
+  // 绑定用户与uid
+  async bind(account: string, uid: string, u: User) {
+    const entity = await this.thirdRepository
+      .createQueryBuilder('third')
+      .where('third.uid=:uid', { uid })
+      .getOne();
+    if (entity) {
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'thirdpart')
+        .of(u)
+        .add(entity);
+    }
+  }
+
+  // 找到或者创建新用户
+  async findOrStoreNewUser(account: string, name?: string, uid?: string) {
+    let entity;
+    // 已经注册过
+
+    entity = await this.userService.findByAccount(account, false);
+
+    if (!entity) {
+      entity = await this.registerNewUser(account, name);
+    }
+
+    // 不管注册没有注册都没绑定成功
+    // 此时绑定用户与第三方
+    this.bind(account, uid, entity);
+
+    return entity;
+  }
+
+  async getBindedUser(uid: string) {
+    // 查询该 uid 对应的记录
+    const res = await this.thirdRepository
+      .createQueryBuilder('third')
+      .where('third.uid=:uid', { uid })
+      .getOne();
+
+    if (res) {
+      return await this.userRepository
+        .createQueryBuilder()
+        .relation(ThirdPart, 'user')
+        .of(res)
+        .loadOne();
+    }
+  }
+
+  loginByPhone(mobile: string, verification: number) {
+    return this.validateCode(mobile, verification);
+  }
+
+  registerNewUser(account: string, name?: string) {
+    if (name && this.userService.findByAccount(name) !== null) {
+      name = name + this.hashCode(account);
+    }
+    let user = new UserDto();
+    user.phonenumber = account;
+    const hash = this.hashCode(account);
+    user.name = name ? name : '趣友' + hash;
+    // 懂得
+    user.password = this.hashCode(user.name + 'hjslx').toString();
+    return this.userService.store(user);
+  }
+
+  async sendVerificationCode(mobile: string) {
     const random = String(Math.random()).substring(2, 8);
-    const apikey = 'a15d23ef365095cadfe6e4c77aeec912';
-    const mobile = number;
+
     const text = `【我思我趣】您的验证码是${random}。如非本人操作，请忽略本短信`;
 
     const baseUrl = 'https://sms.yunpian.com/v2/sms/single_send.json';
     const url = encodeURI(
-      baseUrl + `?apikey=${apikey}&mobile=${mobile}&text=${text}`,
+      baseUrl +
+        `?apikey=${this.apikey}&mobile=${mobile}&text=${text}&register=true`,
     );
+    let data;
+
     await axios
       .post(url)
       .then(res => {
         // token赋值
-        console.log(res.data);
+        data = res.data;
+        // 设置到键值对中
+
+        var now = new Date();
+
+        this.map.set(mobile, { random, now });
       })
       .catch(error => {
-        console.log(error);
+        data = error;
         // throw error;
       });
-    return random;
+    return data;
+  }
+
+  validateCode(mobile: string, verification: number) {
+    try {
+      let { random, now }: any = this.map.get(mobile);
+      console.log(this.map.get(mobile));
+      // 15分钟内有效
+      if (Date.now() > now + 15 * 60 * 1000) {
+        return false;
+      }
+
+      if (random === verification) this.map.delete(mobile);
+
+      return random === verification;
+    } catch (error) {
+      return false;
+    }
   }
 
   async fetchUrl() {
@@ -178,8 +299,7 @@ export class AuthService {
       await axios
         .get(get_url)
         .then(res => {
-          // 这里调用bindUser方法将用户信息存入
-
+          // 这里调用bindUser方法判断是否需要后序绑定
           result = this.bindUser(res.data);
         })
         .catch(error => {
@@ -193,8 +313,6 @@ export class AuthService {
   async bindUser(data: any) {
     // 这里要判断用户是否已经存在了
 
-    let user;
-    let registerDto;
     const dto = {
       uid: data.id,
     };
@@ -203,35 +321,27 @@ export class AuthService {
       await this.thirdRepository.save(dto);
     } catch {}
 
-    const entity = await this.thirdRepository
-      .createQueryBuilder('third')
-      .where('third.uid=:uid', { uid })
-      .getOne();
-    if (entity) {
-      user = await this.userRepository
-        .createQueryBuilder()
-        .relation(ThirdPart, 'user')
-        .of(entity)
-        .loadOne();
-    }
+    // 获取绑定用户
+    let user = await this.getBindedUser(uid);
 
     // 可以查找到的用户
 
     if (user) {
-      const { id, name } = user;
-      const payload = { id, name };
+      const { name } = user;
+      const payload = { uid, name };
 
       return {
         ...payload,
+        // 直接登录标识
         allowThirdpartLogin: true,
       };
     } else {
       // 查不到说明没有绑定
-      registerDto = {
+      // 返回用户名与uid,接下来用户用手机号绑定该uid
+      return {
         name: data.name,
         uid: data.id,
       };
-      return registerDto;
     }
   }
 
@@ -261,5 +371,22 @@ export class AuthService {
     }
 
     return res;
+  }
+
+  hashCode(s: string) {
+    if (Array.prototype.reduce) {
+      return s.split('').reduce(function(a, b) {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return a & a;
+      }, 0);
+    }
+    var hash = 0;
+    if (s.length === 0) return hash;
+    for (var i = 0; i < s.length; i++) {
+      var character = s.charCodeAt(i);
+      hash = (hash << 5) - hash + character;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
   }
 }

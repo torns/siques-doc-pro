@@ -4,6 +4,7 @@
 uploads
 app.html
 .env 
+.production.env
 db
 # Logs
 logs
