@@ -43,12 +43,9 @@
 //界面防抖
 html,
 body {
-  // height: 100%;
-  // font-family: Helvetica Neue, NotoSansHans-Regular, AvenirNext-Regular, arial, Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, Arial, Helvetica, sans-serif;
-  // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
-
-  font-family: 'EB Garamond', 'Noto Serif SC', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  // font-family: 'EB Garamond', 'Noto Serif SC', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  //   'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   -webkit-text-size-adjust: none;
   scroll-behavior: smooth;
   // 流畅的滚动

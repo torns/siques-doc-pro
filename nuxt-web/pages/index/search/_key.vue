@@ -2,7 +2,7 @@
   <div class="searchPage ">
     <div style="min-height:80px" class="bg-light px-2">
       <div class="container h-100 ">
-        <el-row :gutter="20" type="flex" class="flex-wrap">
+        <el-row :gutter="20" type="flex" class="flex-wrap" style="padding-top: 85px;">
           <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16" class="pt-3 ">
             <div>
               <div class="d-flex">

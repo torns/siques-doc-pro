@@ -40,7 +40,7 @@ export default {
       // { src: 'https://cdn.siques.cn/libs/js/codemirror/addons.min.js' },
       // { src: 'https://cdn.siques.cn/libs/js/marked.min.js' },
       // { src: 'https://cdn.siques.cn/libs/js/prettify.min.js' },
-      // { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
+      { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js',
         defer: true
@@ -241,7 +241,7 @@ export default {
       ]
     },
 
-    // analyze: true,
+    analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
     // },
@@ -262,7 +262,8 @@ export default {
           'vue-meta': 'VueMeta',
           transliteration: 'SlugifyFunction',
           'markdown-it': 'markdownit',
-          'vue-lazyload': 'VueLazyload'
+          'vue-lazyload': 'VueLazyload',
+          katex: 'katex'
         })
       }
     }
