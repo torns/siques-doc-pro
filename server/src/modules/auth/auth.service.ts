@@ -12,6 +12,7 @@ import { UserDto } from '../user/user.dto';
 import { ThirdPart } from '../thirdpart/third.entity';
 
 import { PushService } from '../push/push.service';
+import { md5 } from 'md5js';
 
 @Injectable()
 export class AuthService {
@@ -148,6 +149,59 @@ export class AuthService {
     // 懂得
     user.password = this.hashCode(user.name + 'hjslx').toString();
     return this.userService.store(user);
+  }
+
+  async retranVerify(authenticate: string, token: string, mobile: string) {
+    let map: Map<string, string> = new Map<string, string>();
+    map.set('authenticate', authenticate);
+    map.set('captchaId', '9be9acc9203b4e279e14ec49b8499364');
+    map.set('nonce', Math.floor(Math.random() * 99999) + '');
+    map.set('secretId', '0591d4a113c74d8eb6a7d192c72fd02e');
+    map.set('timestamp', Date.now().toString());
+    map.set('token', token);
+    map.set('version', '1.0');
+
+    let signature: string = this.genSignature(map);
+    // console.log(signature);
+
+    const res = await axios.post(
+      `https://captcha.yunpian.com/v1/api/authenticate?authenticate=${authenticate}&captchaId=9be9acc9203b4e279e14ec49b8499364&nonce=${map.get(
+        'nonce',
+      )}&secretId=0591d4a113c74d8eb6a7d192c72fd02e&timestamp=${map.get(
+        'timestamp',
+      )}&token=${token}&version=1.0&signature=${signature}`,
+    );
+
+    if (res.data.code === 0) {
+      this.sendVerificationCode(mobile);
+    }
+
+    return res.data;
+  }
+
+  strMapToObj(strMap) {
+    let obj = {};
+    for (let [k, v] of strMap) {
+      obj[k] = v;
+    }
+    return obj;
+  }
+
+  public secretKey = 'b530583d923e4dc58d08adc7c138fca9';
+  genSignature(params: Map<string, string>) {
+    var array = Array.from(params);
+    array.sort(function(a, b) {
+      return a[0].localeCompare(b[0]);
+    });
+    let s = '';
+
+    array.forEach(element => {
+      s = s + element[0] + element[1];
+    });
+
+    s = s + this.secretKey;
+
+    return md5(s, 32);
   }
 
   async sendVerificationCode(mobile: string) {

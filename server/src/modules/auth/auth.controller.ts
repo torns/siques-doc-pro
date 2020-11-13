@@ -44,11 +44,19 @@ export class AuthController {
     return await this.authService.signThirdToken(id, thirdpart);
   }
 
-  // 短信登录
-  @Post('code')
-  async sendVerificationCode(@Body('account') number: string) {
-    return await this.authService.sendVerificationCode(number);
+  @Post('retranVerify')
+  async retranVerify(
+    @Body('authenticate') authenticate: string,
+    @Body('token') token: string,
+    @Body('account') number: string,
+  ) {
+    return await this.authService.retranVerify(authenticate, token, number);
   }
+  // 短信登录
+  // @Post('code')
+  // async sendVerificationCode(@Body('account') number: string) {
+  //   return await this.authService.sendVerificationCode(number);
+  // }
 
   @Get('test')
   @UseGuards(AuthGuard('jwt'))

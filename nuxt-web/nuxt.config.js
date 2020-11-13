@@ -84,6 +84,10 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
         defer: true
       },
+      {
+        src: 'https://cdn.siques.cn/libs/js/riddler-sdk-0.2.2.js',
+        defer: true
+      },
 
       {
         src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
@@ -241,7 +245,7 @@ export default {
       ]
     },
 
-    analyze: true,
+    // analyze: true,
     // assetFilter(assetFilename) {
     //   return assetFilename.endsWith('.js')
     // },

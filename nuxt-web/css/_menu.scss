@@ -73,7 +73,7 @@
   #menu {
     z-index: -1;
     color: #27282d;
-    display: none;
+
     background-color: white;
   }
   .round_button {
@@ -169,7 +169,7 @@
 }
 
 #other .showMenu {
-  display: block !important;
+  display: block;
   height: 60px !important;
   transition: 0.5s all;
   animation: showMenu 1s;
@@ -180,7 +180,7 @@
 }
 
 #other .hideMenu {
-  display: block !important;
+  display: block;
   opacity: 0;
   // z-index: -10;
   transition: 0.5s all;

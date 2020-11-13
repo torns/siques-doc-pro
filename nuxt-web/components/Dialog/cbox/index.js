@@ -1,14 +1,16 @@
 /* eslint-disable */
 
-export default () => {
+export default (successCallback) => {
+  console.log(document.getElementById('cbox'))
   return new YpRiddler({
     expired: 10,
-    mode: 'dialog',
-    winWidth: 500,
+    mode: 'flat',
+    // noButton: false,
+    winWidth: 300,
     lang: 'zh-cn', // 界面语言, 目前支持: 中文简体 zh-cn, 英语 en
     // langPack: LANG_OTHER, // 你可以通过该参数自定义语言包, 其优先级高于lang
     container: document.getElementById('cbox'),
-    appId: 'your-app-id',
+    appId: '9be9acc9203b4e279e14ec49b8499364',
     version: 'v1',
     onError: function(param) {
       if (!param.code) {
@@ -28,14 +30,16 @@ export default () => {
     },
     onSuccess: function(validInfo, close, useDefaultSuccess) {
       // 成功回调
-      alert('验证通过! token=' + validInfo.token + ', authenticate=' + validInfo.authenticate)
+      // alert('验证通过! token=' + validInfo.token + ', authenticate=' + validInfo.authenticate)
       // 验证成功默认样式
+
+      successCallback(validInfo.authenticate, validInfo.token)
       useDefaultSuccess(true)
       close()
     },
     onFail: function(code, msg, retry) {
       // 失败回调
-      alert('出错啦：' + msg + ' code: ' + code)
+      // alert('出错啦：' + msg + ' code: ' + code)
       retry()
     },
     beforeStart: function(next) {

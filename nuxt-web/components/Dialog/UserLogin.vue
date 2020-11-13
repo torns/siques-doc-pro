@@ -1,132 +1,142 @@
 <template>
-  <el-dialog
-    id="login"
-    :title="loginModel.thirdpart == true ? '绑定手机号' : '登录'"
-    :visible="$store.state.loginFormVisible"
-    @close="closeLoginForm"
-    custom-class="login"
-    style="margin: 0 auto"
-    width="90%"
-  >
-    <div class="pt-3">
-      <!--  -->
-      <el-form
-        ref="loginByAccountModel"
-        v-show="loginByAccount"
-        :model="loginByAccountModel"
-        :rules="rules"
-        status-icon
-      >
-        <el-form-item :label-width="formLabelWidth" class="pb-2" prop="account">
-          <el-input
-            v-model.number="loginByAccountModel.account"
-            height="10"
-            placeholder="输入手机号"
-            autocomplete="off"
+  <div>
+    <el-dialog
+      id="login"
+      :title="loginModel.thirdpart == true ? '绑定手机号' : '登录'"
+      :visible="$store.state.loginFormVisible"
+      @close="closeLoginForm"
+      custom-class="login"
+      style="margin: 0 auto"
+      width="90%"
+    >
+      <div v-loading="showcbox">
+        <div class="pt-3">
+          <!--  -->
+          <el-form
+            ref="loginByAccountModel"
+            v-show="loginByAccount"
+            :model="loginByAccountModel"
+            :rules="rules"
+            status-icon
           >
-            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" class="pb-2" prop="password">
-          <el-input v-model="loginByAccountModel.password" show-password placeholder="输入密码" autocomplete="off">
-            <i slot="prefix" class="el-icon-paperclip pl-1"></i>
-          </el-input>
-        </el-form-item>
-        <div
-          class="point"
-          style="float:right;padding-bottom:15px"
-          v-if="loginByAccount"
-          @click="loginByAccount = false"
-        >
-          手机快捷登录
-        </div>
-      </el-form>
+            <el-form-item :label-width="formLabelWidth" class="pb-2" prop="account">
+              <el-input
+                v-model.number="loginByAccountModel.account"
+                height="10"
+                placeholder="输入手机号"
+                autocomplete="off"
+              >
+                <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item :label-width="formLabelWidth" class="pb-2" prop="password">
+              <el-input v-model="loginByAccountModel.password" show-password placeholder="输入密码" autocomplete="off">
+                <i slot="prefix" class="el-icon-paperclip pl-1"></i>
+              </el-input>
+            </el-form-item>
+            <div
+              class="point"
+              style="float:right;padding-bottom:15px"
+              v-if="loginByAccount"
+              @click="loginByAccount = false"
+            >
+              手机快捷登录
+            </div>
+          </el-form>
 
-      <el-form ref="loginModel" :model="loginModel" :rules="rules" v-show="!loginByAccount" status-icon>
-        <el-form-item :label-width="formLabelWidth" prop="account">
-          <el-input v-model="loginModel.account" height="10" placeholder="请输入手机号" autocomplete="off">
-            <i slot="prefix" class="el-icon-user-solid pl-1"></i>
-          </el-input>
-        </el-form-item>
+          <el-form ref="loginModel" :model="loginModel" :rules="rules" v-show="!loginByAccount" status-icon>
+            <el-form-item :label-width="formLabelWidth" prop="account">
+              <el-input v-model="loginModel.account" height="10" placeholder="请输入手机号" autocomplete="off">
+                <i slot="prefix" class="el-icon-user-solid pl-1"></i>
+              </el-input>
+            </el-form-item>
 
-        <el-form-item :label-width="formLabelWidth" class="pt-2" prop="verification">
-          <el-input
-            :class="isPhoneValid ? 'login-button--active' : ''"
-            v-model="loginModel.verification"
-            placeholder="请输入6位验证码"
-            autocomplete="off"
-          >
-            <el-button slot="append" @click="getCode">{{
-              this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码'
-            }}</el-button>
-          </el-input>
-        </el-form-item>
+            <el-form-item :label-width="formLabelWidth" class="pt-2" prop="verification">
+              <el-input
+                :class="isPhoneValid ? 'login-button--active' : ''"
+                v-model="loginModel.verification"
+                placeholder="请输入6位验证码"
+                autocomplete="off"
+              >
+                <el-button slot="append" @click="getCode">{{
+                  this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码'
+                }}</el-button>
+              </el-input>
+            </el-form-item>
 
-        <!-- <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
+            <!-- <el-form-item :label-width="formLabelWidth" class="pt-2" label="密码">
           <el-input v-model="loginModel.password" show-password placeholder="请输入密码" autocomplete="off">
             <i slot="prefix" class="el-icon-paperclip pl-1"></i>
           </el-input>
         </el-form-item> -->
 
-        <div
-          class=" point"
-          style="float:right;padding-bottom:15px"
-          v-if="!loginByAccount"
-          @click="loginByAccount = true"
-        >
-          账号密码登录
+            <div
+              class=" point"
+              style="float:right;padding-bottom:15px"
+              v-if="!loginByAccount"
+              @click="loginByAccount = true"
+            >
+              账号密码登录
+            </div>
+            <!-- <div>
+
+            </div> -->
+          </el-form>
         </div>
-      </el-form>
-    </div>
 
-    <div class="pt-3 el-form">
-      <div class="dialog-footer pb-2">
-        <el-button
-          @click="loginByAcc"
-          v-if="loginByAccount"
-          type="success"
-          :class="isPhoneValid && isPassValid ? 'login-button--active' : ''"
-          >登录</el-button
-        >
-        <el-button
-          v-else
-          @click="login"
-          type="success"
-          :class="isPhoneValid && isCodeValid ? 'login-button--active' : ''"
-          >登录</el-button
-        >
-      </div>
+        <div class="pt-3 el-form">
+          <div class="dialog-footer pb-2">
+            <el-button
+              @click="loginByAcc"
+              v-if="loginByAccount"
+              type="success"
+              :class="isPhoneValid && isPassValid ? 'login-button--active' : ''"
+              >登录</el-button
+            >
+            <el-button
+              v-else
+              @click="login"
+              type="success"
+              :class="isPhoneValid && isCodeValid ? 'login-button--active' : ''"
+              >登录</el-button
+            >
+          </div>
 
-      <div class="dialog-footer d-flex flex-column">
-        <div class="py-4">
-          <el-divider content-position="center">更多登录方式</el-divider>
-          <div class="text-center">
-            <el-tooltip class="item " effect="dark" content="微博登录" placement="bottom">
-              <a :href="url.weibo_url" class="fs-lg fa fa-weibo text-red"></a>
-            </el-tooltip>
-            <el-tooltip class="item px-2" effect="dark" content="QQ登录(暂时不可用)" placement="bottom">
-              <a :href="url.weibo_url" class=" fa fa-qq text-blue"></a>
-            </el-tooltip>
-            <el-tooltip class="item " effect="dark" content="Github登录" placement="bottom">
-              <a :href="url.github_url" class="fs-lg fa fa-github text-dark"></a>
-            </el-tooltip>
+          <div class="dialog-footer d-flex flex-column">
+            <div class="py-4">
+              <el-divider content-position="center">更多登录方式</el-divider>
+              <div class="text-center">
+                <el-tooltip class="item " effect="dark" content="微博登录" placement="bottom">
+                  <a :href="url.weibo_url" class="fs-lg fa fa-weibo text-red"></a>
+                </el-tooltip>
+                <el-tooltip class="item px-2" effect="dark" content="QQ登录(暂时不可用)" placement="bottom">
+                  <a :href="url.weibo_url" class=" fa fa-qq text-blue"></a>
+                </el-tooltip>
+                <el-tooltip class="item " effect="dark" content="Github登录" placement="bottom">
+                  <a :href="url.github_url" class="fs-lg fa fa-github text-dark"></a>
+                </el-tooltip>
+              </div>
+            </div>
+            <!-- <el-button v-if="loginByAccount" @click="loginByAccount = false" type="message">已有账号登录</el-button>
+        <el-button v-else  type="message">账号密码登录</el-button> -->
+          </div>
+          <div class="pt-2 text-center" style="margin-bottom:-10px">
+            继续即表示同意
+            <a href="#">《服务条款》</a>和
+            <a href="#">《隐私政策》</a>
           </div>
         </div>
-        <!-- <el-button v-if="loginByAccount" @click="loginByAccount = false" type="message">已有账号登录</el-button>
-        <el-button v-else  type="message">账号密码登录</el-button> -->
       </div>
-      <div class="pt-2 text-center" style="margin-bottom:-10px">
-        继续即表示同意
-        <a href="#">《服务条款》</a>和
-        <a href="#">《隐私政策》</a>
-      </div>
-    </div>
-  </el-dialog>
+    </el-dialog>
+    <el-dialog class="cbox" title="" width="300px" :visible.sync="showcbox" :show-close="false">
+      <div id="cbox"></div>
+    </el-dialog>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-// import cbox from './cbox/index'
+import cbox from './cbox/index'
 @Component({})
 /* eslint-disable */
 export default class Login extends Vue {
@@ -144,9 +154,9 @@ export default class Login extends Vue {
   formLabelWidth: string = '120'
 
   phoneRegisted = false
+  showcbox = false
 
   mounted() {
-    // cbox()
     this.getUrl()
 
     if (this.code) {
@@ -343,6 +353,24 @@ export default class Login extends Vue {
       }, 1000)
     }
   }
+
+  // 打开互动框
+  renderBox() {
+    this.showcbox = true
+    this.$nextTick(() => {
+      cbox(this.successCallback)
+    })
+  }
+
+  async successCallback(authenticate: string, token: string) {
+    const res = await this.$http.post(`/auth/retranVerify`, { authenticate, token, account: this.loginModel.account })
+    if (res.data.code == 0) {
+      this.showcbox = false
+      this.$store.commit('setTime', 30)
+      this.startClock()
+    }
+  }
+
   // 获取短信验证码
   getCode() {
     // console.log(123)
@@ -350,14 +378,17 @@ export default class Login extends Vue {
       const ref: any = this.$refs.loginModel
       ref.validate(async (valid: any, index: any) => {
         if (this.isPhoneValid) {
-          const data = { account: this.loginModel.account }
-          const res = await this.$http.post('auth/code', data)
-          this.$store.commit('setTime', 30)
-          this.startClock()
+          this.renderBox()
         }
       })
     }
   }
+
+  // async doGetCode() {
+  //   // const data = { account: this.loginModel.account }
+  //   // const res = await this.$http.post('auth/code', data)
+
+  // }
 
   login() {
     const ref: any = this.$refs.loginModel
@@ -409,7 +440,14 @@ export default class Login extends Vue {
 
 <style lang="scss">
 //登录相关
-
+.cbox {
+  .el-dialog__body {
+    padding: 0 !important;
+  }
+  .el-dialog__header {
+    padding: 0 !important;
+  }
+}
 .login-button--active .el-input-group__append {
   background-color: #27282d !important;
   color: #fff !important;
