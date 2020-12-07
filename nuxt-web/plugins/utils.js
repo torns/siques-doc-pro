@@ -75,9 +75,11 @@ export function listIntercep(taglist) {
 export function hljs() {
   $('p img').each(function() {
     var title = $(this).attr('alt')
-    $(this).after(
-      '<div class="img-title">' + '<span class="itag"><i class="fa fa-twitch"></i></span>' + title + '</div>'
-    )
+    if (title !== 'img') {
+      $(this).after(
+        '<div class="img-title">' + '<span class="itag"><i class="fa fa-twitch"></i></span>' + title + '</div>'
+      )
+    }
   })
 
   $('pre code').each(function() {
