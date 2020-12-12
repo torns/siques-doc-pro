@@ -1,38 +1,20 @@
 @import './variables';
 
 @import 'placeholder';
-@import 'commentpanel';
 @import 'post';
-@import 'note';
+@import 'pagination';
 @import './error.scss';
-@import 'collection';
-@import 'tag.scss';
+
 @import 'menu.scss';
 @import 'toc.scss';
 @import 'moment';
 @import 'index';
-// @import 'gitlab.scss';
+
 // reset
 // 防止自己撑大
 * {
   margin: 0;
   padding: 0;
-}
-
-:root {
-  --color-bg: #fdf1f2;
-  --color-heart: #ea442b;
-  --easing: cubic-bezier(0.7, 0, 0.3, 1);
-  --duration: 0.5s;
-  --background-dark: #2d3548;
-  --text-light: rgba(255, 255, 255, 0.6);
-  --text-lighter: rgba(255, 255, 255, 0.9);
-  --spacing-s: 8px;
-  --spacing-m: 16px;
-  --spacing-l: 24px;
-  --spacing-xl: 32px;
-  --spacing-xxl: 64px;
-  --width-container: 1200px;
 }
 
 //重置图标大小？
@@ -59,19 +41,7 @@ body {
   }
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 0.2s;
-}
-.page-enter,
-.page-leave-active {
-  opacity: 0;
-}
-
 // 首页搜索输入框
-.header input {
-  background-color: rgba(0, 0, 0, 0.1);
-}
 
 .mysubmenu {
   // background-color: rgb(105, 105, 105);
@@ -102,35 +72,23 @@ li {
 }
 
 //布局
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  @media (min-width: 768px) {
-    width: 750px;
-  }
-  @media (min-width: 992px) {
-    width: 970px;
-    .favicon {
-      object-fit: contain;
-      // &:hover {
-      //   &::before {
-      //     content: '';
-      //     background: url(../static/tip.png) no-repeat;
-      //     position: absolute;
-      //     top: 98%;
-      //     right: 4%;
-      //     width: 160px;
-      //     z-index: 1;
-      //     height: inherit;
-      //     background-size: contain;
-      //   }
-      // }
-    }
-  }
-  @media (min-width: 1200px) {
-    width: 1140px;
-  }
-}
+// .container {
+//   padding: 0px;
+//   margin-right: auto;
+//   margin-left: auto;
+//   @media (min-width: 768px) {
+//     width: 750px;
+//   }
+//   @media (min-width: 992px) {
+//     width: 970px;
+//     .favicon {
+//       object-fit: contain;
+//     }
+//   }
+//   @media (min-width: 1200px) {
+//     width: 1140px;
+//   }
+// }
 
 .post_container {
   margin-right: auto;
@@ -280,43 +238,8 @@ li {
   }
 }
 
-// text overflow
-.text-ellipsis {
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ellipsis {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-
-.ellipsis-1 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-}
-
-.ellipsis-2 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.ellipsis-3 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-
 //鼠标样式
-.point {
+.pointer {
   cursor: pointer;
 }
 // shadow
@@ -328,113 +251,6 @@ li {
 @each $fontkey, $font in $fonts {
   .font-#{$fontkey} {
     font-family: $font;
-  }
-}
-
-.font-bold {
-  font-weight: 700;
-}
-// 悬浮
-.hoverlink {
-  &:hover {
-    text-decoration: underline;
-  }
-}
-.hoverbg {
-  &:hover {
-    background-color: #f0f0f0;
-    border-radius: 4px;
-  }
-}
-
-.bg-1 {
-  background-color: #009a61;
-  border-radius: 4px;
-  color: white;
-}
-
-.bg-2 {
-  background-color: #fcf8e3;
-  color: #8a6d3b;
-}
-
-.bg-3 {
-  background-color: rgba(1, 126, 102, 0.08);
-  color: #017e66;
-}
-.bg-4 {
-  background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
-  color: white;
-}
-//去阴影
-
-.hover-1 {
-  &:hover {
-    opacity: 0.8 !important;
-  }
-}
-
-.hover-2 {
-  transition: 0.3s;
-  &:hover {
-    background: rgba(0, 154, 97, 0.08);
-    border-radius: 4px;
-  }
-}
-
-.hover-3 {
-  transition: 0.8s;
-  &:hover {
-    background-color: #009a61;
-    color: white !important;
-  }
-}
-
-.hover-4 {
-  position: relative;
-  text-decoration: none;
-  transition: 0.5s;
-  &:hover {
-    // color: #95a5a6;
-    &::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 2px;
-    top: 100%;
-    left: 0;
-    background: $color-primary;
-    transition: transform 0.5s;
-    transform: scaleX(0);
-    transform-origin: right;
-  }
-}
-
-.hover-5 {
-  transition: 1s;
-  &:hover {
-    transform: rotate(360deg);
-  }
-}
-
-//遮罩
-.hover-mask {
-  &::content {
-    content: '';
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
-  }
-}
-
-.visitlink {
-  &:visited {
-    color: #969696;
   }
 }
 
@@ -558,52 +374,11 @@ li {
   }
 }
 
-.btn {
-  border: none;
-
-  // font-size: map-get($font-sizes, "xll") * $base-font-size;
-  background-color: transparent;
-  &:hover,
-  &:focus {
-    color: #409eff;
-    border-color: none;
-    background-color: transparent;
-  }
-}
-
 //borders
 @each $dir in (top, right, bottom, left) {
   .border-#{$dir} {
     border-#{$dir}: 1px solid $border-color;
   }
-}
-
-.border-l {
-  border-left: 4.5px solid $color-primary;
-}
-
-.border-x {
-  border-left: 4.5px solid $color-primary;
-  border-right: 4.5px solid $color-primary;
-}
-
-.el-popup-parent--hidden {
-  padding-right: 0px !important;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.te-preview {
-  background-color: #f6f6f6;
-}
-
-.el-menu::before,
-.el-menu::after {
-  display: table;
-  content: none !important;
 }
 
 .blur {
@@ -620,52 +395,47 @@ h6 {
   line-height: 1.5;
 }
 
-.note_body {
-  &:hover {
-    .newer-image,
-    .older-image {
-      opacity: 1;
-    }
-  }
+// .note_body {
+//   &:hover {
+//     .newer-image,
+//     .older-image {
+//       opacity: 1;
+//     }
+//   }
 
-  .newer-image,
-  .older-image {
-    height: 50px;
-    margin-top: -15px;
-    position: absolute;
-    opacity: 0.2;
-    top: 50%;
-    width: 50px;
-    transition: 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  }
-}
+//   .newer-image,
+//   .older-image {
+//     height: 50px;
+//     margin-top: -15px;
+//     position: absolute;
+//     opacity: 0.2;
+//     top: 50%;
+//     width: 50px;
+//     transition: 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+//   }
+// }
 
-.newer-image {
-  left: 50px;
-}
+// .newer-image {
+//   left: 50px;
+// }
 
-.older-image {
-  right: 50px;
-}
+// .older-image {
+//   right: 50px;
+// }
 
 .canavas {
   width: 100%;
 }
 
-// 首页搜索框距离顶部的距离
 .reTop {
   top: calc(50vh - 237px);
 }
-// 首页被访问过的链接
-// .title a:visited {
-//   color: #c2c2c2;
-// }
 
 code {
   -webkit-overflow-scrolling: auto !important;
 }
 
-// 弹出层遮罩颜色
-.v-modal {
-  background: #00000030 !important;
+.v-application ul,
+.v-application ol {
+  padding-left: 0px;
 }

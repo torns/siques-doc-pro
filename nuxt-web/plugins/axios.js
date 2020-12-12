@@ -1,16 +1,29 @@
 import Vue from 'vue'
 
-export default function({ $axios, redirect, store }) {
-  // Create a custom axios instance
+export default ({ app, store, route, redirect }) => {
+  const axios = app.$axios
 
-  $axios.onError((error) => {
-    const code = parseInt(error.response && error.response.status)
-    if (code === 401) {
-      //   redirect('/sorry')
-      Vue.prototype.$notify({
-        type: 'error',
-        message: error.response.data.message
-      })
+  // 基本配置
+  axios.defaults.timeout = 5000
+  // axios.defaults.headers.post['Content-Type'] = 'application/json'
+  // axios.defaults.withCredentials = true
+  axios.defaults.baseURL = process.env.BASE_URL
+  // 请求回调
+  axios.onRequest((config) => {
+    // 设置token
+    if (store.state.modules.user && store.state.modules.user.token) {
+      config.headers.Authorization = 'Bearer ' + store.state.modules.user.token
     }
   })
+
+  // code返回回调
+  axios.onResponse((res) => {
+    return res.data
+  })
+
+  // 内部错误回调
+  axios.onError((error) => {
+    console.log(error)
+  })
+  Vue.prototype.$http = axios
 }

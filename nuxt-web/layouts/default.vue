@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <v-app>
     <transition leave-active-class="animated fadeOut">
       <sq-indicator v-if="show"></sq-indicator>
     </transition>
-
+    <LoginDialog></LoginDialog>
     <nuxt />
-  </div>
+  </v-app>
 </template>
 <script>
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import {} from 'nuxt-property-decorator'
 
 export default {
   /* eslint-disable */

@@ -49,7 +49,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
-import fetchdata from '~/plugins/fetchdata'
+import { getMomentList } from '@/api/moment.js'
 
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('.plain-text-wrap img'))
@@ -58,10 +58,9 @@ const mediumzoom = () => {
 @Component({})
 export default class Moment extends Vue {
   async asyncData() {
-    const http = Vue.prototype.$http
-    const res = await http.get(`/posts/all?limit=20&page=1&type=tfNews&sort=created&body=true&avator=true`)
+    const res = await getMomentList({ params: { type: 'tfNews' } })
 
-    res.data[0].forEach((e) => {
+    res.datas.records.forEach((e) => {
       e.showMore = false
       if (e.cover != null) {
         e.cover = e.cover.split(',')
@@ -69,8 +68,8 @@ export default class Moment extends Vue {
     })
 
     return {
-      posts: res.data[0],
-      total: res.data[1]
+      posts: res.datas.records,
+      total: res.datas.total
     }
   }
 
@@ -96,27 +95,23 @@ export default class Moment extends Vue {
   }
 
   fetchDataSuccess(res: any) {
-    res.data[0].forEach((e) => {
+    res.datas.records.forEach((e) => {
       e.showMore = false
       if (e.cover != null) {
         e.cover = e.cover.split(',')
       }
     })
-    this.posts = this.posts.concat(res.data[0])
-    this.total = res.data[1]
+    this.posts = this.posts.concat(res.datas.records)
+    this.total = res.datas.total
   }
 
-  onload() {
-    this.page++
-    fetchdata({
-      resource: `/posts/all`,
-      page: this.page,
+  async onload() {
+    const res = await getMomentList({
+      pageNum: this.page,
       pageSize: this.limit,
-      sort: 'created',
-      type: 'tfNews',
-      body: true,
-      success: this.fetchDataSuccess
+      type: 'tfNews'
     })
+    this.fetchDataSuccess(res)
   }
 }
 </script>

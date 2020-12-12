@@ -11,7 +11,7 @@
       <div class="desc">访问的页面不存在</div>
       <div class="actions">
         <router-link :to="{ path: '/' }">
-          <el-button type="primary">返回首页</el-button>
+          <v-btn type="primary">返回首页</v-btn>
         </router-link>
       </div>
     </div>

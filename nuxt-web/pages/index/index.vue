@@ -1,175 +1,89 @@
 <template>
-  <div>
-    <!-- <div style="height:460px;box-shadow: inset 0px -32px 38px -36px;" class="cover "> -->
+  <div class="homepage">
     <div>
       <sq-banner v-if="isHomepage"
-        ><div class="container" style="height: 0">
-          <el-row :gutter="0" class="d-flex jc-center">
-            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down"> </el-col>
-            <el-col :xs="20" :sm="24" :md="14" :lg="14" :xl="14">
-              <div class="d-flex jc-around header reTop" style="position: relative">
+        ><v-container style="height: 0;padding:0">
+          <v-row no-gutters class=" jc-center">
+            <v-col xs="10" sm="8" md="8" lg="8" xl="8">
+              <div class="d-flex justify-space-around   reTop" style="position: relative">
                 <div style="width: 100%; max-width: 380px">
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
-                    <el-input
-                      v-model="search"
-                      @keyup.enter.native="dataSearch"
-                      size="medium"
-                      placeholder="搜索你喜欢的"
-                    >
-                      <el-button slot="append" @click="dataSearch">
-                        <i class="fa fa-search"></i>
-                      </el-button>
-                    </el-input>
-
-                    <div class="text-white text-center pt-3 fs-md">
-                      热门搜索：<span @click="$router.push(`/search/vue`)" class="point hoverlink">Vue </span>
-                      <span @click="$router.push(`/search/nuxtjs`)" class="point hoverlink">nuxtjs</span>
-                      <span @click="$router.push(`/search/nestjs`)" class="point hoverlink">nestjs</span>
+                    <v-text-field class="mx-4" color="success" hide-details label="Search" append-icon="mdi-magnify">
+                      <template v-slot:label>
+                        搜索你喜欢的
+                      </template>
+                    </v-text-field>
+                    <div class="text-white text-center pt-5 fs-md">
+                      热门搜索：<span @click="$router.push(`/search/vue`)" class="point hoverlink"> </span>
+                      <span @click="$router.push(`/search/nuxtjs`)" class="point hoverlink"></span>
+                      <span @click="$router.push(`/search/nestjs`)" class="point hoverlink"></span>
                     </div>
-                  </div>
-                  <div>
-                    <sq-down></sq-down>
+                    <!-- <sq-down></sq-down> -->
                   </div>
                 </div>
               </div>
-            </el-col>
-            <el-col :xs="0" :sm="3" :md="6" :lg="6" :xl="6" class="hidden-sm-and-down">
-              <div style="position: relative; top: 60%" class="fs-xm hover-1 text-right text-white pt-2"></div>
-            </el-col>
-          </el-row></div
-      ></sq-banner>
+            </v-col>
+          </v-row></v-container
+        ></sq-banner
+      >
     </div>
-    <div class="container" style="min-height: 100vh">
-      <el-row :gutter="0" class="d-flex xm-flex-wrap pt-4">
-        <el-col :xs="0" :sm="1" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
-          <div class="xs d-flex" style="flex-direction: row-reverse">
-            <a href="#top">
-              <!-- 首页左侧边栏 -->
-              <sq-leftBar :category="category" :taglists="taglists" @handleclick="handleCategory"></sq-leftBar>
-            </a>
-          </div>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-          <sq-typer id="top"></sq-typer>
+    <v-container style="min-height: 100vh">
+      <v-row no-gutters class=" pt-4">
+        <v-col cols="24" sm="24" md="24" lg="24" xl="24" style="margin:0 auto;">
           <div>
-            <div>
-              <section class="new-title">
-                <span>{{ name }}</span>
-              </section>
+            <section class="new-title">
+              <span>{{ name }}</span>
+            </section>
 
-              <div class="news-list-module" style="overflow: auto">
-                <div v-for="(post, $index) in posts" :key="$index">
-                  <article :id="post.id" :class="`item ${post.cover ? '' : 'wire'}`">
-                    <section class="row">
-                      <section v-if="post.cover" class="news-img point">
-                        <router-link :to="`/p/${post.id}`" tag="a" target="_blank" :title="post.title">
-                          <img v-lazy="post.cover" alt="cover"
-                        /></router-link>
-                      </section>
-                      <section :class="`${post.cover ? 'news-detail' : 'content'}`">
-                        <section class="item-tag-list d-flex">
+            <div class="news-list-module">
+              <div v-for="(post, $index) in posts" :key="$index">
+                <article :id="post.id" :class="`item ${post.cover ? '' : 'wire'}`">
+                  <section class="row">
+                    <section v-if="post.cover" class="news-img point">
+                      <router-link :to="`/p/${post.id}`" :title="post.title" tag="a" target="_blank">
+                        <img v-lazy="post.cover" alt="cover"
+                      /></router-link>
+                    </section>
+                    <section :class="`${post.cover ? 'news-detail' : 'content'}`">
+                      <!-- <section class="item-tag-list d-flex">
                           <div v-for="tag in post.tags" :key="tag.id">
-                            <router-link class="tag ellipsis-1" target="_blank" :to="`/t/${tag.id}`" tag="a"
+                            <router-link :to="`/t/${tag.id}`" class="tag ellipsis-1" target="_blank" tag="a"
                               ><i class="fa fa-tags"></i> <span>{{ tag.name }}</span></router-link
                             >
                           </div>
-                        </section>
+                        </section> -->
 
-                        <p class="title">
-                          <router-link :to="`/p/${post.id}`" tag="a" target="_blank" :title="post.title">{{
-                            post.title
-                          }}</router-link>
-                        </p>
-                        <p class="desc">{{ post.alias }}...</p>
-                        <section class="author ">
-                          <nuxt-link class="name" :to="`u/${post.user.id}`" tag="a"
-                            ><span>{{ post.user.name + ' ' }}</span>
-                          </nuxt-link>
-                          <span> · </span>
-                          <span class="time"> {{ $dayjs(post.created).fromNow() }}</span>
-                        </section>
-                      </section>
-                    </section>
-                  </article>
-                  <!-- <div class="d-flex ai-center jc-between">
-                    <div>
-                      <div class="title">
-                        <router-link :to="`/p/${post.id}`" tag="a" class="text-dark-1 hoverlink point fs-lg">{{
+                      <p class="title">
+                        <router-link :to="`/p/${post.id}`" :title="post.title" tag="a" target="_blank">{{
                           post.title
                         }}</router-link>
-                      </div>
-                      <div>
-                        <el-tag
-                          v-for="tag in post.tags"
-                          :key="tag.id"
-                          effect="plain"
-                          size="mini"
-                          type="primary"
-                          class="mt-2 mr-2 hover-4 hover-2 point"
-                        >
-                          <router-link :to="`/t/${tag.id}`" tag="a">{{ tag.name }}</router-link>
-                        </el-tag>
-                      </div>
-                      <div>
-                        <div class="text-gray fs-xm lh-2 pt-2">
-                         
-                          <span>{{ post.alias }}...</span>
-                        </div>
-                      </div>
+                      </p>
+                      <p class="desc">{{ post.alias }}...</p>
+                      <section class="author ">
+                        <!-- <nuxt-link :to="`u/${post.user.id}`" class="name" tag="a"
+                            ><span>{{ post.user.name + ' ' }}</span>
+                          </nuxt-link> -->
+                        <span> · </span>
+                        <span class="time"> {{ $dayjs(post.created).fromNow() }}</span>
+                      </section>
+                    </section>
+                  </section>
+                </article>
+              </div>
 
-                      <div class="d-flex mb-4 pt-2 ai-center fs-xm">
-                        <div class="d-flex point ai-center">
-                          <i class="fs-xl el-icon-success hover-1 text-primary"></i>
-
-                          <div class="pl-1 pr-3">
-                            <div>
-                              <span class="text-primary hoverlink font-bold">× {{ post.liked }} </span>
-                              <span>· 赞</span>
-                            </div>
-                          </div>
-                        </div>
-                        <nuxt-link :to="`u/${post.user.id}`" tag="div"
-                          ><div class="pr-2 point hoverlink text-gray-1">{{ post.user.name }} ·</div>
-                        </nuxt-link>
-
-                        <div>
-                          <i class="fa fa-calendar-check-o text-blue"></i>
-                          {{ $dayjs(post.created).format('YYYY年MM月DD日 HH:mm:ss') }}
-                        </div>
-                      </div>
-                    </div>
-                    <div v-if="post.cover" class="xs pl-3 pr-2 my-1 point">
-                      <router-link :to="`/p/${post.id}`">
-                        <el-image
-                          :src="post.cover"
-                          style="width: 140px; height: 90px"
-                          class="border-radius shadow-1 border-dash"
-                          fit="cover"
-                        ></el-image>
-                      </router-link>
-                    </div> 
-                 </div> -->
-                </div>
-
-                <div v-if="loading" class="my-3 text-primary fs-xl">
-                  <sq-holder :count="8" :show="true"></sq-holder>
-                </div>
-                <div class="my-3 text-gray text-center">
-                  <div v-if="noMore">我是有底线的</div>
-                  <div v-else @click="onload" class="point">点击查看更多热文</div>
-                </div>
+              <div v-if="loading" class="my-3 text-primary fs-xl">
+                <sq-holder :count="8" :show="true"></sq-holder>
+              </div>
+              <div class="my-3 text-gray text-center">
+                <div v-if="noMore">我是有底线的</div>
+                <div v-else @click="onload" class="pointer">点击查看更多热文</div>
               </div>
             </div>
           </div>
-        </el-col>
-
-        <el-col :xs="0" :sm="1" :md="5" :lg="5" :xl="5" class="hidden-sm-and-down">
-          <!-- 首页右-侧边栏 -->
-          <sq-rightBar></sq-rightBar>
-        </el-col>
-      </el-row>
-    </div>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <!-- 首页的导航栏 -->
     <sq-extendBar
@@ -179,10 +93,10 @@
       color="rgba(0, 0, 0, 0.27);"
     >
       <li
+        @click="$emit('changestatu', false)"
         style="    text-align: right;
     padding-bottom: 30px;
     padding-right: 10px;"
-        @click="$emit('changestatu', false)"
         class="pl-3"
       >
         <svg style="height: 25px; width: 25px">
@@ -192,13 +106,12 @@
       <a href="#top">
         <!-- 首页左侧边栏 -->
 
-        <sq-leftBar
+        <!-- <sq-leftBar
           :category="category"
-          :taglists="taglists"
           @handleclick="handleCategory"
           text-color="white"
           color="text-white"
-        ></sq-leftBar>
+        ></sq-leftBar> -->
       </a>
     </sq-extendBar>
 
@@ -212,58 +125,41 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import _ from 'lodash'
 import { listIntercep } from '../../plugins/utils.js'
 import fetchdata from '../../plugins/fetchdata'
-import leftBar from '~/components/Page/Index/SideBar/leftWay.vue'
-import rightBar from '~/components/Page/Index/SideBar/rightWay.vue'
+// import leftBar from '@/components/Page/Index/SideBar/leftWay.vue'
+
 import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 import banner from '~/components/Page/Index/IndexBanner.vue'
-import typer from '~/components/Page/Index/IndexTyper.vue'
+
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
 import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
+import { getDocList } from '@/api/doc'
 
 @Component({
   components: {
-    'sq-leftBar': leftBar,
-    'sq-rightBar': rightBar,
+    // 'sq-leftBar': leftBar,
+    //
     'sq-down': scrolldown,
     'sq-banner': banner,
-    'sq-typer': typer,
+
     'sq-holder': placeholder,
     'sq-extendBar': extendBar
   }
 })
 export default class AppPage extends Vue {
   async asyncData() {
-    // 在 @component 中不可以写 this.$http //
-    // var type = {
-    //   post: 'post',
-    //   video: 'video'
-    // }
+    const res = await getDocList({ pageNum: 1, pageSize: 10, params: { type: 'post' } })
 
-    // var jsonObj = JSON.stringify(type)
-
-    const http = Vue.prototype.$http
-    const res = await http.get(`/posts/all?limit=20&page=1&type=post&sort=created`)
-    // const res1 = await http.get('tags/1/hot')
-    // const res2 = await http.get('comments')
-    // const res3 = await http.get('collections/1/note?type=note&limit=3')
     return {
-      posts: res.data[0],
-      total: res.data[1]
-      // hotTags: res1.data,
-      // hotComments: res2.data,
-      // hotNotebooks: res3.data
+      posts: res.datas.records,
+      total: res.datas.total
     }
   }
   page = 1
-  count = 20
+  count = 10
   total: number = 0
   loading = false
-  sort = 'created'
-  tag = null
-  taglist = null
   posts = []
   search = ''
-  type = 'post'
 
   category: string = 'new'
   name: string = '最近更新'
@@ -280,23 +176,7 @@ export default class AppPage extends Vue {
     return this.loading || this.noMore
   }
 
-  get taglists(): any {
-    try {
-      return this.$store.state.auth.user.tags || ''
-    } catch {
-      return null
-    }
-  }
-
-  // debounce = _.debounce(this.recordScrollPosition, 10)
   homeTop = 0
-
-  // activated() {
-  //   // do something
-  //   console.log('activated home')
-  //   document.body.scrollTop = this.homeTop
-  //   document.documentElement.scrollTop = this.homeTop
-  // }
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -325,90 +205,28 @@ export default class AppPage extends Vue {
     this.search = ''
   }
 
-  fetchDataSuccess(res: any) {
-    setTimeout(async () => {
-      this.posts = this.posts.concat(res.data[0])
-      this.count += res.data[0].length
-      this.loading = false
-    }, 500)
-  }
-
-  onload() {
+  async onload() {
     this.loading = true
     this.page += 1
-    let list = ''
-    list = listIntercep(this.taglist)
+    const res = await getDocList({ pageNum: this.page, pageSize: 10, params: { type: 'post' } })
 
-    fetchdata({
-      resource: `/posts/all`,
-      page: this.page,
-      pageSize: '20',
-      sort: this.sort,
-      tags: this.tag,
-      taglist: list,
-      type: this.type,
-      success: this.fetchDataSuccess
-    })
-  }
-
-  async handleCategory(links: any) {
-    // 改变父组件状态
-    this.$emit('changestatu', false)
-
-    const { alias, name, listId, tag, taglist, sort, type } = links
-    this.category = alias
-    this.name = name
-    this.tag = tag
-    this.taglist = taglist
-    this.sort = sort
-    this.page = 1
-    this.type = type ? type : 'post'
-    this.count = 20
-    let list = ''
-    list = listIntercep(this.taglist)
-    const link =
-      `/posts/all?limit=20&page=${this.page}` +
-      (sort ? `&sort=${sort}` : '') +
-      (tag ? `&tags=${tag}` : '') +
-      (taglist ? `&taglist=${list}` : '') +
-      (listId ? `&listId=${listId}` : '') +
-      (type ? `&type=${type}` : '&type=post')
-
-    const res = await this.$http.get(link)
-    this.total = res.data[1]
-    this.posts = res.data[0]
+    setTimeout(async () => {
+      this.posts = this.posts.concat(res.datas.records)
+      this.count += res.datas.records.length
+      this.loading = false
+    }, 500)
   }
 }
 </script>
 
 <style lang="scss">
-.el-divider--vertical {
-  height: inherit;
+.homepage .theme--light.v-text-field > .v-input__control > .v-input__slot:before {
+  border-color: white;
 }
-
-.el-divider--horizontal {
-  margin: 15px 0;
-}
-
-.mask {
-  position: absolute;
-  pointer-events: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.7));
-  border-radius: 4px;
-}
-.tech-square-title::after {
-  position: absolute;
-  content: '';
-  border-bottom: 1px solid #eee;
-  width: 95px;
-  margin-left: 5px;
-  margin-top: 8px;
-}
-.header .el-input__inner {
+.homepage .theme--light.v-icon {
   color: white;
+}
+.homepage .theme--light.v-label {
+  color: rgb(255, 255, 255, 0.4);
 }
 </style>

@@ -1,18 +1,12 @@
 <template>
-  <div>
-    <div>
-      <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-      <div id="editor" class="editor-body bg-white" style="z-index:2;">
-        <!-- Tips: Editor.md can auto append a `<textarea>` tag -->
-        <!-- <textarea style="display:none;"> </textarea> -->
-      </div>
-      <div v-if="isSaving" class="pt-2 fs-7">保存中...</div>
-    </div>
-  </div>
+  <v-card>
+    <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
+    <div id="editor" class="editor-body " style="z-index:2;"></div>
+  </v-card>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import _ from 'lodash'
 import editormd from './editormd.js'
 
@@ -20,11 +14,8 @@ import editormd from './editormd.js'
 
 @Component({})
 export default class MarkDown extends Vue {
-  @Prop()
-  height: any
-
-  @Prop()
-  selectedPost: any
+  // @Prop()
+  // selectedPost: any
 
   @Prop({
     default: null
@@ -40,6 +31,11 @@ export default class MarkDown extends Vue {
 
   isSaving = false
 
+  @Watch('isSaving')
+  valueChanged(newval, oldval) {
+    this.$emit('update:isSaving', newval)
+  }
+
   get instance() {
     return this.editor
   }
@@ -50,7 +46,7 @@ export default class MarkDown extends Vue {
 
   debounce = _.debounce(this.submit, 4000)
   mounted() {
-    this.editor = editormd(this.mode, this.height, this.uploadCallback)
+    this.editor = editormd(this.mode, this.uploadCallback)
 
     this.editor.on('load', () => {
       var keyMap = {
@@ -267,8 +263,15 @@ export default class MarkDown extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .editor-body {
   width: 100% !important;
+}
+.v-card {
+  height: 100%;
+}
+.editormd {
+  border: none;
+  margin-bottom: 0px;
 }
 </style>

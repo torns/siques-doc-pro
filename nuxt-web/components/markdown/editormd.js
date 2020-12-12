@@ -1,5 +1,5 @@
 /* eslint-disable */
-export default (mode, height, uploadCallback) => {
+export default (mode, uploadCallback) => {
   editormd.katexURL = {
     js: '//cdn.siques.cn/libs/js/katex.min', // default: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min
     css: '//cdn.siques.cn/libs/css/katex.min' // default: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min
@@ -8,8 +8,8 @@ export default (mode, height, uploadCallback) => {
   // console.log(editormd.katexURL)
 
   return editormd('editor', {
-    // width: '100%!important',
-    height: height,
+    width: '100%!important',
+    height: '100%',
     // markdown: "xxxx",     // dynamic set Markdown text
     path: 'https://cdn.siques.cn/libs/js/', // Autoload modules mode, codemirror, marked... dependents libs path
 

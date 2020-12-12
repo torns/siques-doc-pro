@@ -42,6 +42,11 @@ h1 {
   }
 }
 
+.v-application code {
+  background-color: #f8f8f8;
+  color: #673ab7;
+  padding: 0.5em;
+}
 .hljs {
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   // max-height: 35rem;
@@ -120,13 +125,6 @@ h1 {
   }
 }
 
-// h2 {
-//   counter-increment: section;
-
-//   &:before {
-//     content: counter(section, bengali) ' ';
-//   }
-// }
 .article {
   line-height: 2.1rem;
   letter-spacing: 1px;

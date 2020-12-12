@@ -45,6 +45,7 @@
     "@nuxt/typescript-build": "^0.5.5",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@nuxtjs/vuetify": "^1.11.2",
     "@types/highlight.js": "^9.12.3",
     "babel-eslint": "^10.0.1",
     "babel-plugin-component": "^1.1.1",

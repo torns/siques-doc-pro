@@ -26,7 +26,7 @@
     </section>
 
     <div>
-      <el-col
+      <v-col
         :xs="24"
         :sm="24"
         :md="24"
@@ -44,12 +44,14 @@
             </div>
             <div class="py-1">
               Copyright
-              <i
+
+              <v-icon
                 id="heart"
-                class="el-icon-star-on"
+                small
+                class="v-icon-star-on"
                 style="text-shadow: 0px 2px 4px rgba(0,0,0,0.12), 0px 0px 6px rgba(0,0,0,0.04);"
+                >mdi-cards-heart</v-icon
               >
-              </i>
               2018-{{ new Date().getFullYear() }} Siques
             </div>
             <div>
@@ -62,10 +64,7 @@
             </div>
           </div>
           <div style="">
-            <!-- <el-popover :close-delay="800" placement="top" width="130" trigger="hover"> -->
-            <!-- <img style="width:123px" src="https://cdn.siques.cn/weixin.jpg" alt="" /> -->
             <i slot="reference" class="fa fa-weixin pr-2 text-green point"></i>
-            <!-- </el-popover> -->
 
             <a rel="noopener" href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes" target="_blank">
               <i class="fa fa-qq text-blue pr-2"></i
@@ -87,7 +86,7 @@
             {{ '❤ ' + Math.ceil((new Date() - Date.parse('2018-12-15')) / (1 * 24 * 60 * 60 * 1000)) + ' 天' }}
           </li> -->
         </div>
-      </el-col>
+      </v-col>
     </div>
   </div>
 </template>
@@ -210,7 +209,7 @@ svg {
 #heart {
   animation: heartAnimate 1.33s ease-in-out infinite;
 }
-.el-icon-star-on {
+.v-icon-star-on {
   color: rgb(255, 113, 168) !important;
 }
 </style>

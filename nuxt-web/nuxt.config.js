@@ -1,6 +1,5 @@
 import dotenv from 'dotenv'
-const path = require('path')
-const axios = require('axios')
+
 dotenv.config()
 export default {
   mode: 'universal',
@@ -60,7 +59,7 @@ export default {
       {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
         src:
-          process.env.NODE_ENV == 'production'
+          process.env.NODE_ENV === 'production'
             ? 'https://cdn.siques.cn/libs/js/vue.min.js'
             : 'https://cdn.siques.cn/libs/js/vue.js'
       },
@@ -141,28 +140,35 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '@/plugins/element-ui', ssr: true },
     '@/plugins/directive',
     '@/plugins/global.ts',
     // '@/plugins/route.js',
     { src: '@/plugins/markdown', ssr: true },
-    { src: '@/plugins/http', ssr: true },
+
     { src: '@/plugins/scrollAnimate', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
 
     '@/plugins/nullSSRComponents.js',
-    '@/plugins/axios',
-    { src: '@plugins/push', ssr: false },
+    { src: '@/plugins/axios', ssr: true },
+
     { src: '@/plugins/mixin.js', ssr: false },
     { src: '@plugins/localStorage', ssr: false }
   ],
+
+  vuetify: {
+    customVariables: ['@/css/vuetify/variable.scss']
+  },
+
+  components: true,
+
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxt/typescript-build'
+    '@nuxt/typescript-build',
+    '@nuxtjs/vuetify'
   ],
   /*
    ** Nuxt.js modules
@@ -175,7 +181,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/auth',
+
+    // '@nuxtjs/auth',
     '@nuxtjs/sitemap',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
@@ -183,12 +190,12 @@ export default {
   sitemap: {
     hostname: 'https://www.siques.cn',
     gzip: true,
-    exclude: ['/ask', '/post', 'record'],
-    routes: async () => {
-      const res = await axios.get('http://www.siques.cn/api/posts/seo/sitemap')
+    exclude: ['/ask', '/post', 'record']
+    // routes: async () => {
+    //   const res = await axios.get('http://www.siques.cn/api/posts/seo/sitemap')
 
-      return res.data.map((list) => `/${list.type}/${list.id}`)
-    }
+    //   return res.data.map((list) => `/${list.type}/${list.id}`)
+    // }
   },
 
   /*
@@ -201,48 +208,19 @@ export default {
   //   middleware: ['scrollTop']
   // },
 
-  auth: {
-    redirect: {
-      login: false,
-
-      callback: false,
-      home: false
-    },
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
-
-          user: { url: '/users', method: 'get', propertyName: false }
-        }
-        // tokenRequired: true,
-        // tokenType: 'bearer'
-      }
-    }
-  },
   /*
    ** Build configuration
    */
 
   build: {
     extractCSS: { allChunks: true },
-    transpile: [/^element-ui/],
 
     /*
      ** You can extend webpack config here
      */
     // 开启打包分析
     babel: {
-      plugins: [
-        [
-          'component',
-          {
-            libraryName: 'element-ui',
-            styleLibraryName: 'theme-chalk'
-            // style: false
-          }
-        ]
-      ]
+      plugins: []
     },
 
     // analyze: true,

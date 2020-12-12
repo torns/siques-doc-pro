@@ -26,13 +26,13 @@
           <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/collection' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/collection">专栏</router-link>
           </li>
-          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/tags' ? 'show_underline' : ''}`">
+          <!-- <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/tags' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/tags">标签</router-link>
-          </li>
+          </li> -->
 
-          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/n' ? 'show_underline' : ''}`">
+          <!-- <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/n' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/n">笔记</router-link>
-          </li>
+          </li> -->
 
           <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/moment' ? 'show_underline' : ''}`">
             <router-link tag="span" to="/moment">24小时</router-link>
@@ -40,146 +40,22 @@
 
           <li class="nav-top-list__rightInfo">
             <div class="d-flex ai-center">
-              <div class="write-hover mr-5">
-                <!-- <div class="  round_button inline-block mr-4 ">
-                  <div>写稿</div>
-                </div>
-                <div class="nav-bottom-list">
-                  <ul class="child-ul d-flex jc-center ai-center pt-1">
-                    <router-link tag="li" class="pr-3" to="/post">写文章</router-link>
-                    <router-link tag="li" to="/record">记笔记</router-link>
-                  </ul>
-                </div> -->
-                <el-dropdown :show-timeout="0" :hide-timeout="300" @command="handleCommand" class="xs">
-                  <!-- <span :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point'" style="font-size:16px;">
+              <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
+                <template v-slot:activator="{ attrs, on }">
+                  <v-btn v-bind="attrs" v-on="on" rounded outlined color="white" class="white--text ma-5">
                     写稿
-                    <i class="el-icon-arrow-down el-icon--right"></i>
-                  </span> -->
-                  <div class="round_button">
-                    <div>写稿</div>
-                  </div>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="/post">写文章</el-dropdown-item>
-                    <el-dropdown-item command="/record">记笔记</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
+                  </v-btn>
+                </template>
 
-              <el-dropdown
-                :show-timeout="0"
-                :hide-timeout="300"
-                @command="handleCommand"
-                v-if="$store.state.UserNotExist == false"
-                class="xs"
-              >
-                <span
-                  :class="`${isHomepage ? 'mysubmenu ' : ''}` + 'el-dropdown-link point  d-flex ai-center '"
-                  style="font-size: 16px"
-                >
-                  <span>
-                    <el-avatar v-if="this.$store.state.auth.user !== undefined" :size="35" class="shadow-1 mr-1">
-                      <img
-                        v-if="
-                          this.$store.state.auth.user.avator[0] != null &&
-                            this.$store.state.auth.user.avator[0].url !== null
-                        "
-                        :src="this.$store.state.auth.user.avator[0].url"
-                        style="background-color: white"
-                      />
-
-                      <img v-else src="~/static/avator.jpg" />
-                    </el-avatar>
-                  </span>
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="/u"> <span> 我的主页 </span></el-dropdown-item>
-                  <el-dropdown-item command="/logout">退出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+                <v-list>
+                  <v-list-item @click="$router.push('/docs')" link>
+                    <v-list-item-title v-text="`写文章`"></v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </div>
           </li>
         </ul>
-
-        <!--
-
-          <el-menu-item v-show="this.$store.state.UserNotExist == false" :show-timeout="0" :hide-timeout="0" class="xm" style="padding-left:40px">
-            <el-badge :value="hasNewMessage ? 'new' : null" class="item" type="primary">
-              <el-popover :popper-class="`message`" @show="fetchUserLetter" placement="bottom" trigger="click">
-                <div class="d-flex flex-column h-100">
-                  <el-radio-group @change="change" v-model="topRadio" size="small">
-                    <el-radio-button label="message">
-                      <i class="fs-sm iconfont icon-desLampidea"></i>
-                    </el-radio-button>
-                    <el-radio-button label="letter">
-                      <i class="fs-sm iconfont icon-message"></i>
-                    </el-radio-button>
-                    <el-radio-button label="follow">
-                      <i class="fs-sm iconfont icon-follow"></i>
-                    </el-radio-button>
-                  </el-radio-group>
-
-                  <div v-if="topRadio == 'message'" style="width: 350px;overflow-y: auto;">
-                    <div class="border-bottom py-1 pl-2">一些关于你的通知</div>
-                    <div v-for="(letter, index) in userLetters" :key="index">
-                      <div v-if="letter.type !== 'followuser' && letter.content === null" :class="`d-flex py-1 pl-2 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                        <router-link :to="`/u/${letter.from_uid.id}`" tag="div">
-                          <div class="hover-4 point pr-1 text-primary" style="white-space: nowrap;">{{ letter.from_uid.name }}</div>
-                        </router-link>
-                        <div style="white-space: nowrap;" class="pr-1">{{ actionTransFomer(letter) }}</div>
-                        <router-link :to="link(letter) + `${letter.to_Post.id}`" tag="div">
-                          <div class="point text-primary hoverlink ellipsis-1">{{ letter.to_Post.title }}</div>
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div v-if="topRadio == 'follow'">
-                    <div class="border-bottom py-1 pl-2">他们最近关注了你</div>
-
-                    <div v-for="(letter, index) in userLetters" :key="index">
-                      <div v-if="letter.type == 'followuser'" :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                        <router-link :to="`/u/${letter.from_uid.id}`" tag="span">
-                          <span class="ml-2 hover-4 text-primary point pr-1">{{ letter.from_uid.name }}</span> </router-link
-                        >关注了你
-                      </div>
-                    </div>
-                  </div>
-
-                  <div v-if="topRadio == 'letter'">
-                    <div class="border-bottom py-1 pl-2">他们最近私信了你</div>
-
-                    <div v-for="(letter, index) in userLetters" :key="index">
-                      <div v-if="letter.content != null && letter.from_uid !== null" :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                        <el-popover :content="` ${letter.content + $dayjs(letter.created).format('M月D日 H:MM')}`" placement="bottom" title="私信详情" width icon trigger="hover">
-                          <router-link slot="reference" :to="`/u/${letter.from_uid.id}`" tag="span">
-                            <span class="ml-2 hover-4 text-primary point pr-1">{{ letter.from_uid.name }}</span>
-                            私信了你
-                          </router-link>
-                        </el-popover>
-                      </div>
-                      <div v-if="letter.from_uid === null">
-                        <div :class="`py-1 lh-2 ${letter.is_read === 1 ? '' : 'bg-2'}`">
-                          <div class="pl-2">{{ letter.content }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-1 pt-3"></div>
-
-                  <div></div>
-                  <div class="border-top">
-                    <div class="d-flex jc-between pt-2">
-                      <div @click="markedRead" class="point">全部标记为已读</div>
-                      <router-link to="/notification" tag="div" class="point hover-4">查看全部</router-link>
-                    </div>
-                  </div>
-                </div>
-                <i slot="reference" class="fa fa-bell-o fs-xm"></i>
-              </el-popover>
-            </el-badge>
-          </el-menu-item>
-        -->
       </nav>
 
       <nav
@@ -219,7 +95,7 @@
         </ul>
       </nav>
 
-      <!-- 其它页面的底部导航栏 -->
+      <!-- 其它页面的导航栏 -->
       <sq-navigation
         @changestatu="
           (t) => {
@@ -236,10 +112,10 @@
         >
           <!-- 其它页面的弹出栏 -->
           <li
+            @click="isMoreClick = false"
             style="    text-align: right;
     padding-bottom: 30px;
     padding-right: 10px;"
-            @click="isMoreClick = false"
             class="pl-3"
           >
             <svg style="height: 25px; width: 25px">
@@ -338,11 +214,6 @@
         <!-- </transition> -->
       </div>
     </div>
-
-    <!-- 首页的登录弹窗 -->
-    <div @click.stop>
-      <sq-login ref="login" @click.stop></sq-login>
-    </div>
   </div>
 </template>
 
@@ -350,31 +221,24 @@
 // @ is an alias to /src
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import navigation from '~/components/Singlton/TheNavigation.vue'
-import login from '~/components/Dialog/UserLogin.vue'
-import click from '~/plugins/click.js'
 import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
 @Component({
-  components: { 'sq-navigation': navigation, 'sq-login': login, 'sq-extendBar': extendBar }
+  components: { 'sq-navigation': navigation, 'sq-extendBar': extendBar }
 })
 /* eslint-disable */
 export default class Home extends Vue {
-  asyncData({ params, query, route, store }) {
-    const http = Vue.prototype.$http
-    return {}
-  }
+  asyncData({ params, query, route, store }) {}
 
   head() {
     return {
       title: '思趣网'
-      // script: []
     }
   }
 
-  isRegister: boolean = false
   isMoreClick = false
-  topRadio = 'message'
+
   search = ''
-  userLetters = []
+
   scrollTop = 0
 
   @Watch('isMoreClick')
@@ -394,149 +258,9 @@ export default class Home extends Vue {
     }
   }
 
-  @Watch('isRegister')
-  isStatuChnanged(newval: any, oldval: any) {
-    const login: any = this.$refs.login
-    if (newval) {
-      login.isRegister = true
-    } else {
-      login.isRegister = false
-    }
-  }
-
-  actionTransFomer(action: any) {
-    if (action.to_Post !== null && action.to_Post.type === 'question' && action.type === 'commentpost') {
-      return '评论了问题'
-    } else if (action.to_Post !== null && action.to_Post.type === 'note') {
-      return '发布了笔记'
-    } else {
-      switch (action.type) {
-        case 'likepost':
-          return '点赞了文章'
-        case 'followque':
-          return '关注了问题'
-
-        case 'followuser':
-          return '关注了用户'
-        case 'commentpost':
-          return '评论了文章'
-
-        case 'createpost':
-          return '发布了文章'
-
-        case 'adoptanswer':
-          return '采纳了答案'
-        case 'bookmarkpost':
-          return '收藏了文章'
-        case 'privateletter':
-          return '私信了'
-        default:
-          break
-      }
-    }
-  }
-
-  link(action: any) {
-    if (action.to_Post.type === 'question') {
-      return '/q/'
-    } else if (action.to_Post.type === 'note') {
-      return '/n/'
-    } else {
-      switch (action.type) {
-        case 'likepost':
-          return '/p/'
-        case 'followque':
-          return '/q/'
-        case 'followuser':
-          return '关注了用户'
-        case 'privateletter':
-          return '私信了用户'
-        case 'commentpost':
-          return '/p/'
-        case 'createpost':
-          return '/p/'
-        case 'adoptanswer':
-          return '/q/'
-        case 'bookmarkpost':
-          return '/p/'
-        default:
-          break
-      }
-    }
-  }
-
   get isHomepage() {
     return this.$route.path === '/'
   }
-
-  get hasNewMessage() {
-    let hasNew = false
-    this.userLetters.map((e: any) => {
-      if (e.is_read !== 1) {
-        hasNew = true
-      }
-    })
-    return hasNew
-  }
-
-  get isUser() {
-    return !this.$store.state.UserNotExist
-  }
-
-  mounted() {
-    setTimeout(() => {
-      if (this.isUser) {
-        this.fetchUserLetter()
-      }
-    }, 300)
-    setTimeout(() => {
-      click()
-    }, 2000)
-    this.changeMenu()
-  }
-
-  changeMenu() {
-    // const ref: any = this.$refs.menu
-    // ref._computedWatchers.hoverBackground = null
-  }
-
-  handleCommand(command) {
-    switch (command) {
-      case '/logout':
-        this.logout()
-        break
-
-      default:
-        if (!this.isUser) {
-          this.$store.commit('toggleLoginForm')
-          break
-        }
-        this.$router.push(command)
-        break
-    }
-  }
-
-  async fetchUserLetter() {
-    const res = await this.$http.get(`/notification/${this.$store.state.auth.user.id}`)
-    this.userLetters = res.data
-  }
-
-  async markedRead() {
-    if (this.isUser) {
-      await this.$http.get(`/notification/${this.$store.state.auth.user.id}/marked`)
-      this.userLetters.map((e: any) => {
-        e.is_read = 1
-      })
-    }
-  }
-
-  logout() {
-    const ref: any = this.$refs.login
-
-    ref.logout()
-  }
-
-  change(e: any) {}
 }
 </script>
 
@@ -545,42 +269,9 @@ export default class Home extends Vue {
   right: 17px;
 }
 
-// .el-popover {
-//   padding: 0 !important;
-// }
-
-.el-menu-item * {
-  vertical-align: unset !important;
-}
-.el-menu-item:nth-child(1) {
-  padding-left: 10px !important;
-}
-
-.el-popover {
-  &.message {
-    height: 440px !important;
-    .el-radio-button__inner {
-      padding-left: 50px !important;
-      padding-right: 50px !important;
-      padding-top: 8px !important;
-      padding-bottom: 8px !important;
-    }
-  }
-}
-
 .write {
   @media (max-width: 768px) {
     display: none;
   }
-}
-
-//首页红点
-.el-badge__content.is-fixed {
-  top: 18px !important;
-  right: 11px !important;
-}
-
-.el-menu.el-menu--horizontal {
-  border-bottom: none !important;
 }
 </style>

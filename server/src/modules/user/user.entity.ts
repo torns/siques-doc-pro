@@ -43,7 +43,7 @@ export class User {
 
   @Column({ select: false, unique: true, nullable: true })
   @Exclude()
-  phonenumber: string;
+  phoneNumber: string;
 
   @Column({ nullable: true })
   introduction: string;

@@ -8,7 +8,7 @@ import 'dayjs/locale/zh-cn'
 import markdown from '~/components/markdown/MarkDown.vue'
 import footer from '~/components/Base/BaseFooter/index.vue'
 // import createBookmark from '~/components/dialog/createBookmark.vue'
-import tagSelect from '~/components/Dialog/TagSelect.vue'
+
 import wave from '~/components/Base/BaseWave/index.vue'
 
 // import mouseclick from '~/components/MouseClick/click.vue'
@@ -21,7 +21,7 @@ Vue.use(VueLazyload)
 Vue.prototype.$dayjs = dayjs
 Vue.component('markdown', markdown)
 Vue.component('sq-wave', wave)
-Vue.component('sq-tag', tagSelect)
+
 Vue.component('sq-footer', footer)
 // Vue.component('sq-bookmark', createBookmark)
 Vue.component('sq-pagination', pagination)

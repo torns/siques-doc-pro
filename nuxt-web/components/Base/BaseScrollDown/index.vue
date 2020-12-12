@@ -1,11 +1,9 @@
 <template>
-  <div class="opacity40">
-    <div class="container">
-      <div class="chevron"></div>
-      <div class="chevron"></div>
-      <div class="chevron"></div>
-      <span class="text">Scroll down</span>
-    </div>
+  <div class="scrolldown opacity40">
+    <div class="chevron"></div>
+    <div class="chevron"></div>
+    <div class="chevron"></div>
+    <span class="text">Scroll down</span>
   </div>
 </template>
 
@@ -17,12 +15,11 @@ export default class scrollDown extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.container {
-  position: relative;
-  width: 24px;
-  height: 24px;
+.scrolldown {
+  display: flex;
+  justify-content: center;
+  margin-right: 12px;
 }
-
 .chevron {
   position: absolute;
   width: 28px;
@@ -82,7 +79,7 @@ export default class scrollDown extends Vue {}
 .text {
   display: block;
   margin-top: 75px;
-  margin-left: -30px;
+
   font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
   font-size: 12px;
   color: #fff;

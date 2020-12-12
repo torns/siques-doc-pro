@@ -48,6 +48,12 @@ export class Post {
   updated: Date;
 
   @Column({ default: 0 })
+  parentId: number;
+
+  @Column({ default: 0 })
+  parentIds: number;
+
+  @Column({ default: 0 })
   views: number;
 
   @Column('longtext', { nullable: true, select: false })
@@ -71,30 +77,21 @@ export class Post {
   @Column({ default: 0 })
   isPublished: number;
 
+  @Column({ default: true })
+  status: Boolean;
+
   // 一个问题对应一个回答
-  @OneToOne(type => Comment, { nullable: true })
-  @JoinColumn()
+
   adoptAnswer: Comment;
 
   // 多个文章对应一个用户
-  @ManyToOne(
-    type => User,
-    user => user.posts,
-  )
+
   user: User;
 
   // 多个文章对应一个标签
-  @ManyToMany(
-    type => Tag,
-    tag => tag.posts,
-  )
-  @JoinTable()
+
   tags: Tag[];
 
-  @ManyToMany(
-    type => User,
-    user => user.likes,
-  )
   users: User[];
 
   @OneToMany(
@@ -113,13 +110,5 @@ export class Post {
   )
   concern: User[];
 
-  @ManyToOne(
-    type => Collection,
-    collection => collection.posts,
-    {
-      onDelete: 'CASCADE',
-      nullable: true,
-    },
-  )
   collection: Collection;
 }

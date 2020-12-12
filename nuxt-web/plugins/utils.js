@@ -35,42 +35,11 @@ export function wordcounts(body) {
       inum++
     }
   }
-  console.log(iNumwords, sNumwords, sTotal, eTotal)
+
   const word = iTotal + inum
   return word
 }
 /* eslint-disable */
-export function listIntercep(taglist) {
-  let list = ''
-  if (taglist) {
-    if (taglist.length === 1) {
-      taglist.map((e) => {
-        try {
-          list = list + e.toLowerCase()
-        } catch {
-          list = list + e.id
-        }
-      })
-    } else {
-      taglist.map((e, index) => {
-        if (index === taglist.length - 1) {
-          try {
-            list = list + e.toLowerCase()
-          } catch {
-            list = list + e.id
-          }
-        } else {
-          try {
-            list = list + e.toLowerCase() + '-'
-          } catch {
-            list = list + e.id + '-'
-          }
-        }
-      })
-    }
-  }
-  return list
-}
 
 export function hljs() {
   $('p img').each(function() {
@@ -177,4 +146,35 @@ export function hljs() {
     }
   })
   $('pre code ul').before('<a id="copy"></a>')
+}
+
+function lowercase(value) {
+  const regex = /^(?=.*[a-z]).+$/
+
+  if (regex.test(value)) {
+    return true
+  }
+}
+
+function uppercase(value) {
+  const regex = /^(?=.*[A-Z]).+$/
+
+  if (regex.test(value)) {
+    return true
+  }
+}
+
+function number(value) {
+  const regex = /^(?=.*[0-9]).+$/
+
+  if (regex.test(value)) {
+    return true
+  }
+}
+
+function phoneLength(value) {
+  const regex = /^[1][3,4,5,7,8][0-9]{9}$/
+  if (regex.test(value)) {
+    return true
+  }
 }

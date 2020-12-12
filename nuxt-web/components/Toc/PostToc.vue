@@ -9,12 +9,12 @@
           <!-- <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav> -->
           <!-- <el-divider></el-divider> -->
 
-          <div v-for="post in collectionPosts" :key="post.id">
-            <router-link :to="`/p/${post.id}`" tag="a" :class="`point ${post.title == title ? 'title-active' : ''}`">{{
+          <!-- <div v-for="post in collectionPosts" :key="post.id">
+            <router-link :to="`/p/${post.id}`" :class="`point ${post.title == title ? 'title-active' : ''}`" tag="a">{{
               post.title
-            }}</router-link>
-            <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column" v-if="post.title == title"></nav>
-          </div>
+            }}</router-link> -->
+          <nav id="post-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
+          <!-- </div> -->
         </div>
       </div>
     </div>

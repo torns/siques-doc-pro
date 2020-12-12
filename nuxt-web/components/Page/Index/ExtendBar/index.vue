@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <v-dialog
     id="extend-bar"
     :modal="true"
     :lock-scroll="true"
@@ -7,14 +7,14 @@
     :append-to-body="true"
     :visible.sync="$attrs.statu"
     :before-close="handleClose"
-    fullscreen
     :show-close="false"
+    fullscreen
   >
     <div slot="title"></div>
     <div class="frosted-glass text-white">
       <slot></slot>
     </div>
-  </el-dialog>
+  </v-dialog>
 </template>
 
 <script lang="ts">
@@ -39,22 +39,4 @@ export default class ExtendBar extends Vue {
 }
 </script>
 
-<style lang="scss">
-#extend-bar .el-dialog {
-  background: none;
-}
-
-#extend-bar .el-dialog__body {
-  height: 100vh;
-}
-
-#extend-bar {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-// .bg-container {
-//   background-repeat: no-repeat;
-//   background-attachment: fixed;
-//   overflow: hidden;
-// }
-</style>
+<style lang="scss"></style>
