@@ -2,9 +2,10 @@ export const state = () => ({
   loginFormVisible: false,
   selectedCollection: {},
   selectedDoc: {},
-  userCollection: [],
+  docSideBar: false,
   message: '已同步',
-  routerScrollTop: {}
+  routerScrollTop: {},
+  extendMenu: false
 })
 
 export const mutations = {
@@ -26,6 +27,12 @@ export const mutations = {
   },
   PUSH_MSG(state, data) {
     state.message = data
+  },
+  SET_DOCSIDEBAR(state, data) {
+    state.docSideBar = data
+  },
+  SET_EXTENDMENU(state, data) {
+    state.extendMenu = data
   }
 }
 
@@ -34,5 +41,16 @@ export const mutations = {
 export const actions = {
   getScrollTop({ state, commit }, data) {
     return state.routerScrollTop[data]
+  },
+
+  LoginOut({ commit }) {
+    commit('SET_DOC', {})
+    commit('SET_COLLECTION', {})
+    commit('modules/doc/SET_DOCTREE', [])
+    commit('modules/doc/SET_DELDOC', [])
+    commit('modules/collection/SET_COLLECTION', [])
+    commit('modules/collection/SET_DELCOLLECTION', [])
+    commit('modules/user/SET_TOKEN', '')
+    commit('modules/user/SET_STATUS', false)
   }
 }

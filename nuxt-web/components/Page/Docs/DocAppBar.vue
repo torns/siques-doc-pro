@@ -44,6 +44,7 @@ import { insertCollection } from '@/api/collection'
       },
       set(v) {
         this.$store.commit('SET_COLLECTION', v)
+        this.$router.push(`/docs/overview/${v.id}`)
       }
     },
     ...mapGetters(['userCollection'])

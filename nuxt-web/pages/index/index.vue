@@ -9,7 +9,15 @@
                 <div style="width: 100%; max-width: 380px">
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
-                    <v-text-field class="mx-4" color="success" hide-details label="Search" append-icon="mdi-magnify">
+                    <v-text-field
+                      @keyup.enter.native="$router.push(`/search/${search}`)"
+                      v-model="search"
+                      class="mx-4"
+                      color="white"
+                      hide-details
+                      label="Search"
+                      append-icon="mdi-magnify"
+                    >
                       <template v-slot:label>
                         搜索你喜欢的
                       </template>
@@ -30,90 +38,78 @@
     </div>
     <v-container style="min-height: 100vh">
       <v-row no-gutters class=" pt-4">
-        <v-col cols="24" sm="24" md="24" lg="24" xl="24" style="margin:0 auto;">
-          <div>
-            <section class="new-title">
-              <span>{{ name }}</span>
-            </section>
+        <v-col cols="12" sm="12" md="8" xl="6" style="margin:0 auto;width:'100%">
+          <section class="new-title">
+            <span>{{ name }}</span>
+          </section>
 
-            <div class="news-list-module">
-              <div v-for="(post, $index) in posts" :key="$index">
-                <article :id="post.id" :class="`item ${post.cover ? '' : 'wire'}`">
-                  <section class="row">
-                    <section v-if="post.cover" class="news-img point">
-                      <router-link :to="`/p/${post.id}`" :title="post.title" tag="a" target="_blank">
-                        <img v-lazy="post.cover" alt="cover"
-                      /></router-link>
-                    </section>
-                    <section :class="`${post.cover ? 'news-detail' : 'content'}`">
-                      <!-- <section class="item-tag-list d-flex">
-                          <div v-for="tag in post.tags" :key="tag.id">
+          <div class="news-list-module">
+            <div v-for="(doc, $index) in docs" :key="$index">
+              <article :id="doc.id" :class="`item ${doc.cover ? '' : 'wire'}`">
+                <section class="row">
+                  <section v-if="doc.cover" class="news-img point">
+                    <router-link :to="`/doc/${doc.id}`" :title="doc.title" tag="a">
+                      <img v-lazy="doc.cover" alt="cover"
+                    /></router-link>
+                  </section>
+                  <section :class="`${doc.cover ? 'news-detail' : 'content'}`">
+                    <!-- <section class="item-tag-list d-flex">
+                          <div v-for="tag in doc.tags" :key="tag.id">
                             <router-link :to="`/t/${tag.id}`" class="tag ellipsis-1" target="_blank" tag="a"
                               ><i class="fa fa-tags"></i> <span>{{ tag.name }}</span></router-link
                             >
                           </div>
                         </section> -->
 
-                      <p class="title">
-                        <router-link :to="`/p/${post.id}`" :title="post.title" tag="a" target="_blank">{{
-                          post.title
-                        }}</router-link>
-                      </p>
-                      <p class="desc">{{ post.alias }}...</p>
-                      <section class="author ">
-                        <!-- <nuxt-link :to="`u/${post.user.id}`" class="name" tag="a"
-                            ><span>{{ post.user.name + ' ' }}</span>
+                    <p class="title">
+                      <router-link :to="`/doc/${doc.id}`" :title="doc.title" tag="a">{{ doc.title }}</router-link>
+                    </p>
+                    <p class="desc">{{ doc.alias }}...</p>
+                    <section class="author ">
+                      <!-- <nuxt-link :to="`u/${doc.user.id}`" class="name" tag="a"
+                            ><span>{{ doc.user.name + ' ' }}</span>
                           </nuxt-link> -->
-                        <span> · </span>
-                        <span class="time"> {{ $dayjs(post.created).fromNow() }}</span>
-                      </section>
+                      <span> · </span>
+                      <span class="time"> {{ $dayjs(doc.created).fromNow() }}</span>
                     </section>
                   </section>
-                </article>
-              </div>
+                </section>
+              </article>
+            </div>
 
-              <div v-if="loading" class="my-3 text-primary fs-xl">
-                <sq-holder :count="8" :show="true"></sq-holder>
-              </div>
-              <div class="my-3 text-gray text-center">
-                <div v-if="noMore">我是有底线的</div>
-                <div v-else @click="onload" class="pointer">点击查看更多热文</div>
-              </div>
+            <div v-if="loading" class="my-3 text-primary fs-xl">
+              <sq-holder :count="8" :show="true"></sq-holder>
+            </div>
+            <div class="my-3 text-gray text-center">
+              <div v-if="noMore">我是有底线的</div>
+              <div v-else @click="onload" class="pointer">点击查看更多热文</div>
             </div>
           </div>
         </v-col>
       </v-row>
     </v-container>
 
-    <!-- 首页的导航栏 -->
-    <sq-extendBar
-      @handleClose="$emit('changestatu', false)"
-      :statu="$attrs.isMoreClick"
-      extension=""
-      color="rgba(0, 0, 0, 0.27);"
-    >
-      <li
-        @click="$emit('changestatu', false)"
-        style="    text-align: right;
-    padding-bottom: 30px;
-    padding-right: 10px;"
-        class="pl-3"
-      >
-        <svg style="height: 25px; width: 25px">
-          <use xlink:href="#offIcon" />
-        </svg>
-      </li>
-      <a href="#top">
-        <!-- 首页左侧边栏 -->
+    <!-- 导航栏 -->
+    <BaseExtendMenu>
+      <v-list :dark="isHomepage && true" :light="!isHomepage && true" dense nav>
+        <v-list-item v-for="item in items" :key="item.title" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
 
-        <!-- <sq-leftBar
-          :category="category"
-          @handleclick="handleCategory"
-          text-color="white"
-          color="text-white"
-        ></sq-leftBar> -->
-      </a>
-    </sq-extendBar>
+          <v-list-item-content
+            @click="
+              () => {
+                $router.push(item.href)
+                $store.commit('SET_EXTENDMENU', false)
+              }
+            "
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </BaseExtendMenu>
 
     <sq-footer :topBorder="true"> </sq-footer>
   </div>
@@ -123,15 +119,10 @@
 /* eslint-disable */
 import { Vue, Component } from 'nuxt-property-decorator'
 import _ from 'lodash'
-import { listIntercep } from '../../plugins/utils.js'
-import fetchdata from '../../plugins/fetchdata'
-// import leftBar from '@/components/Page/Index/SideBar/leftWay.vue'
 
 import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 import banner from '~/components/Page/Index/IndexBanner.vue'
-
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
-import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
 import { getDocList } from '@/api/doc'
 
 @Component({
@@ -141,8 +132,7 @@ import { getDocList } from '@/api/doc'
     'sq-down': scrolldown,
     'sq-banner': banner,
 
-    'sq-holder': placeholder,
-    'sq-extendBar': extendBar
+    'sq-holder': placeholder
   }
 })
 export default class AppPage extends Vue {
@@ -150,7 +140,7 @@ export default class AppPage extends Vue {
     const res = await getDocList({ pageNum: 1, pageSize: 10, params: { type: 'post' } })
 
     return {
-      posts: res.datas.records,
+      docs: res.datas.records,
       total: res.datas.total
     }
   }
@@ -158,7 +148,7 @@ export default class AppPage extends Vue {
   count = 10
   total: number = 0
   loading = false
-  posts = []
+  docs = []
   search = ''
 
   category: string = 'new'
@@ -211,11 +201,16 @@ export default class AppPage extends Vue {
     const res = await getDocList({ pageNum: this.page, pageSize: 10, params: { type: 'post' } })
 
     setTimeout(async () => {
-      this.posts = this.posts.concat(res.datas.records)
+      this.docs = this.docs.concat(res.datas.records)
       this.count += res.datas.records.length
       this.loading = false
     }, 500)
   }
+  items = [
+    { title: '知识星球', icon: 'mdi-earth', href: '/collection' },
+    { title: '24小时', icon: 'mdi-help-box', href: '/moment' },
+    { title: '搜索', icon: 'mdi-view-dashboard', href: '/search' }
+  ]
 }
 </script>
 
@@ -229,4 +224,13 @@ export default class AppPage extends Vue {
 .homepage .theme--light.v-label {
   color: rgb(255, 255, 255, 0.4);
 }
+.homepage .theme--light.v-input input,
+.theme--light.v-input textarea {
+  color: white;
+}
+
+// .theme--light.v-list {
+//   background: #ffffff00;
+//   color: white;
+// }
 </style>

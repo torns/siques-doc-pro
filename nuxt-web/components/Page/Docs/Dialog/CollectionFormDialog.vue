@@ -7,14 +7,19 @@
         </v-btn>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn :disabled="!valid" @click="validate" dark text>
-            保存
-          </v-btn> -->
-        </v-toolbar-items>
       </v-toolbar>
 
       <CollectionCoverSelector :imgLink.sync="collectionDetail.cover"></CollectionCoverSelector>
+      <v-card-text>
+        <v-file-input
+          v-model="collectionDetail.customCover"
+          :rules="rules"
+          show-size
+          accept="image/*"
+          label="上传封面"
+          truncate-length="15"
+        ></v-file-input>
+      </v-card-text>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-row class="justify-center">
@@ -59,6 +64,8 @@ export default class CollectionCreateDialog extends Vue {
 
   valid = true
 
+  rules = [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
+
   @Model('value', {
     type: Object,
     default: () => {
@@ -76,7 +83,8 @@ export default class CollectionCreateDialog extends Vue {
     const v = this.$refs.form.validate()
 
     if (v) {
-      this.$emit('submit', this.collectionDetail)
+      console.log(this.collectionDetail)
+      // this.$emit('submit', this.collectionDetail)
     }
 
     this.visible = false

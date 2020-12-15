@@ -2,87 +2,111 @@
   <div :id="isHomepage ? 'home' : 'other'">
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
-        <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center relative">
-          <li class="favicon xs-flex-1 d-flex ai-center point">
-            <img
-              v-if="isHomepage"
-              @click="$router.push('/')"
-              src="~/static/banner.png"
-              alt="Logo"
-              style="object-fit: cover; height: 40px"
-            />
-            <img
-              v-else
-              @click="$router.push('/')"
-              src="~/static/banner1.png"
-              alt="Logo"
-              style="object-fit: cover; height: 40px"
-            />
-          </li>
+        <v-row justify="center">
+          <v-col cols="12" md="11" xl="8" lg="8">
+            <ul style="  margin: 0 auto" class="d-flex ai-center relative pl-4 pr-3">
+              <li class=" xs-flex-1 d-flex ai-center pointer">
+                <img
+                  v-if="isHomepage"
+                  @click="$router.push('/')"
+                  src="~/static/banner.png"
+                  alt="Logo"
+                  style="object-fit: cover; height: 40px"
+                />
+                <img
+                  v-else
+                  @click="$router.push('/')"
+                  src="~/static/banner1.png"
+                  alt="Logo"
+                  style="object-fit: cover; height: 40px"
+                />
+              </li>
 
-          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
-            <router-link tag="span" to="/">主页</router-link>
-          </li>
-          <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/collection' ? 'show_underline' : ''}`">
-            <router-link tag="span" to="/collection">专栏</router-link>
-          </li>
-          <!-- <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/tags' ? 'show_underline' : ''}`">
-            <router-link tag="span" to="/tags">标签</router-link>
-          </li> -->
+              <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
+                <router-link tag="span" to="/">主页</router-link>
+              </li>
+              <li
+                :class="
+                  `nav-top-list__li nav-top-list__info xm ${$route.path == '/collection' ? 'show_underline' : ''}`
+                "
+              >
+                <router-link tag="span" to="/collection">知识星球</router-link>
+              </li>
 
-          <!-- <li :class="`nav-top-list__li nav-top-list__info xm ${$route.path == '/n' ? 'show_underline' : ''}`">
-            <router-link tag="span" to="/n">笔记</router-link>
-          </li> -->
+              <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/moment' ? 'show_underline' : ''}`">
+                <router-link tag="span" to="/moment">24小时</router-link>
+              </li>
 
-          <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/moment' ? 'show_underline' : ''}`">
-            <router-link tag="span" to="/moment">24小时</router-link>
-          </li>
+              <li class="nav-top-list__rightInfo ">
+                <div class="d-flex ai-center">
+                  <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
+                    <template v-slot:activator="{ attrs, on }">
+                      <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        :color="isHomepage ? `white` : 'black'"
+                        :class="`${isHomepage ? 'white--text' : ''} px-8`"
+                        rounded
+                        outlined
+                      >
+                        写稿
+                      </v-btn>
+                    </template>
 
-          <li class="nav-top-list__rightInfo">
-            <div class="d-flex ai-center">
-              <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
-                <template v-slot:activator="{ attrs, on }">
-                  <v-btn v-bind="attrs" v-on="on" rounded outlined color="white" class="white--text ma-5">
-                    写稿
-                  </v-btn>
-                </template>
+                    <v-list>
+                      <v-list-item @click="$router.push('/docs')" link>
+                        <v-list-item-title v-text="`写文章`"></v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                  <v-menu
+                    v-if="loggedIn"
+                    open-on-hover
+                    color="transparent"
+                    transition="slide-y-transition"
+                    bottom
+                    offset-y
+                  >
+                    <template v-slot:activator="{ attrs, on }">
+                      <v-btn v-bind="attrs" v-on="on" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text>
+                        {{ userInfo.username }}
+                      </v-btn>
+                    </template>
 
-                <v-list>
-                  <v-list-item @click="$router.push('/docs')" link>
-                    <v-list-item-title v-text="`写文章`"></v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-          </li>
-        </ul>
+                    <v-list>
+                      <v-list-item @click="logout" color="transparent" link>
+                        <v-list-item-title v-text="`退出登录`"></v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </li>
+            </ul>
+          </v-col>
+        </v-row>
       </nav>
 
-      <nav
-        id="menu"
-        v-if="isHomepage"
-        @click.stop
-        :class="(isHomepage ? '' : 'fixed') + ' visible-xs  w-100'"
-        style="display: none"
-      >
+      <nav id="menu" @click.stop class=" visible-xs  w-100">
         <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center jc-between relative">
           <!-- 左侧更多按钮 -->
-          <li v-if="!isMoreClick" @click="isMoreClick = !isMoreClick" class="pl-3">
+          <li @click="$store.commit('SET_EXTENDMENU', true)" class="pl-3">
             <svg style="height: 30px; width: 30px">
               <use xlink:href="#settingsIcon" />
             </svg>
           </li>
 
-          <li v-else @click="isMoreClick = !isMoreClick" class="pl-3">
-            <svg style="height: 25px; width: 25px">
-              <use xlink:href="#offIcon" />
-            </svg>
-          </li>
-
           <li class="favicon d-flex ai-center point">
             <img
+              v-show="isHomepage"
               @click="$router.push('/')"
               src="~/static/banner.png"
+              alt="Logo"
+              style="object-fit: cover; height: 36px"
+            />
+            <img
+              v-show="!isHomepage"
+              @click="$router.push('/')"
+              src="~/static/banner1.png"
               alt="Logo"
               style="object-fit: cover; height: 36px"
             />
@@ -94,73 +118,6 @@
           </li>
         </ul>
       </nav>
-
-      <!-- 其它页面的导航栏 -->
-      <sq-navigation
-        @changestatu="
-          (t) => {
-            isMoreClick = t
-          }
-        "
-        :isMoreClick="isMoreClick"
-      >
-        <sq-extendBar
-          @handleClose="isMoreClick = false"
-          :statu="isMoreClick"
-          extension="top: -2px;"
-          color="rgba(0, 0, 0, 0.27);"
-        >
-          <!-- 其它页面的弹出栏 -->
-          <li
-            @click="isMoreClick = false"
-            style="    text-align: right;
-    padding-bottom: 30px;
-    padding-right: 10px;"
-            class="pl-3"
-          >
-            <svg style="height: 25px; width: 25px">
-              <use xlink:href="#offIcon" />
-            </svg>
-          </li>
-
-          <div
-            @click="
-              $router.push('/moment')
-              isMoreClick = false
-            "
-            class="point pb-2"
-          >
-            24小时
-          </div>
-          <div
-            @click="
-              $router.push('/collection')
-              isMoreClick = false
-            "
-            class="point pb-2"
-          >
-            专栏
-          </div>
-          <div
-            @click="
-              $router.push('/n')
-              isMoreClick = false
-            "
-            class="point pb-2"
-          >
-            笔记
-          </div>
-          <div
-            @click="
-              $router.push('/tags')
-              isMoreClick = false
-            "
-            class="point pb-2"
-          >
-            标签
-          </div>
-        </sq-extendBar>
-      </sq-navigation>
 
       <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
         <symbol id="settingsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor">
@@ -203,7 +160,7 @@
         <!-- <transition :duration="{ enter: 0, leave: 200 }" appear mode="out-in" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight"> -->
         <!-- 页面视图 -->
 
-        <keep-alive exclude="Post,Note,PostWrite,NoteWrite">
+        <keep-alive exclude="Doc">
           <router-view
             @changestatu="isMoreClick = false"
             :isMoreClick="isMoreClick"
@@ -220,21 +177,24 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
 import navigation from '~/components/Singlton/TheNavigation.vue'
-import extendBar from '~/components/Page/Index/ExtendBar/index.vue'
+
 @Component({
-  components: { 'sq-navigation': navigation, 'sq-extendBar': extendBar }
+  components: { 'sq-navigation': navigation },
+  computed: mapGetters(['userInfo', 'loggedIn', 'extendMenu'])
 })
 /* eslint-disable */
 export default class Home extends Vue {
   asyncData({ params, query, route, store }) {}
-
+  extendMenu
   head() {
     return {
       title: '思趣网'
     }
   }
-
+  userInfo
+  loggedIn
   isMoreClick = false
 
   search = ''
@@ -256,6 +216,10 @@ export default class Home extends Vue {
       document.body.scrollTop = this.scrollTop
       document.documentElement.scrollTop = this.scrollTop
     }
+  }
+
+  logout() {
+    this.$store.dispatch('LoginOut')
   }
 
   get isHomepage() {

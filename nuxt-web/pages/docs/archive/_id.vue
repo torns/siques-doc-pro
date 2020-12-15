@@ -1,34 +1,36 @@
 <template>
   <v-main>
-    <LazyArchiveList @reuse="docReuse" :list="docList"></LazyArchiveList>
+    <LazyArchiveList @reuse="docReuse" :list="delDoc"></LazyArchiveList>
   </v-main>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getDelDocList, reuseDoc } from '@/api/doc'
+import { reuseDoc } from '@/api/doc'
+
 @Component({
-  computed: mapGetters(['selectedCollection'])
+  computed: mapGetters(['selectedCollection', 'delDoc'])
 })
 export default class Archive extends Vue {
   layout(context) {
     return 'doc'
   }
   selectedCollection
-  docList = []
+  delDoc
 
-  mounted() {
-    this.getDelPostList()
+  mounted() {}
+
+  @Watch('selectedCollection')
+  valueChanged(newval, oldval) {
+    if (newval !== {}) {
+      this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+    }
   }
   async docReuse(item) {
     await reuseDoc({ docId: item.id })
     this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
-    this.docList.splice(item.index, 1)
-  }
-  async getDelPostList() {
-    const res = await getDelDocList({ collectionId: this.selectedCollection.id })
-    this.docList = res.datas
+    // this.docList.splice(item.index, 1)
   }
 }
 </script>

@@ -1,8 +1,7 @@
 <template>
-  <v-card>
+  <div id="editor" class="editor-body " style="z-index:6;">
     <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
-    <div id="editor" class="editor-body " style="z-index:2;"></div>
-  </v-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -14,20 +13,20 @@ import editormd from './editormd.js'
 
 @Component({})
 export default class MarkDown extends Vue {
-  // @Prop()
-  // selectedPost: any
-
   @Prop({
     default: null
   })
   mode: any
 
+  @Prop({
+    type: Function
+  })
+  upload: Function
+
   editor: any
 
   paste: any
   value: any = ''
-
-  //   timer = null
 
   isSaving = false
 
@@ -155,33 +154,23 @@ export default class MarkDown extends Vue {
       file = target.files[0]
     }
     if (!file) {
-      this.$notify({
-        title: '失败',
-        type: 'error',
-        message: '不允许的格式'
-      })
       return
     }
     const params = new FormData()
 
-    params.append('file', file)
+    params.append('uploadFile', file)
 
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' }
     }
 
-    const loading = this.$loading({
-      target: '#editorSection',
-      lock: true,
-      text: '上传中',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
+    const loading = this.$loading({ text: '上传中', timeout: 5000 })
+
     let res
     await setTimeout(async () => {
-      res = await this.$http.post('/files/ali', params, config)
+      res = await this.upload(params, config)
 
-      let url = res.data.url.replace('shuxie.oss-cn-hangzhou.aliyuncs.com', 'cdn.siques.cn')
+      let url = res.datas.url
 
       console.log(file.type)
       if (file.type.indexOf('video') !== -1) {
@@ -197,11 +186,6 @@ export default class MarkDown extends Vue {
       }
 
       loading.close()
-      this.$notify({
-        title: '成功',
-        type: 'success',
-        message: '上传成功'
-      })
     }, 1500)
   }
 
@@ -267,9 +251,7 @@ export default class MarkDown extends Vue {
 .editor-body {
   width: 100% !important;
 }
-.v-card {
-  height: 100%;
-}
+
 .editormd {
   border: none;
   margin-bottom: 0px;

@@ -1,8 +1,57 @@
 <template>
-  <div class="side-menu">
+  <div style="z-index:10">
+    <v-navigation-drawer
+      v-model="docSideBars"
+      dark
+      src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+      app
+      temporary
+    >
+      <v-list>
+        <v-list-item class="px-2">
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Sandra Adams
+            </v-list-item-title>
+            <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list nav dense>
+        <v-treeview
+          ref="tree"
+          @update:active="selectDoc"
+          :items="docTree"
+          :active="[doc.id]"
+          color="warning"
+          class="pointer text-truncate"
+          open-all
+          activatable
+          rounded
+          dense
+          dark
+          hoverable
+        >
+          <template v-slot:prepend="{ item }">
+            <div class="text-truncate">
+              <span>{{ item.title }}</span>
+            </div>
+          </template>
+        </v-treeview>
+      </v-list>
+    </v-navigation-drawer>
     <svg
-      @click="active = !active"
-      :class="`ham ham3 ${active == true ? 'active' : ''}`"
+      @click="$store.commit('SET_DOCSIDEBAR', true)"
+      :class="`ham ham3 ${docSideBars == true ? 'active' : ''} side-menu`"
       viewBox="0 0 100 100"
       width="60"
     >
@@ -20,18 +69,43 @@
       />
     </svg>
 
-    <nav :class="`menu ${active ? 'menu_active' : ''}`" style=" overflow-y:auto">
+    <!-- <nav :class="`menu ${active ? 'menu_active' : ''}`" style=" overflow-y:auto">
       <p @click="active = false" class="pb-2">close</p>
+       
       <slot></slot>
-    </nav>
+    </nav> -->
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
-@Component({})
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+@Component({
+  computed: {
+    docSideBars: {
+      get() {
+        return this.$store.state.docSideBar
+      },
+      set(v) {
+        this.$store.commit('SET_DOCSIDEBAR', v)
+      }
+    }
+  }
+})
 export default class NaviSideMenu extends Vue {
-  active = false
+  @Prop()
+  docTree
+
+  @Prop()
+  doc
+
+  docSideBars
+
+  selectDoc(row) {
+    if (row[0] && this.doc.id !== row[0]) {
+      this.$router.push(`/doc/${row[0]}`)
+    }
+  }
 }
 </script>
 

@@ -15,24 +15,30 @@
         </v-toolbar-items>
       </v-toolbar>
 
-      <PhoneCodeForm :phoneCodeModel="phoneCodeModel" v-model="status">
-        <template v-slot:default="{ valid }">
-          <v-card-actions>
-            <v-btn :disabled="!valid" @click="login" block color="success darken-1">
-              登录
-            </v-btn>
-          </v-card-actions>
-        </template></PhoneCodeForm
-      >
-      <PasswordForm :loginCodeModel="loginCodeModel" v-model="status">
-        <template v-slot:default="{ valid }">
-          <v-card-actions>
-            <v-btn :disabled="!valid" @click="loginByPass(valid)" block color="success darken-1">
-              密码登录
-            </v-btn>
-          </v-card-actions>
-        </template>
-      </PasswordForm>
+      <v-window v-model="status.show">
+        <v-window-item :value="true">
+          <PhoneCodeForm :phoneCodeModel="phoneCodeModel" v-model="status">
+            <template v-slot:default="{ valid }">
+              <v-card-actions>
+                <v-btn @click="loginByPhoneCode(valid)" :disabled="!valid" block color="success darken-1">
+                  登录
+                </v-btn>
+              </v-card-actions>
+            </template></PhoneCodeForm
+          >
+        </v-window-item>
+        <v-window-item :value="false">
+          <PasswordForm :loginCodeModel="loginCodeModel" v-model="status">
+            <template v-slot:default="{ valid }">
+              <v-card-actions>
+                <v-btn :disabled="!valid" @click="loginByPass(valid)" block color="success darken-1">
+                  密码登录
+                </v-btn>
+              </v-card-actions>
+            </template>
+          </PasswordForm>
+        </v-window-item>
+      </v-window>
     </v-card>
   </v-dialog>
 </template>
@@ -47,6 +53,7 @@ export default class Login extends Vue {
   status = {
     show: true
   }
+
   phoneCodeModel = {}
   loginCodeModel = {}
   mounted() {}
@@ -54,13 +61,23 @@ export default class Login extends Vue {
   closeLoginForm() {
     this.$store.commit('closeLoginForm')
   }
-  login() {}
-  // 通过账号密码登录
-  loginByPass(valid) {
+  // 通过验证码登录
+  async loginByPhoneCode(valid) {
     if (valid) {
-      this.$store.dispatch('modules/user/Login', this.loginCodeModel)
+      const res = await this.$store.dispatch('modules/user/LoginByCode', this.phoneCodeModel)
+      if (res.respCode === 1) {
+        this.$store.commit('closeLoginForm')
+      }
     }
-    this.$store.commit('closeLoginForm')
+  }
+  // 通过账号密码登录
+  async loginByPass(valid) {
+    if (valid) {
+      const res = await this.$store.dispatch('modules/user/Login', this.loginCodeModel)
+      if (res.respCode === 1) {
+        this.$store.commit('closeLoginForm')
+      }
+    }
   }
   logout() {
     this.$router.push('/')

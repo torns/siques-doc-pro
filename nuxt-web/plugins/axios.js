@@ -11,6 +11,7 @@ export default ({ app, store, route, redirect }) => {
   // 请求回调
   axios.onRequest((config) => {
     // 设置token
+
     if (store.state.modules.user && store.state.modules.user.token) {
       config.headers.Authorization = 'Bearer ' + store.state.modules.user.token
     }
@@ -18,12 +19,15 @@ export default ({ app, store, route, redirect }) => {
 
   // code返回回调
   axios.onResponse((res) => {
+    if (res.data.respCode === 0) {
+      app.$notify({ text: res.data.respMsg })
+    }
     return res.data
   })
 
   // 内部错误回调
   axios.onError((error) => {
-    console.log(error)
+    app.$notify({ text: error })
   })
   Vue.prototype.$http = axios
 }

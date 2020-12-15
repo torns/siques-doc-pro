@@ -1,5 +1,5 @@
 <template>
-  <v-card-text v-if="status.show">
+  <v-card-text>
     <v-form v-model="valid">
       <v-container>
         <v-row>
@@ -9,9 +9,7 @@
           </v-col>
           <v-col cols="12" md="12" xs="12">
             <v-text-field :rules="rules.verification" v-model="phoneCodeModel.verification" label="验证码">
-              <v-btn slot="append" @click.stop @click="renderBox" text>{{
-                this.$store.state.time !== 0 ? this.$store.state.time + 's后再次获取' : '获取验证码'
-              }}</v-btn>
+              <v-btn slot="append" :disabled="disabled" @click.stop @click="renderBox" text>{{ btnText }}</v-btn>
             </v-text-field>
           </v-col>
           <v-btn @click="status.show = !status.show" text class="pointer">
@@ -29,8 +27,8 @@
 
 <script lang="ts">
 import { Vue, Component, Model, Prop } from 'nuxt-property-decorator'
-
 import cbox from './cbox/index'
+import { verifyAndSendCode } from '@/api/user'
 @Component({})
 export default class PhoneCodeForm extends Vue {
   @Model('value')
@@ -41,6 +39,23 @@ export default class PhoneCodeForm extends Vue {
     }
   })
   phoneCodeModel
+
+  btnText = '获取验证码'
+  disabled = false
+  triggerCode() {
+    this.disabled = true
+    this.showcbox = false
+    let i = 60
+    const timer = setInterval(() => {
+      this.btnText = i + 's后再次获取'
+      i--
+      if (i < 0) {
+        this.disabled = false
+        this.btnText = '获取验证码'
+        clearInterval(timer)
+      }
+    }, 1000)
+  }
 
   valid = true
   showcbox = false
@@ -59,12 +74,9 @@ export default class PhoneCodeForm extends Vue {
     }
   }
 
-  async successCallback(authenticate: string, token: string) {
-    const res = await this.$http.post(`/auth/retranVerify`, {
-      authenticate,
-      token,
-      loginCode: this.phoneCodeModel.loginCode
-    })
+  successCallback(authenticate: string, token: string) {
+    this.triggerCode()
+    verifyAndSendCode({ authenticate, token, loginCode: this.phoneCodeModel.loginCode })
   }
 }
 </script>

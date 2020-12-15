@@ -2,6 +2,7 @@ import vue from 'vue'
 
 const collectionApi = {
   userCollection: '/collection',
+  listCollection: '/collection/findPage',
   insertCollection: '/collection',
   updateCollection: '/collection',
   delCollection: '/collection',
@@ -13,6 +14,14 @@ export function getUserCollection() {
   return vue.prototype.$http({
     url: collectionApi.userCollection,
     method: 'get'
+  })
+}
+
+export function listCollection(parameter) {
+  return vue.prototype.$http({
+    url: collectionApi.listCollection,
+    method: 'post',
+    data: parameter
   })
 }
 export function delCollection(parameter) {

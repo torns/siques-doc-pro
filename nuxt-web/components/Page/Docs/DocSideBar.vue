@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-navigation-drawer app permanent>
-      <v-btn @click="$router.push('/docs/overview')" block>
+      <v-btn :disabled="!selectedCollection.id" @click="manageCurrentCollection" block>
         <v-icon left>
           mdi-home
         </v-icon>
-        管理知识库
+        主页
       </v-btn>
 
       <v-list nav dense>
@@ -56,11 +56,7 @@
             mdi-trash-can
           </v-icon>
 
-          <span
-            @click="$router.push(`/docs/archive/${selectedCollection.id}`)"
-            class="pointer grey--text text--darken-2"
-            >最近删除</span
-          >
+          <span @click="manageCurrentDeleteDoc" class="pointer grey--text text--darken-2">最近删除</span>
         </div>
       </v-list>
     </v-navigation-drawer>
@@ -83,8 +79,16 @@ export default class DocSideBar extends Vue {
   selectedCollection
   selectedDoc
 
-  $refs: {
-    tree: HTMLFormElement
+  $refs: any
+  manageCurrentCollection() {
+    // 当前选中文档清空
+    this.$store.commit('SET_DOC', {})
+    this.$router.push(`/docs/overview/${this.selectedCollection.id}`)
+  }
+  manageCurrentDeleteDoc() {
+    // 当前选中文档清空
+    this.$store.commit('SET_DOC', {})
+    this.$router.push(`/docs/archive/${this.selectedCollection.id}`)
   }
 
   selectDoc(row) {
@@ -102,7 +106,10 @@ export default class DocSideBar extends Vue {
   }
 
   async getDocTree() {
-    await this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
+    await this.$store.dispatch('modules/doc/getDocTree', {
+      collectionId: this.selectedCollection.id,
+      isPublished: false
+    })
   }
 
   async createDoc(row) {
@@ -112,13 +119,23 @@ export default class DocSideBar extends Vue {
 
   async delDoc(row) {
     await delDoc(row.id)
-    this.$router.push('/docs/overview')
+    this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
     this.getDocTree()
   }
 
   async createParent() {
     await createDoc({ parentId: 0, collectionId: this.selectedCollection.id })
     this.getDocTree()
+  }
+
+  openDocDetail(row) {
+    if (!row.isPublished) {
+      this.$notify({
+        text: row.title + ' 尚未发布，请先发布该文章哦'
+      })
+    } else {
+      window.open(`/doc/${row.id}`)
+    }
   }
 
   createMoveDialog(row) {
@@ -135,11 +152,6 @@ export default class DocSideBar extends Vue {
   ]
 
   moreOptions = [
-    {
-      title: '复制文档链接',
-      icon: 'mdi-copy'
-    },
-
     {
       title: '移动',
       icon: 'mdi-move',
@@ -158,21 +170,19 @@ export default class DocSideBar extends Vue {
       callback: this.createDoc
     },
     {
-      title: '创建文件夹',
-      icon: 'mdi-folder'
+      title: '打开文档详情页',
+      icon: 'mdi-click',
+      callback: this.openDocDetail
     },
     {
-      title: '上传文件',
-      icon: 'mdi-upload'
-    },
-    {
-      title: '导入内容'
+      title: '复制文档链接',
+      icon: 'mdi-copy'
     }
   ]
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .v-treeview-node__label {
   display: inline-table;
   transition: opacity 0.4s ease-in-out;
@@ -184,10 +194,8 @@ export default class DocSideBar extends Vue {
     right: 0;
   }
 }
-.v-treeview-node__level {
-  width: 18px;
-}
-.v-treeview-node__content {
-  align-items: unset;
+
+.v-navigation-drawer {
+  z-index: 6;
 }
 </style>

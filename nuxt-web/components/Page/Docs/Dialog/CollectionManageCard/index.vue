@@ -39,11 +39,12 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { updateCollection, delCollection } from '@/api/collection'
 @Component({
-  computed: mapGetters(['userCollection'])
+  computed: mapGetters(['userCollection', 'selectedCollection'])
 })
 /** 正在使用 */
 export default class CollectionManageCard extends Vue {
   userCollection
+  selectedCollection
   item = {}
   colors = ['#1F7087', '#952175', '#385F73']
   showMenu = []
@@ -67,6 +68,10 @@ export default class CollectionManageCard extends Vue {
   }
   async delCollection(item) {
     await delCollection({ collectionId: item.id })
+    if (this.selectedCollection.id === item.id) {
+      this.$store.commit('SET_DOC', {})
+      this.$store.commit('SET_COLLECTION', {})
+    }
     this.$store.dispatch('modules/collection/getDelCollection')
     this.$store.dispatch('modules/collection/getUserCollection')
   }

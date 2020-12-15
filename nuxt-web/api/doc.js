@@ -9,7 +9,9 @@ const docApi = {
   delDocList: '/doc/deleted',
   getDocDetail: '/doc',
   docTree: '/doc/findTree',
-  moveDoc: '/doc/move'
+  moveDoc: '/doc/move',
+  publishedList: 'doc/publish',
+  publishDoc: 'doc/publish'
 }
 export function moveDoc(parameter) {
   return vue.prototype.$http({
@@ -27,6 +29,10 @@ export function updateDoc(parameter) {
   })
 }
 
+/**
+ *
+ * @param {collectionId} parameter
+ */
 export function getDocTree(parameter) {
   return vue.prototype.$http({
     url: docApi.docTree,
@@ -40,6 +46,24 @@ export function getDocList(parameter) {
     url: docApi.docList,
     method: 'post',
     data: parameter
+  })
+}
+
+export function publishDoc(parameter, params) {
+  return vue.prototype.$http({
+    url: docApi.publishDoc,
+    method: 'post',
+    params,
+    data: parameter
+  })
+}
+
+/** collectionId  */
+export function getPublishedList(parameter) {
+  return vue.prototype.$http({
+    url: docApi.publishedList,
+    method: 'get',
+    params: parameter
   })
 }
 

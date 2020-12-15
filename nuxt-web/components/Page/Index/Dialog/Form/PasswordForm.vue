@@ -1,5 +1,5 @@
 <template>
-  <v-card-text v-if="!status.show">
+  <v-card-text>
     <v-form v-model="valid">
       <v-container>
         <v-row>

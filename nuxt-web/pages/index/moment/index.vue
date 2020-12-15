@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="moment_container pt-5">
-      <el-row :gutter="0" type="flex">
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+      <v-row no-gutters type="flex">
+        <v-col xs="12" sm="12" md="12" lg="12" xl="12">
           <div class="moment-data">今天</div>
           <div v-for="post in posts" :key="post.id" class="mb-5 moment-item-wrap moment-items relative">
             <div
@@ -14,14 +14,14 @@
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
               <div v-if="!post.showMore" class="moment-img">
-                <el-image
+                <v-image
                   v-if="post.cover != null"
                   :src="post.cover[0]"
                   :preview-src-list="post.cover"
                   lazy
                   style="width: 200px"
                 >
-                </el-image>
+                </v-image>
               </div>
 
               <div v-html="post.body" class="plain-text-wrap"></div>
@@ -34,8 +34,8 @@
               <a v-else>收起</a>
             </div>
           </div>
-        </el-col>
-      </el-row>
+        </v-col>
+      </v-row>
 
       <div v-if="remain > 0" @click="onload" class="text-center point">点击查看更多热文</div>
 

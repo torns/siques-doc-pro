@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <markdown ref="markdown" @submit="submit" :isSaving.sync="isSaving" name="发布文章"></markdown>
+    <markdown ref="markdown" :upload="uploadFile" @submit="submit" :isSaving.sync="isSaving" name="发布文章"></markdown>
   </v-main>
 </template>
 
@@ -8,37 +8,50 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { getDocDetail, updateDoc } from '@/api/doc'
+import { fileUpload } from '@/api/file'
 @Component({
   computed: mapGetters(['selectedDoc'])
 })
 export default class DocWrite extends Vue {
+  asyncData({ store, redirect }) {
+    if (!store.state.modules.user.loggedIn) {
+      store.commit('toggleLoginForm')
+      return redirect('/')
+    }
+  }
   head() {
     return {
       title: '写文章'
     }
   }
 
-  middleware({ store, redirect }) {
-    // If the user is not authenticated
-    if (!store.state.loggedIn) {
-      store.commit('toggleLoginForm')
-      return redirect('/')
-    }
-  }
-
   layout(context) {
     return 'doc'
   }
+
+  selectedDoc
+  uploadFile(params, config) {
+    return fileUpload(params, config)
+  }
+
   isSaving = false
   $refs: {
     markdown: HTMLFormElement
   }
 
-  selectedDoc
+  async mounted() {
+    if (this.selectedDoc.id) {
+      const res = await getDocDetail({ docId: this.selectedDoc.id })
+      this.$refs.markdown.setContent(res.datas.body)
+    }
+  }
+
   @Watch('selectedDoc')
   async valueChanged(newval, oldval) {
-    const res = await getDocDetail({ docId: newval.id })
-    this.$refs.markdown.setContent(res.datas.body)
+    if (newval.id) {
+      const res = await getDocDetail({ docId: newval.id })
+      this.$refs.markdown.setContent(res.datas.body)
+    }
   }
 
   @Watch('isSaving')

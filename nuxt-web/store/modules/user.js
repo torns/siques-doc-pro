@@ -1,4 +1,4 @@
-import { userLogin } from '@/api/user'
+import { userLogin, loginByCode } from '@/api/user'
 
 export const state = () => ({
   token: '',
@@ -35,10 +35,15 @@ export const actions = {
       commit('SET_INFO', res.datas.principal)
       commit('SET_STATUS', true)
     }
+    return res
   },
-
-  LoginOut({ commit }) {
-    commit('SET_TOKEN', '')
-    commit('SET_STATUS', false)
+  async LoginByCode({ commit }, userInfo) {
+    const res = await loginByCode(userInfo)
+    if (res.respCode === 1) {
+      commit('SET_TOKEN', res.datas.principal.token)
+      commit('SET_INFO', res.datas.principal)
+      commit('SET_STATUS', true)
+    }
+    return res
   }
 }

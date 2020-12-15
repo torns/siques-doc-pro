@@ -206,18 +206,6 @@ li {
   position: fixed !important;
 }
 
-.border-radius {
-  border-radius: 3px;
-}
-
-.border-dash {
-  border: 1px dashed #dddddd;
-}
-
-.border-solid {
-  border: 1px solid #dddddd;
-}
-
 // 阴影
 .shadow-1 {
   box-shadow: 0 1px 3px 0 rgba(0, 34, 77, 0.05);
@@ -313,10 +301,6 @@ li {
   display: none;
 }
 
-.margin {
-  margin: 0 auto;
-}
-
 @each $key, $value in $flex-jc {
   .jc-#{$key} {
     justify-content: $value;
@@ -395,34 +379,6 @@ h6 {
   line-height: 1.5;
 }
 
-// .note_body {
-//   &:hover {
-//     .newer-image,
-//     .older-image {
-//       opacity: 1;
-//     }
-//   }
-
-//   .newer-image,
-//   .older-image {
-//     height: 50px;
-//     margin-top: -15px;
-//     position: absolute;
-//     opacity: 0.2;
-//     top: 50%;
-//     width: 50px;
-//     transition: 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-//   }
-// }
-
-// .newer-image {
-//   left: 50px;
-// }
-
-// .older-image {
-//   right: 50px;
-// }
-
 .canavas {
   width: 100%;
 }
@@ -438,4 +394,18 @@ code {
 .v-application ul,
 .v-application ol {
   padding-left: 0px;
+}
+.v-treeview-node__level {
+  width: 18px;
+}
+.v-treeview-node__content {
+  align-items: unset;
+}
+
+.v-navigation-drawer {
+  z-index: 50;
+}
+
+.v-menu__content {
+  z-index: 204 !important;
 }

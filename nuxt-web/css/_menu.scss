@@ -58,12 +58,6 @@
   }
 }
 
-#home {
-  // overflow-y: auto;
-  // overflow-x: hidden !important;
-  // height: 100vh;
-}
-
 #menu {
   color: white;
   background-color: #000000;
@@ -71,7 +65,7 @@
 
 #other {
   #menu {
-    z-index: -1;
+    z-index: 1;
     color: #27282d;
 
     background-color: white;

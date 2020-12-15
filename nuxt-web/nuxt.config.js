@@ -147,7 +147,8 @@ export default {
 
     { src: '@/plugins/scrollAnimate', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
-
+    { src: '@/plugins/tips/loading.js', ssr: true },
+    { src: '@/plugins/tips/snackbar.js', ssr: true },
     '@/plugins/nullSSRComponents.js',
     { src: '@/plugins/axios', ssr: true },
 

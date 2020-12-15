@@ -1,22 +1,13 @@
 <template>
   <nav id="pagination" class="pagination">
-    <h2 class="screen-reader-text">Posts Navigation</h2>
     <div class="inner relative ">
-      <a
-        v-if="$attrs.currentPage != 1"
-        @click="handleCurrentChange($attrs.currentPage - 1)"
-        class="newer-posts arrow-left point"
-      >
+      <a v-if="pagination.pageNum != 1" @click="prevPage" class="newer-posts arrow-left point">
         <span class="screen-reader-text"></span>
       </a>
       <span class="page-number">
-        <a :href="$attrs.href" class="point">PAGE {{ $attrs.currentPage }} OF {{ maxPage }} </a>
+        <a :href="$attrs.href" class="point">PAGE {{ pagination.pageNum }} OF {{ maxPage }} </a>
       </span>
-      <a
-        v-if="$attrs.currentPage != maxPage"
-        @click="handleCurrentChange($attrs.currentPage + 1)"
-        class="older-posts arrow-right point"
-      >
+      <a v-if="pagination.pageNum != maxPage" @click="nextPage" class="older-posts arrow-right point">
         <span class="screen-reader-text"></span>
       </a>
     </div>
@@ -25,18 +16,24 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Model } from 'vue-property-decorator'
 @Component({})
 export default class extends Vue {
-  @Prop()
-  maxLen
+  @Model('value')
+  pagination
 
   get maxPage() {
-    return Math.ceil(this.maxLen / 10)
+    return Math.ceil(this.pagination.total / this.pagination.pageSize)
   }
 
-  handleCurrentChange(val: any) {
-    // @current-change="handleCurrentChange"
-    this.$emit('current-change', val)
+  prevPage() {
+    this.pagination.pageNum -= 1
+    this.$emit('current-change')
+  }
+
+  nextPage() {
+    this.pagination.pageNum += 1
+    this.$emit('current-change')
   }
 }
 </script>

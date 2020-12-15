@@ -3,7 +3,9 @@
     <DocSystemBar></DocSystemBar>
     <DocAppBar></DocAppBar>
     <DocSideBar></DocSideBar>
-    <keep-alive exclude="Archive">
+    <BaseSnackBar></BaseSnackBar>
+    <BaseLoading></BaseLoading>
+    <keep-alive exclude="Archive,OverView">
       <router-view :key="$route.path"></router-view>
     </keep-alive>
   </v-app>
