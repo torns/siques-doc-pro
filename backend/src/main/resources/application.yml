@@ -1,6 +1,12 @@
 server:
   port: 3002
 spring:
+  oss:
+    endpoint: http://oss-accelerate.aliyuncs.com
+    urlPre: https://shuxie.oss-accelerate.aliyuncs.com/
+    bucketName: shuxie
+    accessKeyId: LTAI4GDTDQm93qwQFzu9nz8a
+    accessKeySecret: IoTPd2UEd7Sx9i1USc1cfrT44C1VZQ
   application:
     name: siques-backend
   datasource:
@@ -9,6 +15,16 @@ spring:
     password: l1itdhjaoiqw32kwqe$5asasd*a21
     url: jdbc:mysql://127.0.0.1:3306/nest?useUnicode=true&characterEncoding=utf-8&useSSL=false
     type: com.zaxxer.hikari.HikariDataSource
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+  redis:
+    host: 139.198.176.14
+    port: 6379
+    database: 3
+    expiration: 1800
+    password: heshenghao
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -17,11 +33,13 @@ mybatis-plus:
   global-config:
     banner: false
   type-aliases-package: cn.siques.backend.dao
-public-key:
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkF9SyMHeGAsLMwbPsKj/
-    xpEtS0iCe8vTSBnIGBDZKmB3ma20Ry0Uzn3m+f40RwCXlxnUcvTw7ipoz0tMQERQ
-    b3X4DkYCJXPK6pAD+R9/J5odEwrO2eysByWfcbMjsZw2u5pH5hleMS0YqkrGQOxJ
-    pzlEcKxMePU5KYTbKUJkhOYPY+gQr61g6lF97WggSPtuQn1srT+Ptvfw6yRC4bdI
-    0zV5emfXjmoLUwaQTRoGYhOFrm97vpoKiltSNIDFW01J1Lr+l77ddDFC6cdiAC0H
-    5/eENWBBBTFWya8RlBTzHuikfFS1gP49PZ6MYJIVRs8p9YnnKTy7TVcGKY3XZMCA
-    mwIDAQAB
+public-key: |
+  -----BEGIN PUBLIC KEY-----
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkF9SyMHeGAsLMwbPsKj/
+  xpEtS0iCe8vTSBnIGBDZKmB3ma20Ry0Uzn3m+f40RwCXlxnUcvTw7ipoz0tMQERQ
+  b3X4DkYCJXPK6pAD+R9/J5odEwrO2eysByWfcbMjsZw2u5pH5hleMS0YqkrGQOxJ
+  pzlEcKxMePU5KYTbKUJkhOYPY+gQr61g6lF97WggSPtuQn1srT+Ptvfw6yRC4bdI
+  0zV5emfXjmoLUwaQTRoGYhOFrm97vpoKiltSNIDFW01J1Lr+l77ddDFC6cdiAC0H
+  5/eENWBBBTFWya8RlBTzHuikfFS1gP49PZ6MYJIVRs8p9YnnKTy7TVcGKY3XZMCA
+  mwIDAQAB
+  -----END PUBLIC KEY-----

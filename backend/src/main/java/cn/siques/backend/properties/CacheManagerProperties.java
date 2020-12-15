@@ -1,4 +1,4 @@
-package cn.central.common.redis.properties;
+package cn.siques.backend.properties;
 
 import lombok.Getter;
 import lombok.Setter;

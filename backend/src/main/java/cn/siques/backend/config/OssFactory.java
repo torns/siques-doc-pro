@@ -1,11 +1,17 @@
-package cn.siques.newstask.config;
+package cn.siques.backend.config;
 
+import cn.hutool.json.JSONObject;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.common.comm.ResponseMessage;
+import com.aliyun.oss.model.PutObjectResult;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.print.DocFlavor;
 import java.io.InputStream;
 
 /**
@@ -40,10 +46,7 @@ public class OssFactory {
                 .build(endpoint, accessKeyId, accessKeySecret);
     }
 
-//    public OssFactory create(){
-//
-//        return this;
-//    }
+
 
 
     public String putObject(String path, InputStream is){
@@ -51,7 +54,8 @@ public class OssFactory {
             path="dev/"+path;
         }
 //        System.out.println(profile.equals("dev"));
-        oss.putObject(bucketName, path, is);
+        PutObjectResult result = oss.putObject(bucketName, path, is);
+
         return urlPre+path;
     }
 

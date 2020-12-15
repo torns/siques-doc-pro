@@ -1,4 +1,4 @@
-package cn.central.oauth.service;
+package cn.siques.backend.service;
 
 /**
  * @author : heshenghao
@@ -7,17 +7,17 @@ package cn.central.oauth.service;
 public interface ValidateCodeService {
 
     /**
-     * 保存图形验证码
+     * 保存
      * @param deviceId 前端唯一标识
      * @param imageCode 验证码
      */
-    void saveImageCode(String deviceId, String imageCode);
+    void savePhoneCode(String deviceId, String imageCode);
 
     /**
-     * 验证验证码
-     * @param username
+     * 验证
      * @param deviceId
      * @param validCode
+     * @return boolean
      */
-    void validate(String username, String deviceId, String validCode);
+    boolean validate(String deviceId, String validCode);
 }

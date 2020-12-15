@@ -34,6 +34,7 @@ public class Doc extends Model<Doc> {
    String alias;
    Long counts;
    DocEnum type;
+   Boolean isPublished;
    String cover;
    @TableLogic(value = "1",delval = "0")
    Boolean status;
@@ -51,4 +52,6 @@ public class Doc extends Model<Doc> {
     @TableField(exist = false)
    List<Tag> tags;
 
+    @TableField(exist =false)
+    Collection collection;
 }

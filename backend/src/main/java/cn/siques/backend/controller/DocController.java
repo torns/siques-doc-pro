@@ -1,10 +1,14 @@
 package cn.siques.backend.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.siques.backend.annotation.LoginUser;
+import cn.siques.backend.entity.Collection;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
 import cn.siques.backend.service.CollectionDocService;
+import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.DocService;
+import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
 
@@ -13,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,8 +36,15 @@ public class DocController {
 
      private DocService docService;
 
+     private CollectionService collectionService;
+
      private CollectionDocService collectionDocService;
 
+    /**
+     * 文章分页查询
+     * @param pageRequest
+     * @return
+     */
     @PostMapping("/findPage")
     public Result<Page<Doc>> findPage(@RequestBody PageRequest<Doc> pageRequest){
         Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
@@ -50,11 +62,34 @@ public class DocController {
         return Result.succeed(page);
     }
 
+
+
+
+    /**
+     * 查询文章树
+     * @param collectionId
+     * @return
+     */
     @GetMapping("findTree")
-    public Result findTree(@RequestParam("collectionId") Long collectionId){
-      return Result.succeed(docService.findTree(collectionId));
+    public Result findPublishedTree(@RequestParam("collectionId") Long collectionId
+            ,@RequestParam(value = "isPublished",defaultValue = "false") Boolean isPublished){
+
+        return Result.succeed(docService.findTree(collectionId,isPublished));
     }
 
+    /**
+     * 查询文章详情
+     * @param docId
+     * @return
+     */
+    @GetMapping()
+    public Result docDetail(@RequestParam String docId){
+        Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
+        Collection collection = collectionService.getById(collectionId);
+        Doc doc = docService.getOne(new QueryWrapper<Doc>().eq("id", docId));
+        doc.setCollection(collection);
+        return Result.succeed(doc);
+    }
 
     /**
      * 插入文章，
@@ -101,17 +136,26 @@ public class DocController {
 
     @PutMapping
     public Result update(@RequestBody Doc doc){
-        boolean b = docService.updateById(doc);
+        boolean b = docService.updateAndExtract(doc);
         return Result.succeed(b);
     }
 
-
+    /**
+     * 逻辑删除
+     * @param id
+     * @return
+     */
     @DeleteMapping("logic/{id}")
     public Result delete(@PathVariable String id){
         boolean a = docService.removeById(id);
         return Result.succeed(a);
     }
 
+    /**
+     * 查询集合中被删除的文章
+     * @param collectionId
+     * @return
+     */
     @GetMapping("/deleted")
     public Result deleted(@RequestParam String collectionId){
         List<Long> docIds = collectionDocService.list(new QueryWrapper<CollectionDoc>()
@@ -126,14 +170,52 @@ public class DocController {
         return Result.succeed(new ArrayList<>());
     }
 
-
+    /**
+     * 恢复文章
+     * @param docId
+     * @return
+     */
     @GetMapping("/reuse")
     public Result reuse(@RequestParam String docId){
         return Result.succeed(docService.reuseDoc(docId));
     }
 
-    @GetMapping()
-    public Result docDetail(@RequestParam String docId){
-          return Result.succeed(docService.getOne(new QueryWrapper<Doc>().eq("id", docId)));
+
+    /**
+     * 文章发布
+     * @param userDetails
+     * @param docIds
+     * @param collectionId
+     * @return
+     */
+    @PostMapping("/publish")
+    @Transactional
+    public Result publish(@LoginUser JwtUserDetails userDetails,@RequestBody List<Long> docIds,@RequestParam Long collectionId){
+        List<Long> allDocIds = docService.getDocsByCollectionId(collectionId)
+                .stream().map(doc -> doc.getId()).collect(Collectors.toList());
+        docService.update(new UpdateWrapper<Doc>().in("id",allDocIds).set("isPublished",false));
+        boolean update = docService.update(new UpdateWrapper<Doc>().in("id", docIds).set("isPublished", true));
+        return Result.succeed(update);
     }
+
+    /**
+     * 查询集合已经发布的内容
+     * @param userDetails
+     * @param collectionId
+     * @return
+     */
+    @GetMapping("/publish")
+    public Result published(@LoginUser JwtUserDetails userDetails,@RequestParam Long collectionId){
+        List<Doc> docs = docService.getDocsByCollectionId(collectionId);
+
+        List<Long> collect = docs.stream().filter(doc -> doc.getIsPublished().equals(true))
+                .map(doc -> doc.getId()).collect(Collectors.toList());
+
+        return Result.succeed(collect);
+    }
+
+
+
+
+
 }

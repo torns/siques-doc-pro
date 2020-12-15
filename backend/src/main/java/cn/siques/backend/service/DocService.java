@@ -23,8 +23,9 @@ public interface DocService extends IService<Doc> {
      * 查询文章树
      * @return
      * @param collectionId
+     * @param isPublished
      */
-    List<Doc> findTree(Long collectionId);
+    List<Doc> findTree(Long collectionId, Boolean isPublished);
 
 
     /**
@@ -34,6 +35,14 @@ public interface DocService extends IService<Doc> {
      */
     List<Doc> getListByIds(List<Long> postIds);
 
+
+    /**
+     * 查询集合文章
+     * @return
+     * @param  collectionId
+     */
+    List<Doc> getDocsByCollectionId(Long collectionId);
+
     /**
      * 还原以删除的文档
      * @return
@@ -41,4 +50,10 @@ public interface DocService extends IService<Doc> {
      */
     int reuseDoc(String docId);
 
+    /**
+     * 更新文章并抽取内容
+     * @param doc
+     * @return
+     */
+    boolean updateAndExtract(Doc doc);
 }

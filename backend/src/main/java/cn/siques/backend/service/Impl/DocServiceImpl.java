@@ -7,6 +7,7 @@ import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
 import cn.siques.backend.service.DocService;
 
+import cn.siques.backend.utils.RegexUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author : heshenghao
@@ -48,7 +50,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     }
 
     @Override
-    public List<Doc> findTree(Long id) {
+    public List<Doc> findTree(Long id, Boolean isPublished) {
 
 
         List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>().eq("collectionId", id))
@@ -57,8 +59,12 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
             return new ArrayList<>();
         }
         List<Doc> docList = docDao.selectBatchIds(docIds);
-        Map<Boolean, List<Doc>> collect = docList.stream().filter(post -> post.getStatus()==true)
-                .collect(Collectors.partitioningBy(post -> post.getParentId() == 0));
+        Stream<Doc> docStream = docList.stream().filter(post -> post.getStatus() == true);
+        if(isPublished){
+              docStream = docStream.filter(post -> post.getIsPublished().equals(true));
+        }
+
+        Map<Boolean, List<Doc>> collect= docStream.collect(Collectors.partitioningBy(post -> post.getParentId() == 0));
         /** 根和叶子 */
         List<Doc> roots = collect.get(true);
         List<Doc> leafs = collect.get(false);
@@ -77,8 +83,47 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     }
 
     @Override
+    public List<Doc> getDocsByCollectionId(Long collectionId) {
+        List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>().eq("collectionId", collectionId)).stream()
+                .map(collectionDoc -> collectionDoc.getDocId()).collect(Collectors.toList());
+        if(docIds.size()>0){
+            return docDao.selectBatchIds(docIds);
+        }
+        return  new ArrayList<>();
+    }
+
+    @Override
     public int reuseDoc(String docId) {
         return docDao.reuseDoc(docId);
+    }
+
+    @Override
+    public boolean updateAndExtract(Doc doc) {
+        String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.+)(?=\\))", doc.getBody());
+        doc.setCover(s);
+        String rawStr = doc.getBody()
+                .replaceAll("(\\*\\*|__)(.*?)(\\*\\*|__)", "")
+                .replaceAll("\\!\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+                .replaceAll("\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+                .replaceAll("<\\/?.+?\\/?>", "")
+                .replaceAll("(\\*)(.*?)(\\*)", "")
+                .replaceAll("`{1,2}[^`](.*?)`{1,2}", "")
+                .replaceAll("```([\\s\\S]*?)```[\\s]*", "")
+                .replaceAll("\\~\\~(.*?)\\~\\~", "")
+                .replaceAll("[\\s]*[-\\*\\+]+(.*)", "")
+                .replaceAll("[\\s]*[0-9]+\\.(.*)", "")
+                .replaceAll("(#+)(.*)", "")
+                .replaceAll("(>+)(.*)", "")
+                .replaceAll("\\r\\n", "")
+                .replaceAll("\\s", "");
+        if(rawStr.length()>150){
+            rawStr = rawStr.substring(0,150);
+        }
+
+        doc.setAlias(rawStr);
+        doc.setCounts(Long.valueOf(rawStr.length()));
+        docDao.updateById(doc);
+        return false;
     }
 
     private void findChildren(Doc root, List<Doc> leafs) {

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionDao, Us
     public List<Collection> getUserCollection(Long userId) {
         List<Long> collectIds = userCollectionService.list(new QueryWrapper<UserCollection>().eq("userId", userId))
                 .stream().map(u -> u.getCollectionId()).collect(Collectors.toList());
-        List<Collection> collections = null;
+        List<Collection> collections = new ArrayList<>();
         if(collectIds.size()>0){
             collections =  collectionService.listByIds(collectIds);
         }

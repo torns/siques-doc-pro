@@ -26,8 +26,12 @@ public class TokenArgumentResolver  implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
 
 
+        JwtUserDetails principal= new JwtUserDetails();
         // 已认证过的状态
-        JwtUserDetails  principal = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
+              principal = (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+
 
 
         return principal;

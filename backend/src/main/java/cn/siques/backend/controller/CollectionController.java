@@ -1,5 +1,6 @@
 package cn.siques.backend.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.entity.Collection;
 import cn.siques.backend.entity.CollectionDoc;
@@ -11,6 +12,7 @@ import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +34,19 @@ public class CollectionController {
 
     private CollectionService collectionService;
     private UserCollectionService userCollectionService;
+
+
+    /**
+     * 集合分页查询
+     * @param pageRequest
+     * @return
+     */
+    @PostMapping("/findPage")
+    public Result<Page<Collection>> findPage(@RequestBody PageRequest<Doc> pageRequest){
+        Page<Collection> collectionPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
+        Page<Collection> page = collectionService.findPage(collectionPage);
+        return Result.succeed(page);
+    }
 
     @PostMapping
     @Transactional
@@ -52,6 +68,12 @@ public class CollectionController {
         return Result.succeed( userCollectionService.getUserCollection(userDetails.getId()));
     }
 
+    /**
+     * 删除集合
+     * @param userDetails
+     * @param collectionId
+     * @return
+     */
     @DeleteMapping()
         public Result delete(@LoginUser JwtUserDetails userDetails,@RequestParam Long collectionId){
         List<Collection> collections = userCollectionService.getUserCollection(userDetails.getId()).stream()
@@ -64,6 +86,11 @@ public class CollectionController {
         return Result.succeed(false);
     }
 
+    /**
+     * 查询已经删除的集合
+     * @param userDetails
+     * @return
+     */
     @GetMapping("/deleted")
     public Result deleted(@LoginUser JwtUserDetails userDetails){
         List<Long> collectIds = userCollectionService.list(new QueryWrapper<UserCollection>()
@@ -78,6 +105,11 @@ public class CollectionController {
         return Result.succeed(new ArrayList<>());
     }
 
+    /**
+     * 恢复集合
+     * @param collectionId
+     * @return
+     */
     @GetMapping("/reuse")
     public Result reuse(@RequestParam String collectionId){
         return Result.succeed(collectionService.reuseCollection(collectionId));

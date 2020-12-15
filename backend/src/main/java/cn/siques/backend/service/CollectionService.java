@@ -1,6 +1,7 @@
 package cn.siques.backend.service;
 
 import cn.siques.backend.entity.Collection;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Arrays;
@@ -19,10 +20,19 @@ public interface CollectionService extends IService<Collection> {
      */
     List<Collection> getListByIds(List<Long> collectIds);
 
+
+
     /**
      * 恢复集合
      * @param collectionId
      * @return
      */
     int reuseCollection(String collectionId);
+
+    /**
+     * 分页查询
+     * @param collectionPage
+     * @return
+     */
+    Page<Collection> findPage(Page<Collection> collectionPage);
 }

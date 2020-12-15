@@ -10,4 +10,5 @@ import lombok.Data;
 public class LoginDto {
     String loginCode;
     String password;
+    String verification;
 }
