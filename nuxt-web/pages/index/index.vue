@@ -38,10 +38,10 @@
     </div>
     <v-container style="min-height: 100vh">
       <v-row no-gutters class=" pt-4">
-        <v-col cols="12" sm="12" md="8" xl="6" style="margin:0 auto;width:'100%">
-          <section class="new-title">
+        <v-col cols="12" sm="12" md="9" xl="6" style="margin:0 auto;width:'100%">
+          <div class="new-title">
             <span>{{ name }}</span>
-          </section>
+          </div>
 
           <div class="news-list-module">
             <div v-for="(doc, $index) in docs" :key="$index">
@@ -88,28 +88,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- 导航栏 -->
-    <BaseExtendMenu>
-      <v-list :dark="isHomepage && true" :light="!isHomepage && true" dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content
-            @click="
-              () => {
-                $router.push(item.href)
-                $store.commit('SET_EXTENDMENU', false)
-              }
-            "
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </BaseExtendMenu>
 
     <sq-footer :topBorder="true"> </sq-footer>
   </div>
@@ -206,11 +184,6 @@ export default class AppPage extends Vue {
       this.loading = false
     }, 500)
   }
-  items = [
-    { title: '知识星球', icon: 'mdi-earth', href: '/collection' },
-    { title: '24小时', icon: 'mdi-help-box', href: '/moment' },
-    { title: '搜索', icon: 'mdi-view-dashboard', href: '/search' }
-  ]
 }
 </script>
 

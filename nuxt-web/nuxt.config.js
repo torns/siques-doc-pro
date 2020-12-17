@@ -149,11 +149,12 @@ export default {
     { src: '@/plugins/components.js', ssr: true },
     { src: '@/plugins/tips/loading.js', ssr: true },
     { src: '@/plugins/tips/snackbar.js', ssr: true },
+    { src: '@/plugins/tips/confirm.js', ssr: true },
     '@/plugins/nullSSRComponents.js',
     { src: '@/plugins/axios', ssr: true },
 
     { src: '@/plugins/mixin.js', ssr: false },
-    { src: '@plugins/localStorage', ssr: false }
+    { src: '@plugins/persistedState.client.js', ssr: false }
   ],
 
   vuetify: {

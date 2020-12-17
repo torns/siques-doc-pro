@@ -59,7 +59,6 @@
       </div>
     </v-main>
     <sq-toc :title="doc.title"></sq-toc>
-    <!-- <sq-navigation :data="recommendPost" class="my-4"></sq-navigation> -->
 
     <sq-footer></sq-footer>
   </div>
@@ -101,7 +100,7 @@ export default class Doc extends Vue {
       docTree: docTree.datas
     }
   }
-
+  onIntersect = false
   docTree = []
   head() {
     return {

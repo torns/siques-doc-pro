@@ -38,8 +38,8 @@
       </v-card-text>
 
       <v-card-text v-if="initSelected.length !== 0">
-        已发布：地址：<a :href="`http://localhost:3000/doc/${initSelected[0]}`" target="_blank"
-          >http://localhost:3000/doc/{{ initSelected[0] }}</a
+        已发布：地址：<a :href="`https://www.siques.cn/doc/${initSelected[0]}`" target="_blank"
+          >https://www.siques.cn/doc/{{ initSelected[0] }}</a
         >
       </v-card-text>
     </v-card>

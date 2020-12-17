@@ -4,6 +4,9 @@ export const state = () => ({
   },
   notifyMsg: {
     loading: false
+  },
+  confirmMsg: {
+    modal: false
   }
 })
 
@@ -19,6 +22,26 @@ export const mutations = {
   },
   STOP_NOTIFY(state) {
     state.notifyMsg.loading = false
+  },
+  SET_CONFIRM(state, parameter) {
+    state.confirmMsg = Object.assign(
+      {
+        then: () => {
+          console.log('origin then')
+        },
+        catch: () => {
+          console.log('origin catch')
+        },
+        modal: true
+      },
+      parameter
+    )
+  },
+  SET_THEN(state, parameter) {
+    state.confirmMsg.then = parameter
+  },
+  SET_CATCH(state, parameter) {
+    state.confirmMsg.catch = parameter
   }
 }
 
@@ -36,5 +59,8 @@ export const actions = {
     setTimeout(() => {
       commit('STOP_NOTIFY')
     }, data.timeout || 10000)
+  },
+  handleConfirm({ state, commit }, parameter) {
+    commit('SET_CONFIRM', parameter)
   }
 }

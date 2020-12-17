@@ -14,14 +14,14 @@
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
               <div v-if="!post.showMore" class="moment-img">
-                <v-image
+                <v-img
                   v-if="post.cover != null"
                   :src="post.cover[0]"
                   :preview-src-list="post.cover"
                   lazy
                   style="width: 200px"
                 >
-                </v-image>
+                </v-img>
               </div>
 
               <div v-html="post.body" class="plain-text-wrap"></div>

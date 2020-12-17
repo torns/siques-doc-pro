@@ -18,5 +18,6 @@ declare module 'vue/types/vue' {
     $loading: any
     $notify: any
     $vuetify: any
+    $confirm: any
   }
 }

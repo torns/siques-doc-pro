@@ -30,14 +30,14 @@
         </v-menu>
       </v-col>
     </v-row>
-    <CollectionFormDialog ref="dialog" @submit="submit" v-model="item" title="修改知识库"></CollectionFormDialog>
+    <CollectionFormDialog ref="dialog" @submits="submit" v-model="item" title="修改知识库"></CollectionFormDialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { updateCollection, delCollection } from '@/api/collection'
+import { updateCollection, coverUpload, delCollection } from '@/api/collection'
 @Component({
   computed: mapGetters(['userCollection', 'selectedCollection'])
 })
@@ -58,7 +58,18 @@ export default class CollectionManageCard extends Vue {
   $refs: any
 
   async submit(collectionDetail) {
-    await updateCollection(collectionDetail)
+    const formData = new FormData()
+
+    formData.append('uploadFile', collectionDetail.uploadFile)
+    formData.append('name', collectionDetail.name)
+    formData.append('description', collectionDetail.description || '')
+    formData.append('id', collectionDetail.id)
+    if (collectionDetail.uploadFile && collectionDetail.cover.includes('blob')) {
+      await coverUpload(formData)
+    } else {
+      await updateCollection(collectionDetail)
+    }
+
     this.$store.dispatch('modules/collection/getUserCollection')
   }
 

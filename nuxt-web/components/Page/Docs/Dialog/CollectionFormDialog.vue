@@ -2,24 +2,27 @@
   <v-dialog v-model="visible" max-width="600px" persistent hide-overlay transition="dialog-bottom-transition">
     <v-card tile>
       <v-toolbar dark color="primary">
-        <v-btn @click="visible = false" icon dark>
+        <v-btn
+          @click="
+            () => {
+              visible = false
+              collectionDetail.cover = 'https://cdn.siques.cn/public/default/default.9769378e.png'
+            }
+          "
+          icon
+          dark
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
 
-      <CollectionCoverSelector :imgLink.sync="collectionDetail.cover"></CollectionCoverSelector>
-      <v-card-text>
-        <v-file-input
-          v-model="collectionDetail.customCover"
-          :rules="rules"
-          show-size
-          accept="image/*"
-          label="上传封面"
-          truncate-length="15"
-        ></v-file-input>
-      </v-card-text>
+      <CollectionCoverSelector
+        v-model="collectionDetail"
+        :imgLink.sync="collectionDetail.cover"
+      ></CollectionCoverSelector>
+
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-row class="justify-center">
@@ -54,7 +57,7 @@
 import { Vue, Component, Prop, Model } from 'nuxt-property-decorator'
 
 @Component({})
-export default class CollectionCreateDialog extends Vue {
+export default class CollectionFormDialog extends Vue {
   @Prop({
     default: '创建知识库'
   })
@@ -63,8 +66,6 @@ export default class CollectionCreateDialog extends Vue {
   visible = false
 
   valid = true
-
-  rules = [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
 
   @Model('value', {
     type: Object,
@@ -79,16 +80,14 @@ export default class CollectionCreateDialog extends Vue {
   $refs: {
     form: HTMLFormElement
   }
+
   doValidate() {
     const v = this.$refs.form.validate()
-
     if (v) {
-      console.log(this.collectionDetail)
-      // this.$emit('submit', this.collectionDetail)
+      this.$emit('submits', this.collectionDetail)
     }
 
     this.visible = false
-    // this.$refs.form.reset()
   }
 }
 </script>

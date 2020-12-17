@@ -2,27 +2,27 @@
   <div style="z-index:10">
     <v-navigation-drawer
       v-model="docSideBars"
+      width="350"
       dark
       src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
       app
       temporary
     >
-      <v-list>
-        <v-list-item class="px-2">
-          <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
-
-        <v-list-item link>
-          <v-list-item-content>
-            <v-list-item-title class="title">
-              Sandra Adams
-            </v-list-item-title>
-            <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <v-carousel v-model="model" show-arrows-on-hover cycle height="200">
+        <template v-for="(collect, i) in collectionList">
+          <v-carousel-item
+            @click="$router.push(`/doc/${collect.docIds[0]}`)"
+            v-if="collect.docIds != null"
+            :src="collect.cover"
+            :key="i"
+            class="pointer"
+          >
+            <v-row class="fill-height text-truncate" align="center" justify="center">
+              <!-- <div class="text-h5 ">{{ collect.name }}</div> -->
+            </v-row>
+          </v-carousel-item>
+        </template>
+      </v-carousel>
 
       <v-divider></v-divider>
 
@@ -68,18 +68,12 @@
         d="m 70,67 h -40 c 0,0 -3.680675,0.737051 -3.660714,-3.517857 0.02541,-5.415597 3.391687,-10.357143 10.982142,-10.357143 4.048418,0 17.88928,0.178572 23.482143,0.178572 0,2.563604 2.451177,3.403635 4.642857,3.392857 2.19168,-0.01078 4.373905,-1.369814 4.375,-3.392857 0.0011,-2.023043 -1.924401,-2.589191 -4.553571,-4.107143 -2.62917,-1.517952 -4.196429,-1.799562 -4.196429,-3.660714 0,-1.861153 2.442181,-3.118811 4.196429,-3.035715 1.754248,0.0831 4.375,0.890841 4.375,3.125 2.628634,0 6.160714,0.267857 6.160714,0.267857 l -0.178571,-2.946428 10.178571,0 -10.178571,0 v 6.696428 l 8.928571,0 -8.928571,0 v 7.142858 l 10.178571,0 -10.178571,0"
       />
     </svg>
-
-    <!-- <nav :class="`menu ${active ? 'menu_active' : ''}`" style=" overflow-y:auto">
-      <p @click="active = false" class="pb-2">close</p>
-       
-      <slot></slot>
-    </nav> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
+import { listCollection } from '@/api/collection'
 @Component({
   computed: {
     docSideBars: {
@@ -99,6 +93,15 @@ export default class NaviSideMenu extends Vue {
   @Prop()
   doc
 
+  collectionList = []
+
+  async mounted() {
+    const res = await listCollection({ pageNum: 1, pageSize: 5 })
+    this.collectionList = res.datas.records
+  }
+
+  colors = ['primary', 'secondary', 'yellow darken-2', 'red', 'orange']
+  model = 0
   docSideBars
 
   selectDoc(row) {

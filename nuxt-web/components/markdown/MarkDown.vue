@@ -111,7 +111,6 @@ export default class MarkDown extends Vue {
               reader.onload = (event) => {
                 // event.target.result 即为图片的Base64编码字符串
                 this.uploadFile(event.target.result, 'paste')
-                console.log(event)
               }
               reader.readAsDataURL(blob)
               this.uploadFile(blob, 'paste')

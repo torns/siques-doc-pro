@@ -31,7 +31,7 @@ export default class DocWrite extends Vue {
 
   selectedDoc
   uploadFile(params, config) {
-    return fileUpload(params, config)
+    return fileUpload(params)
   }
 
   isSaving = false
@@ -60,6 +60,7 @@ export default class DocWrite extends Vue {
       this.$store.commit('PUSH_MSG', this.selectedDoc.title + ' 保存中')
     } else {
       this.$store.commit('PUSH_MSG', this.selectedDoc.title + ' 已同步')
+      this.$notify({ text: this.selectedDoc.title + ' 已同步' })
     }
   }
 

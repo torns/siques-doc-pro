@@ -1,45 +1,18 @@
-// 数字统计
-
-export function wordcounts(body) {
-  const W = []
-  let iNumwords = 0
-  let sNumwords = 0
-  let sTotal = 0 // 双字节字符;
-  let iTotal = 0 // 中文字符；
-  let eTotal = 0 // Ｅ文字符
-
-  let inum = 0
-
-  for (let i = 0; i < body.length; i++) {
-    const c = body.charAt(i)
-    if (c.match(/[\u4E00-\u9FA5]/)) {
-      if (isNaN(W[c])) {
-        iNumwords++
-        W[c] = 1
-      }
-      iTotal++
-    }
-  }
-
-  for (let i = 0; i < body.length; i++) {
-    const c = body.charAt(i)
-    if (c.match('/[^\x00-\xFF]/')) {
-      if (isNaN(W[c])) {
-        sNumwords++
-      }
-      sTotal++
-    } else {
-      eTotal++
-    }
-    if (c.match(/[0-9]/)) {
-      inum++
-    }
-  }
-
-  const word = iTotal + inum
-  return word
-}
 /* eslint-disable */
+
+/**
+ * 复制内容到粘贴板
+ * content : 需要复制的内容
+ * message : 复制完后的提示，不传则默认提示"复制成功"
+ */
+export function copyToClip(content) {
+  var aux = document.createElement('input')
+  aux.setAttribute('value', content)
+  document.body.appendChild(aux)
+  aux.select()
+  document.execCommand('copy')
+  document.body.removeChild(aux)
+}
 
 export function hljs() {
   $('p img').each(function() {

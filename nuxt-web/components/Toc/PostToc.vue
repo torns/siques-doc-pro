@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar  d-none d-sm-flex" style="z-index:20">
+  <div id="sidebar" class="sidebar    hidden-md-and-down" style="z-index:20;max-width: 250px;">
     <div id="toc">
       <nav id="doc-toc" v-scroll-spy-active class="nav d-flex flex-column"></nav>
     </div>
@@ -24,9 +24,9 @@ export default class TocBar extends Vue {
 
 <style lang="scss" scoped>
 .sidebar {
-  position: fixed;
+  position: absolute;
   right: 35px;
-  top: 35%;
+  top: 350px;
 }
 #toc .title-active {
   color: #1bbc8c !important;

@@ -2,6 +2,7 @@ package cn.siques.backend.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.annotation.LoginUser;
+import cn.siques.backend.config.OssFactory;
 import cn.siques.backend.entity.Collection;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
@@ -14,13 +15,16 @@ import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,12 +33,16 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/collection")
-@AllArgsConstructor
-public class CollectionController {
 
+public class CollectionController {
+    @Autowired
     private CollectionService collectionService;
+    @Autowired
     private UserCollectionService userCollectionService;
 
+    @Autowired
+    OssFactory ossFactory;
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM");
 
     /**
      * 集合分页查询
@@ -48,6 +56,14 @@ public class CollectionController {
         return Result.succeed(page);
     }
 
+
+
+    @PutMapping
+    public Result update(@RequestBody Collection collection){
+        boolean b = collectionService.updateById(collection);
+        return Result.succeed(b);
+    }
+
     @PostMapping
     @Transactional
     public Result insert(@RequestBody Collection collection,@LoginUser JwtUserDetails userDetails){
@@ -56,9 +72,23 @@ public class CollectionController {
         return Result.succeed(a && b);
     }
 
-    @PutMapping
-    public Result update(@RequestBody Collection collection){
-        boolean b = collectionService.updateById(collection);
+    @PostMapping("/cover")
+    public Result uploadCover(@LoginUser JwtUserDetails jwtUserDetails,@RequestParam("uploadFile") MultipartFile file,Collection collection) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        InputStream inputStream = file.getInputStream();
+        String date = sdf.format(new Date());
+        String s = ossFactory.putObject("collection/cover/"+jwtUserDetails.getId()
+                +"/"+date+"/"+file.getSize()+originalFilename, inputStream);
+
+        collection.setCover(s);
+        boolean b;
+        if(ObjectUtil.isNotEmpty(collection.getId())){
+            b=collectionService.updateById(collection);
+        }else {
+            b=collectionService.save(collection);
+            b=userCollectionService.save(new UserCollection(jwtUserDetails.getId(), collection.getId()));
+        }
+
         return Result.succeed(b);
     }
 

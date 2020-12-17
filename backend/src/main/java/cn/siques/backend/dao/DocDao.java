@@ -1,7 +1,9 @@
 package cn.siques.backend.dao;
 
 import cn.siques.backend.entity.Doc;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -23,7 +25,8 @@ public interface DocDao extends BaseMapper<Doc> {
     @Select({
             "<script>",
             "select",
-            "*",
+            "id,parentId,parentIds,title," +
+                    "alias,counts,type,cover,sort,status,created,updated,isPublished",
             "from doc",
             "where id in",
             "<foreach collection='postIds' item='id' open='(' separator=',' close=')'>",
@@ -33,6 +36,8 @@ public interface DocDao extends BaseMapper<Doc> {
     })
     List<Doc> getListByIds(List<Long> postIds);
 
+//    @Override
+//    List<Doc> selectList(Wrapper<Doc> queryWrapper);
 
     /**
      * 恢复以删除的文档
@@ -41,4 +46,12 @@ public interface DocDao extends BaseMapper<Doc> {
      */
     @Update({"UPDATE doc SET STATUS = 1 WHERE id  = #{docId}"})
     int reuseDoc(String docId);
+
+    /**
+     * 物理删除文档
+     * @param docId
+     * @return
+     */
+    @Delete({"DELETE FROM doc WHERE id = #{docId} "})
+    boolean realDelete(Long docId);
 }

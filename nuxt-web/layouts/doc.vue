@@ -5,6 +5,7 @@
     <DocSideBar></DocSideBar>
     <BaseSnackBar></BaseSnackBar>
     <BaseLoading></BaseLoading>
+    <BaseConfirm></BaseConfirm>
     <keep-alive exclude="Archive,OverView">
       <router-view :key="$route.path"></router-view>
     </keep-alive>

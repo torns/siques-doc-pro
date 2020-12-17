@@ -4,66 +4,12 @@
   a {
     display: block !important;
     &.toc-h1 {
-      &::before {
-        display: block;
-        content: '';
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-        flex: 0 0 auto;
-        margin: auto 7px auto 0;
-        height: 2px;
-
-        padding-left: 70px;
-        background: currentColor;
-        background-clip: content-box;
-        -webkit-transition: 0.1s ease;
-        -o-transition: 0.1s ease;
-        transition: 0.1s ease;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-      }
     }
     &.toc-h2 {
-      &::before {
-        display: block;
-        content: '';
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-        flex: 0 0 auto;
-        margin: auto 7px auto 0;
-        height: 2px;
-        // width: 20px;
-        padding-left: 70px;
-        background: currentColor;
-        background-clip: content-box;
-        -webkit-transition: 0.1s ease;
-        -o-transition: 0.1s ease;
-        transition: 0.1s ease;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-      }
       padding-left: 15px;
       font-size: 16px;
     }
     &.toc-h3 {
-      &::before {
-        display: block;
-        content: '';
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-        flex: 0 0 auto;
-        margin: auto 7px auto 0;
-        height: 2px;
-        // width: 20px;
-        padding-left: 70px;
-        background: currentColor;
-        background-clip: content-box;
-        -webkit-transition: 0.1s ease;
-        -o-transition: 0.1s ease;
-        transition: 0.1s ease;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-      }
       padding-left: 30px;
       font-size: 14px;
     }

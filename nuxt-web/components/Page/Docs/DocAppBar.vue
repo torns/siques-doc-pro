@@ -23,7 +23,7 @@
     </v-app-bar>
     <CollectionFormDialog
       ref="dialog"
-      @submit="submit"
+      @submits="submit"
       v-model="collectionForm"
       title="新增知识库"
     ></CollectionFormDialog>
@@ -34,7 +34,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { insertCollection } from '@/api/collection'
+import { insertCollection, coverUpload } from '@/api/collection'
 
 @Component({
   computed: {
@@ -54,7 +54,7 @@ export default class DocAppBar extends Vue {
   selectedCollection
   userCollection
 
-  collectionForm = {}
+  collectionForm: any = {}
   $refs: any
 
   createCollection() {
@@ -65,7 +65,18 @@ export default class DocAppBar extends Vue {
   }
 
   async submit() {
-    await insertCollection(this.collectionForm)
+    const formData = new FormData()
+
+    formData.append('uploadFile', this.collectionForm.uploadFile)
+    formData.append('name', this.collectionForm.name)
+    formData.append('description', this.collectionForm.description || '')
+
+    if (this.collectionForm.uploadFile && this.collectionForm.cover.includes('blob')) {
+      await coverUpload(formData)
+    } else {
+      await insertCollection(this.collectionForm)
+    }
+
     this.$store.dispatch('modules/collection/getUserCollection')
   }
   menuOptions = [

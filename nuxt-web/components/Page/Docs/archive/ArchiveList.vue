@@ -26,7 +26,14 @@
         <v-list-item-action>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="$emit('reuse', { ...item, index })" v-bind="attrs" v-on="on" color="primary" dark icon>
+              <v-btn
+                @click="$emit('realDelete', { ...item, index })"
+                v-bind="attrs"
+                v-on="on"
+                color="primary"
+                dark
+                icon
+              >
                 <v-icon color="grey lighten-1">mdi-delete-empty</v-icon>
               </v-btn>
             </template>

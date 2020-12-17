@@ -4,6 +4,7 @@ const docApi = {
   docList: '/doc/findPage',
   createDoc: '/doc',
   delDoc: '/doc/logic',
+  realDelete: '/doc/real',
   reuseDoc: '/doc/reuse',
   updateDoc: '/doc',
   delDocList: '/doc/deleted',
@@ -87,6 +88,17 @@ export function delDoc(parameter) {
   return vue.prototype.$http({
     url: docApi.delDoc + `/${parameter}`,
     method: 'delete'
+  })
+}
+/**
+ *
+ * @param {docId} parameter
+ */
+export function realDelete(parameter) {
+  return vue.prototype.$http({
+    url: docApi.realDelete,
+    method: 'delete',
+    params: parameter
   })
 }
 

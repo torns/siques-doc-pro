@@ -5,6 +5,10 @@ export default ({ store }) => {
     createPersistedState({
       key: 'state',
       paths: []
+      // paths: ['modules.doc', 'modules.collection', 'modules.user']
+      // reducer: (state, paths) => {
+      //   return { paths }
+      // }
     })(store)
   })
 }

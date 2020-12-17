@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer app permanent>
+    <v-navigation-drawer width="320" app permanent>
       <v-btn :disabled="!selectedCollection.id" @click="manageCurrentCollection" block>
         <v-icon left>
           mdi-home
@@ -21,6 +21,7 @@
         </div>
         <v-treeview
           ref="tree"
+          v-show="!loading"
           @update:active="selectDoc"
           :items="docTree"
           :active="[selectedDoc.id]"
@@ -62,6 +63,7 @@
     </v-navigation-drawer>
 
     <DocMoveDialog ref="DocMoveDialog"></DocMoveDialog>
+    <DocTitleChangeDialog ref="DocTitleDialog" @changeTitle="changeTitle"></DocTitleChangeDialog>
   </div>
 </template>
 
@@ -69,12 +71,18 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { mapGetters } from 'vuex'
-import { createDoc, delDoc } from '@/api/doc.js'
-
+import { Callbacks } from 'jquery'
+import { createDoc, delDoc, updateDoc } from '@/api/doc.js'
+import { copyToClip } from '@/plugins/utils'
 @Component({
   computed: mapGetters(['selectedCollection', 'selectedDoc', 'docTree'])
 })
 export default class DocSideBar extends Vue {
+  loading = false
+  attrs = {
+    class: 'mb-6',
+    boilerplate: true
+  }
   docTree
   selectedCollection
   selectedDoc
@@ -106,10 +114,12 @@ export default class DocSideBar extends Vue {
   }
 
   async getDocTree() {
+    this.loading = true
     await this.$store.dispatch('modules/doc/getDocTree', {
       collectionId: this.selectedCollection.id,
       isPublished: false
     })
+    this.loading = false
   }
 
   async createDoc(row) {
@@ -138,9 +148,23 @@ export default class DocSideBar extends Vue {
     }
   }
 
+  async changeTitle(row) {
+    await updateDoc({ id: row.id, title: row.title })
+    this.$notify({ text: '修改成功' })
+  }
+
+  createChangeTitleDialog(row) {
+    this.$refs.DocTitleDialog.data = row
+    this.$refs.DocTitleDialog.visible = true
+  }
+
   createMoveDialog(row) {
     this.$refs.DocMoveDialog.currentId = row.id
     this.$refs.DocMoveDialog.visible = true
+  }
+
+  copyToClip(row) {
+    copyToClip(`https://www.siques.cn/doc/${row.id}`)
   }
 
   menuOptions = [
@@ -156,6 +180,11 @@ export default class DocSideBar extends Vue {
       title: '移动',
       icon: 'mdi-move',
       callback: this.createMoveDialog
+    },
+    {
+      title: '修改文章标题',
+      icon: 'mdi-edit',
+      callback: this.createChangeTitleDialog
     },
     {
       title: '删除',
@@ -176,7 +205,8 @@ export default class DocSideBar extends Vue {
     },
     {
       title: '复制文档链接',
-      icon: 'mdi-copy'
+      icon: 'mdi-copy',
+      callback: this.copyToClip
     }
   ]
 }

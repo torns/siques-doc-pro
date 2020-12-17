@@ -6,13 +6,14 @@
           <span class="headline">移动至</span>
         </v-card-title>
         <div v-for="collection in userCollection" :key="collection.id">
-          <CollectionCard
+          <CollectionMoveCard
             @click="click"
             :cover="collection.cover"
             :id="collection.id"
             :title="collection.name"
+            :description="collection.description"
             class="mb-4"
-          ></CollectionCard>
+          ></CollectionMoveCard>
         </div>
 
         <v-card-actions>
@@ -20,13 +21,13 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <CollectionMoverDetail
+    <CollectionMoveDetail
       ref="CollectionDetail"
       @move="doMove"
       :postTree="postTree"
       :currentId="currentId"
       :collectionId="collectionId"
-    ></CollectionMoverDetail>
+    ></CollectionMoveDetail>
   </div>
 </template>
 
@@ -35,13 +36,14 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { moveDoc, getDocTree } from '@/api/doc'
 @Component({
-  computed: mapGetters(['userCollection'])
+  computed: mapGetters(['userCollection', 'selectedCollection'])
 })
 export default class PostMoveDialog extends Vue {
   userCollection
   visible = false
   currentId = ''
   collectionId = ''
+  selectedCollection
   $refs: {
     CollectionDetail: HTMLFormElement
   }
@@ -62,9 +64,14 @@ export default class PostMoveDialog extends Vue {
         currentId: this.currentId,
         parentId: this.$refs.CollectionDetail.tree[0] || 0
       })
+      this.$store.dispatch('modules/doc/getDocTree', {
+        collectionId: this.selectedCollection.id,
+        isPublished: false
+      })
+      this.$store.dispatch('modules/collection/getUserCollection')
+      this.visible = false
+      this.$notify({ text: '移动成功' })
     }
-
-    this.$store.dispatch('modules/collection/getUserCollection')
   }
 }
 </script>

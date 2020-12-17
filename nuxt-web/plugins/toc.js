@@ -14,7 +14,7 @@ export default () => {
 
     new_a.attr('href', '#' + header.getAttribute('id'))
 
-    var new_div = $('<div class="ellipsis-1" style="opacity:0"></div>')
+    var new_div = $('<div class="ellipsis-1"  ></div>')
     new_div.text(header.innerText.split('#')[0])
     new_a.append(new_div)
 

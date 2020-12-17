@@ -8,6 +8,7 @@ import cn.siques.backend.entity.Doc;
 import cn.siques.backend.service.DocService;
 
 import cn.siques.backend.utils.RegexUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,9 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         if(docIds.size()==0){
             return new ArrayList<>();
         }
-        List<Doc> docList = docDao.selectBatchIds(docIds);
+        QueryWrapper<Doc> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id",docIds).select(Doc.class,i->!i.getProperty().equals("body"));
+        List<Doc> docList = this.list(queryWrapper);
         Stream<Doc> docStream = docList.stream().filter(post -> post.getStatus() == true);
         if(isPublished){
               docStream = docStream.filter(post -> post.getIsPublished().equals(true));
@@ -84,10 +87,14 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
 
     @Override
     public List<Doc> getDocsByCollectionId(Long collectionId) {
-        List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>().eq("collectionId", collectionId)).stream()
+        List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>()
+                .eq("collectionId", collectionId)).stream()
                 .map(collectionDoc -> collectionDoc.getDocId()).collect(Collectors.toList());
         if(docIds.size()>0){
-            return docDao.selectBatchIds(docIds);
+            QueryWrapper<Doc> wrapper = new QueryWrapper<Doc>()
+                    .select(Doc.class, i -> !i.getProperty().equals("body"))
+                    .in("id",docIds);
+            return docDao.selectList(wrapper);
         }
         return  new ArrayList<>();
     }
@@ -99,31 +106,39 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
 
     @Override
     public boolean updateAndExtract(Doc doc) {
-        String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.+)(?=\\))", doc.getBody());
-        doc.setCover(s);
-        String rawStr = doc.getBody()
-                .replaceAll("(\\*\\*|__)(.*?)(\\*\\*|__)", "")
-                .replaceAll("\\!\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
-                .replaceAll("\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
-                .replaceAll("<\\/?.+?\\/?>", "")
-                .replaceAll("(\\*)(.*?)(\\*)", "")
-                .replaceAll("`{1,2}[^`](.*?)`{1,2}", "")
-                .replaceAll("```([\\s\\S]*?)```[\\s]*", "")
-                .replaceAll("\\~\\~(.*?)\\~\\~", "")
-                .replaceAll("[\\s]*[-\\*\\+]+(.*)", "")
-                .replaceAll("[\\s]*[0-9]+\\.(.*)", "")
-                .replaceAll("(#+)(.*)", "")
-                .replaceAll("(>+)(.*)", "")
-                .replaceAll("\\r\\n", "")
-                .replaceAll("\\s", "");
-        if(rawStr.length()>150){
-            rawStr = rawStr.substring(0,150);
-        }
+       if(ObjectUtil.isNotNull(doc.getBody())){
+           String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.+)(?=\\))", doc.getBody());
 
-        doc.setAlias(rawStr);
-        doc.setCounts(Long.valueOf(rawStr.length()));
+           doc.setCover(s);
+           String rawStr = doc.getBody()
+                   .replaceAll("```([\\s\\S]*?)```[\\s]*", "")
+                   .replaceAll("(\\*\\*|__)(.*?)(\\*\\*|__)", "")
+                   .replaceAll("\\!\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+                   .replaceAll("\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+                   .replaceAll("<\\/?.+?\\/?>", "")
+                   .replaceAll("(\\*)(.*?)(\\*)", "")
+                   .replaceAll("`{1,2}[^`](.*?)`{1,2}", "")
+                   .replaceAll("\\~\\~(.*?)\\~\\~", "")
+                   .replaceAll("[\\s]*[-\\*\\+]+(.*)", "")
+//                   .replaceAll("[\\s]*[0-9]+\\.(.*)", "")
+                   .replaceAll("(#+)(.*)", "")
+                   .replaceAll("(>+)(.*)", "")
+                   .replaceAll("\\r\\n", "")
+                   .replaceAll("\\s", "");
+           if(rawStr.length()>150){
+               rawStr = rawStr.substring(0,150);
+           }
+
+           doc.setAlias(rawStr);
+           doc.setCounts(Long.valueOf(rawStr.length()));
+       }
         docDao.updateById(doc);
         return false;
+    }
+
+    @Override
+    public boolean realDelete(Long docId) {
+        return docDao.realDelete(docId);
     }
 
     private void findChildren(Doc root, List<Doc> leafs) {

@@ -2,11 +2,11 @@
   <v-snackbar v-model="notifyMsg.loading">
     {{ notifyMsg.text || `Open Snackbar` }}
 
-    <template v-slot:action="{ attrs }">
+    <!-- <template v-slot:action="{ attrs }">
       <v-btn v-bind="attrs" @click="snackbar = false" color="pink" text>
         Close
       </v-btn>
-    </template>
+    </template> -->
   </v-snackbar>
 </template>
 

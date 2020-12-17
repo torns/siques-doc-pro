@@ -3,7 +3,7 @@
     <div id="app">
       <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
         <v-row justify="center">
-          <v-col cols="12" md="11" xl="8" lg="8">
+          <v-col cols="12" md="11" lg="9" xl="8">
             <ul style="  margin: 0 auto" class="d-flex ai-center relative pl-4 pr-3">
               <li class=" xs-flex-1 d-flex ai-center pointer">
                 <img
@@ -86,7 +86,7 @@
         </v-row>
       </nav>
 
-      <nav id="menu" @click.stop class=" visible-xs  w-100">
+      <nav id="menu" @click.stop :class="`${breakPoint} visible-xs  w-100`">
         <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center jc-between relative">
           <!-- 左侧更多按钮 -->
           <li @click="$store.commit('SET_EXTENDMENU', true)" class="pl-3">
@@ -97,14 +97,14 @@
 
           <li class="favicon d-flex ai-center point">
             <img
-              v-show="isHomepage"
+              v-show="isHomepage || $route.path.includes('doc')"
               @click="$router.push('/')"
               src="~/static/banner.png"
               alt="Logo"
               style="object-fit: cover; height: 36px"
             />
             <img
-              v-show="!isHomepage"
+              v-show="!isHomepage && !$route.path.includes('doc')"
               @click="$router.push('/')"
               src="~/static/banner1.png"
               alt="Logo"
@@ -201,6 +201,17 @@ export default class Home extends Vue {
 
   scrollTop = 0
 
+  get breakPoint() {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs':
+        return 'breakPoint'
+      case 'sm':
+        return 'breakPoint'
+      default:
+        return ''
+    }
+  }
+
   @Watch('isMoreClick')
   isMoreClicked(newval: any, oldval: any) {
     if (newval) {
@@ -231,6 +242,12 @@ export default class Home extends Vue {
 <style lang="scss">
 .item {
   right: 17px;
+}
+
+.breakPoint {
+  position: absolute;
+  z-index: 10 !important;
+  background-color: transparent !important;
 }
 
 .write {

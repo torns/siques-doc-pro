@@ -5,9 +5,12 @@ import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.entity.Collection;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
+import cn.siques.backend.entity.UserCollection;
 import cn.siques.backend.service.CollectionDocService;
 import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.DocService;
+import cn.siques.backend.service.UserCollectionService;
+import cn.siques.backend.utils.model.DocEnum;
 import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
@@ -40,6 +43,9 @@ public class DocController {
 
      private CollectionDocService collectionDocService;
 
+
+     private UserCollectionService userCollectionService;
+
     /**
      * 文章分页查询
      * @param pageRequest
@@ -49,7 +55,11 @@ public class DocController {
     public Result<Page<Doc>> findPage(@RequestBody PageRequest<Doc> pageRequest){
         Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         Doc doc = pageRequest.getParams();
-        QueryWrapper wrapper=new QueryWrapper<Doc>().orderByDesc("created");
+        QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
+                .eq("isPublished",true).orderByDesc("created");
+        if(!doc.getType().equals(DocEnum.tfNews)){
+            wrapper.select(Doc.class,i->!i.getProperty().equals("body"));
+        }
         if(ObjectUtil.isNotEmpty(doc)){
             Map<String, String> searchMap = doc.toMap();
 
@@ -58,6 +68,7 @@ public class DocController {
             }
         }
         Page<Doc> page = docService.page(docPage,wrapper);
+
 
         return Result.succeed(page);
     }
@@ -123,6 +134,7 @@ public class DocController {
            docService.update(new UpdateWrapper<Doc>()
                     .eq("id", currentId)
                     .set("parentId", parentId)
+                    .set("isPublished",false)
                     .set("parentIds", parent.getParentIds() + parentId + ",")
             );
         }
@@ -150,6 +162,33 @@ public class DocController {
         boolean a = docService.removeById(id);
         return Result.succeed(a);
     }
+    /**
+     * 恢复文章
+     * @param docId
+     * @return
+     */
+    @GetMapping("/reuse")
+    public Result reuse(@RequestParam String docId){
+        return Result.succeed(docService.reuseDoc(docId));
+    }
+
+    /**
+     * 真实删除
+     */
+    @DeleteMapping("real")
+    public Result realDelete(@LoginUser JwtUserDetails userDetails,@RequestParam Long docId){
+        QueryWrapper<CollectionDoc> docQueryWrapper = new QueryWrapper<CollectionDoc>().eq("docId", docId);
+        Long collectionId = collectionDocService.getOne(docQueryWrapper).getCollectionId();
+        userDetails.getId();
+        List<Long> collectionIds = userCollectionService.getUserCollection(userDetails.getId()).stream().map(u -> u.getId())
+                .collect(Collectors.toList());
+        if(collectionIds.contains(collectionId)){
+           boolean a = docService.realDelete(docId);
+            boolean b=  collectionDocService.remove(docQueryWrapper);
+            return Result.succeed(a&&b);
+        }
+        return Result.succeed(false);
+    }
 
     /**
      * 查询集合中被删除的文章
@@ -170,15 +209,6 @@ public class DocController {
         return Result.succeed(new ArrayList<>());
     }
 
-    /**
-     * 恢复文章
-     * @param docId
-     * @return
-     */
-    @GetMapping("/reuse")
-    public Result reuse(@RequestParam String docId){
-        return Result.succeed(docService.reuseDoc(docId));
-    }
 
 
     /**

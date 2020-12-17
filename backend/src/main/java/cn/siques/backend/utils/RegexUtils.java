@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class RegexUtils {
 
     public static List<String> search(String regex, String text){
-        Pattern compile = Pattern.compile(regex, Pattern.DOTALL   +   Pattern.MULTILINE);
+        Pattern compile = Pattern.compile(regex);
         Matcher m = compile.matcher(text);
         ArrayList<String> list = new ArrayList<>();
         while (m.find()){
@@ -23,7 +23,7 @@ public class RegexUtils {
 
     public static String searchOne(String regex, String text){
         List<String> s = search(regex, text);
-        return s.size()==0?null:s.get(0);
+        return s.size()<1?null:s.get(0);
     }
 
 }

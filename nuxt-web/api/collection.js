@@ -7,7 +7,19 @@ const collectionApi = {
   updateCollection: '/collection',
   delCollection: '/collection',
   userDelCollection: '/collection/deleted',
-  reuse: '/collection/reuse'
+  reuse: '/collection/reuse',
+  cover: '/collection/cover'
+}
+
+export function coverUpload(parameter) {
+  return vue.prototype.$http({
+    url: collectionApi.cover,
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data: parameter
+  })
 }
 
 export function getUserCollection() {
@@ -17,6 +29,10 @@ export function getUserCollection() {
   })
 }
 
+/**
+ *
+ * @param {pageNum,pageSize} parameter
+ */
 export function listCollection(parameter) {
   return vue.prototype.$http({
     url: collectionApi.listCollection,

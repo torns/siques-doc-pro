@@ -21,6 +21,14 @@ export default () => {
         $('#menu').removeClass('hideMenu')
         $('#menu').addClass('showMenu')
       }
+
+      if (top > 350) {
+        $('#sidebar').css('position', 'fixed')
+        $('#sidebar').css('top', '80px')
+      } else {
+        $('#sidebar').css('position', 'absolute')
+        $('#sidebar').css('top', '350px')
+      }
     }
   })
 }

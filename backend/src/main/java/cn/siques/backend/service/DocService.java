@@ -56,4 +56,11 @@ public interface DocService extends IService<Doc> {
      * @return
      */
     boolean updateAndExtract(Doc doc);
+
+    /**
+     * 真实删除
+     * @param docId
+     * @return
+     */
+    boolean realDelete(Long docId);
 }
