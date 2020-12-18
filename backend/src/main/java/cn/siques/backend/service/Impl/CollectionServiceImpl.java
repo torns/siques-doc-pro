@@ -54,7 +54,6 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     @Override
     @Transactional
     public Page<Collection> findPage(Page<Collection> collectionPage) {
-        long l = System.currentTimeMillis();
         Page<Collection> selectPage = collectionDao.selectPage(collectionPage, new QueryWrapper<>());
         List<Long> collectIds = selectPage.getRecords().stream().map(collection -> collection.getId()).collect(Collectors.toList());
         List<CollectionDoc> collectionDocs = collectionDocService.list(new QueryWrapper<CollectionDoc>().in("collectionId", collectIds));
@@ -80,8 +79,6 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
             collection.setUser(idUser.get(collectionUser.get(collection.getId())));
             collection.setDocIds(collectionDocIds.get(collection.getId()));
         });
-
-       System.out.println(System.currentTimeMillis()-l);
        return selectPage;
     }
 }
