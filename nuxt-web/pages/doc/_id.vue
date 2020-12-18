@@ -69,8 +69,8 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 import mediumZoom from 'medium-zoom'
 
-import { hljs } from '../../../plugins/utils.js'
-import md from '../../../plugins/markdown.js'
+import { hljs } from '@/plugins/utils.js'
+import md from '@/plugins/markdown.js'
 import tocjs from '~/plugins/toc.js'
 
 import toc from '~/components/Toc/PostToc.vue'

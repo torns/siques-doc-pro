@@ -1,6 +1,11 @@
 server:
   port: 3002
 spring:
+  elasticsearch:
+    rest:
+      uris: 139.198.189.114:9200
+      username: elastic
+      password: heshenghao
   oss:
     endpoint: http://oss-accelerate.aliyuncs.com
     urlPre: https://shuxie.oss-accelerate.aliyuncs.com/

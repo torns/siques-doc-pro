@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import { listCollection } from '@/api/collection'
 @Component({})
 export default class CollectionIndex extends Vue {

@@ -245,6 +245,15 @@ public class DocController {
     }
 
 
+    @GetMapping("/seo/sitemap")
+    public Result sitemap(){
+        QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
+                .select(Doc.class,i->!i.getProperty().equals("body"))
+                .eq("type",DocEnum.doc)
+                .eq("isPublished",true).orderByDesc("created");
+
+        return Result.succeed(docService.list(wrapper));
+    }
 
 
 

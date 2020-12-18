@@ -11,7 +11,9 @@ const getters = {
   notifyMsg: (state) => state.modules.tips.notifyMsg,
   docSideBar: (state) => state.docSideBar,
   extendMenu: (state) => state.extendMenu,
-  confirmMsg: (state) => state.modules.tips.confirmMsg
+  confirmMsg: (state) => state.modules.tips.confirmMsg,
+  recomendCollection: (state) => state.modules.collection.recomendCollection,
+  pageLoading: (state) => state.pageLoading
 }
 
 export default getters

@@ -1,16 +1,12 @@
 import dotenv from 'dotenv'
-
+import axios from 'axios'
 dotenv.config()
+const mode = process.env.NODE_ENV === 'production'
 export default {
-  mode: 'universal',
+  model: 'universal',
   /*
    ** Headers of the page
    */
-  // loadingIndicator: {
-  //   name: 'circle',
-  //   color: '#3B8070',
-  //   background: 'white'
-  // },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -58,15 +54,8 @@ export default {
       },
       {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
-        src:
-          process.env.NODE_ENV === 'production'
-            ? 'https://cdn.siques.cn/libs/js/vue.min.js'
-            : 'https://cdn.siques.cn/libs/js/vue.js'
+        src: mode ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
       },
-      // {
-      //   src: 'https://cdn.siques.cn/libs/js/element-ui@2.13.2/index.js',
-      //   ssr: true
-      // },
       {
         src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
       },
@@ -86,11 +75,11 @@ export default {
       {
         src: 'https://cdn.siques.cn/libs/js/riddler-sdk-0.2.2.js',
         defer: true
-      },
-
-      {
-        src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
       }
+
+      // {
+      //   src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
+      // }
 
       // {
       //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
@@ -99,7 +88,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '/icon/iconfont.css' },
+      // { rel: 'stylesheet', href: '/icon/iconfont.css' },
       // { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
       // {
       //   rel: 'stylesheet',
@@ -133,7 +122,6 @@ export default {
    */
   css: [
     // 'element-ui/lib/theme-chalk/index.css',
-    'element-ui/lib/theme-chalk/display.css',
     '~/css/global.scss'
   ],
   /*
@@ -190,14 +178,13 @@ export default {
     '@nuxtjs/dotenv'
   ],
   sitemap: {
-    hostname: 'https://www.siques.cn',
+    hostname: mode ? 'https://www.siques.cn' : 'http://localhost:3002',
     gzip: true,
-    exclude: ['/ask', '/post', 'record']
-    // routes: async () => {
-    //   const res = await axios.get('http://www.siques.cn/api/posts/seo/sitemap')
-
-    //   return res.data.map((list) => `/${list.type}/${list.id}`)
-    // }
+    exclude: ['/docs'],
+    routes: async () => {
+      const res = await axios.get(`${mode ? 'https://www.siques.cn' : 'http://localhost:3002'}/doc/seo/sitemap`)
+      return res.data.datas.map((list) => `/doc/${list.id}`)
+    }
   },
 
   /*
@@ -246,13 +233,13 @@ export default {
           'vue-meta': 'VueMeta',
           transliteration: 'SlugifyFunction',
           'markdown-it': 'markdownit',
-          'vue-lazyload': 'VueLazyload',
+          // 'vue-lazyload': 'VueLazyload',
           katex: 'katex'
         })
       }
     }
-  },
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'
   }
+  // env: {
+  //   baseUrl: process.env.BASE_URL || 'http://localhost:3001/api'
+  // }
 }

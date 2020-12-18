@@ -9,7 +9,7 @@
       temporary
     >
       <v-carousel v-model="model" show-arrows-on-hover cycle height="200">
-        <template v-for="(collect, i) in collectionList">
+        <template v-for="(collect, i) in recomendCollection">
           <v-carousel-item
             @click="$router.push(`/doc/${collect.docIds[0]}`)"
             v-if="collect.docIds != null"
@@ -73,6 +73,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
 import { listCollection } from '@/api/collection'
 @Component({
   computed: {
@@ -83,7 +84,8 @@ import { listCollection } from '@/api/collection'
       set(v) {
         this.$store.commit('SET_DOCSIDEBAR', v)
       }
-    }
+    },
+    ...mapGetters(['recomendCollection'])
   }
 })
 export default class NaviSideMenu extends Vue {
@@ -93,11 +95,12 @@ export default class NaviSideMenu extends Vue {
   @Prop()
   doc
 
-  collectionList = []
+  recomendCollection
 
-  async mounted() {
-    const res = await listCollection({ pageNum: 1, pageSize: 5 })
-    this.collectionList = res.datas.records
+  mounted() {
+    if (this.recomendCollection.length < 1) {
+      this.$store.dispatch('modules/collection/getRecomendCollection')
+    }
   }
 
   colors = ['primary', 'secondary', 'yellow darken-2', 'red', 'orange']

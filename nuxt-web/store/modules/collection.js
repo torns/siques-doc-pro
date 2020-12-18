@@ -1,8 +1,9 @@
-import { getUserCollection, getUserDelCollection } from '@/api/collection'
+import { getUserCollection, getUserDelCollection, listCollection } from '@/api/collection'
 
 export const state = () => ({
   userCollection: [],
-  delCollection: []
+  delCollection: [],
+  recomendCollection: []
 })
 
 export const mutations = {
@@ -11,6 +12,9 @@ export const mutations = {
   },
   SET_DELCOLLECTION: (state, data) => {
     state.delCollection = data
+  },
+  SET_RECOMENTCOLLECTION: (state, data) => {
+    state.recomendCollection = data
   }
 }
 
@@ -22,5 +26,9 @@ export const actions = {
   async getDelCollection({ commit }) {
     const res = await getUserDelCollection()
     commit('SET_DELCOLLECTION', res.datas)
+  },
+  async getRecomendCollection({ commit }) {
+    const res = await listCollection({ pageNum: 1, pageSize: 5 })
+    commit('SET_RECOMENTCOLLECTION', res.datas.records)
   }
 }

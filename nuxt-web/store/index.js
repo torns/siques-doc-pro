@@ -1,5 +1,6 @@
 export const state = () => ({
   loginFormVisible: false,
+  pageLoading: false,
   selectedCollection: {},
   selectedDoc: {},
   docSideBar: false,
@@ -33,6 +34,9 @@ export const mutations = {
   },
   SET_EXTENDMENU(state, data) {
     state.extendMenu = data
+  },
+  SET_PAGELOADING(state, data) {
+    state.pageLoading = data
   }
 }
 

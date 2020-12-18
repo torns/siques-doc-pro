@@ -1,11 +1,21 @@
 <template>
   <v-app>
-    <BaseSnackBar></BaseSnackBar>
-    <transition leave-active-class="animated fadeOut">
-      <sq-indicator v-if="show"></sq-indicator>
-    </transition>
+    <div :id="isHomepage ? 'home' : 'other'">
+      <div id="app">
+        <IndexMenu></IndexMenu>
+        <keep-alive include="AppPage">
+          <router-view :key="$route.path"></router-view>
+        </keep-alive>
+      </div>
+    </div>
 
-    <!-- 导航栏 -->
+    <BaseSnackBar></BaseSnackBar>
+    <BaseLoading></BaseLoading>
+    <v-fade-transition>
+      <BaseIndicator v-if="pageLoading"></BaseIndicator>
+    </v-fade-transition>
+
+    <!-- 小屏幕导航栏 -->
     <BaseExtendMenu>
       <v-list :dark="isHomepage && true" :light="!isHomepage && true" dense nav>
         <v-list-item v-for="item in items" :key="item.title" link>
@@ -27,52 +37,47 @@
       </v-list>
     </BaseExtendMenu>
     <LoginDialog></LoginDialog>
-    <nuxt />
   </v-app>
 </template>
-<script>
-import {} from 'nuxt-property-decorator'
+<script lang="ts">
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
 
-export default {
+@Component({
+  computed: mapGetters(['userInfo', 'extendMenu', 'pageLoading'])
+})
+export default class DefaultLayouts extends Vue {
   /* eslint-disable */
 
-  data() {
-    return {
-      show: true,
-      items: [
-        { title: '知识星球', icon: 'mdi-earth', href: '/collection' },
-        { title: '24小时', icon: 'mdi-help-box', href: '/moment' },
-        { title: '搜索', icon: 'mdi-view-dashboard', href: '/search' }
-      ]
-    }
-  },
+  userInfo
+  pageLoading
+  items = [
+    { title: '知识星球', icon: 'mdi-earth', href: '/collection' },
+    { title: '24小时', icon: 'mdi-help-box', href: '/moment' },
+    { title: '搜索', icon: 'mdi-view-dashboard', href: '/search' }
+  ]
+  extendMenu
 
-  watch: {
-    $route(to, from) {
-      if (to.path !== from.path) {
-        var that = this
-        // that.show = true
-        setTimeout(() => {
-          that.show = false
-        }, 0)
-      }
-    }
-  },
+  get isHomepage() {
+    return this.$route.path === '/'
+  }
 
-  computed: {
-    isHomepage() {
-      return this.$route.path === '/'
-    }
-  },
-
-  mounted() {
+  beforeCreate() {
+    this.$store.commit('SET_PAGELOADING', true)
     setTimeout(() => {
-      var that = this
-      that.show = false
-    }, 800)
-  },
-
-  methods: {}
+      this.$store.commit('SET_PAGELOADING', false)
+    }, 600)
+  }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.item {
+  right: 17px;
+}
+
+.write {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+</style>
