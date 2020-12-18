@@ -182,7 +182,7 @@ export default {
     gzip: true,
     exclude: ['/docs'],
     routes: async () => {
-      const res = await axios.get(`${mode ? 'https://www.siques.cn' : 'http://localhost:3002'}/doc/seo/sitemap`)
+      const res = await axios.get(`${mode ? 'https://www.siques.cn/api' : 'http://localhost:3002'}/doc/seo/sitemap`)
       return res.data.datas.map((list) => `/doc/${list.id}`)
     }
   },
