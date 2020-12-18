@@ -10,21 +10,21 @@
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
                     <v-text-field
-                      @keyup.enter.native="$router.push(`/search/${search}`)"
                       v-model="search"
                       class="mx-4"
                       color="white"
                       hide-details
                       label="Search"
                       append-icon="mdi-magnify"
+                      @keyup.enter.native="$router.push(`/search/${search}`)"
                     >
                       <template v-slot:label>
                         搜索你喜欢的
                       </template>
                     </v-text-field>
                     <div class="text-white text-center py-5 fs-md">
-                      热门搜索：<span @click="$router.push(`/search/docker`)" class="pointer hoverlink">docker</span>
-                      <span @click="$router.push(`/search/nuxtjs`)" class="pointer hoverlink">nuxtjs</span>
+                      热门搜索：<span class="pointer hoverlink" @click="$router.push(`/search/docker`)">docker</span>
+                      <span class="pointer hoverlink" @click="$router.push(`/search/nuxtjs`)">nuxtjs</span>
                     </div>
                     <sq-down></sq-down>
                   </div>
@@ -99,7 +99,7 @@
       </v-row>
     </v-container>
 
-    <sq-footer :topBorder="true"> </sq-footer>
+    <sq-footer :top-border="true"> </sq-footer>
   </div>
 </template>
 

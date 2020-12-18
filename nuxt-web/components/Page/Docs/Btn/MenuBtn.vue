@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
-          <v-icon v-bind="attrs" v-on="{ ...tooltip, ...menu }" color="darken-2">
+          <v-icon v-bind="attrs" color="darken-2" v-on="{ ...tooltip, ...menu }">
             <slot></slot>
           </v-icon>
         </template>
@@ -11,7 +11,7 @@
       </v-tooltip>
     </template>
     <v-list>
-      <v-list-item @click="option.callback(item)" v-for="(option, index) in validOptions" :key="index" link>
+      <v-list-item v-for="(option, index) in validOptions" :key="index" link @click="option.callback(item)">
         <v-icon v-if="option.icon"> {{ option.icon }}</v-icon>
         <v-list-item-title>{{ option.title }}</v-list-item-title>
       </v-list-item>

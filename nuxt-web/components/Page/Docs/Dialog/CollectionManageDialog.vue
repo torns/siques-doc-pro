@@ -2,7 +2,7 @@
   <v-dialog v-model="visible" fullscreen hide-overlay transition="dialog-bottom-transition">
     <v-card>
       <v-toolbar dark color="primary">
-        <v-btn @click="visible = false" icon dark>
+        <v-btn icon dark @click="visible = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>知识库</v-toolbar-title>

@@ -3,7 +3,7 @@ import axios from 'axios'
 dotenv.config()
 const mode = process.env.NODE_ENV === 'production'
 export default {
-  model: 'universal',
+  mode: 'universal',
   /*
    ** Headers of the page
    */

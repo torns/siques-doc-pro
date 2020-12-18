@@ -5,12 +5,12 @@
         <v-card :color="colors[index % colors.length]" dark>
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
-              <v-card-title v-text="item.name" class="headline"></v-card-title>
+              <v-card-title class="headline" v-text="item.name"></v-card-title>
 
               <v-card-subtitle v-text="item.description"></v-card-subtitle>
 
               <v-card-actions>
-                <v-btn @click="reuse(item, index)" class="ml-2 mt-5" outlined rounded small>
+                <v-btn class="ml-2 mt-5" outlined rounded small @click="reuse(item, index)">
                   取消删除
                 </v-btn>
               </v-card-actions>

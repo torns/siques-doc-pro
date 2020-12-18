@@ -4,25 +4,25 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="12" xs="12">
-            <v-text-field :rules="rules.loginCode" v-model="loginCodeModel.loginCode" label="账号" required>
+            <v-text-field v-model="loginCodeModel.loginCode" :rules="rules.loginCode" label="账号" required>
             </v-text-field>
           </v-col>
           <v-col cols="12" md="12" xs="12">
             <v-text-field
-              :rules="rules.password"
               v-model="loginCodeModel.password"
+              :rules="rules.password"
               :type="showPass ? 'text' : 'password'"
               :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append="showPass = !showPass"
               autocomplete="true"
               label="输入密码"
               passw
               hint="至少6个字符"
               counter
+              @click:append="showPass = !showPass"
             >
             </v-text-field>
           </v-col>
-          <v-btn @click="status.show = !status.show" text class="pointer">
+          <v-btn text class="pointer" @click="status.show = !status.show">
             手机快捷登录
           </v-btn>
         </v-row>
@@ -38,6 +38,7 @@ import { Vue, Component, Model, Prop } from 'nuxt-property-decorator'
 export default class PasswordForm extends Vue {
   @Model('value', {})
   status
+
   showPass = false
   valid = true
   @Prop()

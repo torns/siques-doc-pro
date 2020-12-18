@@ -4,23 +4,23 @@
     <div id="navigation" class="visible-xs " style=" z-index: 2;position: absolute;top:0;width:100%">
       <nav class="tabbar">
         <div class="d-flex jc-between ai-center h-100">
-          <label v-if="!isMoreClick" @click="$emit('changestatu', true)" class="pl-3 point" for="menu-1">
+          <label v-if="!isMoreClick" class="pl-3 point" for="menu-1" @click="$emit('changestatu', true)">
             <svg>
               <use xlink:href="#settingsIcon" />
             </svg>
           </label>
 
-          <li v-else @click="$emit('changestatu', false)" class="pl-3 point">
+          <li v-else class="pl-3 point" @click="$emit('changestatu', false)">
             <svg style="height:25px;width: 25px;">
               <use xlink:href="#offsIcon" />
             </svg>
           </li>
 
-          <label @click="$router.push('/')" class="point">
+          <label class="point" @click="$router.push('/')">
             <img style="height:30px" src="~/static/banner.png" alt="banner" />
           </label>
 
-          <label @click="$router.push('/search')" class="pr-3 point" for="menu-3">
+          <label class="pr-3 point" for="menu-3" @click="$router.push('/search')">
             <svg>
               <use xlink:href="#searchIcon" />
             </svg>

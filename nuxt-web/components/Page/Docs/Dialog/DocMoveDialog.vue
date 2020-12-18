@@ -7,12 +7,12 @@
         </v-card-title>
         <div v-for="collection in userCollection" :key="collection.id">
           <CollectionMoveCard
-            @click="click"
-            :cover="collection.cover"
             :id="collection.id"
+            :cover="collection.cover"
             :title="collection.name"
             :description="collection.description"
             class="mb-4"
+            @click="click"
           ></CollectionMoveCard>
         </div>
 
@@ -23,10 +23,10 @@
     </v-dialog>
     <CollectionMoveDetail
       ref="CollectionDetail"
+      :post-tree="postTree"
+      :current-id="currentId"
+      :collection-id="collectionId"
       @move="doMove"
-      :postTree="postTree"
-      :currentId="currentId"
-      :collectionId="collectionId"
     ></CollectionMoveDetail>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default class PostMoveDialog extends Vue {
   $refs: {
     CollectionDetail: HTMLFormElement
   }
+
   postTree = []
   async click(id) {
     this.$refs.CollectionDetail.visible = true

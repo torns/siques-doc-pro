@@ -1,7 +1,7 @@
 <template>
-  <v-dialog id="extend-bar" :append-to-body="true" v-model="extendMenu" :show-close="false" fullscreen>
+  <v-dialog id="extend-bar" v-model="extendMenu" :append-to-body="true" :show-close="false" fullscreen>
     <v-list-item style="place-content: flex-end;">
-      <v-btn @click="extendMenu = false" icon class="ma-3 float-right pointer" large color="white">
+      <v-btn icon class="ma-3 float-right pointer" large color="white" @click="extendMenu = false">
         <v-icon dark>
           mdi-close
         </v-icon>

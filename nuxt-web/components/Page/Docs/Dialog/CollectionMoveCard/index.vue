@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="344" outlined>
-    <v-list-item @click="$emit('click', id)" three-line>
+    <v-list-item three-line @click="$emit('click', id)">
       <v-list-item-content>
         <div class="overline mb-4">
           知识点

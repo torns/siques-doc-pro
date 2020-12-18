@@ -4,7 +4,7 @@
     <v-list v-if="list.length > 0" subheader two-line>
       <v-list-item v-for="(item, index) in list" :key="item.id">
         <v-list-item-avatar>
-          <v-icon v-text="`mdi-clipboard-text`" class="blue" dark></v-icon>
+          <v-icon class="blue" dark v-text="`mdi-clipboard-text`"></v-icon>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -16,7 +16,7 @@
         <v-list-item-action>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="$emit('reuse', { ...item, index })" v-bind="attrs" v-on="on" color="primary" dark icon>
+              <v-btn v-bind="attrs" color="primary" dark icon @click="$emit('reuse', { ...item, index })" v-on="on">
                 <v-icon color="grey lighten-1">mdi-restart</v-icon>
               </v-btn>
             </template>
@@ -27,12 +27,12 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                @click="$emit('realDelete', { ...item, index })"
                 v-bind="attrs"
-                v-on="on"
                 color="primary"
                 dark
                 icon
+                @click="$emit('realDelete', { ...item, index })"
+                v-on="on"
               >
                 <v-icon color="grey lighten-1">mdi-delete-empty</v-icon>
               </v-btn>

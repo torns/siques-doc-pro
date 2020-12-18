@@ -11,7 +11,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn @click="visible = false" icon>
+        <v-btn icon @click="visible = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-app-bar>
@@ -31,7 +31,7 @@
       </CollectionPublicTree>
       <v-card-text>
         <v-card-actions>
-          <v-btn :loading="loading" @click="doPublish" block color="primary">
+          <v-btn :loading="loading" block color="primary" @click="doPublish">
             发布
           </v-btn>
         </v-card-actions>
@@ -61,6 +61,7 @@ export default class CollectionPublishDialog extends Vue {
   tree = {
     selected: []
   }
+
   visible = false
   selectedRadio = true
   loading = false
@@ -80,6 +81,7 @@ export default class CollectionPublishDialog extends Vue {
       this.visible = false
     }, 500)
   }
+
   options = [
     // {
     //   label: '发布所有内容',

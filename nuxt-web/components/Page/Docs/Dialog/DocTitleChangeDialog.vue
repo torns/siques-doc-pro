@@ -10,10 +10,10 @@
         </v-form>
       </v-card-text>
       <v-card-actions justify-end>
-        <v-btn @click="visible = false" color="warning" text>
+        <v-btn color="warning" text @click="visible = false">
           取消
         </v-btn>
-        <v-btn @click="validates" color="primary" text>
+        <v-btn color="primary" text @click="validates">
           确定
         </v-btn>
       </v-card-actions>

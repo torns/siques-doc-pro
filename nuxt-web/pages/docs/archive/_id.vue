@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <LazyArchiveList @realDelete="realDelete" @reuse="docReuse" :list="delDoc"></LazyArchiveList>
+    <LazyArchiveList :list="delDoc" @realDelete="realDelete" @reuse="docReuse"></LazyArchiveList>
   </v-main>
 </template>
 
@@ -16,6 +16,7 @@ export default class Archive extends Vue {
   layout(context) {
     return 'doc'
   }
+
   selectedCollection
   delDoc
 
@@ -27,10 +28,12 @@ export default class Archive extends Vue {
       this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
     }
   }
+
   async docReuse(item) {
     await reuseDoc({ docId: item.id })
     this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
   }
+
   realDelete(item) {
     this.$confirm({ title: `确定要删除文档${item.title}`, text: '请注意该文档删除后将无法恢复' })
       .then(async () => {

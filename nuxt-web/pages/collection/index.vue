@@ -2,7 +2,7 @@
   <div class="pt-10">
     <CollectionCard :collects="collections"></CollectionCard>
 
-    <BasePagination @current-change="handleChange" v-model="pagination"></BasePagination>
+    <BasePagination v-model="pagination" @current-change="handleChange"></BasePagination>
 
     <sq-footer class="pt-5"></sq-footer>
   </div>
@@ -21,12 +21,14 @@ export default class CollectionIndex extends Vue {
       pagination: Object.assign({ pageNum: params.id || 1, pageSize: 10, total: res.datas.total })
     }
   }
+
   pagination: any = {}
 
   async handleChange() {
     const res = await listCollection({ pageNum: this.pagination.pageNum, pageSize: this.pagination.pageSize })
     this.collections = res.datas.records
   }
+
   collections = []
 
   head() {

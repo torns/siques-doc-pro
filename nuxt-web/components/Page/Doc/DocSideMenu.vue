@@ -11,11 +11,11 @@
       <v-carousel v-model="model" show-arrows-on-hover cycle height="200">
         <template v-for="(collect, i) in recomendCollection">
           <v-carousel-item
-            @click="$router.push(`/doc/${collect.docIds[0]}`)"
             v-if="collect.docIds != null"
-            :src="collect.cover"
             :key="i"
+            :src="collect.cover"
             class="pointer"
+            @click="$router.push(`/doc/${collect.docIds[0]}`)"
           >
             <v-row class="fill-height text-truncate" align="center" justify="center">
               <!-- <div class="text-h5 ">{{ collect.name }}</div> -->
@@ -29,7 +29,6 @@
       <v-list nav dense>
         <v-treeview
           ref="tree"
-          @update:active="selectDoc"
           :items="docTree"
           :active="[doc.id]"
           color="warning"
@@ -40,6 +39,7 @@
           dense
           dark
           hoverable
+          @update:active="selectDoc"
         >
           <template v-slot:prepend="{ item }">
             <div class="text-truncate">
@@ -50,10 +50,10 @@
       </v-list>
     </v-navigation-drawer>
     <svg
-      @click="$store.commit('SET_DOCSIDEBAR', true)"
       :class="`ham ham3 ${docSideBars == true ? 'active' : ''} side-menu`"
       viewBox="0 0 100 100"
       width="60"
+      @click="$store.commit('SET_DOCSIDEBAR', true)"
     >
       <path
         class="line top"

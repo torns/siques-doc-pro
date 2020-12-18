@@ -4,20 +4,20 @@
       <v-container>
         <v-row no-gutters style="padding-top: 85px;">
           <v-col cols="12" xs="12" sm="12" md="8" lg="8" xl="8">
-            <v-form ref="form" @submit.native.prevent v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid" lazy-validation @submit.native.prevent>
               <v-text-field
-                :counter="40"
                 v-model="pagination.queryStr"
+                :counter="40"
                 :rules="searchRules"
-                @keyup.enter.native="initSearch"
                 label="请输入"
                 placeholder="输入关键字搜索"
                 hide-details="auto"
+                @keyup.enter.native="initSearch"
               ></v-text-field>
             </v-form>
           </v-col>
           <v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4" class="pt-3 pl-3">
-            <v-btn @click="initSearch" block>搜索</v-btn>
+            <v-btn block @click="initSearch">搜索</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -32,9 +32,9 @@
               <div v-if="docs.length > 0">
                 <div v-for="doc in docs" :key="doc.id" class="text-gray-1">
                   <div class="point pt-4">
-                    <router-link :to="`/doc/${doc.id}`" v-html="doc.title" tag="a"> </router-link>
+                    <router-link :to="`/doc/${doc.id}`" tag="a" v-html="doc.title"> </router-link>
                   </div>
-                  <div v-html="doc.body" class="py-2 fs-xm "></div>
+                  <div class="py-2 fs-xm " v-html="doc.body"></div>
                 </div>
               </div>
               <div v-else>
@@ -44,11 +44,11 @@
               </div>
             </div>
           </div>
-          <v-btn v-if="hasMore" @click="moreSearch" text class="mt-4" block color="primary">点击查看更多</v-btn>
+          <v-btn v-if="hasMore" text class="mt-4" block color="primary" @click="moreSearch">点击查看更多</v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <sq-footer :topBorder="true"></sq-footer>
+    <sq-footer :top-border="true"></sq-footer>
   </div>
 </template>
 
@@ -75,6 +75,7 @@ export default class searchIndex extends Vue {
     }
     return {}
   }
+
   valid = false
   head() {
     return {

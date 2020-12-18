@@ -39,6 +39,7 @@ export default class CollectionPublicTree extends Vue {
   get _items(): Object {
     return this.$refs.tree.nodes
   }
+
   /** 包括父节点的选中内容 */
   get _selection() {
     const proxy = {}

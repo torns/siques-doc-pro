@@ -4,15 +4,15 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="12" xs="12">
-            <v-text-field ref="loginCode" :rules="rules.loginCode" v-model="phoneCodeModel.loginCode" label="手机号">
+            <v-text-field ref="loginCode" v-model="phoneCodeModel.loginCode" :rules="rules.loginCode" label="手机号">
             </v-text-field>
           </v-col>
           <v-col cols="12" md="12" xs="12">
-            <v-text-field :rules="rules.verification" v-model="phoneCodeModel.verification" label="验证码">
-              <v-btn slot="append" :disabled="disabled" @click.stop @click="renderBox" text>{{ btnText }}</v-btn>
+            <v-text-field v-model="phoneCodeModel.verification" :rules="rules.verification" label="验证码">
+              <v-btn slot="append" :disabled="disabled" text @click.stop @click="renderBox">{{ btnText }}</v-btn>
             </v-text-field>
           </v-col>
-          <v-btn @click="status.show = !status.show" text class="pointer">
+          <v-btn text class="pointer" @click="status.show = !status.show">
             账号密码登录
           </v-btn>
         </v-row>
@@ -27,12 +27,13 @@
 
 <script lang="ts">
 import { Vue, Component, Model, Prop } from 'nuxt-property-decorator'
-import cbox from './cbox/index'
 import { verifyAndSendCode } from '@/api/user'
+import cbox from './cbox/index'
 @Component({})
 export default class PhoneCodeForm extends Vue {
   @Model('value')
   status
+
   @Prop({
     default: () => {
       return {}
@@ -64,6 +65,7 @@ export default class PhoneCodeForm extends Vue {
     loginCode: [(val) => (/^[1][3,4,5,7,8][0-9]{9}$/.test(val) && val.length === 11) || `I don't believe you!`],
     verification: [(val) => (val && val.length === 6) || '请输入6位验证码']
   }
+
   $refs: any
   renderBox() {
     if (this.$refs.loginCode.valid) {

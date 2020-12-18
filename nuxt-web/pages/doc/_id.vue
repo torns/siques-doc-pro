@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sq-sidemenu :docTree="docTree" :doc="doc"> </sq-sidemenu>
+    <sq-sidemenu :doc-tree="docTree" :doc="doc"> </sq-sidemenu>
     <v-main>
       <div
         class="absolute d-flex jc-center flex-column ai-center "
@@ -44,7 +44,7 @@
                   ></div>
 
                   <!-- 滚动监听区域 -->
-                  <div id="doc-content" v-scroll-spy v-html="doc.body" v-highlight class="article "></div>
+                  <div id="doc-content" v-scroll-spy v-highlight class="article " v-html="doc.body"></div>
                   <div class="text-primary mt-3 fs-xs">
                     <!-- 阅读：{{ doc.views > 1000 ? (doc.views / 1000).toFixed(1) + 'k' : doc.views }}
                     <span>.</span> -->
@@ -71,13 +71,13 @@ import mediumZoom from 'medium-zoom'
 
 import { hljs } from '@/plugins/utils.js'
 import md from '@/plugins/markdown.js'
+import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
 
 import toc from '~/components/Toc/PostToc.vue'
 
 import sideMenu from '~/components/Page/Doc/DocSideMenu.vue'
 
-import { getDocDetail, getDocTree } from '@/api/doc'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('p img'))
 }
@@ -100,6 +100,7 @@ export default class Doc extends Vue {
       docTree: docTree.datas
     }
   }
+
   onIntersect = false
   docTree = []
   head() {

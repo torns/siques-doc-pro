@@ -9,7 +9,7 @@
         <v-toolbar-title>用户登录</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn @click="closeLoginForm" icon dark right>
+          <v-btn icon dark right @click="closeLoginForm">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar-items>
@@ -17,10 +17,10 @@
 
       <v-window v-model="status.show">
         <v-window-item :value="true">
-          <PhoneCodeForm :phoneCodeModel="phoneCodeModel" v-model="status">
+          <PhoneCodeForm v-model="status" :phone-code-model="phoneCodeModel">
             <template v-slot:default="{ valid }">
               <v-card-actions>
-                <v-btn @click="loginByPhoneCode(valid)" :disabled="!valid" block color="success darken-1">
+                <v-btn :disabled="!valid" block color="success darken-1" @click="loginByPhoneCode(valid)">
                   登录
                 </v-btn>
               </v-card-actions>
@@ -28,10 +28,10 @@
           >
         </v-window-item>
         <v-window-item :value="false">
-          <PasswordForm :loginCodeModel="loginCodeModel" v-model="status">
+          <PasswordForm v-model="status" :login-code-model="loginCodeModel">
             <template v-slot:default="{ valid }">
               <v-card-actions>
-                <v-btn :disabled="!valid" @click="loginByPass(valid)" block color="success darken-1">
+                <v-btn :disabled="!valid" block color="success darken-1" @click="loginByPass(valid)">
                   密码登录
                 </v-btn>
               </v-card-actions>

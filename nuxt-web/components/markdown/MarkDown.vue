@@ -1,6 +1,6 @@
 <template>
   <div id="editor" class="editor-body " style="z-index:6;">
-    <input ref="files" @change="uploadFile" style="display: none" type="file" accept="image/*" />
+    <input ref="files" style="display: none" type="file" accept="image/*" @change="uploadFile" />
   </div>
 </template>
 

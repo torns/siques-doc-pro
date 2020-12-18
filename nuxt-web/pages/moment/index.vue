@@ -10,7 +10,7 @@
               class="moment-item"
             >
               <div class="d-flex jc-between ai-baseline">
-                <div v-html="post.title" class="moment-title"></div>
+                <div class="moment-title" v-html="post.title"></div>
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
               <div v-if="!post.showMore" class="moment-img">
@@ -24,10 +24,10 @@
                 </v-img>
               </div>
 
-              <div v-html="post.body" class="plain-text-wrap"></div>
+              <div class="plain-text-wrap" v-html="post.body"></div>
             </div>
 
-            <div id="btncontain" @click="post.showMore = !post.showMore" class="open-btn point">
+            <div id="btncontain" class="open-btn point" @click="post.showMore = !post.showMore">
               <a v-if="!post.showMore">
                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </a>
@@ -37,7 +37,7 @@
         </v-col>
       </v-row>
 
-      <div v-if="remain > 0" @click="onload" class="text-center point">点击查看更多热文</div>
+      <div v-if="remain > 0" class="text-center point" @click="onload">点击查看更多热文</div>
 
       <div v-else class="text-center text-gray">我是有底线的</div>
     </div>

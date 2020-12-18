@@ -23,9 +23,9 @@
     </v-app-bar>
     <CollectionFormDialog
       ref="dialog"
-      @submits="submit"
       v-model="collectionForm"
       title="新增知识库"
+      @submits="submit"
     ></CollectionFormDialog>
     <CollectionManageDialog ref="ManageDialog"></CollectionManageDialog>
   </div>
@@ -60,6 +60,7 @@ export default class DocAppBar extends Vue {
   createCollection() {
     this.$refs.dialog.visible = true
   }
+
   manageCollection() {
     this.$refs.ManageDialog.visible = true
   }
@@ -79,6 +80,7 @@ export default class DocAppBar extends Vue {
 
     this.$store.dispatch('modules/collection/getUserCollection')
   }
+
   menuOptions = [
     {
       title: '创建知识库',

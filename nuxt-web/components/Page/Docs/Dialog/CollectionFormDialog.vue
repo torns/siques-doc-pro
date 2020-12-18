@@ -3,14 +3,14 @@
     <v-card tile>
       <v-toolbar dark color="primary">
         <v-btn
+          icon
+          dark
           @click="
             () => {
               visible = false
               collectionDetail.cover = 'https://cdn.siques.cn/public/default/default.9769378e.png'
             }
           "
-          icon
-          dark
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -20,7 +20,7 @@
 
       <CollectionCoverSelector
         v-model="collectionDetail"
-        :imgLink.sync="collectionDetail.cover"
+        :img-link.sync="collectionDetail.cover"
       ></CollectionCoverSelector>
 
       <v-form ref="form" v-model="valid">
@@ -28,8 +28,8 @@
           <v-row class="justify-center">
             <v-col cols="12" sm="8" md="8">
               <v-text-field
-                :rules="nameRules"
                 v-model="collectionDetail.name"
+                :rules="nameRules"
                 label="知识库名称"
                 required
               ></v-text-field>
@@ -42,7 +42,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="8" md="8">
-              <v-btn :disabled="!valid" @click="doValidate" color="error" class="mr-4">
+              <v-btn :disabled="!valid" color="error" class="mr-4" @click="doValidate">
                 保存
               </v-btn>
             </v-col>

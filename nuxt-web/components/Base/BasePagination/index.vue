@@ -1,13 +1,13 @@
 <template>
   <nav id="pagination" class="pagination">
     <div class="inner relative ">
-      <a v-if="pagination.pageNum != 1" @click="prevPage" class="newer-posts arrow-left point">
+      <a v-if="pagination.pageNum != 1" class="newer-posts arrow-left point" @click="prevPage">
         <span class="screen-reader-text"></span>
       </a>
       <span class="page-number">
         <a :href="$attrs.href" class="point">PAGE {{ pagination.pageNum }} OF {{ maxPage }} </a>
       </span>
-      <a v-if="pagination.pageNum != maxPage" @click="nextPage" class="older-posts arrow-right point">
+      <a v-if="pagination.pageNum != maxPage" class="older-posts arrow-right point" @click="nextPage">
         <span class="screen-reader-text"></span>
       </a>
     </div>

@@ -17,7 +17,7 @@
       <v-card-text min-height="500">
         <v-treeview
           v-model="tree"
-          :selectionType="selectionType"
+          :selection-type="selectionType"
           :items="postTree"
           :search="search"
           :filter="filter"
@@ -35,14 +35,14 @@
         <v-spacer></v-spacer>
 
         <v-btn
+          color="green darken-1"
+          text
           @click="
             () => {
               this.$emit('move')
               visible = false
             }
           "
-          color="green darken-1"
-          text
         >
           移动
         </v-btn>

@@ -1,23 +1,23 @@
 <template>
   <span>
-    <nav id="menu" @click.stop :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'">
+    <nav id="menu" :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'" @click.stop>
       <v-row justify="center">
         <v-col cols="12" md="11" lg="9" xl="8">
           <ul style="  margin: 0 auto" class="d-flex ai-center relative pl-4 pr-3">
             <li class=" xs-flex-1 d-flex ai-center pointer">
               <img
                 v-if="isHomepage"
-                @click="$router.push('/')"
                 src="~/static/banner.png"
                 alt="Logo"
                 style="object-fit: cover; height: 40px"
+                @click="$router.push('/')"
               />
               <img
                 v-else
-                @click="$router.push('/')"
                 src="~/static/banner1.png"
                 alt="Logo"
                 style="object-fit: cover; height: 40px"
+                @click="$router.push('/')"
               />
             </li>
 
@@ -40,18 +40,18 @@
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn
                       v-bind="attrs"
-                      v-on="on"
                       :color="isHomepage ? `white` : 'black'"
                       :class="`${isHomepage ? 'white--text' : ''} px-8`"
                       rounded
                       outlined
+                      v-on="on"
                     >
                       写稿
                     </v-btn>
                   </template>
 
                   <v-list>
-                    <v-list-item @click="write" link>
+                    <v-list-item link @click="write">
                       <v-list-item-title v-text="`写文章`"></v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -65,13 +65,13 @@
                   offset-y
                 >
                   <template v-slot:activator="{ attrs, on }">
-                    <v-btn v-bind="attrs" v-on="on" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text>
+                    <v-btn v-bind="attrs" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text v-on="on">
                       {{ userInfo.username }}
                     </v-btn>
                   </template>
 
                   <v-list>
-                    <v-list-item @click="logout" color="transparent" link>
+                    <v-list-item color="transparent" link @click="logout">
                       <v-list-item-title v-text="`退出登录`"></v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -83,7 +83,7 @@
       </v-row>
     </nav>
 
-    <nav id="menu" @click.stop :class="`${breakPoint} visible-xs  w-100`">
+    <nav id="menu" :class="`${breakPoint} visible-xs  w-100`" @click.stop>
       <ul style="height: 60px; margin: 0 auto" class="container d-flex ai-center jc-between relative">
         <!-- 左侧更多按钮 -->
         <li @click="$store.commit('SET_EXTENDMENU', true)">
@@ -99,17 +99,17 @@
         <li class="favicon d-flex ai-center point pt-1">
           <img
             v-show="isHomepage || $route.path.includes('doc')"
-            @click="$router.push('/')"
             src="~/static/banner.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
+            @click="$router.push('/')"
           />
           <img
             v-show="!isHomepage && !$route.path.includes('doc')"
-            @click="$router.push('/')"
             src="~/static/banner1.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
+            @click="$router.push('/')"
           />
         </li>
         <li @click="$router.push('/search')">
@@ -136,6 +136,7 @@ export default class IndexMenu extends Vue {
   get isHomepage() {
     return this.$route.path === '/'
   }
+
   loggedIn
   userInfo
   get breakPoint() {
@@ -152,6 +153,7 @@ export default class IndexMenu extends Vue {
   logout() {
     this.$store.dispatch('LoginOut')
   }
+
   write() {
     if (this.loggedIn) {
       this.$router.push('/docs')

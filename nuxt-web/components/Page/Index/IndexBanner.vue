@@ -24,9 +24,11 @@ export default class IndexBanner extends Vue {
   get canvas(): any {
     return document.querySelector('#canvas')
   }
+
   get window(): any {
     return window
   }
+
   timer = null
   mounted() {
     this.timer = canav(this.window)

@@ -2,10 +2,10 @@
   <v-container>
     <v-row dense>
       <v-col v-for="(item, id) in userCollection" :key="id" cols="6">
-        <v-card @contextmenu="(e) => show(e, id)" :color="colors[id % colors.length]" dark>
+        <v-card :color="colors[id % colors.length]" dark @contextmenu="(e) => show(e, id)">
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
-              <v-card-title v-text="item.name" class="headline"></v-card-title>
+              <v-card-title class="headline" v-text="item.name"></v-card-title>
 
               <v-card-subtitle v-text="item.description"></v-card-subtitle>
 
@@ -23,14 +23,14 @@
         </v-card>
         <v-menu v-model="showMenu[`${id}`]" :position-x="x" :position-y="y" absolute offset-y>
           <v-list>
-            <v-list-item @click="menu.callback(item)" v-for="(menu, index) in menus" :key="index">
+            <v-list-item v-for="(menu, index) in menus" :key="index" @click="menu.callback(item)">
               <v-list-item-title>{{ menu.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-col>
     </v-row>
-    <CollectionFormDialog ref="dialog" @submits="submit" v-model="item" title="修改知识库"></CollectionFormDialog>
+    <CollectionFormDialog ref="dialog" v-model="item" title="修改知识库" @submits="submit"></CollectionFormDialog>
   </v-container>
 </template>
 
@@ -77,6 +77,7 @@ export default class CollectionManageCard extends Vue {
     this.item = Object.assign({}, item)
     this.$refs.dialog.visible = true
   }
+
   async delCollection(item) {
     await delCollection({ collectionId: item.id })
     if (this.selectedCollection.id === item.id) {
@@ -86,6 +87,7 @@ export default class CollectionManageCard extends Vue {
     this.$store.dispatch('modules/collection/getDelCollection')
     this.$store.dispatch('modules/collection/getUserCollection')
   }
+
   show(e, index) {
     e.preventDefault()
     this.showMenu.forEach((elem) => {

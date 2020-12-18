@@ -1,6 +1,12 @@
 <template>
   <v-main>
-    <markdown ref="markdown" :upload="uploadFile" @submit="submit" :isSaving.sync="isSaving" name="发布文章"></markdown>
+    <markdown
+      ref="markdown"
+      :upload="uploadFile"
+      :is-saving.sync="isSaving"
+      name="发布文章"
+      @submit="submit"
+    ></markdown>
   </v-main>
 </template>
 
@@ -19,6 +25,7 @@ export default class DocWrite extends Vue {
       return redirect('/')
     }
   }
+
   head() {
     return {
       title: '写文章'

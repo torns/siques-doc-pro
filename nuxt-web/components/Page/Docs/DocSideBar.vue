@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer width="320" app permanent>
-      <v-btn :disabled="!selectedCollection.id" @click="manageCurrentCollection" block>
+      <v-btn :disabled="!selectedCollection.id" block @click="manageCurrentCollection">
         <v-icon left>
           mdi-home
         </v-icon>
@@ -20,9 +20,8 @@
           <MenuBtn :title="`更多操作`" :options="menuOptions">mdi-plus</MenuBtn>
         </div>
         <v-treeview
-          ref="tree"
           v-show="!loading"
-          @update:active="selectDoc"
+          ref="tree"
           :items="docTree"
           :active="[selectedDoc.id]"
           class="pointer"
@@ -31,6 +30,7 @@
           rounded
           dense
           hoverable
+          @update:active="selectDoc"
         >
           <template v-slot:prepend="{ item, open }">
             <div class="text-truncate">
@@ -44,7 +44,7 @@
 
           <template v-slot:label="{ item }">
             <v-hover v-slot="{ hover }">
-              <div @e.prevent :class="{ 'on-hover': hover }" class="doc-action float-right">
+              <div :class="{ 'on-hover': hover }" class="doc-action float-right" @e.prevent>
                 <MenuBtn :title="`删除等操作`" :item="item" :options="moreOptions">mdi-dots-horizontal</MenuBtn>
                 <MenuBtn :title="`更多操作`" :item="item" :options="addOptions">mdi-plus</MenuBtn>
               </div>
@@ -57,7 +57,7 @@
             mdi-trash-can
           </v-icon>
 
-          <span @click="manageCurrentDeleteDoc" class="pointer grey--text text--darken-2">最近删除</span>
+          <span class="pointer grey--text text--darken-2" @click="manageCurrentDeleteDoc">最近删除</span>
         </div>
       </v-list>
     </v-navigation-drawer>
@@ -83,6 +83,7 @@ export default class DocSideBar extends Vue {
     class: 'mb-6',
     boilerplate: true
   }
+
   docTree
   selectedCollection
   selectedDoc
@@ -93,6 +94,7 @@ export default class DocSideBar extends Vue {
     this.$store.commit('SET_DOC', {})
     this.$router.push(`/docs/overview/${this.selectedCollection.id}`)
   }
+
   manageCurrentDeleteDoc() {
     // 当前选中文档清空
     this.$store.commit('SET_DOC', {})
@@ -192,6 +194,7 @@ export default class DocSideBar extends Vue {
       callback: this.delDoc
     }
   ]
+
   addOptions = [
     {
       title: '创建文档',

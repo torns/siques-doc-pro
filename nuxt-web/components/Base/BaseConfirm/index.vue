@@ -7,10 +7,10 @@
       <v-card-text> {{ confirmMsg.text }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="cancle" color="green darken-1" text>
+        <v-btn color="green darken-1" text @click="cancle">
           取消
         </v-btn>
-        <v-btn @click="confirm" color="warning" text>
+        <v-btn color="warning" text @click="confirm">
           确定
         </v-btn>
       </v-card-actions>
@@ -39,6 +39,7 @@ export default class BaseConfirm extends Vue {
     this.confirmMsg.catch()
     this.confirmMsg.modal = false
   }
+
   confirm() {
     this.confirmMsg.then()
     this.confirmMsg.modal = false
