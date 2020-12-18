@@ -107,7 +107,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     @Override
     public boolean updateAndExtract(Doc doc) {
        if(ObjectUtil.isNotNull(doc.getBody())){
-           String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.+)(?=\\))", doc.getBody());
+           String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.{1,150})(?=\\))", doc.getBody());
 
            doc.setCover(s);
            String rawStr = doc.getBody()
