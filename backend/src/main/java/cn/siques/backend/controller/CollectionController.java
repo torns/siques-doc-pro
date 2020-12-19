@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +47,12 @@ public class CollectionController {
 
     /**
      * 集合分页查询
+     * 展示模块
      * @param pageRequest
      * @return
      */
     @PostMapping("/findPage")
+    @Cacheable(cacheNames = "collectionPage",key="#pageRequest")
     public Result<Page<Collection>> findPage(@RequestBody PageRequest<Doc> pageRequest){
         Page<Collection> collectionPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         Page<Collection> page = collectionService.findPage(collectionPage);
@@ -99,7 +102,7 @@ public class CollectionController {
     }
 
     /**
-     * 删除集合
+     * 逻辑删除集合
      * @param userDetails
      * @param collectionId
      * @return

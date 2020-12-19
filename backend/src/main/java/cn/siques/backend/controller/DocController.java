@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,10 +49,12 @@ public class DocController {
 
     /**
      * 文章分页查询
+      * 展示模块
      * @param pageRequest
      * @return
      */
     @PostMapping("/findPage")
+    @Cacheable(cacheNames = "dcoPage",key="#pageRequest")
     public Result<Page<Doc>> findPage(@RequestBody PageRequest<Doc> pageRequest){
         Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         Doc doc = pageRequest.getParams();
