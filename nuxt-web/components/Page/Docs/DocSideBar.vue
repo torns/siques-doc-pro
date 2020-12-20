@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer width="320" app permanent>
+    <v-navigation-drawer :width="editorSideBar ? 320 : 0" app permanent>
       <v-btn :disabled="!selectedCollection.id" block @click="manageCurrentCollection">
         <v-icon left>
           mdi-home
@@ -71,11 +71,10 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { mapGetters } from 'vuex'
-import { Callbacks } from 'jquery'
 import { createDoc, delDoc, updateDoc } from '@/api/doc.js'
 import { copyToClip } from '@/plugins/utils'
 @Component({
-  computed: mapGetters(['selectedCollection', 'selectedDoc', 'docTree'])
+  computed: mapGetters(['selectedCollection', 'selectedDoc', 'docTree', 'editorSideBar'])
 })
 export default class DocSideBar extends Vue {
   loading = false
@@ -84,6 +83,7 @@ export default class DocSideBar extends Vue {
     boilerplate: true
   }
 
+  editorSideBar
   docTree
   selectedCollection
   selectedDoc

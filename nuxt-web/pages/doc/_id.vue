@@ -37,14 +37,8 @@
             <article id="article" class=" bg-white ">
               <div>
                 <div v-if="doc.title" style="padding: 1.5rem;">
-                  <div
-                    class="d-flex flex-column menu-button"
-                    style="position:absolute;top: 0%;left: 0;
-    "
-                  ></div>
-
                   <!-- 滚动监听区域 -->
-                  <div id="doc-content" v-scroll-spy v-highlight class="article " v-html="doc.body"></div>
+                  <div id="doc-content" v-scroll-spy v-highlight class="article ql-editor" v-html="doc.body"></div>
                   <div class="text-primary mt-3 fs-xs">
                     <!-- 阅读：{{ doc.views > 1000 ? (doc.views / 1000).toFixed(1) + 'k' : doc.views }}
                     <span>.</span> -->
@@ -70,7 +64,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 
 import { hljs } from '@/plugins/utils.js'
-import md from '@/plugins/markdown.js'
+
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
 
@@ -92,8 +86,6 @@ export default class Doc extends Vue {
   async asyncData({ params, store, redirect }: any) {
     const doc = await getDocDetail({ docId: params.id })
     const docTree = await getDocTree({ collectionId: doc.datas.collection.id, isPublished: true })
-
-    doc.datas.body = md.render(doc.datas.body)
 
     return {
       doc: doc.datas,
@@ -120,37 +112,17 @@ export default class Doc extends Vue {
   doc: any = ''
 
   beforeMount() {
-    this.initPost()
-  }
-  // TS中的计算属性
-
-  get id(): any {
-    return this.$route.params.id
-  }
-
-  initPost() {
     this.$nextTick(() => {
       hljs()
       tocjs()
       mediumzoom()
     })
   }
+  // TS中的计算属性
 }
 </script>
 
 <style lang="scss">
-.menu-button {
-  @media (max-width: 1200px) {
-    display: none;
-  }
-}
-
-.menu-button {
-  position: fixed;
-  margin-left: -6em;
-  margin-top: 10em;
-}
-
 .v-avatar > img {
   border-radius: 50%;
 }

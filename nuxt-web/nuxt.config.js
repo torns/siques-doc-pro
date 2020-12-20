@@ -29,25 +29,20 @@ export default {
     ],
 
     script: [
-      { src: 'https://cdn.siques.cn/libs/js/editormd.min.js', defer: true },
-      // { src: 'https://cdn.siques.cn/libs/js/codemirror/codemirror.min.js' },
-      // { src: 'https://cdn.siques.cn/libs/js/codemirror/modes.min.js' },
-      // { src: 'https://cdn.siques.cn/libs/js/codemirror/addons.min.js' },
-      // { src: 'https://cdn.siques.cn/libs/js/marked.min.js' },
-      // { src: 'https://cdn.siques.cn/libs/js/prettify.min.js' },
       { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       {
-        src: 'https://cdn.siques.cn/libs/js/highlight.min.js',
-        defer: true
+        src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
-      {
-        src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
-        defer: true
-      },
-      {
-        src: 'https://cdn.siques.cn/libs/js/dart.min.js',
-        defer: true
-      },
+      { src: 'https://cdn.siques.cn/libs/js/quill.min.js', defer: true },
+
+      // {
+      //   src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
+      //   defer: true
+      // },
+      // {
+      //   src: 'https://cdn.siques.cn/libs/js/dart.min.js',
+      //   defer: true
+      // },
 
       {
         src: 'https://cdn.siques.cn/libs/js/jquery.min.js'
@@ -69,17 +64,9 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/vue-meta.min.js'
       },
       {
-        src: 'https://cdn.siques.cn/libs/js/markdown-it.min.js',
-        defer: true
-      },
-      {
         src: 'https://cdn.siques.cn/libs/js/riddler-sdk-0.2.2.js',
         defer: true
       }
-
-      // {
-      //   src: 'https://cdn.siques.cn/libs/js/vue-lazyload.js'
-      // }
 
       // {
       //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
@@ -92,7 +79,7 @@ export default {
       // { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
       // {
       //   rel: 'stylesheet',
-      //   href: 'https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css'
+      //   href: 'https://cdn.quilljs.com/1.3.6/quill.snow.css'
       // },
       {
         rel: 'stylesheet',
@@ -105,7 +92,7 @@ export default {
 
       {
         rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/editormd.css'
+        href: 'https://cdn.siques.cn/libs/css/quill.bubble.css'
       }
       // {
       //   rel: 'stylesheet',
@@ -131,7 +118,6 @@ export default {
     '@/plugins/directive',
     '@/plugins/global.ts',
     // '@/plugins/route.js',
-    { src: '@/plugins/markdown', ssr: true },
 
     { src: '@/plugins/scrollAnimate', ssr: false },
     { src: '@/plugins/components.js', ssr: true },
@@ -232,9 +218,9 @@ export default {
           vuex: 'Vuex',
           'vue-meta': 'VueMeta',
           transliteration: 'SlugifyFunction',
-          'markdown-it': 'markdownit',
           // 'vue-lazyload': 'VueLazyload',
-          katex: 'katex'
+          katex: 'katex',
+          highlightjs: 'highlightjs'
         })
       }
     }

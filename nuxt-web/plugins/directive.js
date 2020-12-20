@@ -1,15 +1,15 @@
 import Vue from 'vue'
-Vue.directive('focus', {
-  inserted(el) {
-    // 获得原生输入框
-    el.getElementsByTagName('input')[0].focus()
-  }
-})
+// Vue.directive('focus', {
+//   inserted(el) {
+//     // 获得原生输入框
+//     el.getElementsByTagName('input')[0].focus()
+//   }
+// })
 Vue.directive('highlight', {
   inserted(el) {
     /* eslint-disable */
 
-    const blocks = el.querySelectorAll('pre code')
+    const blocks = el.querySelectorAll('pre')
     blocks.forEach((block) => {
       hljs.highlightBlock(block)
     })

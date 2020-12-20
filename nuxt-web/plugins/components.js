@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 
-import markdown from '~/components/markdown/MarkDown.vue'
 import footer from '~/components/Base/BaseFooter/index.vue'
 
 import wave from '~/components/Base/BaseWave/index.vue'
@@ -15,7 +14,7 @@ import pagination from '~/components/Base/BasePagination/index.vue'
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 Vue.prototype.$dayjs = dayjs
-Vue.component('markdown', markdown)
+
 Vue.component('sq-wave', wave)
 
 Vue.component('sq-footer', footer)

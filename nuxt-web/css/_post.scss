@@ -14,16 +14,31 @@
 }
 // 文章详情页样式
 blockquote {
-  margin: 1.5em 0;
-  padding: 0.8em 1em;
-  color: #6c6a6a;
-  border-left: 7px solid #ffe564;
-  background-color: #fff7d0;
-  line-height: 25px;
+  margin: 1.5em 0 !important;
+  padding: 0.8em 1em !important;
 
+  color: #6c6a6a !important;
+  line-height: 25px !important;
+
+  &.quoto-success {
+    border-left: 7px solid #8bc34a !important;
+    background-color: rgb(139 195 74 / 27%) !important;
+  }
+  &.quoto-warning {
+    border-left: 7px solid #ffe564 !important;
+    background-color: #fff7d0 !important;
+  }
+  &.quoto-dangerous {
+    border-left: 7px solid #f44336 !important ;
+    background-color: rgb(244 67 54 / 24%) !important;
+  }
+  &.quoto-default {
+    border-left: 7px solid #607d8ba1 !important ;
+    background-color: rgb(158 158 158 / 31%) !important;
+  }
   p {
     margin: unset !important;
-    padding-left: 5px;
+    padding-left: 5px !important;
     @media (max-width: 36em) {
       padding-left: 15px;
     }
@@ -102,17 +117,17 @@ h1 {
   }
 
   ul {
-    margin: 10px 0;
-    padding: 5px 0;
+    margin: 10px 0 !important;
+    padding: 5px 0 !important;
     // max-height: 500px;
 
     li {
-      list-style: none;
+      list-style: none !important;
 
       padding: 5px 0px !important;
-      cursor: text;
-      line-height: 14px;
-      font-size: 14px;
+      cursor: text !important;
+      line-height: 14px !important;
+      font-size: 14px !important;
       /// 小屏幕缩小字体
       @media (max-width: 36em) {
         font-size: 10px;
@@ -124,11 +139,13 @@ h1 {
     }
   }
 }
-
+pre ul > li::before {
+  content: none !important;
+}
 .article {
   line-height: 2.1rem;
   letter-spacing: 1px;
-
+  overflow: hidden;
   blockquote ul li {
     margin-left: 40px;
     color: #3f51b5;
@@ -468,4 +485,17 @@ hr {
   padding: 0;
   position: absolute !important;
   width: 1px;
+}
+
+.ql-video {
+  margin: 0 auto;
+}
+
+.ql-bubble .ql-editor code,
+.ql-bubble .ql-editor pre {
+  display: block !important;
+  overflow-x: auto !important;
+  padding: 1.5em !important;
+  color: #333 !important;
+  background: #f8f8f8 !important;
 }

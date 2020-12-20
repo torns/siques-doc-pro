@@ -7,17 +7,17 @@
             <li class=" xs-flex-1 d-flex ai-center pointer">
               <img
                 v-if="isHomepage"
-                @click="$router.push('/')"
                 src="~/static/banner.png"
                 alt="Logo"
                 style="object-fit: cover; height: 40px"
+                @click="$router.push('/')"
               />
               <img
                 v-else
-                @click="$router.push('/')"
                 src="~/static/banner1.png"
                 alt="Logo"
                 style="object-fit: cover; height: 40px"
+                @click="$router.push('/')"
               />
             </li>
 
@@ -42,16 +42,16 @@
                       v-bind="attrs"
                       :color="isHomepage ? `white` : 'black'"
                       :class="`${isHomepage ? 'white--text' : ''} px-8`"
-                      v-on="on"
                       rounded
                       outlined
+                      v-on="on"
                     >
                       写稿
                     </v-btn>
                   </template>
 
                   <v-list>
-                    <v-list-item @click="write" link>
+                    <v-list-item link @click="write">
                       <v-list-item-title v-text="`写文章`"></v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -65,13 +65,13 @@
                   offset-y
                 >
                   <template v-slot:activator="{ attrs, on }">
-                    <v-btn v-bind="attrs" :class="`${isHomepage ? 'white--text' : ''} ma-5`" v-on="on" text>
+                    <v-btn v-bind="attrs" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text v-on="on">
                       {{ userInfo.username }}
                     </v-btn>
                   </template>
 
                   <v-list>
-                    <v-list-item @click="logout" color="transparent" link>
+                    <v-list-item color="transparent" link @click="logout">
                       <v-list-item-title v-text="`退出登录`"></v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -99,26 +99,26 @@
         <li class="favicon d-flex ai-center point pt-1">
           <img
             v-show="trasparent"
-            @click="$router.push('/')"
             src="~/static/banner.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
+            @click="$router.push('/')"
           />
           <img
             v-show="!trasparent"
-            @click="$router.push('/')"
             src="~/static/banner1.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
+            @click="$router.push('/')"
           />
         </li>
         <li @click="$router.push('/search')">
-          <v-btn v-if="trasparent" icon large dark>
+          <v-btn icon large dark>
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
-          <v-btn v-else icon large>
+          <!-- <v-btn v-else icon large>
             <v-icon>mdi-magnify</v-icon>
-          </v-btn>
+          </v-btn> -->
         </li>
       </ul>
     </nav>

@@ -105,11 +105,11 @@ export default class Footer extends Vue {
   topBorder: any
 
   techs = [
-    { name: 'ElementUi', link: 'https://element.eleme.cn/#/zh-CN' },
+    { name: 'Vuetify', link: 'https://vuetifyjs.com/zh-Hans/' },
     { name: 'Node.js', link: 'https://www.nodeapp.cn/N' },
     { name: 'jQuery', link: 'https://www.jquery123.com/' },
     { name: 'Nuxtjs', link: 'https://www.nuxtjs.cn/guide' },
-    { name: 'Nestjs', link: 'www.nestjs.com/' }
+    { name: 'Quill', link: 'https://quilljs.com/' }
   ]
 }
 </script>

@@ -1,12 +1,13 @@
 <template>
-  <v-main>
-    <markdown
+  <v-main app>
+    <QuillEditor
+      v-show="!loading"
       ref="markdown"
       :upload="uploadFile"
-      :is-saving.sync="isSaving"
-      name="发布文章"
+      :saving.sync="saving"
+      @focus="onEditorFocus($event)"
       @submit="submit"
-    ></markdown>
+    ></QuillEditor>
   </v-main>
 </template>
 
@@ -32,6 +33,12 @@ export default class DocWrite extends Vue {
     }
   }
 
+  onEditorFocus() {
+    this.$store.commit('modules/editor/SET_SIDEBAR', false)
+  }
+
+  loading = false
+
   layout(context) {
     return 'doc'
   }
@@ -41,27 +48,35 @@ export default class DocWrite extends Vue {
     return fileUpload(params)
   }
 
-  isSaving = false
+  saving = false
   $refs: {
     markdown: HTMLFormElement
   }
 
   async mounted() {
     if (this.selectedDoc.id) {
+      const loading = this.$loading({ text: '努力加载中', status: this.loading })
+
       const res = await getDocDetail({ docId: this.selectedDoc.id })
       this.$refs.markdown.setContent(res.datas.body)
+
+      loading.close()
     }
   }
 
   @Watch('selectedDoc')
   async valueChanged(newval, oldval) {
     if (newval.id) {
+      const loading = this.$loading({ text: '努力加载中', status: this.loading })
+
       const res = await getDocDetail({ docId: newval.id })
       this.$refs.markdown.setContent(res.datas.body)
+
+      loading.close()
     }
   }
 
-  @Watch('isSaving')
+  @Watch('saving')
   isvalueChanged(newval, oldval) {
     if (newval) {
       this.$store.commit('PUSH_MSG', this.selectedDoc.title + ' 保存中')
@@ -72,7 +87,7 @@ export default class DocWrite extends Vue {
   }
 
   async submit(value) {
-    await updateDoc({ id: this.selectedDoc.id, body: value })
+    // await updateDoc({ id: this.selectedDoc.id, body: value })
   }
 }
 </script>

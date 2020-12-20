@@ -15,16 +15,16 @@ export function copyToClip(content) {
 }
 
 export function hljs() {
-  $('p img').each(function() {
-    var title = $(this).attr('alt')
-    if (title !== 'img') {
-      $(this).after(
-        '<div class="img-title">' + '<span class="itag"><i class="fa fa-twitch"></i></span>' + title + '</div>'
-      )
-    }
-  })
+  // $('p img').each(function() {
+  //   var title = $(this).attr('alt')
+  //   if (title !== 'img') {
+  //     $(this).after(
+  //       '<div class="img-title">' + '<span class="itag"><i class="fa fa-twitch"></i></span>' + title + '</div>'
+  //     )
+  //   }
+  // })
 
-  $('pre code').each(function() {
+  $('pre').each(function() {
     $(this).html(
       '<ul><li>' +
         $(this)
@@ -34,9 +34,9 @@ export function hljs() {
     )
   })
   // 去掉最后一行的空行
-  $('code ul li:last-child').remove()
+  $('pre ul li:last-child').remove()
 
-  $('pre code ').each(function() {
+  $('pre  ').each(function() {
     if (
       $(this)
         .text()
@@ -105,7 +105,7 @@ export function hljs() {
     }
   })
 
-  $('pre code').each(function() {
+  $('pre  ').each(function() {
     let lang = $(this).attr('class')
     let array = lang.split(' ')
     if (array[0] == 'hljs') lang = array[1]
@@ -118,7 +118,7 @@ export function hljs() {
         .after($(`<span id="language">${lang}</span>`))
     }
   })
-  $('pre code ul').before('<a id="copy"></a>')
+  $('pre   ul').before('<a id="copy"></a>')
 }
 
 function lowercase(value) {

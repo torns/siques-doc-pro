@@ -13,7 +13,8 @@ const getters = {
   extendMenu: (state) => state.extendMenu,
   confirmMsg: (state) => state.modules.tips.confirmMsg,
   recomendCollection: (state) => state.modules.collection.recomendCollection,
-  pageLoading: (state) => state.pageLoading
+  pageLoading: (state) => state.pageLoading,
+  editorSideBar: (state) => state.modules.editor.editorSideBar
 }
 
 export default getters

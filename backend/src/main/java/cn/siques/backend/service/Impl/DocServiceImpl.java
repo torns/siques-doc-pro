@@ -38,7 +38,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         Doc parent = docDao.selectById(parentId);
         Doc post = new Doc();
         post.setStatus(true);
-        post.setBody("");
+        post.setBody("<h1>未命名文档</h1><p>在这里开始书写之旅</p>");
         if(ObjectUtil.isNotEmpty(parent)){
             post.setParentId(parentId);
             post.setParentIds(parent.getParentIds()+parentId+",");
@@ -107,28 +107,31 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     @Override
     public boolean updateAndExtract(Doc doc) {
        if(ObjectUtil.isNotNull(doc.getBody())){
-           String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.*)(?=\\))", doc.getBody());
-
+//           String s = RegexUtils.searchOne("(?<=\\!\\[.*\\]\\()(.*)(?=\\))", doc.getBody());
+           String s = RegexUtils.searchOne("(?<=<img src=\")(.*?)(?=\">)", doc.getBody());
            doc.setCover(s);
-           String rawStr = doc.getBody()
-                   .replaceAll("```([\\s\\S]*?)```[\\s]*", "")
-                   .replaceAll("(\\*\\*|__)(.*?)(\\*\\*|__)", "")
-                   .replaceAll("\\!\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
-                   .replaceAll("\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
-                   .replaceAll("<\\/?.+?\\/?>", "")
-                   .replaceAll("(\\*)(.*?)(\\*)", "")
-                   .replaceAll("`{1,2}[^`](.*?)`{1,2}", "")
-                   .replaceAll("\\~\\~(.*?)\\~\\~", "")
-                   .replaceAll("[\\s]*[-\\*\\+]+(.*)", "")
-//                   .replaceAll("[\\s]*[0-9]+\\.(.*)", "")
-                   .replaceAll("(#+)(.*)", "")
-                   .replaceAll("(>+)(.*)", "")
-                   .replaceAll("\\r\\n", "")
-                   .replaceAll("\\s", "");
+
+           String rawStr = doc.getBody().replaceAll("<\\/?.+?\\/?>", "")
+                   .replaceAll("\\n", "");
+//           String rawStr = doc.getBody()
+//                   .replaceAll("```([\\s\\S]*?)```[\\s]*", "")
+//                   .replaceAll("(\\*\\*|__)(.*?)(\\*\\*|__)", "")
+//                   .replaceAll("\\!\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+//                   .replaceAll("\\[[\\s\\S]*?\\]\\([\\s\\S]*?\\)", "")
+//                   .replaceAll("<\\/?.+?\\/?>", "")
+//                   .replaceAll("(\\*)(.*?)(\\*)", "")
+//                   .replaceAll("`{1,2}[^`](.*?)`{1,2}", "")
+//                   .replaceAll("\\~\\~(.*?)\\~\\~", "")
+//                   .replaceAll("[\\s]*[-\\*\\+]+(.*)", "")
+////                   .replaceAll("[\\s]*[0-9]+\\.(.*)", "")
+//                   .replaceAll("(#+)(.*)", "")
+//                   .replaceAll("(>+)(.*)", "")
+//                   .replaceAll("\\r\\n", "")
+//                   .replaceAll("\\s", "");
            if(rawStr.length()>150){
                rawStr = rawStr.substring(0,150);
            }
-
+//
            doc.setAlias(rawStr);
            doc.setCounts(Long.valueOf(rawStr.length()));
        }

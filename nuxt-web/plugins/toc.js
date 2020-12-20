@@ -7,7 +7,11 @@ export default () => {
 
   for (let index = 0; index < headers.length; index++) {
     const header = headers[index]
-
+    // 添加锚点
+    // var anchor = $(`<a class="header-anchor" href="#${header.innerText}">#</a>`)
+    var head = $(header)
+    head.attr('id', encodeURI(header.innerText))
+    // head.append(anchor)
     var new_a = $('<a class="nav-link ellipsis-1"></a>')
 
     new_a.addClass(`toc-${header.localName}`)

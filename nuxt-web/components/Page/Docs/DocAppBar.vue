@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="white" elevate-on-scroll scroll-target="#scrolling-techniques-7">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="$store.commit('modules/editor/SET_SIDEBAR', true)"></v-app-bar-nav-icon>
 
       <v-select
         v-model="selectedCollection"

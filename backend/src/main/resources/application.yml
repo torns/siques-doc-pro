@@ -27,7 +27,7 @@ spring:
   redis:
     host: 139.198.176.14
     port: 6379
-    database: 3
+    database: 4
     expiration: 1800
     password: heshenghao
 mybatis-plus:

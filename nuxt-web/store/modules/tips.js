@@ -16,6 +16,7 @@ export const mutations = {
   },
   STOP_LOADING(state) {
     state.loadMsg.loading = false
+    state.loadMsg.status = false
   },
   SET_NOTIFY(state, parameter) {
     state.notifyMsg = Object.assign({ loading: true }, parameter)
