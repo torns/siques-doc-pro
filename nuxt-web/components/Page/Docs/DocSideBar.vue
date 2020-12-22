@@ -111,7 +111,7 @@ export default class DocSideBar extends Vue {
   }
 
   @Watch('selectedCollection')
-  valueChanged(newval, oldval) {
+  collectChanged(newval, oldval) {
     this.getDocTree()
   }
 
@@ -132,6 +132,9 @@ export default class DocSideBar extends Vue {
   async delDoc(row) {
     await delDoc(row.id)
     this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+    if (this.selectedDoc.id === row.id) {
+      this.$store.commit('SET_DOC', {})
+    }
     this.getDocTree()
   }
 

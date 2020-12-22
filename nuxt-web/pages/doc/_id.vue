@@ -1,7 +1,7 @@
 <template>
   <div>
     <sq-sidemenu :doc-tree="docTree" :doc="doc"> </sq-sidemenu>
-    <v-main>
+    <v-main style="overflow-x: hidden;">
       <div
         class="absolute d-flex jc-center flex-column ai-center "
         style="z-index:5!important; width: 80%;top:8vh;left:10%;"
@@ -36,9 +36,9 @@
           <v-col xs="12" sm="12" md="12" lg="12" xl="12">
             <article id="article" class=" bg-white ">
               <div>
-                <div v-if="doc.title" style="padding: 1.5rem;">
+                <div v-if="doc.title" style="padding: 1.1rem;">
                   <!-- 滚动监听区域 -->
-                  <div id="doc-content" v-scroll-spy v-highlight class="article ql-editor" v-html="doc.body"></div>
+                  <div id="doc-content" v-scroll-spy v-highlight class="article ck-content" v-html="doc.body"></div>
                   <div class="text-primary mt-3 fs-xs">
                     <!-- 阅读：{{ doc.views > 1000 ? (doc.views / 1000).toFixed(1) + 'k' : doc.views }}
                     <span>.</span> -->
@@ -73,7 +73,7 @@ import toc from '~/components/Toc/PostToc.vue'
 import sideMenu from '~/components/Page/Doc/DocSideMenu.vue'
 
 const mediumzoom = () => {
-  mediumZoom(document.querySelectorAll('p img'))
+  mediumZoom(document.querySelectorAll('figure img'))
 }
 
 @Component({

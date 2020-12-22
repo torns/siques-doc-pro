@@ -33,8 +33,8 @@ export default {
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
-      { src: 'https://cdn.siques.cn/libs/js/quill.min.js', defer: true },
-
+      { src: 'https://cdn.siques.cn/libs/js/ckeditor.js', defer: true },
+      { src: 'https://cdn.bootcdn.net/ajax/libs/jsdiff/5.0.0/diff.js', defer: true },
       // {
       //   src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
       //   defer: true
@@ -51,9 +51,9 @@ export default {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
         src: mode ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
       },
-      {
-        src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
-      },
+      // {
+      //   src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
+      // },
       {
         src: 'https://cdn.siques.cn/libs/js/vue-router.js'
       },
@@ -67,20 +67,11 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/riddler-sdk-0.2.2.js',
         defer: true
       }
-
-      // {
-      //   src: '//cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js',
-      //   ssr: true
-      // }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // { rel: 'stylesheet', href: '/icon/iconfont.css' },
       // { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://cdn.quilljs.com/1.3.6/quill.snow.css'
-      // },
       {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/katex.min.css'
@@ -88,16 +79,7 @@ export default {
       {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/github.min.css'
-      },
-
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.siques.cn/libs/css/quill.bubble.css'
       }
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css'
-      // }
     ]
   },
   /*
@@ -213,11 +195,11 @@ export default {
         Object.assign(config.externals, {
           vue: 'Vue',
           // 'element-ui': 'ELEMENT',
-          lodash: '_',
+          // lodash: '_',
           'vue-router': 'VueRouter',
           vuex: 'Vuex',
           'vue-meta': 'VueMeta',
-          transliteration: 'SlugifyFunction',
+          // transliteration: 'SlugifyFunction',
           // 'vue-lazyload': 'VueLazyload',
           katex: 'katex',
           highlightjs: 'highlightjs'

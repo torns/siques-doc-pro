@@ -9,7 +9,7 @@ Vue.directive('highlight', {
   inserted(el) {
     /* eslint-disable */
 
-    const blocks = el.querySelectorAll('pre')
+    const blocks = el.querySelectorAll('pre code')
     blocks.forEach((block) => {
       hljs.highlightBlock(block)
     })

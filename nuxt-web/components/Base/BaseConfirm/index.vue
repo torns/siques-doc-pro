@@ -36,12 +36,17 @@ import { mapGetters } from 'vuex'
 export default class BaseConfirm extends Vue {
   confirmMsg
   cancle() {
-    this.confirmMsg.catch()
+    if (typeof this.confirmMsg.catch === 'function') {
+      this.confirmMsg.catch()
+    }
     this.confirmMsg.modal = false
   }
 
   confirm() {
-    this.confirmMsg.then()
+    if (typeof this.confirmMsg.catch === 'function') {
+      this.confirmMsg.then()
+    }
+
     this.confirmMsg.modal = false
   }
 }

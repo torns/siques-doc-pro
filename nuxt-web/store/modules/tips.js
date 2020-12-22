@@ -6,7 +6,9 @@ export const state = () => ({
     loading: false
   },
   confirmMsg: {
-    modal: false
+    modal: false,
+    then: () => {},
+    catch: () => {}
   }
 })
 

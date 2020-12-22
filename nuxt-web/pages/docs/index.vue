@@ -1,21 +1,26 @@
 <template>
-  <v-main app>
-    <QuillEditor
-      v-show="!loading"
-      ref="markdown"
-      :upload="uploadFile"
-      :saving.sync="saving"
-      @focus="onEditorFocus($event)"
-      @submit="submit"
-    ></QuillEditor>
-  </v-main>
+  <div>
+    <DocInnerAppBar v-show="!loading && selectedDoc.id"></DocInnerAppBar>
+    <v-main style="padding-top:120px" app>
+      <CkEditor v-show="!loading && selectedDoc.id" ref="editor" @focus="onEditorFocus($event)"></CkEditor>
+      <v-banner v-show="!selectedDoc.id" two-line>
+        <v-avatar slot="icon" color="deep-purple accent-4" size="40">
+          <v-icon icon="mdi-lock" color="white">
+            mdi-lock
+          </v-icon>
+        </v-avatar>
+
+        选择你要查看的文档
+      </v-banner>
+    </v-main>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getDocDetail, updateDoc } from '@/api/doc'
-import { fileUpload } from '@/api/file'
+import { getDocDetail } from '@/api/doc'
+
 @Component({
   computed: mapGetters(['selectedDoc'])
 })
@@ -33,24 +38,21 @@ export default class DocWrite extends Vue {
     }
   }
 
-  onEditorFocus() {
-    this.$store.commit('modules/editor/SET_SIDEBAR', false)
-  }
-
-  loading = false
-
   layout(context) {
     return 'doc'
   }
 
+  loading = false
+
   selectedDoc
-  uploadFile(params, config) {
-    return fileUpload(params)
-  }
 
   saving = false
   $refs: {
-    markdown: HTMLFormElement
+    editor: HTMLFormElement
+  }
+
+  onEditorFocus() {
+    this.$store.commit('modules/editor/SET_SIDEBAR', false)
   }
 
   async mounted() {
@@ -58,7 +60,7 @@ export default class DocWrite extends Vue {
       const loading = this.$loading({ text: '努力加载中', status: this.loading })
 
       const res = await getDocDetail({ docId: this.selectedDoc.id })
-      this.$refs.markdown.setContent(res.datas.body)
+      this.$refs.editor.setContent(res.datas.body, this.selectedDoc.id)
 
       loading.close()
     }
@@ -70,24 +72,10 @@ export default class DocWrite extends Vue {
       const loading = this.$loading({ text: '努力加载中', status: this.loading })
 
       const res = await getDocDetail({ docId: newval.id })
-      this.$refs.markdown.setContent(res.datas.body)
-
+      this.$refs.editor.setContent(res.datas.body, newval.id)
+      this.$store.commit('SET_DOC_BODY', res.datas.body)
       loading.close()
     }
-  }
-
-  @Watch('saving')
-  isvalueChanged(newval, oldval) {
-    if (newval) {
-      this.$store.commit('PUSH_MSG', this.selectedDoc.title + ' 保存中')
-    } else {
-      this.$store.commit('PUSH_MSG', this.selectedDoc.title + ' 已同步')
-      this.$notify({ text: this.selectedDoc.title + ' 已同步' })
-    }
-  }
-
-  async submit(value) {
-    // await updateDoc({ id: this.selectedDoc.id, body: value })
   }
 }
 </script>

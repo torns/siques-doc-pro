@@ -67,7 +67,10 @@ export function getPublishedList(parameter) {
     params: parameter
   })
 }
-
+/**
+ *
+ * @param {docId} parameter
+ */
 export function getDocDetail(parameter) {
   return vue.prototype.$http({
     url: docApi.getDocDetail,

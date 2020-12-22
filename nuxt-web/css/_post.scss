@@ -5,13 +5,13 @@
   color: #5a5a5a;
 }
 
-.itag {
-  font-size: 86%;
-  top: -1.5px;
-  position: relative;
+// .itag {
+//   font-size: 86%;
+//   top: -1.5px;
+//   position: relative;
 
-  left: -6px;
-}
+//   left: -6px;
+// }
 // 文章详情页样式
 blockquote {
   margin: 1.5em 0 !important;
@@ -19,23 +19,9 @@ blockquote {
 
   color: #6c6a6a !important;
   line-height: 25px !important;
+  border-left: 7px solid #ffe564 !important;
+  background-color: #fff7d0 !important;
 
-  &.quoto-success {
-    border-left: 7px solid #8bc34a !important;
-    background-color: rgb(139 195 74 / 27%) !important;
-  }
-  &.quoto-warning {
-    border-left: 7px solid #ffe564 !important;
-    background-color: #fff7d0 !important;
-  }
-  &.quoto-dangerous {
-    border-left: 7px solid #f44336 !important ;
-    background-color: rgb(244 67 54 / 24%) !important;
-  }
-  &.quoto-default {
-    border-left: 7px solid #607d8ba1 !important ;
-    background-color: rgb(158 158 158 / 31%) !important;
-  }
   p {
     margin: unset !important;
     padding-left: 5px !important;
@@ -57,18 +43,18 @@ h1 {
   }
 }
 
-.v-application code {
-  background-color: #f8f8f8;
-  color: #673ab7;
-  padding: 0.5em;
-}
-.hljs {
-  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+// .v-application code {
+//   background-color: #f8f8f8;
+//   color: #673ab7;
+//   padding: 0.5em;
+// }
+.article pre code {
+  font-family: EB Garamond, 'Noto Serif SC', Consolas, Liberation Mono, Menlo, Courier, monospace !important;
   // max-height: 35rem;
   line-height: 1.7;
   font-size: 0.9em;
   margin-right: 0;
-  font-weight: 200;
+  font-weight: 200 !important;
   @media (max-width: 36em) {
     font-size: 10px;
   }
@@ -145,14 +131,14 @@ pre ul > li::before {
 .article {
   line-height: 2.1rem;
   letter-spacing: 1px;
-  overflow: hidden;
+
   blockquote ul li {
     margin-left: 40px;
     color: #3f51b5;
     padding: 3px 0;
   }
   ul li {
-    padding: 0px 0px 15px 0;
+    padding: 0px 0px 5px 0;
   }
   ol li {
     padding: 0px 0px 5px 0;
@@ -160,10 +146,10 @@ pre ul > li::before {
   li {
     cursor: text;
     list-style: unset;
-    margin-left: 20px;
+    margin-left: 25px;
     code {
       font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-      color: #673ab7;
+      color: #673ab7 !important;
       font-weight: 600;
       padding: 0.25rem 0.5rem;
       margin: 0 1.5px;
@@ -174,7 +160,7 @@ pre ul > li::before {
   }
 
   a {
-    // display: inline-block;
+    display: inline-block;
     position: relative;
     text-decoration: none;
     color: #2196f3;
@@ -273,24 +259,13 @@ p,
 .hljs {
   code {
     font-family: EB Garamond, 'Noto Serif SC', Consolas, Liberation Mono, Menlo, Courier, monospace !important;
-    color: #673ab7;
-    font-weight: 600;
-    padding: 0.25rem 0.5rem;
-    margin: 0 1.5px;
-    font-size: 0.9em;
+    color: #673ab7 !important;
+    font-weight: 600 !important;
+    padding: 0.25rem 0.5rem !important;
+    margin: 0 1.5px !important;
+    font-size: 0.9em !important;
     background-color: rgba(27, 31, 35, 0.05);
     border-radius: 3px;
-  }
-
-  @keyframes hideIndex {
-    0% {
-      opacity: 0;
-      transform: translate(0, 100px);
-    }
-    100% {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
   }
 }
 
@@ -357,35 +332,35 @@ details {
   }
 }
 
-// 锚点样式
-h1:hover,
-h2:hover,
-h3:hover,
-h4:hover {
-  .header-anchor {
-    color: $color-primary;
+// // 锚点样式
+// h1:hover,
+// h2:hover,
+// h3:hover,
+// h4:hover {
+//   .header-anchor {
+//     color: $color-primary;
 
-    opacity: 1;
+//     opacity: 1;
 
-    text-decoration: none;
+//     text-decoration: none;
 
-    transition: all 0.5s;
-  }
-}
+//     transition: all 0.5s;
+//   }
+// }
 
-.header-anchor {
-  position: absolute;
+// .header-anchor {
+//   position: absolute;
 
-  transform: translate(50%);
+//   transform: translate(50%);
 
-  opacity: 0;
+//   opacity: 0;
 
-  bottom: 2px;
+//   bottom: 2px;
 
-  text-decoration: none;
+//   text-decoration: none;
 
-  transition: all 1s;
-}
+//   transition: all 1s;
+// }
 
 hr {
   /*透明渐变水平线*/
@@ -486,16 +461,22 @@ hr {
   position: absolute !important;
   width: 1px;
 }
-
-.ql-video {
-  margin: 0 auto;
-}
-
-.ql-bubble .ql-editor code,
-.ql-bubble .ql-editor pre {
-  display: block !important;
-  overflow-x: auto !important;
-  padding: 1.5em !important;
+.ck-content pre {
+  display: block;
+  overflow-x: auto;
+  padding: 0 !important;
   color: #333 !important;
   background: #f8f8f8 !important;
+
+  border: none !important;
+  border-radius: 0px;
+  text-align: left;
+  direction: ltr;
+  white-space: pre !important;
+  font-style: normal !important;
+}
+
+.ck-content pre code {
+  display: block;
+  padding: 10px !important;
 }

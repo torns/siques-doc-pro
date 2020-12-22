@@ -30,8 +30,14 @@ export default class Archive extends Vue {
   }
 
   async docReuse(item) {
+    const loading = this.$loading({ text: '执行中...' })
     await reuseDoc({ docId: item.id })
+
     this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
+    this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+    setTimeout(() => {
+      loading.close()
+    }, 500)
   }
 
   realDelete(item) {

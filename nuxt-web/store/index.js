@@ -26,6 +26,9 @@ export const mutations = {
   SET_DOC(state, data) {
     state.selectedDoc = data
   },
+  SET_DOC_BODY(state, data) {
+    state.selectedDoc.body = data
+  },
   PUSH_MSG(state, data) {
     state.message = data
   },
