@@ -34,7 +34,7 @@ export default {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
       { src: 'https://cdn.siques.cn/libs/js/ckeditor.js', defer: true },
-      { src: 'https://cdn.bootcdn.net/ajax/libs/jsdiff/5.0.0/diff.js', defer: true },
+      { src: 'https://cdn.siques.cn/libs/js/diff.min.js', defer: true },
       // {
       //   src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
       //   defer: true
