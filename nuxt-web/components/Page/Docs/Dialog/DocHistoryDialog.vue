@@ -90,7 +90,7 @@ export default class DocHistoryDialog extends Vue {
   historyList = []
 
   mounted() {
-    if (this.historyList.length === 0) {
+    if (this.selectedDoc.id) {
       this.getHistoryList()
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <LazyArchiveList :list="delDoc" @realDelete="realDelete" @reuse="docReuse"></LazyArchiveList>
+    <ArchiveList :list="delDoc" @realDelete="realDelete" @reuse="docReuse"></ArchiveList>
   </v-main>
 </template>
 
@@ -20,11 +20,15 @@ export default class Archive extends Vue {
   selectedCollection
   delDoc
 
-  mounted() {}
+  mounted() {
+    if (this.selectedCollection.id) {
+      this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+    }
+  }
 
   @Watch('selectedCollection')
   valueChanged(newval, oldval) {
-    if (newval !== {}) {
+    if (newval.id) {
       this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
     }
   }
