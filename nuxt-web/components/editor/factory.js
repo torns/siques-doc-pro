@@ -101,7 +101,7 @@ function saveData(data, docId) {
   return new Promise((resolve) => {
     setTimeout(async () => {
       if (docId) {
-        await updateDoc({ id: docId, body: data })
+        updateDoc({ id: docId, body: data })
       }
 
       resolve()
