@@ -149,7 +149,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         }else{
             DocHistory firstDoc = docHistories.get(0);
             if(DateUtil.between(firstDoc.getUpdated(), doc.getUpdated(), DateUnit.HOUR)> 8 &&
-               firstDoc.getBody().equals(doc.getBody())){
+               !firstDoc.getBody().equals(doc.getBody())){
                docHistoryService.save(DocHistory.clone(doc));
             }
 
