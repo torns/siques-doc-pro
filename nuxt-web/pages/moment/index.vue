@@ -27,10 +27,11 @@
               <div class="plain-text-wrap" v-html="post.body"></div>
             </div>
 
-            <div id="btncontain" class="open-btn point" @click="post.showMore = !post.showMore">
-              <a v-if="!post.showMore">
-                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-              </a>
+            <div id="btncontain" class="open-btn pointer" @click="post.showMore = !post.showMore">
+              <v-btn v-if="!post.showMore" icon color="deep-orange">
+                <v-icon>mdi-thumb-up</v-icon>
+              </v-btn>
+
               <a v-else>收起</a>
             </div>
           </div>
@@ -223,6 +224,7 @@ export default class Moment extends Vue {
   position: absolute;
   width: 100%;
   bottom: -2px;
+  left: -4px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff);
   text-align: center;
 }
