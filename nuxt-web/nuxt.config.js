@@ -30,10 +30,13 @@ export default {
 
     script: [
       { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
+      { src: 'https://cdn.siques.cn/libs/js/Sortable.min.js', ssr: true },
+      { src: 'https://cdn.siques.cn/libs/js/vuedraggable.umd.min.js', ssr: true },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
       { src: 'https://cdn.siques.cn/libs/js/ckeditor.js', defer: true },
+
       { src: 'https://cdn.siques.cn/libs/js/diff.min.js', defer: true },
       // {
       //   src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
@@ -51,11 +54,11 @@ export default {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
         src: mode ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
       },
-      // {
-      //   src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
-      // },
       {
-        src: 'https://cdn.siques.cn/libs/js/vue-router.js'
+        src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
+      },
+      {
+        src: 'https://cdn.siques.cn/libs/js/vue-router.min.js'
       },
       {
         src: 'https://cdn.siques.cn/libs/js/vuex.min.js'
@@ -195,14 +198,15 @@ export default {
         Object.assign(config.externals, {
           vue: 'Vue',
           // 'element-ui': 'ELEMENT',
-          // lodash: '_',
+          lodash: '_',
           'vue-router': 'VueRouter',
           vuex: 'Vuex',
           'vue-meta': 'VueMeta',
           // transliteration: 'SlugifyFunction',
           // 'vue-lazyload': 'VueLazyload',
           katex: 'katex',
-          highlightjs: 'highlightjs'
+          highlightjs: 'highlightjs',
+          vuedraggable: 'vuedraggable'
         })
       }
     }

@@ -19,7 +19,7 @@
           </div>
           <MenuBtn :title="`更多操作`" :options="menuOptions">mdi-plus</MenuBtn>
         </div>
-        <v-treeview
+        <!-- <v-treeview
           v-show="!loading"
           ref="tree"
           :items="docTree"
@@ -50,9 +50,37 @@
               </div>
             </v-hover>
           </template>
-        </v-treeview>
+        </v-treeview> -->
 
-        <div class="ellipsis-1 d-flex ai-center">
+        <DraggableTreeView
+          v-show="!loading"
+          v-model="docTree"
+          dense
+          activatable
+          :active="selectedDoc.id"
+          group="hoge"
+          @update:active="selectDoc"
+        >
+          <template v-slot:prepend="{ item, open }">
+            <div class="text-truncate">
+              <v-icon small>
+                {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+              </v-icon>
+
+              <span>{{ item.title }}</span>
+            </div>
+          </template>
+          <template v-slot:label="{ item }">
+            <v-hover v-slot="{ hover }">
+              <div :class="{ 'on-hover': hover }" class="doc-action float-right" @e.prevent>
+                <MenuBtn :title="`删除等操作`" :item="item" :options="moreOptions">mdi-dots-horizontal</MenuBtn>
+                <MenuBtn :title="`更多操作`" :item="item" :options="addOptions">mdi-plus</MenuBtn>
+              </div>
+            </v-hover>
+          </template>
+        </DraggableTreeView>
+
+        <div class="ellipsis-1 d-flex ai-center pb-10">
           <v-icon color="   darken-2 " class="pr-2">
             mdi-trash-can
           </v-icon>
@@ -73,8 +101,20 @@ import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { createDoc, delDoc, updateDoc } from '@/api/doc.js'
 import { copyToClip } from '@/plugins/utils'
+
 @Component({
-  computed: mapGetters(['selectedCollection', 'selectedDoc', 'docTree', 'editorSideBar'])
+  computed: {
+    docTree: {
+      get() {
+        return this.$store.state.modules.doc.docTree
+      },
+      set(v) {
+        // console.log('docTree set : ', v)
+        this.$store.commit('modules/doc/SET_DOCTREE', v)
+      }
+    },
+    ...mapGetters(['selectedCollection', 'selectedDoc', 'editorSideBar'])
+  }
 })
 export default class DocSideBar extends Vue {
   loading = false
@@ -89,6 +129,11 @@ export default class DocSideBar extends Vue {
   selectedDoc
 
   $refs: any
+
+  // ###########tree drag drop
+
+  // ###########
+
   manageCurrentCollection() {
     // 当前选中文档清空
     this.$store.commit('SET_DOC', {})
@@ -102,12 +147,13 @@ export default class DocSideBar extends Vue {
   }
 
   selectDoc(row) {
-    if (row.length > 0) {
-      const doc = this.$refs.tree.nodes[row[0]].item
-      this.$store.commit('PUSH_MSG', doc.title + ' 已同步')
-      this.$store.commit('SET_DOC', doc)
-      this.$router.push('/docs')
-    }
+    // if (row.length > 0) {
+    // const doc = this.$refs.tree.nodes[row[0]].item
+    console.log(row)
+    this.$store.commit('PUSH_MSG', row.title + ' 已同步')
+    this.$store.commit('SET_DOC', row)
+    this.$router.push('/docs')
+    // }
   }
 
   @Watch('selectedCollection')
@@ -116,12 +162,12 @@ export default class DocSideBar extends Vue {
   }
 
   async getDocTree() {
-    this.loading = true
+    const loading = this.$loading({ text: '加载中' })
     await this.$store.dispatch('modules/doc/getDocTree', {
       collectionId: this.selectedCollection.id,
       isPublished: false
     })
-    this.loading = false
+    loading.close()
   }
 
   async createDoc(row) {

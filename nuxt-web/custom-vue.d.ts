@@ -21,3 +21,9 @@ declare module 'vue/types/vue' {
     $confirm: any
   }
 }
+
+declare type TreeItem = {
+  id: number
+  name: string
+  children: TreeItem[]
+}

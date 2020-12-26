@@ -45,6 +45,13 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         Doc post = new Doc();
         post.setStatus(true);
         post.setBody("<h1>未命名文档</h1><p>在这里开始书写之旅</p>");
+        List<Doc> docs = docDao.selectList(new QueryWrapper<Doc>().select(
+                Doc.class, i -> !i.getProperty().equals("body")
+        ).eq("parentId", parent.getId()).orderByDesc("sort"));
+        if(docs.size()>0){
+            post.setSort(docs.get(0).getSort()+1);
+        }
+
         if(ObjectUtil.isNotEmpty(parent)){
             post.setParentId(parentId);
             post.setParentIds(parent.getParentIds()+parentId+",");
@@ -66,7 +73,8 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
             return new ArrayList<>();
         }
         QueryWrapper<Doc> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("id",docIds).select(Doc.class,i->!i.getProperty().equals("body"));
+        queryWrapper.in("id",docIds).select(Doc.class,i->!i.getProperty().equals("body"))
+        .orderByDesc("sort");
         List<Doc> docList = this.list(queryWrapper);
         Stream<Doc> docStream = docList.stream().filter(post -> post.getStatus() == true);
         if(isPublished){
@@ -131,7 +139,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
 
         saveHistory(doc);
 
-        return false;
+        return true;
     }
 
     private boolean saveHistory(Doc doc){

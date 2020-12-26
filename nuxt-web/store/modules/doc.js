@@ -31,5 +31,7 @@ export const actions = {
     } else {
       commit('SET_DELDOC', [])
     }
-  }
+  },
+
+  updateDocTree({ commit }, parameter) {}
 }
