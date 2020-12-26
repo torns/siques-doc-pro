@@ -8,12 +8,12 @@
     ><transition-group> -->
 
   <div class="v-treeview v-treeview-draggable" :class="themeClassName">
-    <tree-view-node
-      v-for="item in value"
-      :key="item.id"
+    <TreeViewNode
+      v-for="items in value"
+      :key="items.id"
       :active="active"
       :group="group"
-      :value="item"
+      :value="items"
       :expand-icon="expandIcon"
       @input="updateItem"
     >
@@ -26,7 +26,7 @@
       <template v-slot:append="{ item, open }">
         <slot name="append" v-bind="{ item, open }"> </slot>
       </template>
-    </tree-view-node>
+    </TreeViewNode>
   </div>
   <!-- </transition-group>
   </draggable> -->

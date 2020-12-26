@@ -43,7 +43,7 @@
         @input="updateValue"
       >
         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
-          <treeview-node
+          <TreeViewNode
             v-for="child in value.children"
             :key="child.id"
             :active="active"
@@ -62,7 +62,7 @@
             <template v-slot:append="{ item }">
               <slot name="append" v-bind="{ item }" />
             </template>
-          </treeview-node>
+          </TreeViewNode>
         </transition-group>
       </draggable>
     </div>
