@@ -2,7 +2,7 @@
   <v-dialog v-model="$store.state.loginFormVisible" persistent max-width="400" style="background-color:white">
     <v-card :loading="loading" class="pb-3">
       <template slot="progress">
-        <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
+        <v-progress-linear color="blue" height="5" indeterminate></v-progress-linear>
       </template>
 
       <v-toolbar flat dark color="primary">
@@ -64,18 +64,26 @@ export default class Login extends Vue {
   // 通过验证码登录
   async loginByPhoneCode(valid) {
     if (valid) {
+      this.loading = true
       const res = await this.$store.dispatch('modules/user/LoginByCode', this.phoneCodeModel)
       if (res.respCode === 1) {
-        this.$store.commit('closeLoginForm')
+        setTimeout(() => {
+          this.closeLoginForm()
+          this.loading = false
+        }, 500)
       }
     }
   }
   // 通过账号密码登录
   async loginByPass(valid) {
     if (valid) {
+      this.loading = true
       const res = await this.$store.dispatch('modules/user/Login', this.loginCodeModel)
       if (res.respCode === 1) {
-        this.$store.commit('closeLoginForm')
+        setTimeout(() => {
+          this.closeLoginForm()
+          this.loading = false
+        }, 500)
       }
     }
   }

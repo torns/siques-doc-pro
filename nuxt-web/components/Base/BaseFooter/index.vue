@@ -35,13 +35,10 @@
         style="background-color:#F7F7F7!important"
         class="hidden-xs-and-down text-gray fs-sm"
       >
-        <div class="text-center py-5 mb-2">
+        <div class="text-center py-5 mb-1">
           <div class="fs-xm pb-2">
             <sq-cat class="pr-3"></sq-cat>
 
-            <div>
-              <a class="text-gray" rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
-            </div>
             <div class="py-1">
               Copyright
 
@@ -55,7 +52,7 @@
               2018-{{ new Date().getFullYear() }} Siques
             </div>
             <div>
-              <span style="font-family: fantasy;"> Powered by</span>
+              <span style="font-family: fantasy;" class="pr-1"> Powered by </span>
               <span>
                 <span v-for="(item, index) in techs" :key="index" class="pr-2">
                   <a :href="item.link" rel="nofollow" class="text-primary hover-1 hoverlink">{{ item.name }}</a>
@@ -63,12 +60,14 @@
               </span>
             </div>
           </div>
-          <div style="">
+          <!-- <div style="">
             <i slot="reference" class="fa fa-weixin pr-2 text-green point"></i>
 
             <a rel="noopener" href="http://wpa.qq.com/msgrd?v=3&uin=943452349&site=qq&menu=yes" target="_blank">
-              <i class="fa fa-qq text-blue pr-2"></i
-            ></a>
+              <v-btn small icon color="indigo">
+                <v-icon small>mdi-qqchat</v-icon>
+              </v-btn>
+            </a>
 
             <a
               rel="noopener"
@@ -80,8 +79,10 @@
             <a rel="noopener" href="https://github.com/ericheshenghao?tab=repositories" target="_blank">
               <i class="fa fa-github pr-2"></i>
             </a>
+          </div> -->
+          <div>
+            <a class="text-gray" rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
           </div>
-
           <!-- <li>
             {{ '❤ ' + Math.ceil((new Date() - Date.parse('2018-12-15')) / (1 * 24 * 60 * 60 * 1000)) + ' 天' }}
           </li> -->
@@ -109,7 +110,7 @@ export default class Footer extends Vue {
     { name: 'Node.js', link: 'https://www.nodeapp.cn/N' },
     { name: 'jQuery', link: 'https://www.jquery123.com/' },
     { name: 'Nuxtjs', link: 'https://www.nuxtjs.cn/guide' },
-    { name: 'Quill', link: 'https://quilljs.com/' }
+    { name: 'CKEditor', link: 'https://ckeditor.com/ckeditor-5/demo/#balloon-block' }
   ]
 }
 </script>

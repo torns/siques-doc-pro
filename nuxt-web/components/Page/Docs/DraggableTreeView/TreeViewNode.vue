@@ -81,7 +81,7 @@ import { TreeItem } from '~/custom-vue'
 @Component({
   computed: mapGetters(['docTree', 'selectedCollection'])
 })
-export default class TreeviewNode extends Vue {
+export default class TreeViewNode extends Vue {
   @Prop({
     type: Number,
     default: 0

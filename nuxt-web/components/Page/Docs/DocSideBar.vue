@@ -149,7 +149,7 @@ export default class DocSideBar extends Vue {
   selectDoc(row) {
     // if (row.length > 0) {
     // const doc = this.$refs.tree.nodes[row[0]].item
-    console.log(row)
+    // console.log(row)
     this.$store.commit('PUSH_MSG', row.title + ' 已同步')
     this.$store.commit('SET_DOC', row)
     this.$router.push('/docs')

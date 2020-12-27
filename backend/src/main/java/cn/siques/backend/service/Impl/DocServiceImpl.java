@@ -125,7 +125,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
            doc.setCover(s);
 
            String rawStr = doc.getBody().replaceAll("<\\/?.+?\\/?>", "")
-                   .replaceAll("\\n", "");
+                   .replaceAll("\\n", "").replaceAll("&nbsp;","");
 
            doc.setCounts(Long.valueOf(rawStr.length()));
 

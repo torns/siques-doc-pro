@@ -121,7 +121,7 @@ import { getDocList } from '@/api/doc'
 })
 export default class AppPage extends Vue {
   async asyncData() {
-    const res = await getDocList({ pageNum: 1, pageSize: 10, params: { type: 'doc' } })
+    const res = await getDocList({ pageNum: 1, pageSize: 20, params: { type: 'doc' } })
 
     return {
       docs: res.datas.records,
@@ -136,13 +136,11 @@ export default class AppPage extends Vue {
     this.isIntersecting = entries[0].intersectionRatio >= 0.5
   }
   page = 1
-  count = 10
+  count = 20
   total: number = 0
   loading = false
   docs = []
   search = ''
-
-  category: string = 'new'
 
   head() {
     return {
@@ -162,7 +160,7 @@ export default class AppPage extends Vue {
     return this.loading || this.noMore
   }
 
-  homeTop = 0
+  // homeTop = 0
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
