@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 import factory from './factory'
 import { UploadAdapter } from './upload'
@@ -15,14 +15,14 @@ export default class CkEditor extends Vue {
   @Prop()
   readOnly
 
-  editor: any = null
+  editor = null
 
   value: any = ''
 
   mounted() {
-    const promise = factory()
-    promise.then((editor) => {
+    factory().then((editor) => {
       this.editor = editor
+
       if (this.readOnly) {
         editor.isReadOnly = true
       }
@@ -37,6 +37,11 @@ export default class CkEditor extends Vue {
     console.log('切换文章内容')
     this.editor.docId = id
     this.editor.setData(value)
+  }
+  beforeDestroy() {
+    this.editor.destroy().then(() => {
+      console.log('editor destroyed')
+    })
   }
 }
 </script>
