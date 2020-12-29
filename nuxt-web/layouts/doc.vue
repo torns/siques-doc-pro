@@ -7,7 +7,7 @@
     <BaseLoading></BaseLoading>
     <BaseConfirm></BaseConfirm>
     <keep-alive exclude="Archive,OverView">
-      <Nuxt :key="$route.path"></Nuxt>
+      <router-link :key="$route.path"></router-link>
     </keep-alive>
   </v-app>
 </template>

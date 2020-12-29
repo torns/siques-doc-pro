@@ -4,7 +4,7 @@
       <div id="app">
         <IndexMenu></IndexMenu>
         <keep-alive include="AppPage">
-          <Nuxt :key="$route.path"></Nuxt>
+          <router-link :key="$route.path"></router-link>
         </keep-alive>
       </div>
     </div>
