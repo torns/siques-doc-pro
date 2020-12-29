@@ -135,7 +135,6 @@ export default class DocHistoryDialog extends Vue {
     this.historyDoc = res.datas.body
 
     this.$refs.editor.setContent(this.historyDoc)
-    this.showDiff = true
   }
 
   handleChnage(changes) {
