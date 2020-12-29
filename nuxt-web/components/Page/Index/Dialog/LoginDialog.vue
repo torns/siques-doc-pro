@@ -48,7 +48,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component({})
 /* eslint-disable */
-export default class Login extends Vue {
+export default class LoginDialog extends Vue {
   loading = false
   status = {
     show: true

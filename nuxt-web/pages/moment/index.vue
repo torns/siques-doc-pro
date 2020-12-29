@@ -108,9 +108,9 @@ export default class Moment extends Vue {
 
   async onload() {
     const res = await getMomentList({
-      pageNum: this.page,
+      pageNum: ++this.page,
       pageSize: this.limit,
-      type: 'tfNews'
+      params: { type: 'tfNews' }
     })
     this.fetchDataSuccess(res)
   }

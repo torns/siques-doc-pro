@@ -4,7 +4,7 @@
       <div id="app">
         <IndexMenu></IndexMenu>
         <keep-alive include="AppPage">
-          <router-view :key="$route.path"></router-view>
+          <Nuxt :key="$route.path"></Nuxt>
         </keep-alive>
       </div>
     </div>
@@ -48,7 +48,9 @@ import { mapGetters } from 'vuex'
 })
 export default class DefaultLayouts extends Vue {
   /* eslint-disable */
-
+  layout(context) {
+    return 'base'
+  }
   userInfo
   pageLoading
   items = [
