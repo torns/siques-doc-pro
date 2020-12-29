@@ -38,11 +38,11 @@ export default class CkEditor extends Vue {
     this.editor.docId = id
     this.editor.setData(value)
   }
-  beforeDestroy() {
-    this.editor.destroy().then(() => {
-      console.log('editor destroyed')
-    })
-  }
+  // beforeDestroy() {
+  //   this.editor.destroy().then(() => {
+  //     console.log('editor destroyed')
+  //   })
+  // }
 }
 </script>
 
