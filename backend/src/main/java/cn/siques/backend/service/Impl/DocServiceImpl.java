@@ -45,14 +45,15 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         Doc post = new Doc();
         post.setStatus(true);
         post.setBody("<h1>未命名文档</h1><p>在这里开始书写之旅</p>");
-        List<Doc> docs = docDao.selectList(new QueryWrapper<Doc>().select(
-                Doc.class, i -> !i.getProperty().equals("body")
-        ).eq("parentId", parent.getId()).orderByDesc("sort"));
-        if(docs.size()>0){
-            post.setSort(docs.get(0).getSort()+1);
-        }
+
 
         if(ObjectUtil.isNotEmpty(parent)){
+            List<Doc> docs = docDao.selectList(new QueryWrapper<Doc>().select(
+                    Doc.class, i -> !i.getProperty().equals("body")
+            ).eq("parentId", parent.getId()).orderByDesc("sort"));
+            if(docs.size()>0){
+                post.setSort(docs.get(0).getSort()+1);
+            }
             post.setParentId(parentId);
             post.setParentIds(parent.getParentIds()+parentId+",");
         }else{
