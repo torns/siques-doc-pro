@@ -4,7 +4,7 @@
       <div id="app">
         <IndexMenu></IndexMenu>
         <keep-alive include="AppPage">
-          <router-link :key="$route.path"></router-link>
+          <router-view :key="$route.path"></router-view>
         </keep-alive>
       </div>
     </div>

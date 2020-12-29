@@ -7,7 +7,7 @@
     <BaseLoading></BaseLoading>
     <BaseConfirm></BaseConfirm>
     <keep-alive exclude="Archive,OverView">
-      <router-link :key="$route.path"></router-link>
+      <router-view :key="$route.path"></router-view>
     </keep-alive>
   </v-app>
 </template>
