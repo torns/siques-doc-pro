@@ -22,9 +22,9 @@ export default () => {
         $('#menu').addClass('showMenu')
       }
 
-      if (top > 350) {
+      if (top > 200) {
         $('#sidebar').css('position', 'fixed')
-        $('#sidebar').css('top', '80px')
+        $('#sidebar').css('top', '150px')
       } else {
         $('#sidebar').css('position', 'absolute')
         $('#sidebar').css('top', '350px')

@@ -11,3 +11,120 @@
     width: 820px;
   }
 }
+
+.moment-title {
+  font-size: 22px;
+
+  font-weight: 600;
+  padding: 10px 0 20px 0;
+}
+
+.moment-item-wrap:before {
+  background: #f4f4f4;
+  border-radius: 4px;
+  content: ' ' !important;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  -webkit-transform: scale(0.96);
+  -ms-transform: scale(0.96);
+  transform: scale(0.96);
+  width: 100%;
+}
+
+.moment-item-wrap:hover:before {
+  -webkit-animation: tapAnimation 0.25s cubic-bezier(0.31, 1, 0.34, 1) forwards;
+  animation: tapAnimation 0.25s cubic-bezier(0.31, 1, 0.34, 1) forwards;
+}
+
+@-webkit-keyframes tapAnimation {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.96);
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes tapAnimation {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.96);
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+.moment-items {
+  padding: 10px;
+}
+
+.plain-text-wrap {
+  img {
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  pre code {
+    white-space: break-spaces;
+  }
+}
+
+.moment-data {
+  font-size: 26px;
+  line-height: 56px;
+  font-weight: 600;
+  letter-spacing: 4px;
+
+  padding: 15px 10px 10px 10px;
+}
+
+.moment-img {
+  padding-bottom: 10px;
+}
+.moment-item {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  padding: 24px 30px 0 30px;
+  background-color: #fafafa;
+}
+
+.moment-item .plain-text-wrap {
+  font-size: 16px;
+  line-height: 28px;
+  // cursor: pointer;
+}
+
+.plain-text-wrap {
+  p {
+    padding: 0 0 20px 0 !important;
+  }
+}
+
+.open-btn {
+  position: absolute;
+  width: 100%;
+  bottom: -2px;
+  left: -4px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff);
+  text-align: center;
+}
+.open-btn a {
+  text-decoration: none;
+  color: chocolate;
+  display: inline-block;
+  margin-top: 60px;
+}

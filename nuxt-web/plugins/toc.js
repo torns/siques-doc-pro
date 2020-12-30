@@ -4,7 +4,7 @@ export default () => {
   var headers = $('#doc-content').find('h1, h2, h3')
   var post_toc = $('#doc-toc')
   // 生成目录
-
+  post_toc.empty()
   for (let index = 0; index < headers.length; index++) {
     const header = headers[index]
     // 添加锚点
