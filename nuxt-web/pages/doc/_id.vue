@@ -83,8 +83,13 @@ const mediumzoom = () => {
   }
 })
 export default class Doc extends Vue {
-  async asyncData({ params, store, redirect }: any) {
+  async asyncData({ params, store, redirect, error }: any) {
     const doc = await getDocDetail({ docId: params.id })
+
+    if (doc.respCode === 0) {
+      return redirect('/404')
+    }
+
     const docTree = await getDocTree({ collectionId: doc.datas.collection.id, isPublished: true })
 
     return {

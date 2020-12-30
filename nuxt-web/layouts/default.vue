@@ -48,9 +48,7 @@ import { mapGetters } from 'vuex'
 })
 export default class DefaultLayouts extends Vue {
   /* eslint-disable */
-  layout(context) {
-    return 'base'
-  }
+
   userInfo
   pageLoading
   items = [

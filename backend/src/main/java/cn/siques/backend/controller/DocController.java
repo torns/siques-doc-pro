@@ -98,11 +98,15 @@ public class DocController {
      */
     @GetMapping()
     public Result docDetail(@RequestParam String docId){
-        Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
-        Collection collection = collectionService.getById(collectionId);
         Doc doc = docService.getOne(new QueryWrapper<Doc>().eq("id", docId));
-        doc.setCollection(collection);
-        return Result.succeed(doc);
+        if(ObjectUtil.isNotEmpty(doc)){
+            Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
+            Collection collection = collectionService.getById(collectionId);
+
+            doc.setCollection(collection);
+            return Result.succeed(doc);
+        }
+        return Result.failed("该文档已被删除或不存在");
     }
 
     /**
