@@ -2,7 +2,7 @@
   <div>
     <DocInnerAppBar v-show="!loading && selectedDoc.id"></DocInnerAppBar>
     <v-main id="doc-content" style="padding-top:120px" app>
-      <CkEditor v-show="!loading && selectedDoc.id" ref="editor" @focus="onEditorFocus($event)"></CkEditor>
+      <CkEditor v-show="!loading && selectedDoc.id" ref="editor" v-scroll-spy @focus="onEditorFocus($event)"></CkEditor>
       <v-banner v-show="!selectedDoc.id" two-line>
         <v-avatar slot="icon" color="deep-purple accent-4" size="40">
           <v-icon icon="mdi-lock" color="white">
@@ -13,11 +13,7 @@
         选择你要查看的文档
       </v-banner>
     </v-main>
-    <div id="sidebar" class="sidebar hidden-md-and-down" style="z-index:20;max-width: 250px;">
-      <div id="toc">
-        <nav id="doc-toc" class="nav d-flex flex-column"></nav>
-      </div>
-    </div>
+    <PostToc></PostToc>
   </div>
 </template>
 
@@ -68,9 +64,8 @@ export default class DocWrite extends Vue {
       this.$refs.editor.setContent(res.datas.body, this.selectedDoc.id)
 
       loading.close()
-      this.$nextTick(() => {
-        toc()
-      })
+
+      toc()
     }
   }
 

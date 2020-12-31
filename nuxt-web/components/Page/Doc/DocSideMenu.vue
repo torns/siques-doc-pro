@@ -4,7 +4,7 @@
       v-model="docSideBars"
       width="350"
       dark
-      src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+      src="https://cdn.siques.cn/public/bg-2.jpg"
       app
       temporary
     >

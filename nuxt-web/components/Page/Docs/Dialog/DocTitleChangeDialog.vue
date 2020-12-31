@@ -5,8 +5,15 @@
         修改文章标题
       </v-card-title>
       <v-card-text>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-text-field v-model="data.title" :counter="35" :rules="nameRules" label="title" required></v-text-field>
+        <v-form ref="form" v-model="valid" lazy-validation @submit.native.prevent>
+          <v-text-field
+            v-model="data.title"
+            :counter="35"
+            :rules="nameRules"
+            label="title"
+            required
+            @keyup.enter.native="validates"
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions justify-end>

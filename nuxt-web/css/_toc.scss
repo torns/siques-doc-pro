@@ -29,9 +29,17 @@
 }
 
 .sidebar {
-  position: absolute;
   right: 35px;
+  z-index: 20;
+  max-width: 250px;
+  position: absolute;
   top: 350px;
+  height: 80%;
+  overflow: scroll;
+  font: 400 13.3333px Arial;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 }
 #toc .title-active {
   color: #1bbc8c !important;

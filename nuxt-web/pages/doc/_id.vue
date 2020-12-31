@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sq-sidemenu :doc-tree="docTree" :doc="doc"> </sq-sidemenu>
+    <DocSideMenu :doc-tree="docTree" :doc="doc"> </DocSideMenu>
     <v-main style="overflow-x: hidden;">
       <div
         class="absolute d-flex jc-center flex-column ai-center "
@@ -52,7 +52,7 @@
         </v-row>
       </div>
     </v-main>
-    <sq-toc :title="doc.title"></sq-toc>
+    <PostToc :title="doc.title"></PostToc>
 
     <sq-footer></sq-footer>
   </div>
@@ -68,20 +68,11 @@ import { hljs } from '@/plugins/utils.js'
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
 
-import toc from '~/components/Toc/PostToc.vue'
-
-import sideMenu from '~/components/Page/Doc/DocSideMenu.vue'
-
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('figure img'))
 }
 
-@Component({
-  components: {
-    'sq-sidemenu': sideMenu,
-    'sq-toc': toc
-  }
-})
+@Component({})
 export default class Doc extends Vue {
   async asyncData({ params, store, redirect, error }: any) {
     const doc = await getDocDetail({ docId: params.id })
