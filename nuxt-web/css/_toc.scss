@@ -1,7 +1,12 @@
 #doc-toc.nav li {
   padding: 2px 0;
+  max-width: 200px;
+
   // display: none;
   a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: normal;
     display: block !important;
     color: #9e9e9e;
@@ -40,6 +45,12 @@
   &::-webkit-scrollbar {
     width: 0px;
   }
+  transition: 0.5s;
+  &:hover {
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+  }
 }
 #toc .title-active {
   color: #1bbc8c !important;
@@ -48,9 +59,5 @@
 #toc a {
   color: #9e9e9e;
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
   padding: 2px 0;
 }
