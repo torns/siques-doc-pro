@@ -8,6 +8,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import factory from './factory'
 import { UploadAdapter } from './upload'
 import displayStatus from './utils'
+import { SpecialCharactersEmoji } from './emoji'
 /* eslint-disable */
 
 @Component({})
@@ -20,12 +21,13 @@ export default class CkEditor extends Vue {
   value: any = ''
 
   mounted() {
-    factory().then((editor) => {
+    const editor = factory().then((editor) => {
       this.editor = editor
 
       if (this.readOnly) {
         editor.isReadOnly = true
       }
+      SpecialCharactersEmoji(editor, this)
       editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
         return new UploadAdapter(loader)
       }

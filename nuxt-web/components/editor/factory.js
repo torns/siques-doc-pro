@@ -87,7 +87,6 @@ export default () => {
       'heading',
       'exportPdf',
       'exportWord',
-      'CKFinder',
       'imageUpload',
       'mediaEmbed',
       'insertTable',
@@ -95,6 +94,7 @@ export default () => {
       'codeBlock',
       'MathType',
       'ChemType',
+      'specialCharacters',
       'undo',
       'redo'
     ],
@@ -102,7 +102,7 @@ export default () => {
       toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
     },
     table: {
-      contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+      contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties']
     },
     licenseKey: ''
   })
