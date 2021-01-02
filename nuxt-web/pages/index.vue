@@ -46,7 +46,11 @@
                 <section class="row">
                   <section v-if="doc.cover" class="news-img point">
                     <router-link :to="`/doc/${doc.id}`" :title="doc.title" target="_blank" tag="a">
-                      <v-img :src="doc.cover" lazy></v-img
+                      <v-img :src="doc.cover" lazy contain>
+                        <template v-slot:placeholder>
+                          <v-row class="fill-height ma-0" align="center" justify="center">
+                            <v-progress-circular indeterminate color="grey"></v-progress-circular>
+                          </v-row> </template></v-img
                     ></router-link>
                   </section>
                   <section :class="`${doc.cover ? 'news-detail' : 'content'}`">
