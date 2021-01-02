@@ -75,7 +75,7 @@ const mediumzoom = () => {
 @Component({})
 export default class Doc extends Vue {
   async asyncData({ params, store, redirect, error }: any) {
-    const doc = await getDocDetail({ docId: params.id })
+    const doc = await getDocDetail({ docId: params.id, isPublished: true })
 
     if (doc.respCode === 0) {
       return redirect('/404')

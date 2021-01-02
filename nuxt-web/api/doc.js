@@ -69,7 +69,7 @@ export function getPublishedList(parameter) {
 }
 /**
  *
- * @param {docId} parameter
+ * @param {docId,isPublished} parameter
  */
 export function getDocDetail(parameter) {
   return vue.prototype.$http({

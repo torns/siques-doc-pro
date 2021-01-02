@@ -123,6 +123,9 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     public boolean updateAndExtract(Doc doc) {
        if(ObjectUtil.isNotNull(doc.getBody())){
            String s = RegexUtils.searchOne("(?<=<img src=\")(.*?)(?=\">)", doc.getBody());
+           if(ObjectUtil.isEmpty(s)){
+               s = "";
+           }
            doc.setCover(s);
 
            String rawStr = doc.getBody().replaceAll("<\\/?.+?\\/?>", "")

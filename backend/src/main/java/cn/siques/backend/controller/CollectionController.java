@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.config.OssFactory;
 import cn.siques.backend.entity.Collection;
-import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
 import cn.siques.backend.entity.UserCollection;
 import cn.siques.backend.service.CollectionService;
@@ -14,10 +13,8 @@ import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +42,7 @@ public class CollectionController {
 
     @Autowired
     OssFactory ossFactory;
-    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
     /**
      * 集合分页查询
@@ -122,7 +121,7 @@ public class CollectionController {
     /**
      * 查询已经删除的集合
      * @param userDetails
-     * @return
+     * @return Result
      */
     @GetMapping("/deleted")
     public Result deleted(@LoginUser JwtUserDetails userDetails){

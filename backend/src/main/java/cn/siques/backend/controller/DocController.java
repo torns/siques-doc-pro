@@ -92,13 +92,19 @@ public class DocController {
     }
 
     /**
-     * 查询文章详情
+     * 查询文章详情,默认后台可查询
      * @param docId
      * @return
      */
     @GetMapping()
-    public Result docDetail(@RequestParam String docId){
-        Doc doc = docService.getOne(new QueryWrapper<Doc>().eq("id", docId));
+    public Result docDetail(@RequestParam String docId,@RequestParam(value = "isPublished",defaultValue = "false") Boolean isPublished){
+        QueryWrapper<Doc> wrapper = new QueryWrapper<Doc>().eq("id", docId);
+        if(isPublished){
+            wrapper.eq("isPublished", true);
+        }
+        Doc doc = docService.getOne(wrapper);
+
+
         if(ObjectUtil.isNotEmpty(doc)){
             Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
             Collection collection = collectionService.getById(collectionId);
@@ -106,7 +112,7 @@ public class DocController {
             doc.setCollection(collection);
             return Result.succeed(doc);
         }
-        return Result.failed("该文档已被删除或不存在");
+        return Result.failed("该文档已被删除或未发布");
     }
 
     /**
@@ -230,9 +236,12 @@ public class DocController {
     public Result publish(@LoginUser JwtUserDetails userDetails,@RequestBody List<Long> docIds,@RequestParam Long collectionId){
         List<Long> allDocIds = docService.getDocsByCollectionId(collectionId)
                 .stream().map(doc -> doc.getId()).collect(Collectors.toList());
-        docService.update(new UpdateWrapper<Doc>().in("id",allDocIds).set("isPublished",false));
-        boolean update = docService.update(new UpdateWrapper<Doc>().in("id", docIds).set("isPublished", true));
-        return Result.succeed(update);
+        boolean a = docService.update(new UpdateWrapper<Doc>().in("id", allDocIds).set("isPublished", false));
+        if(docIds.size()>0){
+              docService.update(new UpdateWrapper<Doc>().in("id", docIds).set("isPublished", true));
+        }
+
+        return Result.succeed(a);
     }
 
     /**
