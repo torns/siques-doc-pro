@@ -1,6 +1,5 @@
 server:
   port: 3002
-
 spring:
   elasticsearch:
     rest:
