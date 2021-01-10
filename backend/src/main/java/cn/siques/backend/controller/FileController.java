@@ -7,10 +7,7 @@ import cn.siques.backend.config.OssFactory;
 import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletInputStream;
@@ -32,7 +29,7 @@ import java.util.Map;
 public class FileController {
     @Autowired
     OssFactory ossFactory;
-    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
 
     @PostMapping("upload")
@@ -47,5 +44,11 @@ public class FileController {
         map.put("url",s);
         map.put("originalFilename",originalFilename);
         return Result.succeed(map);
+    }
+
+    @GetMapping("stsToken")
+//    public Result getToken(@LoginUser JwtUserDetails userDetails){
+    public Result getToken( ){
+        return Result.succeed(ossFactory.getSts(1L));
     }
 }

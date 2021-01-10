@@ -22,7 +22,7 @@ import java.util.Random;
  * @date : 13:42 2020/12/14
  */
 public class AuthenticateUtil {
-
+    // 第三方短信验证模块
     private static String apikey = "a15d23ef365095cadfe6e4c77aeec912";
     private static String AUTH_URL = "https://captcha.yunpian.com/v1/api/authenticate";
 
