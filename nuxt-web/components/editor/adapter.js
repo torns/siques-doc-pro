@@ -1,4 +1,5 @@
 import { fileUpload } from '@/api/file'
+
 export class UploadAdapter {
   constructor(loader) {
     // The file loader instance to use during the upload.

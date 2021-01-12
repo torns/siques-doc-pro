@@ -36,6 +36,18 @@ export default () => {
         page_orientation: 'portrait'
       }
     },
+    link: {
+      decorators: {
+        openInNewTab: {
+          mode: 'manual',
+          label: 'Open in a new tab',
+          attributes: {
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          }
+        }
+      }
+    },
     codeBlock: {
       languages: [
         { language: 'plaintext', label: 'Plain text' }, // The default language.
@@ -87,7 +99,9 @@ export default () => {
       'heading',
       'exportPdf',
       'exportWord',
+      'ckfinder',
       'imageUpload',
+
       'mediaEmbed',
       'insertTable',
       'todoList',

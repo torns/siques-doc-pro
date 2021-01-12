@@ -4,7 +4,7 @@
 
     <BasePagination v-model="pagination" @current-change="handleChange"></BasePagination>
 
-    <sq-footer class="pt-5"></sq-footer>
+    <BaseFooter class="pt-5"></BaseFooter>
   </div>
 </template>
 

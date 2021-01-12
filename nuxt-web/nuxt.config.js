@@ -38,6 +38,8 @@ export default {
       { src: 'https://cdn.siques.cn/libs/js/ckeditor.js', defer: true },
 
       { src: 'https://cdn.siques.cn/libs/js/diff.min.js', defer: true },
+      ,
+      { src: 'https://cdn.bootcdn.net/ajax/libs/ali-oss/6.12.0/aliyun-oss-sdk.min.js', defer: true },
       // {
       //   src: 'https://cdn.siques.cn/libs/js/typescript.min.js',
       //   defer: true
@@ -54,6 +56,7 @@ export default {
         // src: '//cdn.siques.cn/libs/js/vue.min.js'
         src: mode ? 'https://cdn.siques.cn/libs/js/vue.min.js' : 'https://cdn.siques.cn/libs/js/vue.js'
       },
+      { src: 'https://cdn.siques.cn/libs/js/ossfinder.umd.min.js', defer: true },
       {
         src: 'https://cdn.siques.cn/libs/js/lodash.min.js'
       },
@@ -109,7 +112,7 @@ export default {
     { src: '@/plugins/tips/loading.js', ssr: true },
     { src: '@/plugins/tips/snackbar.js', ssr: true },
     { src: '@/plugins/tips/confirm.js', ssr: true },
-    '@/plugins/nullSSRComponents.js',
+    { src: '@/plugins/nullSSRComponents.js', ssr: false },
     { src: '@/plugins/axios', ssr: true },
 
     { src: '@/plugins/mixin.js', ssr: false },
@@ -206,7 +209,8 @@ export default {
           // 'vue-lazyload': 'VueLazyload',
           katex: 'katex',
           highlightjs: 'highlightjs',
-          vuedraggable: 'vuedraggable'
+          vuedraggable: 'vuedraggable',
+          '@siques/vue-ossfinder': 'ossfinder'
         })
       }
     }

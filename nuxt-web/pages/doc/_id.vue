@@ -54,7 +54,7 @@
     </v-main>
     <PostToc :title="doc.title"></PostToc>
 
-    <sq-footer></sq-footer>
+    <BaseFooter></BaseFooter>
   </div>
 </template>
 

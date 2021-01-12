@@ -48,7 +48,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <sq-footer :top-border="true"></sq-footer>
+    <BaseFooter :top-border="true"></BaseFooter>
   </div>
 </template>
 

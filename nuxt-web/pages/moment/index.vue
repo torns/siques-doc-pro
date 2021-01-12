@@ -43,7 +43,7 @@
       <div v-else class="text-center text-gray">我是有底线的</div>
     </div>
 
-    <sq-footer class="pt-5"></sq-footer>
+    <BaseFooter class="pt-5"></BaseFooter>
   </div>
 </template>
 

@@ -1,4 +1,6 @@
 import Vue from 'vue'
-import scroll from './scroll'
+import OssFinder from '@siques/vue-ossfinder'
+import tocScroll from './tocScroll'
 
-Vue.use(scroll)
+Vue.component('OssFinder', OssFinder)
+Vue.use(tocScroll)

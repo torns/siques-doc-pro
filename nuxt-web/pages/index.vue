@@ -103,7 +103,7 @@
       </v-row>
     </v-container>
 
-    <sq-footer :top-border="true"> </sq-footer>
+    <BaseFooter :top-border="true"> </BaseFooter>
   </div>
 </template>
 
@@ -220,9 +220,4 @@ export default class AppPage extends Vue {
 .theme--light.v-input textarea {
   color: white;
 }
-
-// .theme--light.v-list {
-//   background: #ffffff00;
-//   color: white;
-// }
 </style>

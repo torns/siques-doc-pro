@@ -1,12 +1,15 @@
 <template>
-  <div id="editor" class="article" @click="$emit('focus')"></div>
+  <div>
+    <OssFinderWraper ref="ossfinder" @dblclick="execInsertLink"></OssFinderWraper>
+    <div id="editor" class="article" @click="$emit('focus')"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 import factory from './factory'
-import { UploadAdapter } from './upload'
+import { UploadAdapter } from './adapter.js'
 import displayStatus from './utils'
 import { SpecialCharactersEmoji } from './emoji'
 /* eslint-disable */
@@ -19,6 +22,14 @@ export default class CkEditor extends Vue {
   editor = null
 
   value: any = ''
+  callback = {
+    callback: this.openOssFinder,
+    priority: 100
+  }
+  $refs: any
+  openOssFinder() {
+    this.$refs.ossfinder.visible = true
+  }
 
   mounted() {
     const editor = factory().then((editor) => {
@@ -28,6 +39,11 @@ export default class CkEditor extends Vue {
         editor.isReadOnly = true
       }
       SpecialCharactersEmoji(editor, this)
+
+      // const documentSelection = editor.model.document.selection
+      const command = editor.commands.get('ckfinder')
+      command._events.execute.callbacks[1] = this.callback
+
       editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
         return new UploadAdapter(loader)
       }
@@ -40,11 +56,12 @@ export default class CkEditor extends Vue {
     this.editor.docId = id
     this.editor.setData(value)
   }
-  // beforeDestroy() {
-  //   this.editor.destroy().then(() => {
-  //     console.log('editor destroyed')
-  //   })
-  // }
+
+  execInsertLink(file) {
+    console.log(file)
+    this.editor.execute('link', file.url)
+    this.$refs.ossfinder.visible = false
+  }
 }
 </script>
 
