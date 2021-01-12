@@ -38,6 +38,8 @@ public class OssFactory {
     protected String urlPre;
 
 
+
+
     @Value("${spring.oss.accessKeyId}")
     protected String accessKeyId;
 
@@ -88,7 +90,7 @@ public class OssFactory {
                 "        {\n" +
                 "            \"Effect\": \"Allow\",\n" +
                 "            \"Action\": \"oss:ListObjects\",\n" +
-                "            \"Resource\": \"acs:oss:*:*:shuxie-dev\"\n" +
+                "            \"Resource\": \"acs:oss:*:*:shuxie\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"Effect\": \"Allow\",\n" +
@@ -96,7 +98,7 @@ public class OssFactory {
                 "                \"oss:*\"\n" +
                 "            ],\n" +
                 "            \"Resource\": [\n" +
-                "                \"acs:oss:*:*:shuxie-dev/post/"+id+"/*\"\n" +
+                "                \"acs:oss:*:*:shuxie/post/"+id+"/*\"\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ]\n" +

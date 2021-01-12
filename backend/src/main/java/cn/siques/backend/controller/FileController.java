@@ -29,7 +29,7 @@ import java.util.Map;
 public class FileController {
     @Autowired
     OssFactory ossFactory;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
 
     @PostMapping("upload")
@@ -47,8 +47,8 @@ public class FileController {
     }
 
     @GetMapping("stsToken")
-//    public Result getToken(@LoginUser JwtUserDetails userDetails){
-    public Result getToken( ){
-        return Result.succeed(ossFactory.getSts(1L));
-    }
+    public Result getToken(@LoginUser JwtUserDetails userDetails)
+        {
+            return Result.succeed(ossFactory.getSts(userDetails.getId()));
+        }
 }

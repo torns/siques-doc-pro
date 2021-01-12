@@ -1,4 +1,215 @@
 {
+
+"custom_1":{
+"char": "①",
+"category": "custom"
+},
+"custom_9":{
+"char": "②",
+"category": "custom"
+},
+"custom_17":{
+"char": "③",
+"category": "custom"
+},
+"custom_2":{
+"char": "④",
+"category": "custom"
+},
+
+"custom_10":{
+"char": "⑤",
+"category": "custom"
+},
+"custom_18":{
+"char": "⑥",
+"category": "custom"
+},
+"custom_3":{
+"char": "⑦",
+"category": "custom"
+},
+"custom_11":{
+"char": "⑧",
+"category": "custom"
+},
+"custom_19":{
+"char": "⑨",
+"category": "custom"
+},
+"custom_4":{
+"char": "⑩",
+"category": "custom"
+},
+"custom_12":{
+"char": "㈠",
+"category": "custom"
+},
+"custom_20":{
+"char": "㈡",
+"category": "custom"
+},
+"custom_5":{
+"char": "㈢",
+"category": "custom"
+},
+"custom_13":{
+"char": "㈣",
+"category": "custom"
+},
+"custom_21":{
+"char": "㈤",
+"category": "custom"
+},
+"custom_6":{
+"char": "㈥",
+"category": "custom"
+},
+"custom_14":{
+"char": "㈦",
+"category": "custom"
+},
+"custom_22":{
+"char": "㈧",
+"category": "custom"
+},
+"custom_7":{
+"char": "㈨",
+"category": "custom"
+},
+"custom_15":{
+"char": "㈩",
+"category": "custom"
+},
+"custom_23":{
+"char": "⒈",
+"category": "custom"
+},
+"custom_8":{
+"char": "⒉",
+"category": "custom"
+},
+"custom_16":{
+"char": "⒊",
+"category": "custom"
+},
+"custom_24":{
+"char": "⒋",
+"category": "custom"
+},
+"custom_25":{
+"char": "⒌",
+"category": "custom"
+},
+"custom_33":{
+"char": "⒍",
+"category": "custom"
+},
+"custom_83":{
+"char": "⒎",
+"category": "custom"
+},
+"custom_26":{
+"char": "⒏",
+"category": "custom"
+},
+"custom_34":{
+"char": "⒐",
+"category": "custom"
+},
+"custom_41":{
+"char": "⒑",
+"category": "custom"
+},
+"custom_38":{
+"char": "⑴",
+"category": "custom"
+},
+"custom_45":{
+"char": "⑵",
+"category": "custom"
+},
+"custom_31":{
+"char": "⑶",
+"category": "custom"
+},
+"custom_39":{
+"char": "⑷",
+"category": "custom"
+},
+"custom_46":{
+"char": "⑸",
+"category": "custom"
+},
+"custom_32":{
+"char": "⑹",
+"category": "custom"
+},
+"custom_40":{
+"char": "⑺",
+"category": "custom"
+},
+"custom_47":{
+"char": "⑻",
+"category": "custom"
+},
+"custom_48":{
+"char": "⑼",
+"category": "custom"
+},
+"custom_56":{
+"char": "⑽",
+"category": "custom"
+},
+"custom_63":{
+"char": "Ⅰ",
+"category": "custom"
+},
+"custom_71":{
+"char": "Ⅱ",
+"category": "custom"
+},
+"custom_72":{
+"char": "Ⅲ",
+"category": "custom"
+},
+"custom_76":{
+"char": "Ⅳ",
+"category": "custom"
+},
+"custom_79":{
+"char": "Ⅴ",
+"category": "custom"
+},
+"custom_73":{
+"char": "Ⅵ",
+"category": "custom"
+},
+"custom_77":{
+"char": "Ⅶ",
+"category": "custom"
+},
+"custom_80":{
+"char": "Ⅷ",
+"category": "custom"
+},
+"custom_74":{
+"char": "Ⅸ",
+"category": "custom"
+},
+
+"custom_78":{
+"char": "Ⅹ",
+"category": "custom"
+},
+"custom_81":{
+"char": "Ⅺ",
+"category": "custom"
+},
+"custom_75":{
+"char": "Ⅻ",
+"category": "custom"
+},
   "grinning": {
     "keywords": ["face", "smile", "happy", "joy", ":D", "grin"],
     "char": "😀",
