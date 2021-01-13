@@ -1,212 +1,212 @@
 {
 
-"custom_1":{
+"1custom_1":{
 "char": "①",
 "category": "custom"
 },
-"custom_9":{
+"1custom_2":{
 "char": "②",
 "category": "custom"
 },
-"custom_17":{
+"1custom_3":{
 "char": "③",
 "category": "custom"
 },
-"custom_2":{
+"1custom_4":{
 "char": "④",
 "category": "custom"
 },
 
-"custom_10":{
+"1custom_5":{
 "char": "⑤",
 "category": "custom"
 },
-"custom_18":{
+"1custom_6":{
 "char": "⑥",
 "category": "custom"
 },
-"custom_3":{
+"1custom_7":{
 "char": "⑦",
 "category": "custom"
 },
-"custom_11":{
+"1custom_8":{
 "char": "⑧",
 "category": "custom"
 },
-"custom_19":{
+"1custom_9":{
 "char": "⑨",
 "category": "custom"
 },
-"custom_4":{
+"1custom_10":{
 "char": "⑩",
 "category": "custom"
 },
-"custom_12":{
+"1custom_11":{
 "char": "㈠",
 "category": "custom"
 },
-"custom_20":{
+"1custom_12":{
 "char": "㈡",
 "category": "custom"
 },
-"custom_5":{
+"1custom_13":{
 "char": "㈢",
 "category": "custom"
 },
-"custom_13":{
+"1custom_14":{
 "char": "㈣",
 "category": "custom"
 },
-"custom_21":{
+"1custom_15":{
 "char": "㈤",
 "category": "custom"
 },
-"custom_6":{
+"1custom_16":{
 "char": "㈥",
 "category": "custom"
 },
-"custom_14":{
+"1custom_17":{
 "char": "㈦",
 "category": "custom"
 },
-"custom_22":{
+"1custom_18":{
 "char": "㈧",
 "category": "custom"
 },
-"custom_7":{
+"1custom_19":{
 "char": "㈨",
 "category": "custom"
 },
-"custom_15":{
+"1custom_20":{
 "char": "㈩",
 "category": "custom"
 },
-"custom_23":{
+"1custom_21":{
 "char": "⒈",
 "category": "custom"
 },
-"custom_8":{
+"1custom_22":{
 "char": "⒉",
 "category": "custom"
 },
-"custom_16":{
+"1custom_23":{
 "char": "⒊",
 "category": "custom"
 },
-"custom_24":{
+"1custom_24":{
 "char": "⒋",
 "category": "custom"
 },
-"custom_25":{
+"1custom_25":{
 "char": "⒌",
 "category": "custom"
 },
-"custom_33":{
+"1custom_26":{
 "char": "⒍",
 "category": "custom"
 },
-"custom_83":{
+"1custom_27":{
 "char": "⒎",
 "category": "custom"
 },
-"custom_26":{
+"1custom_28":{
 "char": "⒏",
 "category": "custom"
 },
-"custom_34":{
+"1custom_29":{
 "char": "⒐",
 "category": "custom"
 },
-"custom_41":{
+"1custom_30":{
 "char": "⒑",
 "category": "custom"
 },
-"custom_38":{
+"1custom_31":{
 "char": "⑴",
 "category": "custom"
 },
-"custom_45":{
+"1custom_32":{
 "char": "⑵",
 "category": "custom"
 },
-"custom_31":{
+"1custom_33":{
 "char": "⑶",
 "category": "custom"
 },
-"custom_39":{
+"1custom_34":{
 "char": "⑷",
 "category": "custom"
 },
-"custom_46":{
+"1custom_35":{
 "char": "⑸",
 "category": "custom"
 },
-"custom_32":{
+"1custom_36":{
 "char": "⑹",
 "category": "custom"
 },
-"custom_40":{
+"1custom_37":{
 "char": "⑺",
 "category": "custom"
 },
-"custom_47":{
+"1custom_38":{
 "char": "⑻",
 "category": "custom"
 },
-"custom_48":{
+"1custom_39":{
 "char": "⑼",
 "category": "custom"
 },
-"custom_56":{
+"1custom_40":{
 "char": "⑽",
 "category": "custom"
 },
-"custom_63":{
+"1custom_41":{
 "char": "Ⅰ",
 "category": "custom"
 },
-"custom_71":{
+"1custom_42":{
 "char": "Ⅱ",
 "category": "custom"
 },
-"custom_72":{
+"1custom_43":{
 "char": "Ⅲ",
 "category": "custom"
 },
-"custom_76":{
+"1custom_44":{
 "char": "Ⅳ",
 "category": "custom"
 },
-"custom_79":{
+"1custom_45":{
 "char": "Ⅴ",
 "category": "custom"
 },
-"custom_73":{
+"1custom_46":{
 "char": "Ⅵ",
 "category": "custom"
 },
-"custom_77":{
+"1custom_47":{
 "char": "Ⅶ",
 "category": "custom"
 },
-"custom_80":{
+"1custom_48":{
 "char": "Ⅷ",
 "category": "custom"
 },
-"custom_74":{
+"1custom_49":{
 "char": "Ⅸ",
 "category": "custom"
 },
 
-"custom_78":{
+"1custom_50":{
 "char": "Ⅹ",
 "category": "custom"
 },
-"custom_81":{
+"1custom_51":{
 "char": "Ⅺ",
 "category": "custom"
 },
-"custom_75":{
+"1custom_52":{
 "char": "Ⅻ",
 "category": "custom"
 },
