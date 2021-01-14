@@ -56,13 +56,6 @@ export default class OverView extends Vue {
 
   collectionForm: any = {}
 
-  get initilize() {
-    this.collectionForm = {
-      ...this.selectedCollection
-    }
-    return true
-  }
-
   $refs: any
 
   openPublishDialog() {
@@ -70,6 +63,9 @@ export default class OverView extends Vue {
   }
 
   openSettingDialog() {
+    this.collectionForm = {
+      ...this.selectedCollection
+    }
     this.$refs.collectSetting.visible = true
   }
 
