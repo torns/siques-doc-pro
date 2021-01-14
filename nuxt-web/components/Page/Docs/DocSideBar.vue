@@ -229,12 +229,12 @@ export default class DocSideBar extends Vue {
   moreOptions = [
     {
       title: '移动',
-      icon: 'mdi-move',
+      icon: 'mdi-file-move',
       callback: this.createMoveDialog
     },
     {
       title: '修改文章标题',
-      icon: 'mdi-edit',
+      icon: 'mdi-file-edit',
       callback: this.createChangeTitleDialog
     },
     {
@@ -246,18 +246,18 @@ export default class DocSideBar extends Vue {
 
   addOptions = [
     {
-      title: '创建文档',
+      title: '创建子文档',
       icon: 'mdi-plus',
       callback: this.createDoc
     },
     {
       title: '打开文档详情页',
-      icon: 'mdi-click',
+      icon: 'mdi-open-in-new',
       callback: this.openDocDetail
     },
     {
       title: '复制文档链接',
-      icon: 'mdi-copy',
+      icon: 'mdi-content-copy',
       callback: this.copyToClip
     }
   ]

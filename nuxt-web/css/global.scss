@@ -274,40 +274,40 @@ li {
 
 // 三层循环嵌套
 // m-0 ,mx-0
-@each $typeKey, $type in $spacing-types {
-  // .m-1{ margin:0.25rem}
-  @each $sizekey, $size in $spacing-sizes {
-    // .mt-1{ margin-top:0.25rem}
-    .#{$typeKey}-#{$sizekey} {
-      #{$type}: $size * $spacing-base-size;
-    }
-  }
-  // .mx-1
-  @each $sizekey, $size in $spacing-sizes {
-    // .mt-1{ margin-top:0.25rem}
-    .#{$typeKey}x-#{$sizekey} {
-      #{$type}-left: $size * $spacing-base-size;
-      #{$type}-right: $size * $spacing-base-size;
-    }
-  }
-  // .my-1
-  @each $sizekey, $size in $spacing-sizes {
-    // .mt-1{ margin-top:0.25rem}
-    .#{$typeKey}y-#{$sizekey} {
-      #{$type}-top: $size * $spacing-base-size;
-      #{$type}-bottom: $size * $spacing-base-size;
-    }
-  }
+// @each $typeKey, $type in $spacing-types {
+//   // .m-1{ margin:0.25rem}
+//   @each $sizekey, $size in $spacing-sizes {
+//     // .mt-1{ margin-top:0.25rem}
+//     .#{$typeKey}-#{$sizekey} {
+//       #{$type}: $size * $spacing-base-size;
+//     }
+//   }
+//   // .mx-1
+//   @each $sizekey, $size in $spacing-sizes {
+//     // .mt-1{ margin-top:0.25rem}
+//     .#{$typeKey}x-#{$sizekey} {
+//       #{$type}-left: $size * $spacing-base-size;
+//       #{$type}-right: $size * $spacing-base-size;
+//     }
+//   }
+//   // .my-1
+//   @each $sizekey, $size in $spacing-sizes {
+//     // .mt-1{ margin-top:0.25rem}
+//     .#{$typeKey}y-#{$sizekey} {
+//       #{$type}-top: $size * $spacing-base-size;
+//       #{$type}-bottom: $size * $spacing-base-size;
+//     }
+//   }
 
-  @each $directionKey, $direction in $spacing-directions {
-    @each $sizekey, $size in $spacing-sizes {
-      // .mt-1{ margin-top:0.25rem}
-      .#{$typeKey}#{$directionKey}-#{$sizekey} {
-        #{$type}-#{$direction}: $size * $spacing-base-size;
-      }
-    }
-  }
-}
+//   @each $directionKey, $direction in $spacing-directions {
+//     @each $sizekey, $size in $spacing-sizes {
+//       // .mt-1{ margin-top:0.25rem}
+//       .#{$typeKey}#{$directionKey}-#{$sizekey} {
+//         #{$type}-#{$direction}: $size * $spacing-base-size;
+//       }
+//     }
+//   }
+// }
 
 //borders
 @each $dir in (top, right, bottom, left) {

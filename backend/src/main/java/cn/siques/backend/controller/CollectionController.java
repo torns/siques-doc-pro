@@ -42,7 +42,7 @@ public class CollectionController {
 
     @Autowired
     OssFactory ossFactory;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
     /**
      * 集合分页查询
@@ -75,6 +75,7 @@ public class CollectionController {
     }
 
     @PostMapping("/cover")
+    @Transactional
     public Result uploadCover(@LoginUser JwtUserDetails jwtUserDetails,@RequestParam("uploadFile") MultipartFile file,Collection collection) throws IOException {
         String originalFilename = file.getOriginalFilename();
         InputStream inputStream = file.getInputStream();

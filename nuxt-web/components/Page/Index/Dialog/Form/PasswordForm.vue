@@ -45,7 +45,7 @@ export default class PasswordForm extends Vue {
   loginCodeModel
 
   rules = {
-    loginCode: [(val) => (val && val.length === 11) || `I don't believe you!`],
+    loginCode: [(val) => (val && val.length === 11) || `请输入账号`],
     password: [(val) => (val && val.length >= 6) || '请输入密码']
   }
 }

@@ -19,9 +19,11 @@ export const mutations = {
 }
 
 export const actions = {
-  async getUserCollection({ commit }) {
+  async getUserCollection({ commit }, id) {
     const res = await getUserCollection()
     commit('SET_COLLECTION', res.datas)
+
+    return res.datas.find((e) => e.id === id)
   },
   async getDelCollection({ commit }) {
     const res = await getUserDelCollection()

@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container style="    padding-top: 100px;">
+    <v-container style="padding-top: 100px;">
       <v-row>
         <v-col cols="12" md="2">
           <v-card :elevation="6" class="mx-auto mx-6">
@@ -18,8 +18,9 @@
         <v-spacer></v-spacer>
         <v-col cols="12" md="4">
           <v-btn-toggle v-model="setting" dense background-color="primary" multiple>
-            <v-btn>
+            <v-btn @click="openSettingDialog">
               <v-icon>mdi-cog</v-icon>
+              设置
             </v-btn>
 
             <v-btn @click="openPublishDialog">
@@ -30,7 +31,12 @@
         </v-col>
       </v-row>
     </v-container>
-
+    <CollectionSettingDialog
+      @submits="submit"
+      ref="collectSetting"
+      v-model="collectionForm"
+      title="知识库设置"
+    ></CollectionSettingDialog>
     <LazyCollectionPublishDialog ref="dialog"></LazyCollectionPublishDialog>
   </v-main>
 </template>
@@ -38,6 +44,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import { coverUpload, updateCollection } from '@/api/collection'
 @Component({
   computed: mapGetters(['selectedCollection'])
 })
@@ -47,10 +54,41 @@ export default class OverView extends Vue {
     return 'doc'
   }
 
+  collectionForm: any = {}
+
+  get initilize() {
+    this.collectionForm = {
+      ...this.selectedCollection
+    }
+    return true
+  }
+
   $refs: any
 
   openPublishDialog() {
     this.$refs.dialog.visible = true
+  }
+
+  openSettingDialog() {
+    this.$refs.collectSetting.visible = true
+  }
+
+  async submit() {
+    const { id, name, description, cover, uploadFile } = this.collectionForm
+    if (uploadFile && cover.includes('blob')) {
+      const formData = new FormData()
+
+      formData.append('uploadFile', uploadFile)
+      formData.append('name', name)
+
+      formData.append('description', description || '')
+      await coverUpload(formData)
+    } else {
+      await updateCollection({ id, name, description, cover })
+    }
+
+    const updatedCollect = await this.$store.dispatch('modules/collection/getUserCollection', id)
+    this.$store.commit('SET_COLLECTION', updatedCollect)
   }
 
   @Watch('selectedCollection')

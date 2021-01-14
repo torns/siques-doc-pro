@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="visible" max-width="600px" persistent hide-overlay transition="dialog-bottom-transition">
+  <v-dialog v-model="visible" max-width="400px" persistent hide-overlay>
     <v-card tile>
       <v-toolbar dark color="primary">
         <v-btn
@@ -18,12 +18,7 @@
         <v-spacer></v-spacer>
       </v-toolbar>
 
-      <CollectionCoverSelector
-        v-model="collectionDetail"
-        :img-link.sync="collectionDetail.cover"
-      ></CollectionCoverSelector>
-
-      <v-form ref="form" v-model="valid">
+      <v-form class="pt-3 pb-5" ref="form" v-model="valid">
         <v-container>
           <v-row class="justify-center">
             <v-col cols="12" sm="8" md="8">
@@ -38,11 +33,11 @@
               <v-text-field
                 v-model="collectionDetail.description"
                 label="知识库简介"
-                hint="example of helper text only on focus"
+                hint="关于知识库的介绍"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="8" md="8">
-              <v-btn :disabled="!valid" color="error" class="mr-4" @click="doValidate">
+              <v-btn block :disabled="!valid" color="primary" class="mr-4" @click="doValidate">
                 保存
               </v-btn>
             </v-col>
@@ -55,7 +50,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Model } from 'nuxt-property-decorator'
-
+/**
+ * 创建知识库模块
+ */
 @Component({})
 export default class CollectionFormDialog extends Vue {
   @Prop({
@@ -70,12 +67,14 @@ export default class CollectionFormDialog extends Vue {
   @Model('value', {
     type: Object,
     default: () => {
-      return {}
+      return {
+        cover: 'https://cdn.siques.cn/public/default/default.9769378e.png'
+      }
     }
   })
   collectionDetail
 
-  nameRules = [(v) => !!v || 'Name is required', (v) => (v && v.length <= 10) || 'Name must be less than 10 characters']
+  nameRules = [(v) => !!v || '名称必填哦', (v) => (v && v.length <= 14) || '明在太长啦']
 
   $refs: {
     form: HTMLFormElement

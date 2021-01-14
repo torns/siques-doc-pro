@@ -66,17 +66,7 @@ export default class DocAppBar extends Vue {
   }
 
   async submit() {
-    const formData = new FormData()
-
-    formData.append('uploadFile', this.collectionForm.uploadFile)
-    formData.append('name', this.collectionForm.name)
-    formData.append('description', this.collectionForm.description || '')
-
-    if (this.collectionForm.uploadFile && this.collectionForm.cover.includes('blob')) {
-      await coverUpload(formData)
-    } else {
-      await insertCollection(this.collectionForm)
-    }
+    await insertCollection(this.collectionForm)
 
     this.$store.dispatch('modules/collection/getUserCollection')
   }

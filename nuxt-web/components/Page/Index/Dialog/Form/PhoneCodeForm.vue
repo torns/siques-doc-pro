@@ -62,7 +62,7 @@ export default class PhoneCodeForm extends Vue {
   showcbox = false
 
   rules = {
-    loginCode: [(val) => (/^[1][3,4,5,7,8][0-9]{9}$/.test(val) && val.length === 11) || `I don't believe you!`],
+    loginCode: [(val) => (/^[1][3,4,5,7,8][0-9]{9}$/.test(val) && val.length === 11) || `请输入手机号码`],
     verification: [(val) => (val && val.length === 6) || '请输入6位验证码']
   }
 

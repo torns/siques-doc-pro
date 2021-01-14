@@ -12,7 +12,7 @@
     </template>
     <v-list>
       <v-list-item v-for="(option, index) in validOptions" :key="index" link @click="option.callback(item)">
-        <v-icon v-if="option.icon"> {{ option.icon }}</v-icon>
+        <v-icon class="pr-1" v-if="option.icon"> {{ option.icon }}</v-icon>
         <v-list-item-title>{{ option.title }}</v-list-item-title>
       </v-list-item>
     </v-list>
