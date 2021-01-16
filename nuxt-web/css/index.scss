@@ -1,5 +1,5 @@
 .news-detail .title {
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 18px;
   color: #2a2a2a;
   font-weight: bold;
@@ -58,6 +58,7 @@
       top: 0px;
       height: 100%;
       width: 2px;
+      border-radius: 50%;
       background: #e8e8e8;
     }
   }
@@ -88,14 +89,17 @@
   font-size: 22px;
   color: #2a2a2a;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   margin-top: 20px;
+}
+
+.v-application p {
+  margin-bottom: 10px !important;
 }
 
 @media (max-width: 768px) {
   .news-img {
     width: 100%;
-    margin-top: 35px;
     height: 170px;
   }
   .news-list-module .item.wire .content {
@@ -103,7 +107,6 @@
   }
 
   .content .title {
-    margin-top: 35px;
   }
 
   .news-list-module .item.wire .content:before {

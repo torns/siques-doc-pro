@@ -36,9 +36,9 @@
     <v-container style="min-height: 100vh">
       <v-row no-gutters class=" pt-4">
         <v-col cols="12" sm="12" md="9" xl="6" style="margin:0 auto;width:'100%">
-          <div class="new-title">
+          <!-- <div class="new-title">
             <span>最近更新</span>
-          </div>
+          </div> -->
 
           <div class="news-list-module">
             <div v-for="(doc, $index) in docs" :key="$index">

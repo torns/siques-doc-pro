@@ -29,7 +29,7 @@ export default {
     ],
 
     script: [
-      { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
+      // { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       { src: 'https://cdn.siques.cn/libs/js/Sortable.min.js', ssr: true },
       { src: 'https://cdn.siques.cn/libs/js/vuedraggable.umd.min.js', ssr: true },
       {
