@@ -1,7 +1,16 @@
 <template>
   <div>
-    <v-app-bar app color="white" elevate-on-scroll scroll-target="#scrolling-techniques-7">
-      <v-app-bar-nav-icon @click="$store.commit('modules/editor/SET_SIDEBAR', true)"></v-app-bar-nav-icon>
+    <v-app-bar elevate-on-scroll scroll-target="#scrolling-techniques-7" app color="white">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-app-bar-nav-icon
+            v-bind="attrs"
+            v-on="on"
+            @click="$store.commit('modules/editor/SET_SIDEBAR')"
+          ></v-app-bar-nav-icon>
+        </template>
+        <span>{{ editorSideBar ? '关闭侧边栏' : '展开侧边栏' }}</span>
+      </v-tooltip>
 
       <v-select
         v-model="selectedCollection"
@@ -47,13 +56,13 @@ import { insertCollection, coverUpload } from '@/api/collection'
         this.$router.push(`/docs/overview/${v.id}`)
       }
     },
-    ...mapGetters(['userCollection'])
+    ...mapGetters(['userCollection', 'editorSideBar'])
   }
 })
 export default class DocAppBar extends Vue {
   selectedCollection
   userCollection
-
+  editorSideBar
   collectionForm: any = {}
   $refs: any
 

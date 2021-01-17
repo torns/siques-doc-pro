@@ -2,7 +2,7 @@
   <div>
     <DocInnerAppBar v-show="!loading && selectedDoc.id"></DocInnerAppBar>
     <v-main id="doc-content" style="padding-top:120px" app>
-      <CkEditor v-show="!loading && selectedDoc.id" ref="editor" v-scroll-spy @focus="onEditorFocus($event)"></CkEditor>
+      <CkEditor v-show="!loading && selectedDoc.id" ref="editor" v-scroll-spy></CkEditor>
       <v-banner v-show="!selectedDoc.id" two-line>
         <v-avatar slot="icon" color="deep-purple accent-4" size="40">
           <v-icon icon="mdi-lock" color="white">
@@ -52,9 +52,9 @@ export default class DocWrite extends Vue {
     editor: HTMLFormElement
   }
 
-  onEditorFocus() {
-    this.$store.commit('modules/editor/SET_SIDEBAR', false)
-  }
+  // onEditorFocus() {
+  //   this.$store.commit('modules/editor/SET_SIDEBAR', false)
+  // }
 
   async mounted() {
     if (this.selectedDoc.id) {

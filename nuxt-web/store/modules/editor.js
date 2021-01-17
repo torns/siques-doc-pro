@@ -3,8 +3,8 @@ export const state = () => ({
 })
 
 export const mutations = {
-  SET_SIDEBAR(state, data) {
-    state.editorSideBar = data
+  SET_SIDEBAR(state) {
+    state.editorSideBar = !state.editorSideBar
   }
 }
 

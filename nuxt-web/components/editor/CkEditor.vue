@@ -1,7 +1,7 @@
 <template>
   <div>
     <OssFinderWraper ref="ossfinder" @dblclick="execInsertLink"></OssFinderWraper>
-    <div id="editor" class="article" @click="$emit('focus')"></div>
+    <div id="editor" class="article"></div>
   </div>
 </template>
 
