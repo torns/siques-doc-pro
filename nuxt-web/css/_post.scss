@@ -46,11 +46,6 @@ h1 {
   }
 }
 
-// .v-application code {
-//   background-color: #f8f8f8;
-//   color: #673ab7;
-//   padding: 0.5em;
-// }
 .article pre code {
   font-family: EB Garamond, 'Noto Serif SC', Consolas, Liberation Mono, Menlo, Courier, monospace !important;
   // max-height: 35rem;
@@ -462,4 +457,7 @@ hr {
 .ck-content pre code {
   display: block;
   padding: 10px !important;
+}
+.v-application p {
+  margin-bottom: 10px;
 }
