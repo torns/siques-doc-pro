@@ -67,7 +67,6 @@ export default class CkEditor extends Vue {
 
 <style lang="scss">
 #editor {
-  font-size: 18px;
   max-width: 800px;
   margin: 0 auto;
   // overflow-y: visible;
