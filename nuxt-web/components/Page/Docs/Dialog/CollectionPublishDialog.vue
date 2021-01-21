@@ -15,7 +15,7 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-app-bar>
-      <v-card-text>
+      <v-card-text style="overflow: hidden;">
         <v-radio-group v-model="selectedRadio">
           <v-radio
             v-for="(option, index) in options"
@@ -27,9 +27,9 @@
         <v-divider></v-divider>
       </v-card-text>
 
-      <CollectionPublicTree ref="tree" v-model="tree" :doc-tree="docTree" :init-selected="initSelected">
+      <CollectionPublicTree ref="tree" v-model="tree" :doc-tree="docTree" :initSelected="initSelected">
       </CollectionPublicTree>
-      <v-card-text>
+      <v-card-text style="overflow: hidden;">
         <v-card-actions>
           <v-btn :loading="loading" block color="primary" @click="doPublish">
             发布
@@ -42,14 +42,15 @@
           >https://www.siques.cn/doc/{{ initSelected[0] }}</a
         >
       </v-card-text>
+      <v-card-text v-else> </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getPublishedList, publishDoc } from '@/api/doc'
+import { getPublishedList, publishDoc, getDocTree } from '@/api/doc'
 
 @Component({
   computed: mapGetters(['docTree', 'selectedCollection'])
@@ -68,9 +69,11 @@ export default class CollectionPublishDialog extends Vue {
   $refs: any
   initSelected = []
 
-  async mounted() {
-    const res = await getPublishedList({ collectionId: this.selectedCollection.id })
-    this.initSelected = res.datas
+  @Watch('visible')
+  isVisible(newval, oldval) {
+    if (newval) {
+      this.getDocTreeAndSelect()
+    }
   }
 
   async doPublish() {
@@ -79,14 +82,18 @@ export default class CollectionPublishDialog extends Vue {
     setTimeout(() => {
       this.loading = false
       this.visible = false
+      this.$notify({ text: '发布成功，请等待文集审核完成' })
+      this.getDocTreeAndSelect()
     }, 500)
   }
 
+  async getDocTreeAndSelect() {
+    const res = await getPublishedList({ collectionId: this.selectedCollection.id })
+    this.initSelected = res.datas
+    this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
+  }
+
   options = [
-    // {
-    //   label: '发布所有内容',
-    //   value: true
-    // },
     {
       label: '选择发布内容',
       value: true

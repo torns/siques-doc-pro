@@ -15,10 +15,14 @@ export const mutations = {
 }
 
 export const actions = {
-  async getDocTree({ commit }, parameter) {
+  getDocTree({ commit }, parameter) {
     if (parameter.collectionId !== undefined) {
-      const res = await getDocTree(parameter)
-      commit('SET_DOCTREE', res.datas)
+      return new Promise((resolve) => {
+        getDocTree(parameter).then((res) => {
+          commit('SET_DOCTREE', res.datas)
+          resolve()
+        })
+      })
     } else {
       commit('SET_DOCTREE', [])
     }

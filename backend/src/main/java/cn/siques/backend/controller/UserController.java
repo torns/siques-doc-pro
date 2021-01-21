@@ -82,7 +82,7 @@ public class UserController {
             userCollectionService.save(new UserCollection(u.getId(),collection.getId()));
 
             Doc doc = new Doc();
-            doc.setTitle("会议纪要");
+            doc.setTitle("开始写作吧");
             doc.setBody("开始愉快写作吧");
             docService.save(doc);
             collectionDocService.save(new CollectionDoc(collection.getId(),doc.getId()));

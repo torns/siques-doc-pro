@@ -62,7 +62,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
                 .stream().map(cd -> cd.getDocId()).collect(Collectors.toList());
         QueryWrapper<Doc> select = new QueryWrapper<Doc>().in("id", docIds).select(Doc.class, i -> !i.getProperty().equals("body"));
 
-        List<Long> publishedIds = docService.list(select).stream().filter(doc -> doc.getIsPublished()).map(doc -> doc.getId()).collect(Collectors.toList());
+        List<Long> publishedIds = docService.list(select).stream().filter(doc -> doc.getIsPublished().equals(1)).map(doc -> doc.getId()).collect(Collectors.toList());
 
         Map<Long, List<Long>> collectionDocIds = collectionDocs.stream()
                 .filter(collectionDoc -> publishedIds.contains(collectionDoc.getDocId()))

@@ -37,7 +37,7 @@ public class DocHistory extends Model<DocHistory> {
    String alias;
    Long counts;
    DocEnum type;
-   Boolean isPublished;
+   Integer isPublished;
    String cover;
    Boolean status;
 

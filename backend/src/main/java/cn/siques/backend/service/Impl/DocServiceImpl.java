@@ -3,6 +3,7 @@ package cn.siques.backend.service.Impl;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.siques.backend.config.ContentCensor;
 import cn.siques.backend.dao.CollectionDocDao;
 import cn.siques.backend.dao.DocDao;
 import cn.siques.backend.entity.CollectionDoc;
@@ -12,16 +13,16 @@ import cn.siques.backend.service.DocHistoryService;
 import cn.siques.backend.service.DocService;
 
 import cn.siques.backend.utils.RegexUtils;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.http.client.utils.DateUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +39,8 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     private CollectionDocDao collectionDocDao;
 
     private DocHistoryService docHistoryService;
+
+    private ContentCensor contentCensor;
 
     @Override
     public int insert(Long parentId, Long collectionId) {
@@ -79,7 +82,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         List<Doc> docList = this.list(queryWrapper);
         Stream<Doc> docStream = docList.stream().filter(post -> post.getStatus() == true);
         if(isPublished){
-              docStream = docStream.filter(post -> post.getIsPublished().equals(true));
+              docStream = docStream.filter(post -> post.getIsPublished().equals(1));
         }
 
         Map<Boolean, List<Doc>> collect= docStream.collect(Collectors.partitioningBy(post -> post.getParentId() == 0));
@@ -92,6 +95,16 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         }
 
         return roots;
+    }
+
+    private void findChildren(Doc root, List<Doc> leafs) {
+        Map<Boolean, List<Doc>> collect = leafs.stream().collect(Collectors.partitioningBy
+                (post -> post.getParentId().equals(root.getId())));
+        root.setChildren(collect.get(true));
+
+        for (Doc post : collect.get(true)){
+            findChildren(post,collect.get(false));
+        }
     }
 
     @Override
@@ -128,9 +141,11 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
            }
            doc.setCover(s);
 
-           String rawStr = doc.getBody().replaceAll("<\\/?.+?\\/?>", "")
-                   .replaceAll("\\n", "").replaceAll("&nbsp;","");
-
+           String rawStr = doc.getBody()
+                   .replaceAll("\\n", "")
+                   .replaceAll("<pre>.*</pre>", "")
+                   .replaceAll("<\\/?.+?\\/?>", "")
+                   .replaceAll("&nbsp;","");
            doc.setCounts(Long.valueOf(rawStr.length()));
 
            if(rawStr.length() > 150){
@@ -170,8 +185,8 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     }
 
     private boolean removeLRU(List<DocHistory> docHistories) {
-        if(docHistories.size() > 30){
-            List<Date> collect = docHistories.stream().skip(30).map(docHistory -> docHistory.getUpdated())
+        if(docHistories.size() > 15){
+            List<Date> collect = docHistories.stream().skip(15).map(docHistory -> docHistory.getUpdated())
                     .collect(Collectors.toList());
 
             return docHistoryService.remove(new QueryWrapper<DocHistory>().in("updated",collect));
@@ -184,15 +199,36 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         return docDao.realDelete(docId);
     }
 
-    private void findChildren(Doc root, List<Doc> leafs) {
-        Map<Boolean, List<Doc>> collect = leafs.stream().collect(Collectors.partitioningBy
-                (post -> post.getParentId().equals(root.getId())));
-        root.setChildren(collect.get(true));
+    @Override
+    @Async
 
-        for (Doc post : collect.get(true)){
-            findChildren(post,collect.get(false));
-        }
+    public void checkContent(List<Long> ids) {
+        List<Long> validIds = new ArrayList<>();
+        List<Long> unValidIds = new ArrayList<>();
+            ids.forEach(id->{
+                Doc doc = docDao.selectById(id);
+                Boolean invalid = contentCensor.textCensor(id,doc.getAlias());
+                if(invalid){
+                    validIds.add(id);
+                }else{
+                    unValidIds.add(id);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        // 审核成功
+        if(validIds.size()>0){ this.update(new UpdateWrapper<Doc>().in("id", validIds).set("isPublished", 1));}
+        // 审核失败
+        if(unValidIds.size()>0){this.update(new UpdateWrapper<Doc>().in("id", unValidIds).set("isPublished", 3));}
+
     }
+
+
+
+
 
 
 }

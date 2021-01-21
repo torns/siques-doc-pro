@@ -38,8 +38,6 @@ public class OssFactory {
     protected String urlPre;
 
 
-
-
     @Value("${spring.oss.accessKeyId}")
     protected String accessKeyId;
 
@@ -73,8 +71,7 @@ public class OssFactory {
         if(profile.equals("dev")) {
             path="dev/"+path;
         }
-//        System.out.println(profile.equals("dev"));
-        PutObjectResult result = oss.putObject(bucketName, path, is);
+         oss.putObject(bucketName, path, is);
 
         return urlPre+path;
     }
@@ -132,10 +129,6 @@ public class OssFactory {
         }
         return null;
     }
-    public void shutdown(){
-        oss.shutdown();
-    }
-
 
     /**
      * UTC时间转换为当地时间

@@ -16,7 +16,12 @@
               mdi-bullseye-arrow
             </v-icon>
 
-            {{ $dayjs(doc.created).format('YYYY.MM.DD HH:MM:ss') }}
+            {{ $dayjs(doc.created).format('YYYY.MM.DD HH:MM') }}
+
+            <v-icon small color="pink lighten-4" class="px-2">
+              mdi-comment-eye
+            </v-icon>
+            {{ doc.views }}
           </div>
         </div>
         <div class="tag d-flex ai-baseline mb-3">

@@ -6,6 +6,7 @@ import cn.siques.backend.service.UserService;
 import cn.siques.backend.utils.model.JwtUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -26,6 +27,7 @@ import java.security.spec.RSAPublicKeySpec;
  * @author : heshenghao
  * @date : 22:48 2020/12/9
  */
+@Slf4j
 @Configuration
 public class JwtUtil {
     private static RSAPrivateCrtKey privateKey;
@@ -46,7 +48,7 @@ public class JwtUtil {
             publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
 
         }catch (Exception e){
-
+        log.info("生成RSA密钥失败");
         }
     }
 

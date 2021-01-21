@@ -10,6 +10,8 @@ import cn.siques.backend.service.CollectionDocService;
 import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.DocService;
 import cn.siques.backend.service.UserCollectionService;
+import cn.siques.backend.template.RedisRepository;
+import cn.siques.backend.utils.ReactiveAddrUtil;
 import cn.siques.backend.utils.model.DocEnum;
 import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
@@ -20,13 +22,18 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +44,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/doc")
 @AllArgsConstructor
 public class DocController {
+
+    @Autowired
+    RedisRepository redisRepository;
 
      private DocService docService;
 
@@ -59,7 +69,7 @@ public class DocController {
         Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         Doc doc = pageRequest.getParams();
         QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
-                .eq("isPublished",true).orderByDesc("created");
+                .eq("isPublished",1).orderByDesc("created");
         if(!doc.getType().equals(DocEnum.tfNews)){
             wrapper.select(Doc.class,i->!i.getProperty().equals("body"));
         }
@@ -97,15 +107,26 @@ public class DocController {
      * @return
      */
     @GetMapping()
-    public Result docDetail(@RequestParam String docId,@RequestParam(value = "isPublished",defaultValue = "false") Boolean isPublished){
+    @Transactional
+    public Result docDetail(HttpServletRequest request, @RequestParam String docId, @RequestParam(value = "isPublished",defaultValue = "false") Boolean isPublished){
         QueryWrapper<Doc> wrapper = new QueryWrapper<Doc>().eq("id", docId);
+        // 前台查询
         if(isPublished){
-            wrapper.eq("isPublished", true);
+            wrapper.eq("isPublished", 1);
         }
         Doc doc = docService.getOne(wrapper);
 
-
         if(ObjectUtil.isNotEmpty(doc)){
+          if(isPublished){
+              String localAddr = ReactiveAddrUtil.getRemoteAddr(request);
+              String key = localAddr+":"+docId;
+              if(redisRepository.get(key)==null){
+                  redisRepository.setExpire(key,true,1, TimeUnit.DAYS);
+                  // pv 根据用户id地址递增，同ip地址当天内不累计 每天重置
+                  docService.update(new UpdateWrapper<Doc>().eq("id",docId).set("views",doc.getViews()+1));
+              }
+          }
+
             Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
             Collection collection = collectionService.getById(collectionId);
 
@@ -147,7 +168,7 @@ public class DocController {
            docService.update(new UpdateWrapper<Doc>()
                     .eq("id", currentId)
                     .set("parentId", parentId)
-                    .set("isPublished",false)
+                    .set("isPublished",0)
                     .set("parentIds", parent.getParentIds() + parentId + ",")
             );
         }
@@ -204,7 +225,7 @@ public class DocController {
     }
 
     /**
-     * 查询集合中被删除的文章
+     * 查询集合中被逻辑删除的文章
      * @param collectionId
      * @return
      */
@@ -227,25 +248,47 @@ public class DocController {
     /**
      * 文章发布
      * @param userDetails
-     * @param docIds
+     * @param doPublishIds
      * @param collectionId
      * @return
      */
     @PostMapping("/publish")
     @Transactional
-    public Result publish(@LoginUser JwtUserDetails userDetails,@RequestBody List<Long> docIds,@RequestParam Long collectionId){
-        List<Long> allDocIds = docService.getDocsByCollectionId(collectionId)
-                .stream().map(doc -> doc.getId()).collect(Collectors.toList());
-        boolean a = docService.update(new UpdateWrapper<Doc>().in("id", allDocIds).set("isPublished", false));
-        if(docIds.size()>0){
-              docService.update(new UpdateWrapper<Doc>().in("id", docIds).set("isPublished", true));
+
+    public Result publish(@LoginUser JwtUserDetails userDetails,@RequestBody List<Long> doPublishIds,@RequestParam Long collectionId){
+        List<Doc> docs = docService.getDocsByCollectionId(collectionId);
+        // 集合中所有文章的Id
+        List<Long> docIds = docs.stream().map(doc -> doc.getId()).collect(Collectors.toList());
+        if(doPublishIds.size()==0) {
+            Boolean a = docService.update(new UpdateWrapper<Doc>().in("id", docIds).set("isPublished", 0));
+            return Result.succeed(a);
+        }
+        // 已发布的Id
+        List<Long> publishedIds = docs.stream().filter(doc -> doc.getIsPublished().equals(1))
+                .map(doc -> doc.getId()).collect(Collectors.toList());
+        // 取消发布的Id
+        List<Long> unPubIds = new ArrayList<>();
+        publishedIds.forEach(id->{
+            boolean remove = doPublishIds.remove(id);
+            if(!remove){
+                unPubIds.add(id);
+            }
+        });
+
+        if(unPubIds.size()>0){
+            docService.update(new UpdateWrapper<Doc>().in("id", unPubIds).set("isPublished", 0));
+        }
+        if(doPublishIds.size()>0){
+            // 设置为审核中
+              docService.update(new UpdateWrapper<Doc>().in("id", doPublishIds).set("isPublished", 2));
+              docService.checkContent(doPublishIds);
         }
 
-        return Result.succeed(a);
+        return Result.succeed(true);
     }
 
     /**
-     * 查询集合已经发布的内容
+     * 查询集合已经发布的文章Id集合
      * @param userDetails
      * @param collectionId
      * @return
@@ -254,7 +297,7 @@ public class DocController {
     public Result published(@LoginUser JwtUserDetails userDetails,@RequestParam Long collectionId){
         List<Doc> docs = docService.getDocsByCollectionId(collectionId);
 
-        List<Long> collect = docs.stream().filter(doc -> doc.getIsPublished().equals(true))
+        List<Long> collect = docs.stream().filter(doc -> doc.getIsPublished().equals(1))
                 .map(doc -> doc.getId()).collect(Collectors.toList());
 
         return Result.succeed(collect);
@@ -266,7 +309,7 @@ public class DocController {
         QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
                 .select(Doc.class,i->!i.getProperty().equals("body"))
                 .eq("type",DocEnum.doc)
-                .eq("isPublished",true).orderByDesc("created");
+                .eq("isPublished",1).orderByDesc("created");
 
         return Result.succeed(docService.list(wrapper));
     }

@@ -34,8 +34,10 @@ public class Doc extends Model<Doc> {
    String alias;
    Long counts;
    DocEnum type;
-   Boolean isPublished;
+   Integer isPublished;
    String cover;
+    Long views;
+    Long sort;
    @TableLogic(value = "1",delval = "0")
    Boolean status;
 
@@ -45,7 +47,7 @@ public class Doc extends Model<Doc> {
        return map;
    }
 
-   Long sort;
+
    @TableField(exist = false)
    List<Doc> children;
 

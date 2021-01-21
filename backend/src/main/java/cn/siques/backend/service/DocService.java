@@ -2,6 +2,7 @@ package cn.siques.backend.service;
 
 import cn.siques.backend.entity.Doc;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -63,4 +64,11 @@ public interface DocService extends IService<Doc> {
      * @return
      */
     boolean realDelete(Long docId);
+
+    /**
+     * 文本审核
+     * @param doPublishIds
+     */
+    void checkContent(List<Long> doPublishIds);
+
 }

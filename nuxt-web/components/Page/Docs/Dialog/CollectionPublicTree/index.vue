@@ -4,13 +4,19 @@
       <template v-slot:prepend="{ item }">
         <span>{{ item.title }}</span>
       </template>
+
+      <template v-slot:label="{ item }">
+        <span v-if="item.isPublished == 3" class="text-red">审核失败</span>
+        <span v-if="item.isPublished == 2" class="text-yellow">审核中</span>
+        <span v-if="item.isPublished == 1" class="text-green">已发布</span>
+      </template>
     </v-treeview>
   </v-card-text>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { Model } from 'vue-property-decorator'
+import { Model, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class CollectionPublicTree extends Vue {
@@ -24,7 +30,8 @@ export default class CollectionPublicTree extends Vue {
   @Prop()
   initSelected
 
-  mounted() {
+  @Watch('initSelected')
+  valueChanged(newval, oldval) {
     const t = []
 
     this.initSelected.forEach((e) => {
@@ -62,4 +69,8 @@ export default class CollectionPublicTree extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.v-treeview-node__label {
+  text-align: right;
+}
+</style>
