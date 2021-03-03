@@ -122,7 +122,7 @@ public class DocController {
               String key = localAddr+":"+docId;
               if(redisRepository.get(key)==null){
                   redisRepository.setExpire(key,true,1, TimeUnit.DAYS);
-                  // pv 根据用户id地址递增，同ip地址当天内不累计 每天重置
+                  // pv 根据用户ip地址递增，同ip地址当天内不累计 每天重置
                   docService.update(new UpdateWrapper<Doc>().eq("id",docId).set("views",doc.getViews()+1));
               }
           }

@@ -367,3 +367,7 @@ hr {
 .v-application code {
   color: #333;
 }
+.v-application code,
+.v-application kbd {
+  font-weight: normal !important;
+}
