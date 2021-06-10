@@ -6,6 +6,8 @@ spring:
       uris: 139.198.189.114:9200
       username: elastic
       password: heshenghao
+      connection-timeout: 20
+      read-timeout: 30
   oss:
     stsEndpoint: sts.cn-hangzhou.aliyuncs.com
     endpoint: http://oss-accelerate.aliyuncs.com

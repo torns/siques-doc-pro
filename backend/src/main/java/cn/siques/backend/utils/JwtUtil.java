@@ -32,12 +32,9 @@ import java.security.spec.RSAPublicKeySpec;
 public class JwtUtil {
     private static RSAPrivateCrtKey privateKey;
 
-
     private static PublicKey publicKey;
 
     public static void signKey()   {
-     
-        
         try {
             ClassPathResource resource = new ClassPathResource("oauth2.jks");
             KeyStore jks = KeyStore.getInstance("JKS");
@@ -48,16 +45,14 @@ public class JwtUtil {
             publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
 
         }catch (Exception e){
-        log.info("生成RSA密钥失败");
+                log.info("生成RSA密钥失败");
         }
     }
 
     public static String genToken(User user){
-        if(privateKey==null){
+        if(privateKey == null){
             signKey();
         }
-
-
         return Jwts.builder().setSubject(user.getUsername())
                 .signWith(privateKey,SignatureAlgorithm.RS512).compact();
     }
@@ -65,7 +60,6 @@ public class JwtUtil {
     public static UsernamePasswordAuthenticationToken authenticate(User user, HttpServletRequest request, UserService userService) {
 
         String token = JwtUtil.genToken(user);
-
         JwtUserDetails userDetails = (JwtUserDetails) userService.loadUserByUsername(user.getUsername());
         userDetails.setToken(token);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 集合接口
  * @author : heshenghao
  * @date : 18:42 2020/12/9
  */
@@ -62,36 +64,47 @@ public class CollectionController {
 
     @PutMapping
     public Result update(@RequestBody Collection collection){
-        boolean b = collectionService.updateById(collection);
-        return Result.succeed(b);
+        return Result.succeed(collectionService.updateById(collection));
     }
 
+    /**
+     * 新增用户集合
+     * @param collection
+     * @param userDetails
+     * @return
+     */
     @PostMapping
     @Transactional
-    public Result insert(@RequestBody Collection collection,@LoginUser JwtUserDetails userDetails){
+    public Result insert(@RequestBody Collection collection,@LoginUser  JwtUserDetails userDetails){
         boolean a = collectionService.save(collection);
         boolean b = userCollectionService.save(new UserCollection(userDetails.getId(), collection.getId()));
         return Result.succeed(a && b);
     }
 
+    /**
+     * 添加集合封面
+     * @param jwtUserDetails
+     * @param file
+     * @param collection
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/cover")
     @Transactional
     public Result uploadCover(@LoginUser JwtUserDetails jwtUserDetails,@RequestParam("uploadFile") MultipartFile file,Collection collection) throws IOException {
+
         String originalFilename = file.getOriginalFilename();
         InputStream inputStream = file.getInputStream();
         String date = sdf.format(new Date());
-        String s = ossFactory.putObject("collection/cover/"+jwtUserDetails.getId()
-                +"/"+date+"/"+file.getSize()+originalFilename, inputStream);
+        boolean b = false;
 
-        collection.setCover(s);
-        boolean b;
+        // id不为空，则尝试更新
         if(ObjectUtil.isNotEmpty(collection.getId())){
-            b=collectionService.updateById(collection);
-        }else {
-            b=collectionService.save(collection);
-            b=userCollectionService.save(new UserCollection(jwtUserDetails.getId(), collection.getId()));
+            String url = ossFactory.putObject("collection/cover/"+jwtUserDetails.getId()
+                    +"/"+date+"/"+file.getSize()+originalFilename, inputStream);
+            collection.setCover(url);
+            b = collectionService.updateById(collection);
         }
-
         return Result.succeed(b);
     }
 
