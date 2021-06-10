@@ -17,9 +17,7 @@
             class="pointer"
             @click="$router.push(`/doc/${collect.docIds[0]}`)"
           >
-            <v-row class="fill-height text-truncate" align="center" justify="center">
-              <!-- <div class="text-h5 ">{{ collect.name }}</div> -->
-            </v-row>
+            <v-row class="fill-height text-truncate" align="center" justify="center"> </v-row>
           </v-carousel-item>
         </template>
       </v-carousel>
@@ -28,11 +26,11 @@
 
       <v-list nav dense>
         <v-treeview
-          ref="tree"
           :items="docTree"
           :active="[doc.id]"
           color="warning"
           class="pointer text-truncate"
+          open-all
           activatable
           rounded
           dense
@@ -73,7 +71,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { listCollection } from '@/api/collection'
 @Component({
   computed: {
     docSideBars: {
@@ -102,7 +99,6 @@ export default class NaviSideMenu extends Vue {
     }
   }
 
-  colors = ['primary', 'secondary', 'yellow darken-2', 'red', 'orange']
   model = 0
   docSideBars
 

@@ -14,21 +14,24 @@ import { listCollection } from '@/api/collection'
 @Component({})
 export default class CollectionIndex extends Vue {
   async asyncData({ params, store, route }: any) {
-    const res = await listCollection({ pageNum: params.id || 1, pageSize: 10 })
+    const res = await listCollection({ pageNum: parseInt(params.id) || 1, pageSize: 10 })
 
     return {
       collections: res.datas.records,
-      pagination: Object.assign({ pageNum: params.id || 1, pageSize: 10, total: res.datas.total })
+      pagination: Object.assign({ pageNum: parseInt(params.id) || 1, pageSize: 10, total: res.datas.total })
     }
   }
 
-  pagination: any = {}
+  pagination: any = {
+    pageNum: 1,
+    pageSize: 10
+  }
 
   collections = []
 
-  async handleChange() {
-    const res = await listCollection({ pageNum: this.pagination.pageNum, pageSize: this.pagination.pageSize })
-    this.collections = res.datas.records
+  handleChange() {
+    console.log(this.pagination)
+    this.$router.push(`/collection/${this.pagination.pageNum}`)
   }
 
   head() {

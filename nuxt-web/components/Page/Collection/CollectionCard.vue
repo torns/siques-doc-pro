@@ -15,9 +15,14 @@
         <v-row v-if="collect.docIds != null" justify="center" class="collection_wrapper d-flex flex-wrap ">
           <v-col :class="index % 2 == 1 ? colLast : colFirst" xs="12" sm="9" md="8" lg="6" xl="5">
             <router-link :to="`/doc/${collect.docIds[0]}`" target="_blank" class="pannel-image pointer">
-              <v-img :src="collect.cover" cover style="height:350px;border-radius:20px;"></v-img>
+              <v-img
+                :src="collect.cover"
+                cover
+                style="height:350px;border-radius:20px;box-shadow: rgb(0 0 0 / 5%) 16px 17px 39px 0px"
+              ></v-img>
             </router-link>
           </v-col>
+
           <v-col
             :class="`${index % 2 == 0 ? colLast : colFirst} d-flex flex-column jc-center`"
             xs="12"
@@ -26,7 +31,7 @@
             lg="6"
             xl="5"
           >
-            <div class="description   ">
+            <div class="description">
               <div>
                 <!-- <div class="header py-1  text-gray fs-xm">
                   <i class="fa fa-leaf   pr-2"></i
@@ -36,11 +41,11 @@
                 </div> -->
                 <router-link
                   :to="`/doc/${collect.docIds && collect.docIds[0]}`"
-                  tag="span"
+                  tag="a"
                   target="_blank"
                   class="pannel-image point"
                 >
-                  <h2 class=" pb-2  fs-xll ellipsis-1">{{ collect.name }}</h2>
+                  <h2 class=" pb-2  fs-xll ellipsis-1 black--text">{{ collect.name }}</h2>
                 </router-link>
                 <div class="pr-3">
                   <p class="alias pb-2  fs-xm">{{ collect.description }}...</p>
@@ -114,6 +119,9 @@ export default class CollectionList extends Vue {
 </script>
 
 <style lang="scss">
+.v-img:not(.on-hover) {
+  opacity: 0.6;
+}
 .note_avatar > img {
   border-radius: 50% !important;
 }

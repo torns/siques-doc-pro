@@ -36,10 +36,6 @@
     <v-container style="min-height: 100vh">
       <v-row no-gutters class=" pt-4">
         <v-col cols="12" sm="12" md="9" xl="6" style="margin:0 auto;width:'100%">
-          <!-- <div class="new-title">
-            <span>最近更新</span>
-          </div> -->
-
           <div class="news-list-module">
             <div v-for="(doc, $index) in docs" :key="$index">
               <article :id="doc.id" :class="`item ${doc.cover ? '' : 'wire'}`">
@@ -54,21 +50,13 @@
                     ></router-link>
                   </section>
                   <section :class="`${doc.cover ? 'news-detail' : 'content'}`">
-                    <!-- <section class="item-tag-list d-flex">
-                          <div v-for="tag in doc.tags" :key="tag.id">
-                            <router-link :to="`/t/${tag.id}`" class="tag ellipsis-1" target="_blank" tag="a"
-                              ><i class="fa fa-tags"></i> <span>{{ tag.name }}</span></router-link
-                            >
-                          </div>
-                        </section> -->
-
                     <p class="title">
                       <router-link :to="`/doc/${doc.id}`" :title="doc.title" target="_blank" tag="a">{{
                         doc.title
                       }}</router-link>
                     </p>
                     <p class="desc">{{ doc.alias }}...</p>
-                    <section class="author ">
+                    <section class="author">
                       <!-- <nuxt-link :to="`u/${doc.user.id}`" class="name" tag="a"
                             ><span>{{ doc.user.name + ' ' }}</span>
                           </nuxt-link> -->
@@ -88,7 +76,7 @@
               v-intersect="{
                 handler: onIntersect,
                 options: {
-                  threshold: [0, 0.5, 1.0]
+                  threshold: [0, 1, 1.0]
                 }
               }"
               class="my-3 elevation-0 text-gray text-center"

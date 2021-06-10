@@ -79,7 +79,7 @@ const mediumzoom = () => {
 
 @Component({})
 export default class Doc extends Vue {
-  async asyncData({ params, store, redirect, error }: any) {
+  async asyncData({ params, store, redirect }: any) {
     const doc = await getDocDetail({ docId: params.id, isPublished: true })
 
     if (doc.respCode === 0) {
@@ -94,8 +94,10 @@ export default class Doc extends Vue {
     }
   }
 
+  doc: any = {}
   onIntersect = false
   docTree = []
+
   head() {
     return {
       title: this.doc.title + '-思趣网',
@@ -109,8 +111,6 @@ export default class Doc extends Vue {
       ]
     }
   }
-
-  doc: any = ''
 
   beforeMount() {
     this.$nextTick(() => {

@@ -3,7 +3,6 @@ import { userLogin, loginByCode } from '@/api/user'
 export const state = () => ({
   token: '',
   name: '',
-  avatar: '',
   info: {},
   loggedIn: false
 })
@@ -15,9 +14,6 @@ export const mutations = {
   SET_NAME: (state, { name, welcome }) => {
     state.name = name
     state.welcome = welcome
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
   },
   SET_INFO: (state, info) => {
     state.info = info
