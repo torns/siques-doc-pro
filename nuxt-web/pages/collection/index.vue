@@ -24,12 +24,12 @@ export default class CollectionIndex extends Vue {
 
   pagination: any = {}
 
+  collections = []
+
   async handleChange() {
     const res = await listCollection({ pageNum: this.pagination.pageNum, pageSize: this.pagination.pageSize })
     this.collections = res.datas.records
   }
-
-  collections = []
 
   head() {
     return {

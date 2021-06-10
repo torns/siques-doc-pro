@@ -33,7 +33,6 @@
           :active="[doc.id]"
           color="warning"
           class="pointer text-truncate"
-          open-all
           activatable
           rounded
           dense
