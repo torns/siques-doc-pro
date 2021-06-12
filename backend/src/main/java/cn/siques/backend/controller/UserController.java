@@ -122,9 +122,9 @@ public class UserController {
     }
 
     @GetMapping("verify")
-    public Result verify(@RequestParam String authenticate,@RequestParam String token,@RequestParam String loginCode){
-        Map<String, Object> auth = AuthenticateUtil.auth(authenticate, token, loginCode,validateCodeService);
-        return Result.succeed(auth);
+    public Result verify(@RequestParam String loginCode){
+
+       return Result.succeed(AuthenticateUtil.sendVerificationCode(loginCode, validateCodeService));
     }
 
 

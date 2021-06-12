@@ -1,17 +1,16 @@
 <template>
   <div>
     <v-navigation-drawer :width="editorSideBar ? 320 : 0" app permanent>
-      <v-btn :disabled="!selectedCollection.id" block @click="manageCurrentCollection">
-        <v-icon left>
-          mdi-home
-        </v-icon>
-        主页
-      </v-btn>
-
-      <v-list nav dense>
-        <div class="ellipsis-1 d-flex jc-between">
+      <div style="position: absolute;width: 100%;background-color: white;z-index: 5;">
+        <v-btn :disabled="!selectedCollection.id" block @click="manageCurrentCollection">
+          <v-icon left>
+            mdi-home
+          </v-icon>
+          主页
+        </v-btn>
+        <div class="ellipsis-1 d-flex jc-between my-2 mx-1">
           <div>
-            <v-icon color="   darken-2" class="pr-2">
+            <v-icon color="darken-2" class="pr-2">
               mdi-apps
             </v-icon>
 
@@ -19,39 +18,8 @@
           </div>
           <MenuBtn :title="`更多操作`" :options="menuOptions">mdi-plus</MenuBtn>
         </div>
-        <!-- <v-treeview
-          v-show="!loading"
-          ref="tree"
-          :items="docTree"
-          :active="[selectedDoc.id]"
-          class="pointer"
-          activatable
-          open-all
-          rounded
-          dense
-          hoverable
-          @update:active="selectDoc"
-        >
-          <template v-slot:prepend="{ item, open }">
-            <div class="text-truncate">
-              <v-icon small>
-                {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-              </v-icon>
-
-              <span>{{ item.title }}</span>
-            </div>
-          </template>
-
-          <template v-slot:label="{ item }">
-            <v-hover v-slot="{ hover }">
-              <div :class="{ 'on-hover': hover }" class="doc-action float-right" @e.prevent>
-                <MenuBtn :title="`删除等操作`" :item="item" :options="moreOptions">mdi-dots-horizontal</MenuBtn>
-                <MenuBtn :title="`更多操作`" :item="item" :options="addOptions">mdi-plus</MenuBtn>
-              </div>
-            </v-hover>
-          </template>
-        </v-treeview> -->
-
+      </div>
+      <v-list style="margin-top:70px" nav dense>
         <DraggableTreeView
           v-show="!loading"
           v-model="docTree"
@@ -79,15 +47,15 @@
             </v-hover>
           </template>
         </DraggableTreeView>
-
-        <div class="ellipsis-1 d-flex ai-center pb-10">
-          <v-icon color="   darken-2 " class="pr-2">
-            mdi-trash-can
-          </v-icon>
-
-          <span class="pointer grey--text text--darken-2" @click="manageCurrentDeleteDoc">最近删除</span>
-        </div>
       </v-list>
+
+      <div class="ellipsis-1 d-flex ai-center absolute w-100 mx-1 bg-white" style="bottom: 0px;height:50px">
+        <v-icon color="darken-2 " class="pr-2">
+          mdi-trash-can
+        </v-icon>
+
+        <span class="pointer grey--text text--darken-2" @click="manageCurrentDeleteDoc">最近删除</span>
+      </div>
     </v-navigation-drawer>
 
     <DocMoveDialog ref="DocMoveDialog"></DocMoveDialog>
@@ -99,7 +67,7 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 import { mapGetters } from 'vuex'
-import { createDoc, delDoc, updateDoc } from '@/api/doc.js'
+import { insertDoc, logicDelDoc, updateDoc } from '@/api/doc.js'
 import { copyToClip } from '@/plugins/utils'
 
 @Component({
@@ -147,13 +115,9 @@ export default class DocSideBar extends Vue {
   }
 
   selectDoc(row) {
-    // if (row.length > 0) {
-    // const doc = this.$refs.tree.nodes[row[0]].item
-    // console.log(row)
     this.$store.commit('PUSH_MSG', row.title + ' 已同步')
     this.$store.commit('SET_DOC', row)
     this.$router.push('/docs')
-    // }
   }
 
   @Watch('selectedCollection')
@@ -170,22 +134,22 @@ export default class DocSideBar extends Vue {
     loading.close()
   }
 
-  async createDoc(row) {
-    await createDoc({ parentId: row.id, collectionId: this.selectedCollection.id })
-    this.getDocTree()
-  }
-
-  async delDoc(row) {
-    await delDoc(row.id)
-    this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
-    if (this.selectedDoc.id === row.id) {
-      this.$store.commit('SET_DOC', {})
-    }
+  async createChild(row) {
+    await insertDoc({ parentId: row.id, collectionId: this.selectedCollection.id })
     this.getDocTree()
   }
 
   async createParent() {
-    await createDoc({ parentId: 0, collectionId: this.selectedCollection.id })
+    await insertDoc({ parentId: 0, collectionId: this.selectedCollection.id })
+    this.getDocTree()
+  }
+
+  async logicDelDoc(row) {
+    await logicDelDoc(row.id)
+    this.$store.dispatch('modules/doc/getDocDeleted', { collectionId: this.selectedCollection.id })
+    if (this.selectedDoc.id === row.id) {
+      this.$store.commit('SET_DOC', {})
+    }
     this.getDocTree()
   }
 
@@ -240,7 +204,7 @@ export default class DocSideBar extends Vue {
     {
       title: '删除',
       icon: 'mdi-delete',
-      callback: this.delDoc
+      callback: this.logicDelDoc
     }
   ]
 
@@ -248,7 +212,7 @@ export default class DocSideBar extends Vue {
     {
       title: '创建子文档',
       icon: 'mdi-plus',
-      callback: this.createDoc
+      callback: this.createChild
     },
     {
       title: '打开文档详情页',

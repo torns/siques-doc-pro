@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row dense>
-      <v-col v-for="(item, index) in delCollection" :key="index" cols="6">
+      <v-col v-for="(item, index) in deletedCollection" :key="index" cols="6">
         <v-card :color="colors[index % colors.length]" dark>
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
@@ -31,13 +31,13 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { reUseCollection } from '@/api/collection'
 @Component({
-  computed: mapGetters(['delCollection'])
+  computed: mapGetters(['deletedCollection'])
 })
 /** 回收站 */
 export default class CollectionReuseCard extends Vue {
   colors = ['#1F7087', '#952175', '#385F73']
 
-  delCollection
+  deletedCollection
 
   mounted() {
     this.$store.dispatch('modules/collection/getDelCollection')
@@ -46,7 +46,7 @@ export default class CollectionReuseCard extends Vue {
   async reuse(item, index) {
     await reUseCollection({ collectionId: item.id })
     this.$store.dispatch('modules/collection/getUserCollection')
-    this.delCollection.splice(index, 1)
+    this.deletedCollection.splice(index, 1)
   }
 }
 </script>

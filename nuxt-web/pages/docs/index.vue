@@ -28,7 +28,6 @@ import toc from '@/plugins/toc'
 export default class DocWrite extends Vue {
   asyncData({ store, redirect }) {
     if (!store.state.modules.user.loggedIn) {
-      store.commit('toggleLoginForm')
       return redirect('/')
     }
   }
@@ -52,10 +51,6 @@ export default class DocWrite extends Vue {
     editor: HTMLFormElement
   }
 
-  // onEditorFocus() {
-  //   this.$store.commit('modules/editor/SET_SIDEBAR', false)
-  // }
-
   async mounted() {
     if (this.selectedDoc.id) {
       const loading = this.$loading({ text: '努力加载中', status: this.loading })
@@ -63,9 +58,8 @@ export default class DocWrite extends Vue {
       const res = await getDocDetail({ docId: this.selectedDoc.id })
       this.$refs.editor.setContent(res.datas.body, this.selectedDoc.id)
 
-      loading.close()
-
       toc()
+      loading.close()
     }
   }
 
@@ -74,9 +68,9 @@ export default class DocWrite extends Vue {
     if (newval.id) {
       const loading = this.$loading({ text: '努力加载中', status: this.loading })
 
-      const res = await getDocDetail({ docId: newval.id })
-      this.$refs.editor.setContent(res.datas.body, newval.id)
-      this.$store.commit('SET_DOC_BODY', res.datas.body)
+      const { datas } = await getDocDetail({ docId: newval.id })
+      this.$refs.editor.setContent(datas.body, newval.id)
+      this.$store.commit('SET_DOC_BODY', datas.body)
       toc()
       loading.close()
     }

@@ -50,7 +50,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getPublishedList, publishDoc, getDocTree } from '@/api/doc'
+import { getDocPublished, publishDoc, getDocTree } from '@/api/doc'
 
 @Component({
   computed: mapGetters(['docTree', 'selectedCollection'])
@@ -88,7 +88,7 @@ export default class CollectionPublishDialog extends Vue {
   }
 
   async getDocTreeAndSelect() {
-    const res = await getPublishedList({ collectionId: this.selectedCollection.id })
+    const res = await getDocPublished({ collectionId: this.selectedCollection.id })
     this.initSelected = res.datas
     this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
   }

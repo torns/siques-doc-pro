@@ -191,10 +191,28 @@ public class DocController {
      * @param id
      * @return
      */
-    @DeleteMapping("logic/{id}")
+    @DeleteMapping("{id}")
     public Result delete(@PathVariable String id){
         boolean a = docService.removeById(id);
         return Result.succeed(a);
+    }
+
+    /**
+     * 真实删除
+     */
+    @DeleteMapping()
+    public Result realDelete(@LoginUser JwtUserDetails userDetails,@RequestParam Long docId){
+        QueryWrapper<CollectionDoc> docQueryWrapper = new QueryWrapper<CollectionDoc>().eq("docId", docId);
+        Long collectionId = collectionDocService.getOne(docQueryWrapper).getCollectionId();
+        userDetails.getId();
+        List<Long> collectionIds = userCollectionService.getUserCollection(userDetails.getId()).stream().map(u -> u.getId())
+                .collect(Collectors.toList());
+        if(collectionIds.contains(collectionId)){
+            boolean a = docService.realDelete(docId);
+            boolean b=  collectionDocService.remove(docQueryWrapper);
+            return Result.succeed(a&&b);
+        }
+        return Result.succeed(false);
     }
     /**
      * 恢复文章
@@ -206,23 +224,7 @@ public class DocController {
         return Result.succeed(docService.reuseDoc(docId));
     }
 
-    /**
-     * 真实删除
-     */
-    @DeleteMapping("real")
-    public Result realDelete(@LoginUser JwtUserDetails userDetails,@RequestParam Long docId){
-        QueryWrapper<CollectionDoc> docQueryWrapper = new QueryWrapper<CollectionDoc>().eq("docId", docId);
-        Long collectionId = collectionDocService.getOne(docQueryWrapper).getCollectionId();
-        userDetails.getId();
-        List<Long> collectionIds = userCollectionService.getUserCollection(userDetails.getId()).stream().map(u -> u.getId())
-                .collect(Collectors.toList());
-        if(collectionIds.contains(collectionId)){
-           boolean a = docService.realDelete(docId);
-            boolean b=  collectionDocService.remove(docQueryWrapper);
-            return Result.succeed(a&&b);
-        }
-        return Result.succeed(false);
-    }
+
 
     /**
      * 查询集合中被逻辑删除的文章

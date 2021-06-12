@@ -24,77 +24,6 @@ export function hljs() {
         '\n</li></ul>'
     )
   })
-  // 去掉最后一行的空行
-  // $('pre code ul li:last-child').remove()
-
-  // $('pre  code').each(function() {
-  //   if (
-  //     $(this)
-  //       .text()
-  //       .includes('(begin)')
-  //   ) {
-  //     if (true) {
-  //       let el = $(this)
-  //         .html()
-  //         .match(/<li> *\(begin\)([\s\S]*?)\(\/end\) *<\/li>/g)
-
-  //       console.log(el)
-  //       for (let index = 0; index < el.length; index++) {
-  //         let brief = el[index].match(/(?=<li>)[\s\S]*?(<\/li>)/g)[1]
-  //         brief = brief.replace('<li>', '')
-  //         brief = brief.replace('</li>', '')
-  //         let el1 = `
-  //     ${`<details><summary class="point hover-2" style="padding-left: 5px;">${brief}</summary>` +
-  //       el[index] +
-  //       '</details>'}`
-  //         $(this).html(
-  //           $(this)
-  //             .html()
-  //             .replace(el[index], el1)
-  //         )
-  //       }
-  //     } else {
-  //     }
-
-  //     let el1 = $(this)
-  //       .html()
-  //       .match(/(<li> *\(begin\) *<\/li>)/g)
-  //     try {
-  //       for (let index = 0; index < el1.length; index++) {
-  //         $(this).html(
-  //           $(this)
-  //             .html()
-  //             .replace(el1[index], '')
-  //         )
-  //       }
-  //     } catch {
-  //       console.log('开始结束匹配有误')
-  //     }
-
-  //     let el2 = $(this)
-  //       .html()
-  //       .match(/(<li> *\(\/end\) *<\/li>)/)
-  //     try {
-  //       for (let index = 0; index < el2.length; index++) {
-  //         $(this).html(
-  //           $(this)
-  //             .html()
-  //             .replace(el2[index], '')
-  //         )
-  //       }
-  //     } catch {
-  //       console.log('开始结束匹配有误')
-  //     }
-  //   }
-  // })
-
-  // $('summary').click(function() {
-  //   if (!$(this)[0].parentNode.attributes.open) {
-  //     $(this).css({ opacity: 0.2, '-webkit-text-security': 'disc' })
-  //   } else {
-  //     $(this).css({ opacity: 1, '-webkit-text-security': 'inherit' })
-  //   }
-  // })
 
   $('pre  code').each(function() {
     let lang = $(this).attr('class')
@@ -136,7 +65,7 @@ function number(value) {
   }
 }
 
-function phoneLength(value) {
+export function phoneLength(value) {
   const regex = /^[1][3,4,5,7,8][0-9]{9}$/
   if (regex.test(value)) {
     return true

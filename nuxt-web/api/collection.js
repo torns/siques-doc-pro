@@ -1,12 +1,9 @@
 import vue from 'vue'
 
 const collectionApi = {
-  userCollection: '/collection',
-  listCollection: '/collection/findPage',
-  insertCollection: '/collection',
-  updateCollection: '/collection',
-  delCollection: '/collection',
-  userDelCollection: '/collection/deleted',
+  restApi: '/collection',
+  pageCollection: '/collection/findPage',
+  deletedCollection: '/collection/deleted',
   reuse: '/collection/reuse',
   cover: '/collection/cover'
 }
@@ -22,10 +19,34 @@ export function coverUpload(parameter) {
   })
 }
 
-export function getUserCollection() {
+// 获取用户的集合
+export function getCollection() {
   return vue.prototype.$http({
-    url: collectionApi.userCollection,
+    url: collectionApi.restApi,
     method: 'get'
+  })
+}
+
+export function insertCollection(parameter) {
+  return vue.prototype.$http({
+    url: collectionApi.restApi,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function updateCollection(parameter) {
+  return vue.prototype.$http({
+    url: collectionApi.restApi,
+    method: 'put',
+    data: parameter
+  })
+}
+export function delCollection(parameter) {
+  return vue.prototype.$http({
+    url: collectionApi.restApi,
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -33,24 +54,17 @@ export function getUserCollection() {
  *
  * @param {pageNum,pageSize} parameter
  */
-export function listCollection(parameter) {
+export function pageCollection(parameter) {
   return vue.prototype.$http({
-    url: collectionApi.listCollection,
+    url: collectionApi.pageCollection,
     method: 'post',
     data: parameter
-  })
-}
-export function delCollection(parameter) {
-  return vue.prototype.$http({
-    url: collectionApi.delCollection,
-    method: 'delete',
-    params: parameter
   })
 }
 
 export function getUserDelCollection() {
   return vue.prototype.$http({
-    url: collectionApi.userDelCollection,
+    url: collectionApi.deletedCollection,
     method: 'get'
   })
 }
@@ -60,21 +74,5 @@ export function reUseCollection(parameter) {
     url: collectionApi.reuse,
     method: 'get',
     params: parameter
-  })
-}
-
-export function insertCollection(parameter) {
-  return vue.prototype.$http({
-    url: collectionApi.insertCollection,
-    method: 'post',
-    data: parameter
-  })
-}
-
-export function updateCollection(parameter) {
-  return vue.prototype.$http({
-    url: collectionApi.updateCollection,
-    method: 'put',
-    data: parameter
   })
 }

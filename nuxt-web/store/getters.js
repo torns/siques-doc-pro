@@ -1,19 +1,21 @@
 const getters = {
   selectedCollection: (state) => state.selectedCollection,
   selectedDoc: (state) => state.selectedDoc,
-  userCollection: (state) => state.modules.collection.userCollection,
-  delCollection: (state) => state.modules.collection.delCollection,
-  docTree: (state) => state.modules.doc.docTree,
-  loggedIn: (state) => state.modules.user.loggedIn,
-  userInfo: (state) => state.modules.user.info,
-  delDoc: (state) => state.modules.doc.delDoc,
-  loadMsg: (state) => state.modules.tips.loadMsg,
-  notifyMsg: (state) => state.modules.tips.notifyMsg,
   docSideBar: (state) => state.docSideBar,
   extendMenu: (state) => state.extendMenu,
-  confirmMsg: (state) => state.modules.tips.confirmMsg,
-  recomendCollection: (state) => state.modules.collection.recomendCollection,
   pageLoading: (state) => state.pageLoading,
+
+  userCollection: (state) => state.modules.collection.userCollection,
+  deletedCollection: (state) => state.modules.collection.deletedCollection,
+  recomendCollection: (state) => state.modules.collection.recomendCollection,
+  docTree: (state) => state.modules.doc.docTree,
+  deletedDoc: (state) => state.modules.doc.deletedDoc,
+  loggedIn: (state) => state.modules.user.loggedIn,
+  userInfo: (state) => state.modules.user.info,
+  loadMsg: (state) => state.modules.tips.loadMsg,
+  notifyMsg: (state) => state.modules.tips.notifyMsg,
+  confirmMsg: (state) => state.modules.tips.confirmMsg,
+
   editorSideBar: (state) => state.modules.editor.editorSideBar
 }
 

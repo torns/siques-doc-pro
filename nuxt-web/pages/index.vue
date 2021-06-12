@@ -103,7 +103,7 @@ import _ from 'lodash'
 import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
-import { getDocList } from '@/api/doc'
+import { getDocPage } from '@/api/doc'
 
 @Component({
   components: {
@@ -113,7 +113,7 @@ import { getDocList } from '@/api/doc'
 })
 export default class AppPage extends Vue {
   async asyncData() {
-    const res = await getDocList({ pageNum: 1, pageSize: 20, params: { type: 'doc' } })
+    const res = await getDocPage({ pageNum: 1, pageSize: 20, params: { type: 'doc' } })
 
     return {
       docs: res.datas.records,
@@ -183,7 +183,7 @@ export default class AppPage extends Vue {
   async onload() {
     this.loading = true
     this.page += 1
-    const res = await getDocList({ pageNum: this.page, pageSize: 20, params: { type: 'doc' } })
+    const res = await getDocPage({ pageNum: this.page, pageSize: 20, params: { type: 'doc' } })
 
     setTimeout(async () => {
       this.docs = this.docs.concat(res.datas.records)

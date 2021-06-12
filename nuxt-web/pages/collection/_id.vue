@@ -10,27 +10,23 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { listCollection } from '@/api/collection'
+import { pageCollection } from '@/api/collection'
 @Component({})
 export default class CollectionIndex extends Vue {
   async asyncData({ params, store, route }: any) {
-    const res = await listCollection({ pageNum: parseInt(params.id) || 1, pageSize: 10 })
+    const res = await pageCollection({ pageNum: parseInt(params.id) || 1, pageSize: 10 })
 
     return {
       collections: res.datas.records,
-      pagination: Object.assign({ pageNum: parseInt(params.id) || 1, pageSize: 10, total: res.datas.total })
+      pagination: { pageNum: parseInt(params.id) || 1, pageSize: 10, total: res.datas.total }
     }
   }
 
-  pagination: any = {
-    pageNum: 1,
-    pageSize: 10
-  }
+  pagination: any = {}
 
   collections = []
 
   handleChange() {
-    console.log(this.pagination)
     this.$router.push(`/collection/${this.pagination.pageNum}`)
   }
 

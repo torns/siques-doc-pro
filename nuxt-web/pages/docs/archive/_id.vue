@@ -1,16 +1,16 @@
 <template>
   <v-main>
-    <ArchiveList :list="delDoc" @realDelete="realDelete" @reuse="docReuse"></ArchiveList>
+    <ArchiveList :list="deletedDoc" @realDelete="realDelete" @reuse="reuseDoc"></ArchiveList>
   </v-main>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { reuseDoc, realDelete } from '@/api/doc'
+import { reuseDoc, realDelDoc } from '@/api/doc'
 
 @Component({
-  computed: mapGetters(['selectedCollection', 'delDoc'])
+  computed: mapGetters(['selectedCollection', 'deletedDoc'])
 })
 export default class Archive extends Vue {
   layout(context) {
@@ -18,37 +18,36 @@ export default class Archive extends Vue {
   }
 
   selectedCollection
-  delDoc
+  deletedDoc
 
   mounted() {
     if (this.selectedCollection.id) {
-      this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+      this.$store.dispatch('modules/doc/getDocDeleted', { collectionId: this.selectedCollection.id })
     }
   }
 
   @Watch('selectedCollection')
   valueChanged(newval, oldval) {
     if (newval.id) {
-      this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+      this.$store.dispatch('modules/doc/getDocDeleted', { collectionId: this.selectedCollection.id })
     }
   }
 
-  async docReuse(item) {
+  async reuseDoc(item) {
     const loading = this.$loading({ text: '执行中...' })
     await reuseDoc({ docId: item.id })
 
     this.$store.dispatch('modules/doc/getDocTree', { collectionId: this.selectedCollection.id })
-    this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
-    setTimeout(() => {
-      loading.close()
-    }, 500)
+    this.$store.dispatch('modules/doc/getDocDeleted', { collectionId: this.selectedCollection.id })
+
+    loading.close()
   }
 
   realDelete(item) {
     this.$confirm({ title: `确定要删除文档${item.title}`, text: '请注意该文档删除后将无法恢复' })
       .then(async () => {
-        await realDelete({ docId: item.id })
-        this.$store.dispatch('modules/doc/getDelDoc', { collectionId: this.selectedCollection.id })
+        await realDelDoc({ docId: item.id })
+        this.$store.dispatch('modules/doc/getDocDeleted', { collectionId: this.selectedCollection.id })
         this.$notify({ text: '删除成功' })
       })
       .catch(() => {

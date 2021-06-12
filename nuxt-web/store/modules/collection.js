@@ -1,8 +1,8 @@
-import { getUserCollection, getUserDelCollection, listCollection } from '@/api/collection'
+import { getCollection, getUserDelCollection, pageCollection } from '@/api/collection'
 
 export const state = () => ({
   userCollection: [],
-  delCollection: [],
+  deletedCollection: [],
   recomendCollection: []
 })
 
@@ -11,7 +11,7 @@ export const mutations = {
     state.userCollection = data
   },
   SET_DELCOLLECTION: (state, data) => {
-    state.delCollection = data
+    state.deletedCollection = data
   },
   SET_RECOMENTCOLLECTION: (state, data) => {
     state.recomendCollection = data
@@ -20,17 +20,16 @@ export const mutations = {
 
 export const actions = {
   async getUserCollection({ commit }, id) {
-    const res = await getUserCollection()
-    commit('SET_COLLECTION', res.datas)
-
-    return res.datas.find((e) => e.id === id)
+    const { datas } = await getCollection()
+    commit('SET_COLLECTION', datas)
+    return datas.find((e) => e.id === id)
   },
   async getDelCollection({ commit }) {
-    const res = await getUserDelCollection()
-    commit('SET_DELCOLLECTION', res.datas)
+    const { datas } = await getUserDelCollection()
+    commit('SET_DELCOLLECTION', datas)
   },
   async getRecomendCollection({ commit }) {
-    const res = await listCollection({ pageNum: 1, pageSize: 5 })
-    commit('SET_RECOMENTCOLLECTION', res.datas.records)
+    const { datas } = await pageCollection({ pageNum: 1, pageSize: 5 })
+    commit('SET_RECOMENTCOLLECTION', datas.records)
   }
 }

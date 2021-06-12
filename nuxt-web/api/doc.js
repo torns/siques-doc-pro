@@ -1,32 +1,65 @@
 import vue from 'vue'
 
 const docApi = {
-  docList: '/doc/findPage',
-  createDoc: '/doc',
-  delDoc: '/doc/logic',
-  realDelete: '/doc/real',
-  reuseDoc: '/doc/reuse',
-  updateDoc: '/doc',
-  delDocList: '/doc/deleted',
-  getDocDetail: '/doc',
-  docTree: '/doc/findTree',
-  moveDoc: '/doc/move',
-  publishedList: 'doc/publish',
-  publishDoc: 'doc/publish'
+  restApi: '/doc',
+  list: '/doc/findPage',
+  deletedList: '/doc/deleted',
+  reuse: '/doc/reuse',
+  tree: '/doc/findTree',
+  move: '/doc/move',
+  publish: 'doc/publish',
+  publishedList: 'doc/publish'
 }
 export function moveDoc(parameter) {
   return vue.prototype.$http({
-    url: docApi.moveDoc,
+    url: docApi.move,
     method: 'get',
     params: parameter
   })
 }
 
+export function insertDoc(parameter) {
+  return vue.prototype.$http({
+    url: docApi.restApi,
+    method: 'post',
+    params: { ...parameter }
+  })
+}
+
 export function updateDoc(parameter) {
   return vue.prototype.$http({
-    url: docApi.updateDoc,
+    url: docApi.restApi,
     method: 'put',
     data: parameter
+  })
+}
+
+export function publishDoc(parameter, params) {
+  return vue.prototype.$http({
+    url: docApi.publish,
+    method: 'post',
+    params,
+    data: parameter
+  })
+}
+
+export function reuseDoc(parameter) {
+  return vue.prototype.$http({
+    url: docApi.reuse,
+    method: 'get',
+    params: parameter
+  })
+}
+
+/**
+ *
+ * @param {docId,isPublished} parameter
+ */
+export function getDocDetail(parameter) {
+  return vue.prototype.$http({
+    url: docApi.restApi,
+    method: 'get',
+    params: parameter
   })
 }
 
@@ -36,60 +69,43 @@ export function updateDoc(parameter) {
  */
 export function getDocTree(parameter) {
   return vue.prototype.$http({
-    url: docApi.docTree,
+    url: docApi.tree,
     method: 'get',
     params: parameter
   })
 }
 
-export function getDocList(parameter) {
+export function getDocPage(parameter) {
   return vue.prototype.$http({
-    url: docApi.docList,
+    url: docApi.list,
     method: 'post',
     data: parameter
   })
 }
 
-export function publishDoc(parameter, params) {
-  return vue.prototype.$http({
-    url: docApi.publishDoc,
-    method: 'post',
-    params,
-    data: parameter
-  })
-}
-
-/** collectionId  */
-export function getPublishedList(parameter) {
+/**
+ *
+ * @param {collectionId} parameter
+ */
+export function getDocPublished(parameter) {
   return vue.prototype.$http({
     url: docApi.publishedList,
     method: 'get',
     params: parameter
   })
 }
-/**
- *
- * @param {docId,isPublished} parameter
- */
-export function getDocDetail(parameter) {
+
+export function getDocDeleted(parameter) {
   return vue.prototype.$http({
-    url: docApi.getDocDetail,
+    url: docApi.deletedList,
     method: 'get',
     params: parameter
   })
 }
 
-export function createDoc(parameter) {
+export function logicDelDoc(id) {
   return vue.prototype.$http({
-    url: docApi.createDoc,
-    method: 'post',
-    params: { ...parameter }
-  })
-}
-
-export function delDoc(parameter) {
-  return vue.prototype.$http({
-    url: docApi.delDoc + `/${parameter}`,
+    url: docApi.restApi + `/${id}`,
     method: 'delete'
   })
 }
@@ -97,26 +113,10 @@ export function delDoc(parameter) {
  *
  * @param {docId} parameter
  */
-export function realDelete(parameter) {
+export function realDelDoc(parameter) {
   return vue.prototype.$http({
-    url: docApi.realDelete,
+    url: docApi.restApi,
     method: 'delete',
-    params: parameter
-  })
-}
-
-export function reuseDoc(parameter) {
-  return vue.prototype.$http({
-    url: docApi.reuseDoc,
-    method: 'get',
-    params: parameter
-  })
-}
-
-export function getDelDocList(parameter) {
-  return vue.prototype.$http({
-    url: docApi.delDocList,
-    method: 'get',
     params: parameter
   })
 }

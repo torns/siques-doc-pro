@@ -1,4 +1,4 @@
-import { userLogin, loginByCode } from '@/api/user'
+import { userLogin, loginByCode } from '~/api/auth'
 
 export const state = () => ({
   token: '',

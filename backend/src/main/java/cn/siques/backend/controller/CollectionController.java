@@ -44,6 +44,7 @@ public class CollectionController {
 
     @Autowired
     OssFactory ossFactory;
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
     /**
