@@ -1,5 +1,10 @@
 <template>
-  <v-dialog @click:outside="closeLoginForm" v-model="$store.state.loginFormVisible" style="background-color:white">
+  <v-dialog
+    max-width="770px"
+    @click:outside="closeLoginForm"
+    v-model="$store.state.loginFormVisible"
+    style="background-color:white"
+  >
     <div id="login">
       <div :class="`container ${signIn ? 'right-panel-active' : ''}`" id="container">
         <div class="form-container sign-up-container">
