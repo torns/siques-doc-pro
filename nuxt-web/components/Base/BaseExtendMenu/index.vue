@@ -1,6 +1,6 @@
 <template>
   <v-dialog id="extend-bar" v-model="extendMenu" :append-to-body="true" :show-close="false" fullscreen>
-    <v-list-item style="place-content: flex-end;">
+    <v-list-item style="place-content: flex-end;width:100vw">
       <v-btn icon class="ma-3 float-right pointer" large color="white" @click="extendMenu = false">
         <v-icon dark>
           mdi-close

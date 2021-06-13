@@ -61,39 +61,42 @@ public class UserController {
      */
     @PostMapping("/login/code")
     public Result codeLogin(@RequestBody LoginDto loginDto,HttpServletRequest request){
-        User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getLoginCode())
-                .or().eq("phoneNumber",loginDto.getLoginCode()));
-        String phoneNum =loginDto.getLoginCode();
+
+        String phoneNum = loginDto.getPhoneNumber();
         String verifyCode = loginDto.getVerification();
+
+        User user = userService.getOne(new QueryWrapper<User>()
+                        .eq("phoneNumber",phoneNum));
+
         if(validateCodeService.validate(phoneNum,verifyCode)){
 
-        /** 用户是否已经存在过*/
-        if(ObjectUtil.isNull(user) ){
-            User u = new User();
-            u.setUsername("趣友"+loginDto.getLoginCode().hashCode());
-            u.setPhoneNumber(loginDto.getLoginCode());
-            u.setPassword(passwordEncoder.encode(String.valueOf(loginDto.getLoginCode().hashCode())));
-            userService.save(u);
-            Collection collection = new Collection();
-            collection.setName("产品研发");
-            collection.setDescription("为产品团队提供创造力");
-            collectionService.save(collection);
+            /** 用户是否已经存在过*/
+            if(ObjectUtil.isNull(user) ){
+                User u = new User();
+                u.setUsername("趣友"+loginDto.getPhoneNumber().hashCode());
+                u.setPhoneNumber(loginDto.getPhoneNumber());
+                u.setPassword(passwordEncoder.encode(String.valueOf(loginDto.getPhoneNumber().hashCode())));
+                userService.save(u);
+                Collection collection = new Collection();
+                collection.setName("产品研发");
+                collection.setDescription("为产品团队提供创造力");
+                collectionService.save(collection);
 
-            userCollectionService.save(new UserCollection(u.getId(),collection.getId()));
+                userCollectionService.save(new UserCollection(u.getId(),collection.getId()));
 
-            Doc doc = new Doc();
-            doc.setTitle("开始写作吧");
-            doc.setBody("开始愉快写作吧");
-            docService.save(doc);
-            collectionDocService.save(new CollectionDoc(collection.getId(),doc.getId()));
+                Doc doc = new Doc();
+                doc.setTitle("开始写作吧");
+                doc.setBody("开始愉快写作吧");
+                docService.save(doc);
+                collectionDocService.save(new CollectionDoc(collection.getId(),doc.getId()));
 
-            return Result.succeed(JwtUtil.authenticate(u, request, userService));
+                return Result.succeed(JwtUtil.authenticate(u, request, userService));
+            }else{
+                return Result.succeed(JwtUtil.authenticate(user, request, userService));
+            }
+
         }else{
-            return Result.succeed(JwtUtil.authenticate(user, request, userService));
-        }
-
-        }else{
-            return Result.failed("手机验证失败");
+            return Result.failed("验证码不正确");
         }
     }
 
@@ -105,8 +108,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody LoginDto loginDto, HttpServletRequest request){
-        User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getLoginCode())
-                .or().eq("phoneNumber",loginDto.getLoginCode()));
+        User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getPhoneNumber()));
+
         if (ObjectUtil.isEmpty(user)){
            return Result.failed("用户不存在");
         }
@@ -122,9 +125,9 @@ public class UserController {
     }
 
     @GetMapping("verify")
-    public Result verify(@RequestParam String loginCode){
+    public Result verify(@RequestParam String phoneNumber){
 
-       return Result.succeed(AuthenticateUtil.sendVerificationCode(loginCode, validateCodeService));
+       return Result.succeed(AuthenticateUtil.sendVerificationCode(phoneNumber, validateCodeService));
     }
 
 

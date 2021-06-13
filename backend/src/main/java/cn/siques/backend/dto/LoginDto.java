@@ -8,7 +8,8 @@ import lombok.Data;
  */
 @Data
 public class LoginDto {
-    String loginCode;
+    String phoneNumber;
+    String userName;
     String password;
     String verification;
 }

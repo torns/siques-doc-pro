@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="$store.state.loginFormVisible" style="background-color:white">
+  <v-dialog @click:outside="closeLoginForm" v-model="$store.state.loginFormVisible" style="background-color:white">
     <div id="login">
       <div :class="`container ${signIn ? 'right-panel-active' : ''}`" id="container">
         <div class="form-container sign-up-container">
@@ -113,7 +113,7 @@ export default class LoginDialog extends Vue {
 
 #login .action button {
   border-radius: 20px;
-  border: 1px solid #4caf50;
+  // border: 1px solid #e0e0e0;
   background-color: #4caf50;
   color: #ffffff;
   font-size: 12px;
@@ -134,7 +134,7 @@ export default class LoginDialog extends Vue {
 
 #login .action button.ghost {
   background-color: transparent;
-  border-color: #ffffff;
+  border: 1px solid #ffffff !important;
 }
 
 #login form {

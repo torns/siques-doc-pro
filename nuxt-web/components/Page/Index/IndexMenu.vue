@@ -34,11 +34,12 @@
               <router-link tag="span" to="/moment">24小时</router-link>
             </li>
 
-            <li class="nav-top-list__rightInfo ">
+            <li class="nav-top-list__rightInfo pr-3">
               <div class="d-flex ai-center">
                 <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn
+                      @click="write"
                       v-bind="attrs"
                       :color="isHomepage ? `white` : 'black'"
                       :class="`${isHomepage ? 'white--text' : ''} px-8`"
@@ -49,12 +50,6 @@
                       写稿
                     </v-btn>
                   </template>
-
-                  <v-list>
-                    <v-list-item link @click="write">
-                      <v-list-item-title v-text="`写文章`"></v-list-item-title>
-                    </v-list-item>
-                  </v-list>
                 </v-menu>
                 <v-menu
                   v-if="loggedIn"
