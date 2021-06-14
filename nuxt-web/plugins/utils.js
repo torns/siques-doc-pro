@@ -1,5 +1,17 @@
 /* eslint-disable */
 
+export function debounce(fnName, time) {
+  let timeout = null
+  return function() {
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    timeout = setTimeout(() => {
+      this[fnName]()
+    }, time)
+  }
+}
+
 /**
  * 复制内容到粘贴板
  * content : 需要复制的内容

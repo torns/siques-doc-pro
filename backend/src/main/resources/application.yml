@@ -24,7 +24,6 @@ spring:
     username: root
     password: l1itdhjaoiqw32kwqe$5asasd*a21
     url: jdbc:mysql://127.0.0.1:3306/nest?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
       enabled: true
@@ -39,7 +38,6 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: false
-
   global-config:
     banner: false
   type-aliases-package: cn.siques.backend.dao

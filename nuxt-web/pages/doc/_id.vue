@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DocSideMenu :doc-tree="docTree" :doc="doc"> </DocSideMenu>
+    <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc"> </DocSideMenu>
     <v-main style="overflow-x: hidden;">
       <div
         class="absolute d-flex jc-center flex-column ai-center "
@@ -86,11 +86,13 @@ export default class Doc extends Vue {
       return redirect('/404')
     }
 
-    const docTree = await getDocTree({ collectionId: doc.datas.collection.id, isPublished: true })
-
+    let res = { datas: [] }
+    if (doc.datas.type !== 'tfNews') {
+      res = await getDocTree({ collectionId: doc.datas.collection.id, isPublished: true })
+    }
     return {
       doc: doc.datas,
-      docTree: docTree.datas
+      docTree: res.datas
     }
   }
 

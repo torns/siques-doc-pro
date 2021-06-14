@@ -9,19 +9,24 @@
                 <div style="width: 100%; max-width: 380px">
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
-                    <v-text-field
-                      v-model="search"
-                      class="mx-4"
+                    <v-autocomplete
+                      autocomplete="off"
+                      v-model="selected"
+                      :search-input.sync="search"
+                      :items="items"
+                      class="mx-4 "
                       color="white"
-                      hide-details
-                      label="Search"
+                      flat
+                      hide-no-data
+                      item-text="title"
+                      item-value="id"
                       append-icon="mdi-magnify"
                       @keyup.enter.native="$router.push(`/search/${search}`)"
-                    >
-                      <template v-slot:label>
+                      ><template v-slot:label>
                         搜索你喜欢的
-                      </template>
-                    </v-text-field>
+                      </template></v-autocomplete
+                    >
+
                     <div class="text-white text-center py-5 fs-md">
                       热门搜索：<span class="pointer hoverlink" @click="$router.push(`/search/docker`)">docker</span>
                       <span class="pointer hoverlink" @click="$router.push(`/search/nuxtjs`)">nuxtjs</span>
@@ -104,7 +109,8 @@ import scrolldown from '~/components/Base/BaseScrollDown/index.vue'
 
 import placeholder from '~/components/Singlton/ThePlaceholder.vue'
 import { getDocPage } from '@/api/doc'
-
+import { predictiveSearch } from '@/api/search'
+import { debounce } from '@/plugins/utils'
 @Component({
   components: {
     'sq-down': scrolldown,
@@ -132,7 +138,9 @@ export default class AppPage extends Vue {
   total: number = 0
   loading = false
   docs = []
+  selected = ''
   search = ''
+  items = []
 
   head() {
     return {
@@ -150,6 +158,29 @@ export default class AppPage extends Vue {
 
   get disabled(): any {
     return this.loading || this.noMore
+  }
+
+  searchDebounce = debounce('predictiveSearch', 300)
+
+  async predictiveSearch() {
+    if (this.search.length > 1) {
+      const res = await predictiveSearch({
+        filedName: 'title',
+        prefix: this.search
+      })
+
+      this.items = res.datas.records
+    }
+  }
+
+  @Watch('search')
+  keyChange(newval, oldval) {
+    newval && newval != this.selected && this.searchDebounce()
+  }
+
+  @Watch('selected')
+  valueChange(newval, oldval) {
+    this.$router.push(`/doc/${newval}`)
   }
 
   // homeTop = 0

@@ -22,7 +22,6 @@ spring:
     username: root
     password: l1itdhjaoiqw32kwqe$5asasd*a21
     url: jdbc:mysql://106.54.247.224:3306/nest?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
       enabled: true

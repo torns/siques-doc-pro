@@ -1,8 +1,8 @@
 package cn.siques.backend.service;
 
-import cn.siques.backend.dto.SearchDto;
+import cn.siques.backend.dto.PredictiveDto;
+import cn.siques.backend.dto.QueryStrDto;
 import cn.siques.backend.utils.PageResult;
-import cn.siques.backend.utils.model.Result;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
@@ -18,5 +18,7 @@ public interface SearchService {
      * @param searchDto 搜索Dto
      * @return
      */
-    PageResult<JsonNode> strQuery(String indexName, SearchDto searchDto) throws IOException;
+    PageResult<JsonNode> strQuery(String indexName, QueryStrDto searchDto) throws IOException;
+
+    PageResult<JsonNode> predictiveQuery(String indexName,  PredictiveDto searchDto) throws IOException;
 }

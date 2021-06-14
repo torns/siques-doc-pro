@@ -1,6 +1,7 @@
 package cn.siques.backend.controller;
 
-import cn.siques.backend.dto.SearchDto;
+import cn.siques.backend.dto.PredictiveDto;
+import cn.siques.backend.dto.QueryStrDto;
 import cn.siques.backend.service.SearchService;
 import cn.siques.backend.utils.PageResult;
 import cn.siques.backend.utils.model.Result;
@@ -22,9 +23,15 @@ public class SearchController {
 
 
     @PostMapping("/{indexName}")
-    public Result search(@RequestBody SearchDto searchDto, @PathVariable String indexName) throws IOException {
+    public Result search(@RequestBody QueryStrDto searchDto, @PathVariable String indexName) throws IOException {
         PageResult<JsonNode> jsonNodePageResult = searchService.strQuery(indexName, searchDto);
         return Result.succeed(jsonNodePageResult);
     }
 
+
+    @PostMapping("predictive/{indexName}")
+    public Result predictive(@RequestBody PredictiveDto predictiveDto, @PathVariable String indexName) throws IOException {
+        PageResult<JsonNode> jsonNodePageResult = searchService.predictiveQuery(indexName, predictiveDto);
+        return Result.succeed(jsonNodePageResult);
+    }
 }

@@ -3,15 +3,15 @@ package cn.siques.backend.dto;
 import lombok.Data;
 
 /**
- * @author : heshenghao
- * @date : 11:42 2020/12/18
+ * @author: 何胜豪
+ * @Title: TODO
+ * @Package: cn.siques.backend.dto
+ * @Description:
+ * @date : 2021/6/14 0:14
  */
 @Data
-public class SearchDto {
-    /**
-     * 搜索关键字
-     */
-    private String queryStr;
+public class BaseSearchDto {
+
     /**
      * 当前页数
      */

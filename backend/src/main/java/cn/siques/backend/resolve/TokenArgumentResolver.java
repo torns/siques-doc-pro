@@ -1,4 +1,4 @@
-package cn.siques.backend.config;
+package cn.siques.backend.resolve;
 
 import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.entity.User;

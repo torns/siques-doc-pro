@@ -371,3 +371,34 @@ hr {
 .v-application kbd {
   font-weight: normal !important;
 }
+
+//################## 首页搜索栏的css
+
+.theme--light.v-list-item .v-list-item__mask {
+  color: #008eff;
+  background: none;
+  font-weight: 700;
+}
+
+.theme--light.v-list-item:hover::before {
+  opacity: 0.15;
+  border-radius: 4px;
+}
+
+.v-menu__content.theme--light.menuable__content__active.v-autocomplete__content {
+  max-width: 300px;
+}
+
+.v-list.v-select-list.v-sheet.theme--light.theme--light {
+  backdrop-filter: blur(3px);
+  background-color: rgb(0 0 0 / 44%);
+  color: white !important;
+}
+.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+  color: white !important;
+}
+
+.v-menu__content {
+  will-change: auto;
+}
+// ######################

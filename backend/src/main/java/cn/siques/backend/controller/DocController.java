@@ -126,11 +126,13 @@ public class DocController {
                   docService.update(new UpdateWrapper<Doc>().eq("id",docId).set("views",doc.getViews()+1));
               }
           }
+          // 若是新闻则不查询集合
+           if(doc.getType() != DocEnum.tfNews){
+               Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
+               Collection collection = collectionService.getById(collectionId);
+               doc.setCollection(collection);
+           }
 
-            Long collectionId = collectionDocService.getOne(new QueryWrapper<CollectionDoc>().eq("docId", docId)).getCollectionId();
-            Collection collection = collectionService.getById(collectionId);
-
-            doc.setCollection(collection);
             return Result.succeed(doc);
         }
         return Result.failed("该文档已被删除或未发布");
