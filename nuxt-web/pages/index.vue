@@ -2,7 +2,7 @@
   <div class="homepage">
     <div>
       <IndexBanner
-        ><v-container style="height: 0;padding:0">
+        ><v-container dark style="height: 0;padding:0">
           <v-row no-gutters class=" jc-center">
             <v-col xs="10" sm="8" md="8" lg="8" xl="8">
               <div class="d-flex justify-space-around   reTop" style="position: relative">
@@ -14,8 +14,9 @@
                       v-model="selected"
                       :search-input.sync="search"
                       :items="items"
-                      class="mx-4 "
+                      class="mx-4 text-white"
                       color="white"
+                      dark
                       flat
                       hide-no-data
                       item-text="title"

@@ -389,12 +389,13 @@ hr {
   max-width: 300px;
 }
 
-.v-list.v-select-list.v-sheet.theme--light.theme--light {
+div[role='listbox'].v-list.v-select-list.v-sheet.theme--light.theme--light {
   backdrop-filter: blur(3px);
   background-color: rgb(0 0 0 / 44%);
   color: white !important;
 }
-.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+
+div[role='listbox'] .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
   color: white !important;
 }
 

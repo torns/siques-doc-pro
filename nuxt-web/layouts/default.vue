@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <div :id="isHomepage ? 'home' : 'other'">
       <div id="app">
         <IndexMenu></IndexMenu>
