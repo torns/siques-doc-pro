@@ -1,4 +1,4 @@
-package cn.siques.backend.utils;
+package cn.siques.backend.config;
 
 
 import cn.siques.backend.properties.CacheManagerProperties;

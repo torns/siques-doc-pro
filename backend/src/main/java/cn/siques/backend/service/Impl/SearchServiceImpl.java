@@ -3,8 +3,9 @@ package cn.siques.backend.service.Impl;
 import cn.siques.backend.dto.PredictiveDto;
 import cn.siques.backend.dto.QueryStrDto;
 import cn.siques.backend.service.SearchService;
-import cn.siques.backend.utils.PageResult;
+
 import cn.siques.backend.utils.SearchBuilder;
+import cn.siques.backend.utils.page.PageResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;

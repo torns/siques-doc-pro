@@ -67,8 +67,8 @@ h1 {
   #language {
     position: absolute;
     right: 25px;
-    bottom: 5px;
-    color: rgba(158, 158, 158, 0.50196);
+    bottom: 10px;
+    color: rgba(158, 158, 158, 0.80196);
     font-family: cursive;
   }
 
@@ -77,10 +77,10 @@ h1 {
     right: 15px;
 
     &::after {
-      color: hsla(0, 0%, 62%, 0.50196);
-      font: normal normal normal 14px/1 FontAwesome;
-      font-size: 14px;
-      content: '\f0c5';
+      color: hsla(0, 0%, 62%, 0.80196);
+      font: normal normal normal 24px/1 'Material Design Icons';
+      font-size: 16px;
+      content: '\F018F';
       display: inline-block;
       position: absolute;
       opacity: 0;

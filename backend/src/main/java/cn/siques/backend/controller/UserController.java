@@ -4,28 +4,18 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.dto.LoginDto;
 import cn.siques.backend.entity.*;
 import cn.siques.backend.service.*;
-import cn.siques.backend.utils.AuthenticateUtil;
 import cn.siques.backend.utils.JwtUtil;
-import cn.siques.backend.utils.model.JwtUserDetails;
+import cn.siques.backend.utils.PhoneCodeUtil;
+import cn.siques.backend.utils.model.CodeEnum;
 import cn.siques.backend.utils.model.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
-
-import lombok.val;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author : heshenghao
@@ -41,41 +31,39 @@ public class UserController {
     private  DocService docService;
     private CollectionService collectionService;
     private UserService userService;
-
     private PasswordEncoder passwordEncoder;
-
     private ValidateCodeService validateCodeService;
 
-    @PostMapping
-    public Result save(@RequestBody User user){
-        if(ObjectUtils.isEmpty(user.getId())){
-            user.setPassword(passwordEncoder.encode("123456"));
-        }
-        boolean b = userService.saveOrUpdate(user);
-        return Result.succeed(b);
-    }
+
 
     /**
      * 手机验证码登录
      * @return
      */
-    @PostMapping("/login/code")
+    @PostMapping("/login")
     public Result codeLogin(@RequestBody LoginDto loginDto,HttpServletRequest request){
 
         String phoneNum = loginDto.getPhoneNumber();
         String verifyCode = loginDto.getVerification();
+        String username = loginDto.getUsername();
 
         User user = userService.getOne(new QueryWrapper<User>()
-                        .eq("phoneNumber",phoneNum));
+                        .eq("phone_number",phoneNum));
 
         if(validateCodeService.validate(phoneNum,verifyCode)){
 
-            /** 用户是否已经存在过*/
+            /** 用户是否已经注册*/
             if(ObjectUtil.isNull(user) ){
                 User u = new User();
-                u.setUsername("趣友"+loginDto.getPhoneNumber().hashCode());
-                u.setPhoneNumber(loginDto.getPhoneNumber());
-                u.setPassword(passwordEncoder.encode(String.valueOf(loginDto.getPhoneNumber().hashCode())));
+                // 用户名不为空直接设置
+                if(!StringUtils.isEmpty(username)){
+                    u.setUsername(username);
+                }else {
+                    u.setUsername("趣友"+phoneNum.hashCode());
+                }
+
+                u.setPhoneNumber(phoneNum);
+                u.setPassword(passwordEncoder.encode(String.valueOf(phoneNum.hashCode())));
                 userService.save(u);
                 Collection collection = new Collection();
                 collection.setName("产品研发");
@@ -92,6 +80,7 @@ public class UserController {
 
                 return Result.succeed(JwtUtil.authenticate(u, request, userService));
             }else{
+                // 用户已经注册
                 return Result.succeed(JwtUtil.authenticate(user, request, userService));
             }
 
@@ -100,34 +89,26 @@ public class UserController {
         }
     }
 
-    /**
-     * 账号密码登录
-     * @param loginDto
-     * @param request
-     * @return
-     */
-    @PostMapping("/login")
-    public Result login(@RequestBody LoginDto loginDto, HttpServletRequest request){
-        User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getPhoneNumber()));
 
-        if (ObjectUtil.isEmpty(user)){
-           return Result.failed("用户不存在");
+    @GetMapping("/exist")
+    public Result checkExist(@RequestParam String phoneNumber){
+
+        User user = userService.getOne(new QueryWrapper<User>().eq("phone_number", phoneNumber));
+        if(ObjectUtils.isEmpty(user)){
+            return Result.succeed(CodeEnum.USER_NOT_EXIST);
         }
-
-        if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())){
-            return Result.failed("账号或密码不正确");
-        }
-
-        UsernamePasswordAuthenticationToken authenticate = JwtUtil.authenticate(user, request, userService);
-
-
-        return Result.succeed(authenticate);
+        return Result.succeed(CodeEnum.USER_EXIST);
     }
 
-    @GetMapping("verify")
-    public Result verify(@RequestParam String phoneNumber){
 
-       return Result.succeed(AuthenticateUtil.sendVerificationCode(phoneNumber, validateCodeService));
+    /**
+     * 发送短信，没有防护措施
+     * @param phoneNumber
+     * @return
+     */
+    @GetMapping("/login/sendCode")
+    public Result sendCode(@RequestParam String phoneNumber){
+       return Result.succeed(PhoneCodeUtil.sendVerificationCode(phoneNumber, validateCodeService));
     }
 
 

@@ -34,7 +34,7 @@ spring:
     password: heshenghao
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: false
+    map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   global-config:
     banner: false

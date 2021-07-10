@@ -29,17 +29,9 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     @Autowired
     CollectionDao collectionDao;
 
-    @Autowired
-    UserCollectionDao userCollectionDao;
 
-    @Autowired
-    CollectionDocService collectionDocService;
 
-    @Autowired
-    DocService docService;
 
-    @Autowired
-    UserDao userDao;
 
     @Override
     public List<Collection> getListByIds(List<Long> collectIds) {
@@ -51,34 +43,14 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         return  collectionDao.reuseCollection(collectionId);
     }
 
+    /**
+     * 待优化
+     * @param collectionPage
+     * @return
+     */
     @Override
     @Transactional
     public Page<Collection> findPage(Page<Collection> collectionPage) {
-        Page<Collection> selectPage = collectionDao.selectPage(collectionPage, new QueryWrapper<>());
-        List<Long> collectIds = selectPage.getRecords().stream().map(collection -> collection.getId()).collect(Collectors.toList());
-        List<CollectionDoc> collectionDocs = collectionDocService.list(new QueryWrapper<CollectionDoc>().in("collectionId", collectIds));
-
-        List<Long> docIds =collectionDocs
-                .stream().map(cd -> cd.getDocId()).collect(Collectors.toList());
-        QueryWrapper<Doc> select = new QueryWrapper<Doc>().in("id", docIds).select(Doc.class, i -> !i.getProperty().equals("body"));
-
-        List<Long> publishedIds = docService.list(select).stream().filter(doc -> doc.getIsPublished().equals(1)).map(doc -> doc.getId()).collect(Collectors.toList());
-
-        Map<Long, List<Long>> collectionDocIds = collectionDocs.stream()
-                .filter(collectionDoc -> publishedIds.contains(collectionDoc.getDocId()))
-                .collect(Collectors.groupingBy(cd -> cd.getCollectionId(),
-                Collectors.mapping(collectionDoc -> collectionDoc.getDocId(), Collectors.toList())));
-
-
-        List<UserCollection> userCollections = userCollectionDao.selectList(new QueryWrapper<UserCollection>()
-                .in("collectionId",collectIds));
-        Map<Long, Long> collectionUser = userCollections.stream().collect(Collectors.toMap(uc -> uc.getCollectionId(), uc -> uc.getUserId()));
-        List<Long> userIds = userCollections.stream().map(uc -> uc.getUserId()).collect(Collectors.toList());
-        Map<Long, User> idUser = userDao.selectBatchIds(userIds).stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
-        selectPage.getRecords().stream().forEach((collection) ->{
-            collection.setUser(idUser.get(collectionUser.get(collection.getId())));
-            collection.setDocIds(collectionDocIds.get(collection.getId()));
-        });
-       return selectPage;
+       return collectionDao.getPageList(collectionPage, new QueryWrapper<>());
     }
 }

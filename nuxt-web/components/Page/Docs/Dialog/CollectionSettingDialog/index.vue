@@ -93,6 +93,7 @@ export default class CollectionSettingDialog extends Vue {
   doValidate() {
     const v = this.$refs.form.validate()
     if (v) {
+      console.log(this.collectionDetail)
       this.$emit('submits', this.collectionDetail)
     }
 

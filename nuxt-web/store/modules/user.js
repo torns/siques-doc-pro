@@ -24,15 +24,6 @@ export const mutations = {
 }
 
 export const actions = {
-  async Login({ commit }, userInfo) {
-    const res = await userLogin(userInfo)
-    if (res.respCode === 1) {
-      commit('SET_TOKEN', res.datas.principal.token)
-      commit('SET_INFO', res.datas.principal)
-      commit('SET_STATUS', true)
-    }
-    return res
-  },
   async LoginByCode({ commit }, userInfo) {
     const res = await loginByCode(userInfo)
     if (res.respCode === 1) {

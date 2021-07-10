@@ -1,28 +1,26 @@
 <template>
   <v-dialog
-    max-width="770px"
-    @click:outside="closeLoginForm"
     v-model="$store.state.loginFormVisible"
+    max-width="770px"
     style="background-color:white"
+    @click:outside="closeLoginForm"
   >
     <div id="login">
-      <div :class="`container ${signIn ? 'right-panel-active' : ''}`" id="container">
+      <div id="container" :class="`container ${signIn ? 'right-panel-active' : ''}`">
         <div class="form-container sign-up-container">
           <PhoneCodeForm
-            name="注册用户"
-            desc="手机快捷注册"
-            btnName="注册"
+            type="register"
             :loading="loading"
+            @changeForm="signIn = !signIn"
             @verifyLogin="loginByPhoneCode"
           ></PhoneCodeForm>
         </div>
         <div class="form-container sign-in-container">
           <PhoneCodeForm
-            name="登录"
+            type="login"
             :loading="loading"
+            @changeForm="signIn = !signIn"
             @verifyLogin="loginByPhoneCode"
-            desc="手机快捷登录"
-            btnName="登录"
           ></PhoneCodeForm>
         </div>
         <div class="overlay-container">
@@ -31,7 +29,7 @@
               <h1>欢迎回来!</h1>
               <p>To keep connected with us please login with your personal info</p>
               <div class="action">
-                <v-btn @click="signIn = !signIn" class="ghost" id="signIn">
+                <v-btn id="signIn" class="ghost" @click="signIn = !signIn">
                   登录
                 </v-btn>
               </div>
@@ -40,7 +38,7 @@
               <h1>你好，朋友!</h1>
               <p>Enter your personal details and start journey with us</p>
               <div class="action">
-                <v-btn @click="signIn = !signIn" class="ghost" id="signUp">
+                <v-btn id="signUp" class="ghost" @click="signIn = !signIn">
                   注 册
                 </v-btn>
               </div>

@@ -18,7 +18,7 @@
         <v-spacer></v-spacer>
       </v-toolbar>
 
-      <v-form class="pt-3 pb-5" ref="form" v-model="valid">
+      <v-form ref="form" v-model="valid" class="pt-3 pb-5">
         <v-container>
           <v-row class="justify-center">
             <v-col cols="12" sm="8" md="8">

@@ -53,7 +53,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
         if(ObjectUtil.isNotEmpty(parent)){
             List<Doc> docs = docDao.selectList(new QueryWrapper<Doc>().select(
                     Doc.class, i -> !i.getProperty().equals("body")
-            ).eq("parentId", parent.getId()).orderByDesc("sort"));
+            ).eq("parent_id", parent.getId()).orderByDesc("sort"));
             if(docs.size()>0){
                 post.setSort(docs.get(0).getSort()+1);
             }
@@ -71,7 +71,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     public List<Doc> findTree(Long id, Boolean isPublished) {
 
 
-        List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>().eq("collectionId", id))
+        List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>().eq("collection_id", id))
                 .stream().map(c -> c.getDocId()).collect(Collectors.toList());
         if(docIds.size()==0){
             return new ArrayList<>();
@@ -116,7 +116,7 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     @Override
     public List<Doc> getDocsByCollectionId(Long collectionId) {
         List<Long> docIds = collectionDocDao.selectList(new QueryWrapper<CollectionDoc>()
-                .eq("collectionId", collectionId)).stream()
+                .eq("collection_id", collectionId)).stream()
                 .map(collectionDoc -> collectionDoc.getDocId()).collect(Collectors.toList());
         if(docIds.size()>0){
             QueryWrapper<Doc> wrapper = new QueryWrapper<Doc>()
@@ -220,9 +220,9 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
                 }
             });
         // 审核成功
-        if(validIds.size()>0){ this.update(new UpdateWrapper<Doc>().in("id", validIds).set("isPublished", 1));}
+        if(validIds.size()>0){ this.update(new UpdateWrapper<Doc>().in("id", validIds).set("is_published", 1));}
         // 审核失败
-        if(unValidIds.size()>0){this.update(new UpdateWrapper<Doc>().in("id", unValidIds).set("isPublished", 3));}
+        if(unValidIds.size()>0){this.update(new UpdateWrapper<Doc>().in("id", unValidIds).set("is_published", 3));}
 
     }
 

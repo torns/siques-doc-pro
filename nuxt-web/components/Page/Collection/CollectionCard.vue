@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <canvas id="head_canvas_default" style="display:none"></canvas>
     <v-row justify="center" class="pt-3 collection">
       <v-col
         v-for="(collect, index) in collects"
@@ -12,9 +13,9 @@
         xl="12"
         xs="12"
       >
-        <v-row v-if="collect.docIds != null" justify="center" class="collection_wrapper d-flex flex-wrap ">
+        <v-row v-if="collect.docId" justify="center" class="collection_wrapper d-flex flex-wrap ">
           <v-col :class="index % 2 == 1 ? colLast : colFirst" xs="12" sm="9" md="8" lg="6" xl="5">
-            <router-link :to="`/doc/${collect.docIds[0]}`" target="_blank" class="pannel-image pointer">
+            <router-link :to="`/doc/${collect.docId}`" target="_blank" class="pannel-image pointer">
               <v-img
                 :src="collect.cover"
                 cover
@@ -39,12 +40,7 @@
                     post.tags[0] ? post.tags[0].name : ''
                   }}</span>
                 </div> -->
-                <router-link
-                  :to="`/doc/${collect.docIds && collect.docIds[0]}`"
-                  tag="a"
-                  target="_blank"
-                  class="pannel-image point"
-                >
+                <router-link :to="`/doc/${collect.docId}`" tag="a" target="_blank" class="pannel-image point">
                   <h2 class=" pb-2  fs-xll ellipsis-1 black--text">{{ collect.name }}</h2>
                 </router-link>
                 <div class="pr-3">
@@ -54,14 +50,10 @@
                   <div class="pr-2">
                     <v-avatar
                       :size="44"
-                      :src="collect.user.avatar ? collect.user.avatar : ''"
                       class="note_avatar"
                       style="background-color: white ;border: 1px solid #de7d7d;"
                     >
-                      <img
-                        style="padding: 4px;"
-                        src="https://shuxie.oss-cn-hangzhou.aliyuncs.com/avator/1/2020-02-18/06216_large.png"
-                      />
+                      <img style="padding: 4px;" :src="collect.avatar" />
                     </v-avatar>
                   </div>
                   <div class="fs-xs pt-2 text-gray">
@@ -80,11 +72,95 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
 @Component({})
 export default class CollectionList extends Vue {
   reveal = false
   @Prop()
   collects
+
+  beforeMount() {
+    this.$nextTick(() => {
+      this.collects.forEach((e) => {
+        e.avatar = this.textToImg(e.userName.substring(0, 1))
+      })
+    })
+  }
+
+  textToImg(str) {
+    let name, fsize
+    if (str.length < 2) {
+      name = str
+      fsize = 60
+    } else if (str.length === 2) {
+      name = str.substring(0, str.length)
+      fsize = 45
+    } else if (str.length === 3) {
+      name = str.substring(0, str.length)
+      fsize = 30
+    } else if (str.length === 4) {
+      name = str.substring(0, str.length)
+      fsize = 25
+    } else if (str.length > 4) {
+      name = str.substring(0, 2)
+      fsize = 45
+    }
+    const fontSize = 60
+    const fontWeight = 'bold'
+    const canvas: any = document.getElementById('head_canvas_default')
+
+    canvas.width = 120
+    canvas.height = 120
+    const context = canvas.getContext('2d')
+    context.fillStyle = this.getBG(str)
+    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.fillStyle = '#FFF'
+    context.font = fontWeight + ' ' + fsize + 'px sans-serif'
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
+    context.fillText(name, fontSize, fontSize + 3)
+    return canvas.toDataURL('image/png')
+  }
+
+  getBG(str) {
+    const bgArray = [
+      '#1abc9c',
+      '#2ecc71',
+      '#3498db',
+      '#9b59b6',
+      '#34495e',
+      '#16a085',
+      '#27ae60',
+      '#2980b9',
+      '#8e44ad',
+      '#2c3e50',
+      '#f1c40f',
+      '#e67e22',
+      '#e74c3c',
+      '#eca0f1',
+      '#95a5a6',
+      '#f39c12',
+      '#d35400',
+      '#c0392b',
+      '#bdc3c7',
+      '#7f8c8d'
+    ]
+    console.log(this.hash(str))
+    const color = bgArray[this.hash(str) % bgArray.length]
+    return color
+  }
+
+  hash(str) {
+    let hash = 0
+    let chr
+    if (str.length === 0) return hash
+    for (let i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i)
+      hash = (hash << 5) - hash + chr
+      hash |= 0 // Convert to 32bit integer
+    }
+    return hash
+  }
 
   get colLast() {
     switch (this.$vuetify.breakpoint.name) {

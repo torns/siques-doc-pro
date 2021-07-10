@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @MapperScan("cn.siques.backend.dao")
 @EnableSwagger2Doc
-@EnableAsync
 @SpringBootApplication
 public class BackendApplication {
 

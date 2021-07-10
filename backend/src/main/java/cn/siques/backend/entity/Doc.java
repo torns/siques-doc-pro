@@ -38,6 +38,7 @@ public class Doc extends Model<Doc> {
    String cover;
     Long views;
     Long sort;
+    // 逻辑删除字段
    @TableLogic(value = "1",delval = "0")
    Boolean status;
 
@@ -50,9 +51,6 @@ public class Doc extends Model<Doc> {
 
    @TableField(exist = false)
    List<Doc> children;
-
-    @TableField(exist = false)
-   List<Tag> tags;
 
     @TableField(exist =false)
     Collection collection;

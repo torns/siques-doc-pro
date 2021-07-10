@@ -15,7 +15,7 @@ import { pageCollection } from '@/api/collection'
 export default class CollectionIndex extends Vue {
   async asyncData({ params, store, route }: any) {
     const res = await pageCollection({ pageNum: parseInt(params.id) || 1, pageSize: 10 })
-
+    console.log(res)
     return {
       collections: res.datas.records,
       pagination: { pageNum: parseInt(params.id) || 1, pageSize: 10, total: res.datas.total }

@@ -10,8 +10,8 @@
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
                     <v-autocomplete
-                      autocomplete="off"
                       v-model="selected"
+                      autocomplete="off"
                       :search-input.sync="search"
                       :items="items"
                       class="mx-4 text-white"

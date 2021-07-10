@@ -1,17 +1,9 @@
 import vue from 'vue'
 
 const userApi = {
-  login: '/user/login',
-  loginByCode: '/user/login/code',
-  verify: '/user/verify'
-}
-
-export function userLogin(parameter) {
-  return vue.prototype.$http({
-    url: userApi.login,
-    method: 'post',
-    data: parameter
-  })
+  loginByCode: '/user/login',
+  sendCode: '/user/login/sendCode',
+  userExist: '/user/exist'
 }
 
 export function loginByCode(parameter) {
@@ -22,13 +14,21 @@ export function loginByCode(parameter) {
   })
 }
 
+export function checkExist(parameter) {
+  return vue.prototype.$http({
+    url: userApi.userExist,
+    method: 'get',
+    params: parameter
+  })
+}
+
 /**
  *
  * @param {authenticate,token,loginCode} parameter
  */
-export function verifyAndSendCode(parameter) {
+export function sendCode(parameter) {
   return vue.prototype.$http({
-    url: userApi.verify,
+    url: userApi.sendCode,
     method: 'get',
     params: parameter
   })

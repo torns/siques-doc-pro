@@ -38,7 +38,7 @@
         </v-col>
       </v-row>
 
-      <div v-if="remain > 0" class="text-center point" @click="onload">点击查看更多热文</div>
+      <div v-if="remain > 0" class="text-center pointer " @click="onload">点击查看更多热文</div>
 
       <div v-else class="text-center text-gray">我是有底线的</div>
     </div>

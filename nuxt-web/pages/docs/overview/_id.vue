@@ -32,10 +32,10 @@
       </v-row>
     </v-container>
     <CollectionSettingDialog
-      @submits="submit"
       ref="collectSetting"
       v-model="collectionForm"
       title="知识库设置"
+      @submits="submit"
     ></CollectionSettingDialog>
     <LazyCollectionPublishDialog ref="dialog"></LazyCollectionPublishDialog>
   </v-main>
@@ -74,10 +74,11 @@ export default class OverView extends Vue {
     if (uploadFile && cover.includes('blob')) {
       const formData = new FormData()
 
+      formData.append('id', id)
       formData.append('uploadFile', uploadFile)
       formData.append('name', name)
-
       formData.append('description', description || '')
+
       await coverUpload(formData)
     } else {
       await updateCollection({ id, name, description, cover })

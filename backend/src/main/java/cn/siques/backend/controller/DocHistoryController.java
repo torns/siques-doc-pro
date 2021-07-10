@@ -23,24 +23,24 @@ import java.util.List;
 public class DocHistoryController {
     DocHistoryService docHistoryService;
     DocService docService;
+
     @GetMapping()
     public Result findListById(@RequestParam String docId){
         List<DocHistory> docHistories = docHistoryService.list(new QueryWrapper<DocHistory>()
                .eq("id", docId).orderByDesc("updated"));
-//         .select(DocHistory.class,i->!i.getProperty().equals("body"))
         return Result.succeed(docHistories);
     }
 
     @GetMapping("/{id}")
     public Result findDetailById(@RequestParam String versionId, @PathVariable String id){
         DocHistory docHistory = docHistoryService.getOne(new QueryWrapper<DocHistory>()
-                .eq("id",id).eq("versionId", versionId));
+                .eq("id",id).eq("version_id", versionId));
         return Result.succeed(docHistory);
     }
 
     @PutMapping()
     public Result retrack(@RequestParam String versionId){
-        DocHistory docHistory = docHistoryService.getOne(new QueryWrapper<DocHistory>().eq("versionId", versionId));
+        DocHistory docHistory = docHistoryService.getOne(new QueryWrapper<DocHistory>().eq("version_id", versionId));
         Long docId = docHistory.getId();
         UpdateWrapper<Doc> wrapper = new UpdateWrapper<Doc>().set("body", docHistory.getBody()).eq("id", docId);
         docService.update(wrapper);

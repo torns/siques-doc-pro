@@ -25,8 +25,8 @@ public interface DocDao extends BaseMapper<Doc> {
     @Select({
             "<script>",
             "select",
-            "id,parentId,parentIds,title," +
-                    "alias,counts,type,cover,sort,status,created,updated,isPublished",
+            "id,parent_id,parent_ids,title," +
+                    "alias,counts,type,cover,sort,status,created,updated,is_published",
             "from doc",
             "where id in",
             "<foreach collection='postIds' item='id' open='(' separator=',' close=')'>",
@@ -36,8 +36,6 @@ public interface DocDao extends BaseMapper<Doc> {
     })
     List<Doc> getListByIds(List<Long> postIds);
 
-//    @Override
-//    List<Doc> selectList(Wrapper<Doc> queryWrapper);
 
     /**
      * 恢复以删除的文档

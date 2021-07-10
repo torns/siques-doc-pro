@@ -12,18 +12,23 @@ export function debounce(fnName, time) {
   }
 }
 
-/**
- * 复制内容到粘贴板
- * content : 需要复制的内容
- * message : 复制完后的提示，不传则默认提示"复制成功"
- */
 export function copyToClip(content) {
-  var aux = document.createElement('input')
-  aux.setAttribute('value', content)
-  document.body.appendChild(aux)
-  aux.select()
-  document.execCommand('copy')
-  document.body.removeChild(aux)
+  document.addEventListener('copy', save) // 监听浏览器copy事件
+  document.execCommand('copy') // 执行copy事件，这时监听函数会执行save函数。
+  document.removeEventListener('copy', save) // 移除copy事件
+
+  // 保存方法
+  function save(e) {
+    e.clipboardData.setData('text/plain', content) // 剪贴板内容设置
+    e.preventDefault()
+  }
+}
+export function copy(vue) {
+  $('pre code a ').click((e) => {
+    console.log(vue)
+    copyToClip(e.currentTarget.nextElementSibling.innerText)
+    vue.$notify({ text: '复制成功' })
+  })
 }
 
 export function hljs() {

@@ -3,8 +3,9 @@ package cn.siques.backend.controller;
 import cn.siques.backend.dto.PredictiveDto;
 import cn.siques.backend.dto.QueryStrDto;
 import cn.siques.backend.service.SearchService;
-import cn.siques.backend.utils.PageResult;
+
 import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.utils.page.PageResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class SearchController {
         return Result.succeed(jsonNodePageResult);
     }
 
-
+    //实时搜索
     @PostMapping("predictive/{indexName}")
     public Result predictive(@RequestBody PredictiveDto predictiveDto, @PathVariable String indexName) throws IOException {
         PageResult<JsonNode> jsonNodePageResult = searchService.predictiveQuery(indexName, predictiveDto);

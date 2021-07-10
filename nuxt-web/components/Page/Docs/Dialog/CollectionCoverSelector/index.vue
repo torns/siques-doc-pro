@@ -7,7 +7,7 @@
       <div class="pl-3 d-flex flex-column align-center">
         <div>
           <v-item-group class="d-flex  h-100 ">
-            <v-item class=" mr-3" v-for="img in imgUrls" :key="img">
+            <v-item v-for="img in imgUrls" :key="img" class=" mr-3">
               <v-card light @click="link = img">
                 <v-img height="50" width="50" :src="img"></v-img>
               </v-card>
@@ -16,16 +16,16 @@
         </div>
         <v-spacer></v-spacer>
 
-        <v-btn width="100%" @click="openUploadDialog" color="primary" dark>本地上传</v-btn>
+        <v-btn width="100%" color="primary" dark @click="openUploadDialog">本地上传</v-btn>
       </div>
     </div>
 
     <v-file-input
-      style="display:none"
+      id="fileinput"
       v-model="collectionDetail.uploadFile"
+      style="display:none"
       :rules="rules"
       show-size
-      id="fileinput"
       accept="image/*"
       label="上传封面"
       truncate-length="15"

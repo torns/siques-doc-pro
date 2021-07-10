@@ -29,7 +29,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionDao, Us
 
     @Override
     public List<Collection> getUserCollection(Long userId) {
-        List<Long> collectIds = userCollectionService.list(new QueryWrapper<UserCollection>().eq("userId", userId))
+        List<Long> collectIds = userCollectionService.list(new QueryWrapper<UserCollection>().eq("user_id", userId))
                 .stream().map(u -> u.getCollectionId()).collect(Collectors.toList());
         List<Collection> collections = new ArrayList<>();
         if(collectIds.size()>0){

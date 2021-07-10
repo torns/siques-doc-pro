@@ -39,12 +39,12 @@
                 <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn
-                      @click="write"
                       v-bind="attrs"
                       :color="isHomepage ? `white` : 'black'"
                       :class="`${isHomepage ? 'white--text' : ''} px-8`"
                       rounded
                       outlined
+                      @click="write"
                       v-on="on"
                     >
                       写稿

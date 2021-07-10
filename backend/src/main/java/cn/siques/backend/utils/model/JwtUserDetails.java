@@ -1,5 +1,6 @@
 package cn.siques.backend.utils.model;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.Collection;
  * @date : 21:15 2020/12/9
  */
 @Data
+@Builder
 public class JwtUserDetails implements UserDetails {
 
     private  Long id;

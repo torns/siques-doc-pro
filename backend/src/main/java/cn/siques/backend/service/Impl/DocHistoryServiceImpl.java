@@ -26,7 +26,6 @@ import java.util.stream.Stream;
  * @date : 13:07 2020/12/9
  */
 @Service
-@AllArgsConstructor
 public class DocHistoryServiceImpl extends ServiceImpl<DocHistoryDao, DocHistory> implements DocHistoryService {
 
 

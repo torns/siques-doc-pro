@@ -21,7 +21,7 @@ import java.util.Random;
  * @author : heshenghao
  * @date : 13:42 2020/12/14
  */
-public class AuthenticateUtil {
+public class PhoneCodeUtil {
     // 第三方短信验证模块
     private static String apikey = "a15d23ef365095cadfe6e4c77aeec912";
 

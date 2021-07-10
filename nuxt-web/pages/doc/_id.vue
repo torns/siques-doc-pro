@@ -68,7 +68,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 import mediumZoom from 'medium-zoom'
 
-import { hljs } from '@/plugins/utils.js'
+import { hljs, copy } from '@/plugins/utils.js'
 
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
@@ -117,6 +117,7 @@ export default class Doc extends Vue {
   beforeMount() {
     this.$nextTick(() => {
       hljs()
+      copy(this)
       tocjs()
       mediumzoom()
     })

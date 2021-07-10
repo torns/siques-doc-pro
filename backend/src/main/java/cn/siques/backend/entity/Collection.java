@@ -22,7 +22,6 @@ public class Collection extends Model<User> {
     Long id;
     String name;
     String description;
-
     Date created;
     Date updated;
     String cover;
@@ -31,8 +30,14 @@ public class Collection extends Model<User> {
     Boolean status;
 
     @TableField(exist = false)
-    User user;
+    Long userId;
 
     @TableField(exist = false)
-    List<Long> docIds;
+    String userName;
+
+    @TableField(exist = false)
+    String avatar;
+
+    @TableField(exist = false)
+    Long docId;
 }

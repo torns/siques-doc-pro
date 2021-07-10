@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class LoginDto {
     String phoneNumber;
-    String userName;
+    String username;
     String password;
     String verification;
 }

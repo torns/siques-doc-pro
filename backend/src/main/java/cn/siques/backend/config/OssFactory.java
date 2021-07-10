@@ -4,7 +4,6 @@ package cn.siques.backend.config;
 import cn.siques.backend.entity.OssSecurity;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.PutObjectResult;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
@@ -36,7 +35,6 @@ public class OssFactory {
 
     @Value("${spring.oss.urlPre}")
     protected String urlPre;
-
 
     @Value("${spring.oss.accessKeyId}")
     protected String accessKeyId;

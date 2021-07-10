@@ -141,7 +141,7 @@ public class CollectionController {
     @GetMapping("/deleted")
     public Result deleted(@LoginUser JwtUserDetails userDetails){
         List<Long> collectIds = userCollectionService.list(new QueryWrapper<UserCollection>()
-                .eq("userId", userDetails.getId()))
+                .eq("user_id", userDetails.getId()))
                 .stream().map(c -> c.getCollectionId()).collect(Collectors.toList());
         if(collectIds.size()>0){
             List<Collection> collect = collectionService.getListByIds(collectIds).stream()

@@ -27,7 +27,7 @@
         <v-divider></v-divider>
       </v-card-text>
 
-      <CollectionPublicTree ref="tree" v-model="tree" :doc-tree="docTree" :initSelected="initSelected">
+      <CollectionPublicTree ref="tree" v-model="tree" :doc-tree="docTree" :init-selected="initSelected">
       </CollectionPublicTree>
       <v-card-text style="overflow: hidden;">
         <v-card-actions>

@@ -11,11 +11,11 @@
       <v-carousel v-model="model" show-arrows-on-hover cycle height="200">
         <template v-for="(collect, i) in recomendCollection">
           <v-carousel-item
-            v-if="collect.docIds != null"
+            v-if="collect.docId != null"
             :key="i"
             :src="collect.cover"
             class="pointer"
-            @click="$router.push(`/doc/${collect.docIds[0]}`)"
+            @click="$router.push(`/doc/${collect.docId}`)"
           >
             <v-row class="fill-height text-truncate" align="center" justify="center"> </v-row>
           </v-carousel-item>

@@ -26,10 +26,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userDao.selectOne(new QueryWrapper<User>().eq("username", s));
-        JwtUserDetails jwtUserDetails = new JwtUserDetails();
-        jwtUserDetails.setUsername(user.getUsername());
-        jwtUserDetails.setPassword(user.getPassword());
-        jwtUserDetails.setId(user.getId());
-        return jwtUserDetails;
+        JwtUserDetails details = JwtUserDetails.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword()).build();
+
+        return details;
     }
 }
