@@ -21,6 +21,7 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.HashMap;
 
 
 /**
@@ -53,14 +54,16 @@ public class JwtUtil {
         if(privateKey == null){
             signKey();
         }
-        return Jwts.builder().setSubject(user.getUsername())
+        return Jwts.builder()
+                .setClaims(new HashMap<>(){{put("username",user.getUsername());
+                    put("id",String.valueOf(user.getId()));}})
                 .signWith(privateKey,SignatureAlgorithm.RS512).compact();
     }
 
     public static UsernamePasswordAuthenticationToken authenticate(User user, HttpServletRequest request, UserService userService) {
 
         String token = JwtUtil.genToken(user);
-        JwtUserDetails userDetails = (JwtUserDetails) userService.loadUserByUsername(user.getUsername());
+        JwtUserDetails userDetails = (JwtUserDetails) userService.loadUserByUsername(String.valueOf(user.getId()));
         userDetails.setToken(token);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -76,22 +79,22 @@ public class JwtUtil {
         return null;
     }
 
-    public String extractUsernameFromToken(String token) {
+    public String extractUserIdFromToken(String token) {
         if(publicKey==null){
             signKey();
         }
-        String username;
+        String userId;
         try {
 
-            username = Jwts.parserBuilder()
+            userId = (String) Jwts.parserBuilder()
                     .setSigningKey(publicKey)
                     .build()
-                    .parseClaimsJws(token).getBody().getSubject();
+                    .parseClaimsJws(token).getBody().get("id");
         }catch (Exception e){
             System.out.println(e.getMessage());
-            username = null;
+            userId = null;
         }
 
-        return username;
+        return userId;
     }
 }

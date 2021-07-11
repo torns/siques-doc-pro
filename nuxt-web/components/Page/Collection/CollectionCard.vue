@@ -72,7 +72,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
+import { textToImg } from '@/plugins/utils'
 @Component({})
 export default class CollectionList extends Vue {
   reveal = false
@@ -82,84 +82,9 @@ export default class CollectionList extends Vue {
   beforeMount() {
     this.$nextTick(() => {
       this.collects.forEach((e) => {
-        e.avatar = this.textToImg(e.userName.substring(0, 1))
+        e.avatar = textToImg(e.userName.substring(0, 1))
       })
     })
-  }
-
-  textToImg(str) {
-    let name, fsize
-    if (str.length < 2) {
-      name = str
-      fsize = 60
-    } else if (str.length === 2) {
-      name = str.substring(0, str.length)
-      fsize = 45
-    } else if (str.length === 3) {
-      name = str.substring(0, str.length)
-      fsize = 30
-    } else if (str.length === 4) {
-      name = str.substring(0, str.length)
-      fsize = 25
-    } else if (str.length > 4) {
-      name = str.substring(0, 2)
-      fsize = 45
-    }
-    const fontSize = 60
-    const fontWeight = 'bold'
-    const canvas: any = document.getElementById('head_canvas_default')
-
-    canvas.width = 120
-    canvas.height = 120
-    const context = canvas.getContext('2d')
-    context.fillStyle = this.getBG(str)
-    context.fillRect(0, 0, canvas.width, canvas.height)
-    context.fillStyle = '#FFF'
-    context.font = fontWeight + ' ' + fsize + 'px sans-serif'
-    context.textAlign = 'center'
-    context.textBaseline = 'middle'
-    context.fillText(name, fontSize, fontSize + 3)
-    return canvas.toDataURL('image/png')
-  }
-
-  getBG(str) {
-    const bgArray = [
-      '#1abc9c',
-      '#2ecc71',
-      '#3498db',
-      '#9b59b6',
-      '#34495e',
-      '#16a085',
-      '#27ae60',
-      '#2980b9',
-      '#8e44ad',
-      '#2c3e50',
-      '#f1c40f',
-      '#e67e22',
-      '#e74c3c',
-      '#eca0f1',
-      '#95a5a6',
-      '#f39c12',
-      '#d35400',
-      '#c0392b',
-      '#bdc3c7',
-      '#7f8c8d'
-    ]
-    console.log(this.hash(str))
-    const color = bgArray[this.hash(str) % bgArray.length]
-    return color
-  }
-
-  hash(str) {
-    let hash = 0
-    let chr
-    if (str.length === 0) return hash
-    for (let i = 0; i < str.length; i++) {
-      chr = str.charCodeAt(i)
-      hash = (hash << 5) - hash + chr
-      hash |= 0 // Convert to 32bit integer
-    }
-    return hash
   }
 
   get colLast() {

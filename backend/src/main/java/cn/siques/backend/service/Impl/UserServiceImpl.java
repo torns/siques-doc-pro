@@ -24,8 +24,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private UserDao userDao;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userDao.selectOne(new QueryWrapper<User>().eq("username", s));
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        User user = userDao.selectOne(new QueryWrapper<User>().eq("id", id));
         JwtUserDetails details = JwtUserDetails.builder()
                 .id(user.getId())
                 .username(user.getUsername())
