@@ -66,24 +66,7 @@ public class DocController {
     @PostMapping("/findPage")
     @Cacheable(cacheNames = "docPage",key="#pageRequest")
     public Result<Page<Doc>> findPage(@RequestBody PageRequest<Doc> pageRequest){
-        Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
-        Doc doc = pageRequest.getParams();
-        QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
-                .eq("is_published",1).orderByDesc("created");
-        if(!doc.getType().equals(DocEnum.tfNews)){
-            wrapper.select(Doc.class,i->!i.getProperty().equals("body"));
-        }
-        if(ObjectUtil.isNotEmpty(doc)){
-            Map<String, String> searchMap = doc.toMap();
-
-            if(searchMap.size()>0){
-                wrapper.allEq(searchMap);
-            }
-        }
-        Page<Doc> page = docService.page(docPage,wrapper);
-
-
-        return Result.succeed(page);
+        return Result.succeed(docService.findPage(pageRequest));
     }
 
 
@@ -144,9 +127,10 @@ public class DocController {
      * @return
      */
     @PostMapping()
-    public Result insert(@RequestParam("parentId") Long parentId,
+    public Result insert(@LoginUser JwtUserDetails userDetails,
+                         @RequestParam("parentId") Long parentId,
                          @RequestParam("collectionId") Long collectionId){
-        return Result.succeed(docService.insert(parentId,collectionId));
+        return Result.succeed(docService.insert(userDetails.getId(),parentId,collectionId));
     }
 
 

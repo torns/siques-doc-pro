@@ -119,7 +119,7 @@ export function textToImg(str) {
   context.font = fontWeight + ' ' + fsize + 'px sans-serif'
   context.textAlign = 'center'
   context.textBaseline = 'middle'
-  context.fillText(name, fontSize, fontSize + 3)
+  context.fillText(name, fontSize, fontSize + 4)
   return canvas.toDataURL('image/png')
 }
 

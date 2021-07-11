@@ -22,6 +22,7 @@ public class User extends Model<User> {
     Long id;
     String username;
     String nickname;
+    String description;
     @JsonIgnore
     String password;
     Date created;

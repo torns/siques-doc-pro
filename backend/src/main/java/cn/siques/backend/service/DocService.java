@@ -1,8 +1,9 @@
 package cn.siques.backend.service;
 
 import cn.siques.backend.entity.Doc;
+import cn.siques.backend.utils.page.PageRequest;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -11,14 +12,17 @@ import java.util.List;
  * @date : 13:05 2020/12/9
  */
 public interface DocService extends IService<Doc> {
+
+    Page<Doc> findPage(PageRequest<Doc> pageRequest);
+
     /**
      * 新增
      * @return
      * @param
      * @param parentId
-     * @param parentId
+     * @param id
      */
-    int insert(Long parentId, Long collectionId);
+    int insert(Long parentId, Long id, Long collectionId);
 
     /**
      * 查询文章树

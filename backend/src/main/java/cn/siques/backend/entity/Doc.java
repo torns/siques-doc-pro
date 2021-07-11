@@ -26,7 +26,7 @@ public class Doc extends Model<Doc> {
     Long id;
    String title;
 
-    String body;
+   String body;
    Date created;
    Date updated;
    Long parentId;
@@ -38,7 +38,11 @@ public class Doc extends Model<Doc> {
    String cover;
     Long views;
     Long sort;
-    // 逻辑删除字段
+    Long userId;
+
+    /**
+     * 逻辑删除字段
+     */
    @TableLogic(value = "1",delval = "0")
    Boolean status;
 
@@ -51,6 +55,9 @@ public class Doc extends Model<Doc> {
 
    @TableField(exist = false)
    List<Doc> children;
+
+    @TableField(exist = false)
+    User  user;
 
     @TableField(exist =false)
     Collection collection;

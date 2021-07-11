@@ -2,6 +2,7 @@
   <v-app dark>
     <div :id="isHomepage ? 'home' : 'other'">
       <div id="app">
+        <canvas id="head_canvas_default" style="display:none"></canvas>
         <IndexMenu></IndexMenu>
         <keep-alive include="AppPage">
           <router-view :key="$route.path"></router-view>

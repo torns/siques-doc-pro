@@ -9,11 +9,23 @@
               :style="`overflow: ${post.showMore ? 'auto' : 'hidden'};height:${post.showMore ? '100%' : '400px'};`"
               class="moment-item"
             >
-              <div class="d-flex jc-between ai-baseline">
-                <div class="moment-title" v-html="post.title"></div>
+              <div class="d-flex ai-center ">
+                <v-avatar :size="55" class="note_avatar" style="background-color: white ;border: 1px solid #de7d7d;">
+                  <img style="padding: 4px;" :src="post.avatar" />
+                </v-avatar>
+                <div class="pl-3">
+                  <div class="text-subtitle-2 transition-swing" v-text="post.user.username"></div>
+
+                  <div class="text-body-2 text--secondary">{{ post.user.description }}</div>
+                </div>
+              </div>
+
+              <div class="d-flex jc-between ai-center pb-2">
+                <div></div>
+                <!-- <div class="moment-title" v-html="post.title"></div> -->
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
-              <div v-if="!post.showMore" class="moment-img">
+              <!-- <div v-if="!post.showMore" class="moment-img">
                 <v-img
                   v-if="post.cover != null"
                   :src="post.cover[0]"
@@ -22,7 +34,7 @@
                   style="width: 200px"
                 >
                 </v-img>
-              </div>
+              </div> -->
 
               <div class="plain-text-wrap" v-html="post.body"></div>
             </div>
@@ -51,7 +63,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import mediumZoom from 'medium-zoom'
 import { getMomentList } from '@/api/moment.js'
-
+import { textToImg } from '@/plugins/utils'
 const mediumzoom = () => {
   mediumZoom(document.querySelectorAll('.plain-text-wrap img'))
 }
@@ -92,16 +104,21 @@ export default class Moment extends Vue {
   mounted() {
     this.$nextTick(() => {
       mediumzoom()
+      this.posts.forEach((e) => {
+        this.$set(e, 'avatar', textToImg(e.user.username.substring(0, 1)))
+      })
     })
   }
 
   fetchDataSuccess(res: any) {
     res.datas.records.forEach((e) => {
       e.showMore = false
+      this.$set(e, 'avatar', textToImg(e.user.username.substring(0, 1)))
       if (e.cover != null) {
         e.cover = e.cover.split(',')
       }
     })
+
     this.posts = this.posts.concat(res.datas.records)
     this.total = res.datas.total
   }

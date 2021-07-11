@@ -6,20 +6,25 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.config.ContentCensor;
 import cn.siques.backend.dao.CollectionDocDao;
 import cn.siques.backend.dao.DocDao;
+import cn.siques.backend.dao.UserDao;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
 import cn.siques.backend.entity.DocHistory;
+import cn.siques.backend.entity.User;
 import cn.siques.backend.service.DocHistoryService;
 import cn.siques.backend.service.DocService;
 
+import cn.siques.backend.service.UserService;
 import cn.siques.backend.utils.RegexUtils;
+import cn.siques.backend.utils.model.DocEnum;
+import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
@@ -36,6 +41,8 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
 
     private DocDao docDao;
 
+    private UserService userService;
+
     private CollectionDocDao collectionDocDao;
 
     private DocHistoryService docHistoryService;
@@ -43,9 +50,44 @@ public class DocServiceImpl extends ServiceImpl<DocDao, Doc> implements DocServi
     private ContentCensor contentCensor;
 
     @Override
-    public int insert(Long parentId, Long collectionId) {
+    public Page<Doc> findPage(PageRequest<Doc> pageRequest) {
+        Page<Doc> docPage = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
+        Doc doc = pageRequest.getParams();
+        QueryWrapper<Doc> wrapper=new QueryWrapper<Doc>()
+                .eq("is_published",1).orderByDesc("created");
+
+        if(!doc.getType().equals(DocEnum.tfNews)){
+            wrapper.select(Doc.class,i->!i.getProperty().equals("body"));
+        }
+        if(ObjectUtil.isNotEmpty(doc)){
+            Map<String, String> searchMap = doc.toMap();
+            wrapper.allEq(searchMap);
+        }
+        Page<Doc> page = page(docPage, wrapper);
+
+        List<Long> collect = page.getRecords().stream().filter(d -> ObjectUtil.isNotEmpty(d.getUserId()))
+                .distinct()
+                .map(d -> d.getUserId()).collect(Collectors.toList());
+       if(collect.size() > 0){
+           HashMap<Long, User> userHashMap = new HashMap<>();
+           userService.listByIds(collect).stream().forEach(u->{
+               userHashMap.put(u.getId(),u);
+           });
+           page.getRecords().stream().forEach(d->{
+               User user = userHashMap.get(d.getUserId());
+               if(user!=null) {
+                   d.setUser(user);
+               }
+           });
+       }
+        return page;
+    }
+
+    @Override
+    public int insert(Long userId, Long parentId, Long collectionId) {
         Doc parent = docDao.selectById(parentId);
         Doc post = new Doc();
+        post.setUserId(userId);
         post.setStatus(true);
         post.setBody("<h1>未命名文档</h1><p>在这里开始书写之旅</p>");
 

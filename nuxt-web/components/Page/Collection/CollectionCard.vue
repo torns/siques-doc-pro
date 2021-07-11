@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <canvas id="head_canvas_default" style="display:none"></canvas>
     <v-row justify="center" class="pt-3 collection">
       <v-col
         v-for="(collect, index) in collects"
