@@ -1,66 +1,64 @@
 <template>
-  <div>
-    <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc"> </DocSideMenu>
-    <v-main style="overflow-x: hidden;">
-      <div
-        class="absolute d-flex jc-center flex-column ai-center "
-        style="z-index:5!important; width: 80%;top:8vh;left:10%;"
-      >
-        <div class="fs-md"></div>
-        <h1 style="text-align: center;">
-          <div class="text-white py-2 lh-5">{{ doc.title }}</div>
-        </h1>
-        <div class="d-flex py-1 ai-center">
-          <div class="d-flex fs-xs ai-center pt-1 grey--text text--lighten-1">
-            <v-icon small color="lime" class="pr-2">
-              mdi-bullseye-arrow
-            </v-icon>
+  <v-main id="domain">
+    <IndexMenu> </IndexMenu>
+    <DocSideMenu v-if="docTree.length > 0" @selectDoc="selectDoc" :doc-tree="docTree" :doc="doc"> </DocSideMenu>
+    <div
+      class="absolute d-flex jc-center flex-column ai-center "
+      style="z-index:5!important; width: 80%;top:8vh;left:10%;"
+    >
+      <h1 style="text-align: center;">
+        <div class="text-white py-2 lh-5">{{ doc.title }}</div>
+      </h1>
+      <div class="d-flex py-1 ai-center">
+        <div class="d-flex fs-xs ai-center pt-1 grey--text text--lighten-1">
+          <v-icon small color="lime" class="pr-2">
+            mdi-bullseye-arrow
+          </v-icon>
 
-            {{ $dayjs(doc.created).format('YYYY.MM.DD HH:MM') }}
+          {{ $dayjs(doc.created).format('YYYY.MM.DD HH:MM') }}
 
-            <v-icon small color="pink lighten-4" class="px-2">
-              mdi-comment-eye
-            </v-icon>
-            {{ doc.views }}
-          </div>
-        </div>
-        <div class="tag d-flex ai-baseline mb-3">
-          <div class="grey--text text--lighten-1 fs-xs">阅读约 {{ Math.ceil(doc.counts / 275) }} 分钟</div>
+          <v-icon small color="pink lighten-4" class="px-2">
+            mdi-comment-eye
+          </v-icon>
+          {{ doc.views }}
         </div>
       </div>
-
-      <div class="postMask" style="height:32vh;backdrop-filter: blur(3px);"></div>
-
-      <div class="post-blur">
-        <div class=" relative ">
-          <v-img :src="doc.cover" style="height:32vh;"> </v-img>
-        </div>
+      <div class="tag d-flex ai-baseline mb-3">
+        <div class="grey--text text--lighten-1 fs-xs">阅读约 {{ Math.ceil(doc.counts / 275) }} 分钟</div>
       </div>
-      <div class="post_container  pb-3">
-        <v-row no-gutters>
-          <v-col xs="12" sm="12" md="12" lg="12" xl="12">
-            <article id="article" class=" bg-white ">
-              <div>
-                <div v-if="doc.title" style="padding: 1.1rem;">
-                  <!-- 滚动监听区域 -->
-                  <div id="doc-content" v-scroll-spy v-highlight class="article ck-content" v-html="doc.body"></div>
-                  <div class="text-primary mt-3 fs-xs">
-                    <!-- 阅读：{{ doc.views > 1000 ? (doc.views / 1000).toFixed(1) + 'k' : doc.views }}
+    </div>
+
+    <div class="postMask" style="height:32vh;backdrop-filter: blur(3px);"></div>
+
+    <div class="post-blur">
+      <div class=" relative ">
+        <v-img :src="doc.cover" style="height:32vh;"> </v-img>
+      </div>
+    </div>
+    <div class="post_container  pb-3">
+      <v-row no-gutters>
+        <v-col xs="12" sm="12" md="12" lg="12" xl="12">
+          <article id="article" class=" bg-white ">
+            <div>
+              <div v-if="doc.title" style="padding: 1.1rem;">
+                <!-- 滚动监听区域 -->
+                <div id="doc-content" v-scroll-spy v-highlight class="article ck-content" v-html="doc.body"></div>
+                <div class="text-primary mt-3 fs-xs">
+                  <!-- 阅读：{{ doc.views > 1000 ? (doc.views / 1000).toFixed(1) + 'k' : doc.views }}
                     <span>.</span> -->
-                    <span class="pr-2">字数：{{ doc.counts }}</span>
-                    {{ '发布于 ' + $dayjs(doc.created).fromNow() }}
-                  </div>
+                  <span class="pr-2">字数：{{ doc.counts }}</span>
+                  {{ '发布于 ' + $dayjs(doc.created).fromNow() }}
                 </div>
               </div>
-            </article>
-          </v-col>
-        </v-row>
-      </div>
-    </v-main>
+            </div>
+          </article>
+        </v-col>
+      </v-row>
+    </div>
     <PostToc :title="doc.title"></PostToc>
 
     <BaseFooter></BaseFooter>
-  </div>
+  </v-main>
 </template>
 
 <script lang="ts">
@@ -114,7 +112,18 @@ export default class Doc extends Vue {
     }
   }
 
+  async selectDoc(id) {
+    const res = await getDocDetail({ docId: id, isPublished: true })
+    this.doc = res.datas
+    window.scrollTo(0, 0)
+    this.renderPage()
+  }
+
   beforeMount() {
+    this.renderPage()
+  }
+
+  renderPage() {
     this.$nextTick(() => {
       hljs()
       copy(this)

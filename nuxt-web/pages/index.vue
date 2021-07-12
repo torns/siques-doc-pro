@@ -1,5 +1,6 @@
 <template>
   <div class="homepage">
+    <IndexMenu></IndexMenu>
     <div>
       <IndexBanner
         ><v-container dark style="height: 0;padding:0">

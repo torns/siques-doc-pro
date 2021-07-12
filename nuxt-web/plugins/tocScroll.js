@@ -89,7 +89,19 @@ const install = (Vue, options) => {
         window.addEventListener('scroll', onScroll)
       }
     },
-    componentUpdated(el, binding) {},
+    componentUpdated(el, binding) {
+      scrollSpyElements.length = 0
+      for (let index = 0; index < el.children.length; index++) {
+        const element = el.children[index]
+        if (options.sectionSelector.includes(element.localName)) {
+          scrollSpyElements.push(element)
+        }
+      }
+
+      if (scrollSpyElements.length != 0) {
+        window.addEventListener('scroll', onScroll)
+      }
+    },
     unbind(el) {
       scrollSpyElements.length = 0
       window.removeEventListener('scroll', onScroll)

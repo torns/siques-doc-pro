@@ -1,5 +1,7 @@
 <template>
-  <div class="pt-10">
+  <div>
+    <IndexMenu></IndexMenu>
+    <div class="pt-10"></div>
     <CollectionCard :collects="collections"></CollectionCard>
 
     <BasePagination v-model="pagination" @current-change="handleChange"></BasePagination>

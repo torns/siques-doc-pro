@@ -5,6 +5,18 @@
   color: #5a5a5a;
 }
 
+.post_container {
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 768px) {
+    width: 800px;
+  }
+  @media (min-width: 1200px) {
+    width: 950px;
+  }
+}
+
 // .itag {
 //   font-size: 86%;
 //   top: -1.5px;
@@ -46,80 +58,82 @@ h1 {
   }
 }
 
-.article pre code {
-  font-family: EB Garamond, 'Noto Serif SC', Consolas, Liberation Mono, Menlo, Courier, monospace !important;
-  // max-height: 35rem;
-  line-height: 1.7;
-  font-size: 0.9em;
-  margin-right: 0;
-  font-weight: 200 !important;
-  @media (max-width: 36em) {
-    font-size: 10px;
-  }
+.article pre {
+  code {
+    font-family: EB Garamond, 'Noto Serif SC', Consolas, Liberation Mono, Menlo, Courier, monospace !important;
+    // max-height: 35rem;
+    line-height: 1.7;
+    font-size: 0.9em;
+    margin-right: 0;
+    font-weight: 200 !important;
+    @media (max-width: 36em) {
+      font-size: 10px;
+    }
 
-  &-comment,
-  &-quote {
-    color: #548a37 !important;
-    font-style: normal;
-  }
-  //伪元素的点击事件
+    &-comment,
+    &-quote {
+      color: #548a37 !important;
+      font-style: normal;
+    }
+    //伪元素的点击事件
 
-  #language {
-    position: absolute;
-    right: 25px;
-    bottom: 10px;
-    color: rgba(158, 158, 158, 0.80196);
-    font-family: cursive;
-  }
-
-  #copy {
-    position: absolute;
-    right: 15px;
-
-    &::after {
-      color: hsla(0, 0%, 62%, 0.80196);
-      font: normal normal normal 24px/1 'Material Design Icons';
-      font-size: 16px;
-      content: '\F018F';
-      display: inline-block;
+    #language {
       position: absolute;
-      opacity: 0;
-      padding-top: 4px;
-      right: 14px;
-      cursor: pointer;
-
-      transition: 1s;
+      right: 25px;
+      bottom: 10px;
+      color: rgba(158, 158, 158, 0.80196);
+      font-family: cursive;
     }
-  }
-  &:hover {
+
     #copy {
+      position: absolute;
+      right: 15px;
+
       &::after {
+        color: hsla(0, 0%, 62%, 0.80196);
+        font: normal normal normal 24px/1 'Material Design Icons';
+        font-size: 16px;
+        content: '\F018F';
+        display: inline-block;
+        position: absolute;
+        opacity: 0;
+        padding-top: 4px;
+        right: 14px;
+        cursor: pointer;
+
         transition: 1s;
-        opacity: 1;
       }
     }
-  }
-
-  ul {
-    margin: 10px 0 !important;
-    padding: 5px 0 !important;
-    // max-height: 500px;
-
-    li {
-      list-style: none !important;
-
-      padding: 5px 0px !important;
-      cursor: text !important;
-      line-height: 14px !important;
-      font-size: 14px !important;
-      /// 小屏幕缩小字体
-      @media (max-width: 36em) {
-        font-size: 10px;
-        padding: 4px 0px !important;
+    &:hover {
+      #copy {
+        &::after {
+          transition: 1s;
+          opacity: 1;
+        }
       }
     }
-    li:nth-of-type(2n) {
-      background-color: rgba(255, 255, 255, 0.015);
+
+    ul {
+      margin: 10px 0 !important;
+      padding: 5px 0 !important;
+      // max-height: 500px;
+
+      li {
+        list-style: none !important;
+
+        padding: 5px 0px !important;
+        cursor: text !important;
+        line-height: 14px !important;
+        font-size: 14px !important;
+        /// 小屏幕缩小字体
+        @media (max-width: 36em) {
+          font-size: 10px;
+          padding: 4px 0px !important;
+        }
+      }
+      li:nth-of-type(2n) {
+        background-color: rgba(255, 255, 255, 0.015);
+      }
     }
   }
 }
@@ -441,9 +455,9 @@ hr {
   padding: 0 !important;
   color: #333 !important;
   background: #f8f8f8 !important;
-
+  border-radius: 5px !important;
   border: none !important;
-  border-radius: 0px;
+
   text-align: left;
   direction: ltr;
   white-space: pre !important;

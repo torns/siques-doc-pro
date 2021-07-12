@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div class="d-flex w-100 jc-center">
     <nav id="menu" :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'" @click.stop>
       <v-row justify="center">
         <v-col cols="12" md="11" lg="9" xl="8">
@@ -51,14 +51,7 @@
                     </v-btn>
                   </template>
                 </v-menu>
-                <v-menu
-                  v-if="loggedIn"
-                  open-on-hover
-                  color="transparent"
-                  transition="slide-y-transition"
-                  bottom
-                  offset-y
-                >
+                <v-menu v-if="loggedIn" open-on-hover color="transparent" transition="slide-y-transition" bottom>
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn v-bind="attrs" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text v-on="on">
                       {{ userInfo.username }}
@@ -117,7 +110,7 @@
         </li>
       </ul>
     </nav>
-  </span>
+  </div>
 </template>
 
 <script lang="ts">

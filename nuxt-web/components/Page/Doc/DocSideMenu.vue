@@ -1,40 +1,15 @@
 <template>
   <div style="z-index:10">
-    <v-navigation-drawer
-      v-model="docSideBars"
-      width="350"
-      dark
-      src="https://cdn.siques.cn/public/bg-2.jpg"
-      app
-      temporary
-    >
-      <v-carousel v-model="model" show-arrows-on-hover cycle height="200">
-        <template v-for="(collect, i) in recomendCollection">
-          <v-carousel-item
-            v-if="collect.docId != null"
-            :key="i"
-            :src="collect.cover"
-            class="pointer"
-            @click="$router.push(`/doc/${collect.docId}`)"
-          >
-            <v-row class="fill-height text-truncate" align="center" justify="center"> </v-row>
-          </v-carousel-item>
-        </template>
-      </v-carousel>
-
-      <v-divider></v-divider>
-
+    <v-navigation-drawer v-model="docSideBars" width="320" app>
       <v-list nav dense>
         <v-treeview
           :items="docTree"
           :active="[doc.id]"
-          color="warning"
+          color="primary"
           class="pointer text-truncate"
           open-all
           activatable
-          rounded
           dense
-          dark
           hoverable
           @update:active="selectDoc"
         >
@@ -47,10 +22,10 @@
       </v-list>
     </v-navigation-drawer>
     <svg
-      :class="`ham ham3 ${docSideBars == true ? 'active' : ''} side-menu`"
+      :class="`ham ham3 ${docSideBars == true ? 'active' : ''}   side-menu`"
       viewBox="0 0 100 100"
       width="60"
-      @click="$store.commit('SET_DOCSIDEBAR', true)"
+      @click="$store.commit('SET_DOCSIDEBAR', !$store.state.docSideBar)"
     >
       <path
         class="line top"
@@ -70,7 +45,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+
 @Component({
   computed: {
     docSideBars: {
@@ -80,8 +55,7 @@ import { mapGetters } from 'vuex'
       set(v) {
         this.$store.commit('SET_DOCSIDEBAR', v)
       }
-    },
-    ...mapGetters(['recomendCollection'])
+    }
   }
 })
 export default class NaviSideMenu extends Vue {
@@ -91,20 +65,13 @@ export default class NaviSideMenu extends Vue {
   @Prop()
   doc
 
-  recomendCollection
+  mounted() {}
 
-  mounted() {
-    if (this.recomendCollection.length < 1) {
-      this.$store.dispatch('modules/collection/getRecomendCollection')
-    }
-  }
-
-  model = 0
   docSideBars
 
   selectDoc(row) {
     if (row[0] && this.doc.id !== row[0]) {
-      this.$router.push(`/doc/${row[0]}`)
+      this.$emit('selectDoc', row[0])
     }
   }
 }
@@ -113,9 +80,9 @@ export default class NaviSideMenu extends Vue {
 <style lang="scss" scoped>
 .side-menu {
   position: fixed;
-  left: 0;
+
   bottom: 10%;
-  z-index: 5;
+  z-index: 1;
 }
 
 .side-menu nav {

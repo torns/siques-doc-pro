@@ -1,5 +1,6 @@
 <template>
   <div class="searchPage ">
+    <IndexMenu></IndexMenu>
     <div style="min-height:80px" class="bg-light px-2">
       <v-container>
         <v-row no-gutters style="padding-top: 85px;">

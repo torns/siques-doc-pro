@@ -1,5 +1,6 @@
 <template>
   <div>
+    <IndexMenu></IndexMenu>
     <div class="moment_container pt-5">
       <v-row no-gutters type="flex">
         <v-col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -22,19 +23,9 @@
 
               <div class="d-flex jc-between ai-center pb-2">
                 <div></div>
-                <!-- <div class="moment-title" v-html="post.title"></div> -->
+
                 <div style="white-space: nowrap" class="text-gray pl-1">{{ $dayjs(post.created).fromNow() }}</div>
               </div>
-              <!-- <div v-if="!post.showMore" class="moment-img">
-                <v-img
-                  v-if="post.cover != null"
-                  :src="post.cover[0]"
-                  :preview-src-list="post.cover"
-                  lazy
-                  style="width: 200px"
-                >
-                </v-img>
-              </div> -->
 
               <div class="plain-text-wrap" v-html="post.body"></div>
             </div>
