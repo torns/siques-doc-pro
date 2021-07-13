@@ -1,7 +1,7 @@
 <template>
   <v-main id="domain">
     <IndexMenu> </IndexMenu>
-    <DocSideMenu v-if="docTree.length > 0" @selectDoc="selectDoc" :doc-tree="docTree" :doc="doc"> </DocSideMenu>
+    <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc" @selectDoc="selectDoc"> </DocSideMenu>
     <div
       class="absolute d-flex jc-center flex-column ai-center "
       style="z-index:5!important; width: 80%;top:8vh;left:10%;"
@@ -56,7 +56,7 @@
       </v-row>
     </div>
     <PostToc :title="doc.title"></PostToc>
-
+    <div id="gitalk-container"></div>
     <BaseFooter></BaseFooter>
   </v-main>
 </template>
@@ -66,7 +66,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 import mediumZoom from 'medium-zoom'
 
-import { hljs, copy } from '@/plugins/utils.js'
+import { hljs, copy, gitTalk } from '@/plugins/utils.js'
 
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
@@ -108,7 +108,9 @@ export default class Doc extends Vue {
           content: this.doc.alias
         },
         { hid: 'description', name: 'description', content: this.doc.alias }
-      ]
+      ],
+      link: [{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css' }],
+      script: [{ src: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js' }]
     }
   }
 
@@ -125,6 +127,7 @@ export default class Doc extends Vue {
 
   renderPage() {
     this.$nextTick(() => {
+      gitTalk()
       hljs()
       copy(this)
       tocjs()

@@ -12,6 +12,22 @@ export function debounce(fnName, time) {
   }
 }
 
+export function gitTalk() {
+  let gitalk = new Gitalk({
+    clientID: '8e6a860f7dc156db8516', // Client ID
+
+    clientSecret: '9e020b47231bd2921a2658fc72baa47407b16aa1', // Client Secret
+
+    repo: 'siques-comment', // 仓库名称
+    owner: 'ericheshenghao', // 仓库拥有者
+    admin: ['ericheshenghao'],
+    id: location.href, // Ensure uniqueness and length less than 50
+    distractionFreeMode: false // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+}
+
 export function copyToClip(content) {
   document.addEventListener('copy', save) // 监听浏览器copy事件
   document.execCommand('copy') // 执行copy事件，这时监听函数会执行save函数。
