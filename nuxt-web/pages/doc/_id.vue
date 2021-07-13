@@ -123,7 +123,7 @@ export default class Doc extends Vue {
 
   renderPage() {
     this.$nextTick(() => {
-      gitTalk('www.siques.cn/doc/' + this.doc.id)
+      gitTalk(this.doc.title, 'www.siques.cn/doc/' + this.doc.id)
       hljs()
       copy(this)
       tocjs()

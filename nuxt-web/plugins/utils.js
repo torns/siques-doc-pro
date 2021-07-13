@@ -18,12 +18,13 @@ export function fancybox() {
   })
 }
 
-export function gitTalk(url) {
+export function gitTalk(title, url) {
   let gitalk = new Gitalk({
     clientID: '8e6a860f7dc156db8516', // Client ID
 
     clientSecret: '9e020b47231bd2921a2658fc72baa47407b16aa1', // Client Secret
-
+    title: title,
+    body: url,
     repo: 'siques-comment', // 仓库名称
     owner: 'ericheshenghao', // 仓库拥有者
     admin: ['ericheshenghao'],
@@ -31,6 +32,9 @@ export function gitTalk(url) {
     proxy: process.env.BASE_URL + '/user/oauth/git',
     distractionFreeMode: false // Facebook-like distraction free mode
   })
+
+  const el = document.getElementById('gitalk-container')
+  while (el.hasChildNodes()) el.removeChild(el.firstChild)
 
   gitalk.render('gitalk-container')
 }

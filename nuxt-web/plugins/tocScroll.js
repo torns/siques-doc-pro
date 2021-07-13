@@ -145,6 +145,9 @@ const install = (Vue, options) => {
   function getOffsetTop(elem, untilParent) {
     let offsetTop = 0
     do {
+      if (elem == undefined) {
+        return
+      }
       if (!isNaN(elem.offsetTop)) {
         offsetTop += elem.offsetTop
       }
