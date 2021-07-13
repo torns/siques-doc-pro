@@ -54,9 +54,11 @@
           </article>
         </v-col>
       </v-row>
+
+      <div id="gitalk-container"></div>
     </div>
     <PostToc :title="doc.title"></PostToc>
-    <div id="gitalk-container"></div>
+
     <BaseFooter></BaseFooter>
   </v-main>
 </template>
@@ -64,16 +66,10 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 
-import mediumZoom from 'medium-zoom'
-
-import { hljs, copy, gitTalk } from '@/plugins/utils.js'
+import { hljs, copy, gitTalk, fancybox } from '@/plugins/utils.js'
 
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
-
-const mediumzoom = () => {
-  mediumZoom(document.querySelectorAll('figure img'))
-}
 
 @Component({})
 export default class Doc extends Vue {
@@ -127,11 +123,11 @@ export default class Doc extends Vue {
 
   renderPage() {
     this.$nextTick(() => {
-      gitTalk()
+      gitTalk('www.siques.cn/doc/' + this.doc.id)
       hljs()
       copy(this)
       tocjs()
-      mediumzoom()
+      fancybox()
     })
   }
   // TS中的计算属性

@@ -12,7 +12,13 @@ export function debounce(fnName, time) {
   }
 }
 
-export function gitTalk() {
+export function fancybox() {
+  Fancybox.bind('figure img', {
+    // Your options go here
+  })
+}
+
+export function gitTalk(url) {
   let gitalk = new Gitalk({
     clientID: '8e6a860f7dc156db8516', // Client ID
 
@@ -21,7 +27,8 @@ export function gitTalk() {
     repo: 'siques-comment', // 仓库名称
     owner: 'ericheshenghao', // 仓库拥有者
     admin: ['ericheshenghao'],
-    id: location.href, // Ensure uniqueness and length less than 50
+    id: url, // Ensure uniqueness and length less than 50
+    proxy: process.env.BASE_URL + '/user/oauth/git',
     distractionFreeMode: false // Facebook-like distraction free mode
   })
 

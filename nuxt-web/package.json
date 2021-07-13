@@ -18,7 +18,6 @@
     "@nuxtjs/sitemap": "^2.2.0",
     "@siques/vue-ossfinder": "^0.3.60",
     "dayjs": "^1.8.19",
-    "medium-zoom": "^1.0.5",
     "nuxt": "^2.14.5",
     "nuxt-property-decorator": "^2.5.0",
     "vue-property-decorator": "^8.3.0",

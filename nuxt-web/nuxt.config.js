@@ -32,6 +32,7 @@ export default {
       // { src: 'https://cdn.siques.cn/libs/js/katex.min.js' },
       { src: 'https://cdn.siques.cn/libs/js/Sortable.min.js', ssr: true },
       { src: 'https://cdn.siques.cn/libs/js/vuedraggable.umd.min.js', ssr: true },
+      { src: 'https://cdn.siques.cn/libs/js/fancybox.umd.js', defer: true },
       {
         src: 'https://cdn.siques.cn/libs/js/highlight.min.js'
       },
@@ -39,7 +40,7 @@ export default {
 
       { src: 'https://cdn.siques.cn/libs/js/diff.min.js', defer: true },
       ,
-      { src: 'https://cdn.bootcdn.net/ajax/libs/ali-oss/6.12.0/aliyun-oss-sdk.min.js', defer: true },
+      { src: 'https://cdn.siques.cn/libs/js/aliyun-oss-sdk.min.js', defer: true },
 
       {
         src: 'https://cdn.siques.cn/libs/js/jquery.min.js'
@@ -61,15 +62,10 @@ export default {
       {
         src: 'https://cdn.siques.cn/libs/js/vue-meta.min.js'
       }
-      // {
-      //   src: 'https://cdn.siques.cn/libs/js/riddler-sdk-0.2.2.js',
-      //   defer: true
-      // }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      // { rel: 'stylesheet', href: '/icon/iconfont.css' },
-      // { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/_font.css' },
+      { rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/fancybox.css' },
       {
         rel: 'stylesheet',
         href: 'https://cdn.siques.cn/libs/css/katex.min.css'
