@@ -52,12 +52,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import mediumZoom from 'medium-zoom'
+
 import { getMomentList } from '@/api/moment.js'
-import { textToImg } from '@/plugins/utils'
-const mediumzoom = () => {
-  mediumZoom(document.querySelectorAll('.plain-text-wrap img'))
-}
+import { textToImg, fancybox } from '@/plugins/utils'
 
 @Component({})
 export default class Moment extends Vue {
@@ -94,7 +91,7 @@ export default class Moment extends Vue {
 
   mounted() {
     this.$nextTick(() => {
-      mediumzoom()
+      fancybox()
       this.posts.forEach((e) => {
         this.$set(e, 'avatar', textToImg(e.user.username.substring(0, 1)))
       })
