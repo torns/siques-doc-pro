@@ -1,5 +1,5 @@
 <template>
-  <v-main id="domain">
+  <v-main id="domain" style="overflow-x: hidden;">
     <IndexMenu> </IndexMenu>
     <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc" @selectDoc="selectDoc"> </DocSideMenu>
     <div
