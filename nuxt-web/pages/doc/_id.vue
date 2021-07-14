@@ -1,5 +1,5 @@
 <template>
-  <v-main id="domain" style="overflow-x: hidden;">
+  <v-main id="domain">
     <IndexMenu> </IndexMenu>
     <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc" @selectDoc="selectDoc"> </DocSideMenu>
     <div
@@ -35,7 +35,7 @@
         <v-img :src="doc.cover" style="height:32vh;"> </v-img>
       </div>
     </div>
-    <div class="post_container  pb-3">
+    <div style="overflow-x: hidden;" class="post_container  pb-3">
       <v-row no-gutters>
         <v-col xs="12" sm="12" md="12" lg="12" xl="12">
           <article id="article" class=" bg-white ">
