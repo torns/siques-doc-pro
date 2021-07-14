@@ -18,10 +18,16 @@
 
     <!-- 小屏幕导航栏 -->
     <BaseExtendMenu>
-      <v-list :dark="isHomepage && true" :light="!isHomepage && true" dense nav>
+      <v-list
+        style="background:none;backdrop-filter: blur(5px);"
+        :dark="isHomepage && true"
+        :light="!isHomepage && true"
+        dense
+        nav
+      >
         <v-list-item v-for="item in items" :key="item.title" link>
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon style="color:white">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content
@@ -32,7 +38,7 @@
               }
             "
           >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title style="color:white">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

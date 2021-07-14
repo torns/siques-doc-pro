@@ -80,12 +80,12 @@
           />
         </li>
         <li @click="$router.push('/search')">
-          <v-btn icon large style="color: black;">
+          <v-btn v-if="trasparent" icon large style="color: white;">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
-          <!-- <v-btn v-else icon large>
+          <v-btn v-else icon large style="color: black;">
             <v-icon>mdi-magnify</v-icon>
-          </v-btn> -->
+          </v-btn>
         </li>
       </ul>
     </nav>
