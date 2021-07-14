@@ -105,8 +105,8 @@ export default class Doc extends Vue {
         },
         { hid: 'description', name: 'description', content: this.doc.alias }
       ],
-      link: [{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css' }],
-      script: [{ src: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js' }]
+      link: [{ rel: 'stylesheet', href: 'https://cdn.siques.cn/libs/css/gitalk.css' }],
+      script: [{ src: 'https://cdn.siques.cn/libs/js/gitalk.min.js' }]
     }
   }
 
