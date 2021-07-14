@@ -1,24 +1,11 @@
 <template>
   <div class="d-flex w-100 jc-center">
-    <nav id="menu" :class="(isHomepage ? '' : 'fixed') + ' xs  w-100'" @click.stop>
+    <nav id="menu" :class="'fixed xs  w-100'" @click.stop>
       <v-row justify="center">
         <v-col cols="12" md="11" lg="9" xl="8">
           <ul style="  margin: 0 auto" class="d-flex ai-center relative pl-4 pr-3">
             <li class=" xs-flex-1 d-flex ai-center pointer">
-              <img
-                v-if="isHomepage"
-                src="~/static/banner.png"
-                alt="Logo"
-                style="object-fit: cover; height: 40px"
-                @click="$router.push('/')"
-              />
-              <img
-                v-else
-                src="~/static/banner1.png"
-                alt="Logo"
-                style="object-fit: cover; height: 40px"
-                @click="$router.push('/')"
-              />
+              <div id="logo" style="object-fit: cover; height: 40px;width:104px" @click="$router.push('/')" />
             </li>
 
             <li :class="`nav-top-list__li nav-top-list__info xs ${$route.path == '/' ? 'show_underline' : ''}`">
@@ -38,28 +25,20 @@
               <div class="d-flex ai-center">
                 <v-menu open-on-hover transition="slide-y-transition" bottom rounded="Large" offset-y>
                   <template v-slot:activator="{ attrs, on }">
-                    <v-btn
-                      v-bind="attrs"
-                      :color="isHomepage ? `white` : 'black'"
-                      :class="`${isHomepage ? 'white--text' : ''} px-8`"
-                      rounded
-                      outlined
-                      @click="write"
-                      v-on="on"
-                    >
+                    <v-btn v-bind="attrs" :class="` px-8`" rounded outlined @click="write" v-on="on">
                       写稿
                     </v-btn>
                   </template>
                 </v-menu>
-                <v-menu v-if="loggedIn" open-on-hover color="transparent" transition="slide-y-transition" bottom>
+                <v-menu v-if="loggedIn" open-on-hover transition="slide-y-transition" bottom>
                   <template v-slot:activator="{ attrs, on }">
-                    <v-btn v-bind="attrs" :class="`${isHomepage ? 'white--text' : ''} ma-5`" text v-on="on">
+                    <v-btn v-bind="attrs" :class="`ma-5`" text v-on="on">
                       {{ userInfo.username }}
                     </v-btn>
                   </template>
 
                   <v-list>
-                    <v-list-item color="transparent" link @click="logout">
+                    <v-list-item link @click="logout">
                       <v-list-item-title v-text="`退出登录`"></v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -79,7 +58,7 @@
             <v-icon>mdi-format-list-bulleted-square</v-icon>
           </v-btn>
 
-          <v-btn v-else icon large>
+          <v-btn v-else icon large style="color: black;">
             <v-icon>mdi-format-list-bulleted-square</v-icon>
           </v-btn>
         </li>
@@ -87,21 +66,21 @@
         <li class="favicon d-flex ai-center point pt-1">
           <img
             v-show="trasparent"
-            src="~/static/banner.png"
+            src="~/static/banner1.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
             @click="$router.push('/')"
           />
           <img
             v-show="!trasparent"
-            src="~/static/banner1.png"
+            src="~/static/banner.png"
             alt="Logo"
             style="object-fit: cover; height: 36px"
             @click="$router.push('/')"
           />
         </li>
         <li @click="$router.push('/search')">
-          <v-btn icon large dark>
+          <v-btn icon large style="color: black;">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
           <!-- <v-btn v-else icon large>
@@ -123,10 +102,6 @@ import { mapGetters } from 'vuex'
 export default class IndexMenu extends Vue {
   get trasparent() {
     return this.$route.path === '/' || this.$route.path.includes('/doc/')
-  }
-
-  get isHomepage() {
-    return this.$route.path === '/'
   }
 
   loggedIn

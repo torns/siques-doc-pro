@@ -15,13 +15,12 @@ export default () => {
       top = $(document).scrollTop()
 
       if (top < 2) {
-        $('#menu').removeClass('showMenu')
-        $('#menu').addClass('hideMenu')
+        $('#menu').addClass('up')
+        $('#menu').removeClass('down')
       } else {
-        $('#menu').removeClass('hideMenu')
-        $('#menu').addClass('showMenu')
+        $('#menu').addClass('down')
+        $('#menu').removeClass('up')
       }
-
       if (top > 200) {
         $('#sidebar').css('position', 'fixed')
         $('#sidebar').css('top', '150px')

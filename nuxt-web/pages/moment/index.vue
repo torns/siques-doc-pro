@@ -1,7 +1,7 @@
 <template>
   <div>
     <IndexMenu></IndexMenu>
-    <div class="moment_container pt-5">
+    <div class="moment_container pt-8">
       <v-row no-gutters type="flex">
         <v-col xs="12" sm="12" md="12" lg="12" xl="12">
           <div class="moment-data">今天</div>

@@ -4,7 +4,7 @@
     <DocSideMenu v-if="docTree.length > 0" :doc-tree="docTree" :doc="doc" @selectDoc="selectDoc"> </DocSideMenu>
     <div
       class="absolute d-flex jc-center flex-column ai-center "
-      style="z-index:5!important; width: 80%;top:8vh;left:10%;"
+      style="z-index:5!important; width: 80%;top:11vh;left:10%;"
     >
       <h1 style="text-align: center;">
         <div class="text-white py-2 lh-5">{{ doc.title }}</div>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="postMask" style="height:32vh;backdrop-filter: blur(3px);"></div>
+    <div class="postMask" style="height:32vh;backdrop-filter: blur(20px);"></div>
 
     <div class="post-blur">
       <div class=" relative ">

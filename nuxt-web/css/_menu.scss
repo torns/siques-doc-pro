@@ -58,32 +58,6 @@
   }
 }
 
-#menu {
-  color: white;
-  background-color: #000000;
-}
-
-#other {
-  #menu {
-    z-index: -1;
-    color: #27282d;
-
-    background-color: white;
-  }
-  .round_button {
-    border: 1px solid #27282d;
-    color: #27282d;
-    &:hover {
-      color: white;
-      border: 1px solid white;
-      background-color: #27282d;
-    }
-  }
-  .nav-top-list__info:before {
-    background-color: #27282d;
-  }
-}
-
 .nav-top-list__rightInfo {
   margin: 0 !important;
   position: absolute !important;
@@ -130,58 +104,60 @@
   line-height: 42px;
 }
 
-.el-menu::before,
-.el-menu::after {
-  display: table;
-  content: none !important;
-}
+#menu {
+  color: white;
+  z-index: 10;
+  #logo {
+    background: url(../static/banner1.png) no-repeat 20px 20px;
 
-// .el-menu--horizontal > .el-menu-item.is-active {
-//   border-bottom: none !important;
-// }
-
-// .el-menu--horizontal {
-//   border-bottom: none !important;
-// }
-
-@keyframes hideMenu {
-  0% {
-    opacity: 1;
+    background-size: contain;
+    background-position: top;
   }
-  100% {
-    opacity: 0;
+  backdrop-filter: blur(5px);
+  .v-btn {
+    color: white;
   }
 }
 
-@keyframes showMenu {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+#menu {
+  &.down {
+    background: rgb(255 255 255 / 50%);
+    color: rgb(0 0 0);
+    transition: cubic-bezier(0.39, 0.58, 0.57, 1);
+    transition-duration: 0.1s;
+    #logo {
+      background: url(../static/banner.png) no-repeat 20px 20px;
+
+      background-size: contain;
+      background-position: top;
+    }
+    .v-btn {
+      color: black;
+    }
+    .nav-top-list__info:before {
+      background-color: black;
+    }
   }
 }
 
-#other .showMenu {
-  display: block;
-  height: 60px !important;
-  transition: 0.5s all;
-  animation: showMenu 1s;
-  -moz-animation: showMenu 1s; /* Firefox */
-  -webkit-animation: showMenu 1s; /* Safari and Chrome */
-  -o-animation: showMenu 1s; /* Opera */
-  z-index: 10 !important;
-}
+#menu {
+  &.up {
+    background: none;
+    color: white;
+    transition: cubic-bezier(0.39, 0.58, 0.57, 1);
+    transition-duration: 0.1s;
+    #logo {
+      background: url(../static/banner1.png) no-repeat 20px 20px;
 
-#other .hideMenu {
-  display: block;
-  opacity: 0;
-  // z-index: -10;
-  transition: 0.5s all;
-  height: 70px;
-  animation: hideMenu 1s;
-  -moz-animation: hideMenu 1s; /* Firefox */
-  -webkit-animation: hideMenu 1s; /* Safari and Chrome */
-  -o-animation: hideMenu 1s; /* Opera */
-  z-index: -1 !important;
+      background-size: contain;
+      background-position: top;
+    }
+    .v-btn {
+      color: white;
+    }
+
+    .nav-top-list__info:before {
+      background-color: white;
+    }
+  }
 }
