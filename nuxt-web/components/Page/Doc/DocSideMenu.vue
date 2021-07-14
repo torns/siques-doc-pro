@@ -1,5 +1,5 @@
 <template>
-  <div style="z-index:10">
+  <div style="z-index:150">
     <v-navigation-drawer v-model="docSideBars" width="320" app>
       <v-list nav dense>
         <v-treeview

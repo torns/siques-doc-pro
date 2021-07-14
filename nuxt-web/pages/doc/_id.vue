@@ -55,7 +55,7 @@
         </v-col>
       </v-row>
 
-      <div id="gitalk-container"></div>
+      <div class="px-2" id="gitalk-container"></div>
     </div>
     <PostToc :title="doc.title"></PostToc>
 

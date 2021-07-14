@@ -125,7 +125,7 @@ public class UserController {
     public static final MediaType JSON
             = MediaType.get("application/json;");
     @PostMapping("/oauth/git")
-    public Object oauth(@RequestBody Map<String,String> map) throws URISyntaxException, IOException {
+    public Object oauth(@RequestBody Map<String,String> map) throws IOException {
 
 
         OkHttpClient client = new OkHttpClient();
