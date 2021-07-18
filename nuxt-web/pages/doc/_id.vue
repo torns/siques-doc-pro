@@ -128,6 +128,8 @@ export default class Doc extends Vue {
         return true
       }
     }
+
+    return false
   }
 
   head() {
