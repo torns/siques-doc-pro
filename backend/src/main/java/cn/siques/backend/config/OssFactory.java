@@ -1,7 +1,7 @@
 package cn.siques.backend.config;
 
 
-import cn.siques.backend.entity.OssSecurity;
+import cn.siques.backend.utils.model.OssSecurity;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyuncs.DefaultAcsClient;

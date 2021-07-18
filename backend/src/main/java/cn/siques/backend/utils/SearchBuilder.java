@@ -4,6 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.siques.backend.utils.page.PageResult;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
@@ -180,14 +182,14 @@ public class SearchBuilder {
      * @param pageNum 当前页数
      * @param pageSize 每页显示
      */
-    public PageResult<JsonNode> getPage(Integer pageNum, Integer pageSize) throws IOException {
+    public PageResult<JSONObject> getPage(Integer pageNum, Integer pageSize) throws IOException {
         this.setPage(pageNum, pageSize);
         SearchResponse response = this.get();
         SearchHits searchHits = response.getHits();
         Long totalCnt = searchHits.getTotalHits();
-        List<JsonNode> list = getList(searchHits);
+        List<JSONObject> list = getList(searchHits);
         int ceil = (int) Math.ceil(totalCnt / pageSize);
-        return PageResult.<JsonNode>builder().totalPages(ceil)
+        return PageResult.<JSONObject>builder().totalPages(ceil)
                 .records(list).pageNum(pageNum)
                 .pageSize(pageSize).code(1)
                 .total(totalCnt).build();
@@ -202,19 +204,19 @@ public class SearchBuilder {
     /**
      * 返回JSON列表数据
      */
-    private List<JsonNode> getList(SearchHits searchHits) {
-        List<JsonNode> list = new ArrayList<>();
+    private List<JSONObject> getList(SearchHits searchHits) {
+        List<JSONObject> list = new ArrayList<>();
         if (searchHits != null) {
             searchHits.forEach(item -> {
-                JsonNode jsonNode = JsonUtils.parse(item.getSourceAsString());
-                ObjectNode objectNode = (ObjectNode)jsonNode;
-                objectNode.put("id", item.getId());
+                JSONObject jsonObject = JSON.parseObject(item.getSourceAsString());
+
+                jsonObject.put("id", item.getId());
 
                 Map<String, HighlightField> highlightFields = item.getHighlightFields();
                 if (highlightFields != null) {
-                    populateHighLightedFields(objectNode, highlightFields);
+                    populateHighLightedFields(jsonObject, highlightFields);
                 }
-                list.add(objectNode);
+                list.add(jsonObject);
             });
         }
         return list;

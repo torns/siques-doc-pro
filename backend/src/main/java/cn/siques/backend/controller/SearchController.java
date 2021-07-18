@@ -6,6 +6,7 @@ import cn.siques.backend.service.SearchService;
 
 import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageResult;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,14 @@ public class SearchController {
 
     @PostMapping("/{indexName}")
     public Result search(@RequestBody QueryStrDto searchDto, @PathVariable String indexName) throws IOException {
-        PageResult<JsonNode> jsonNodePageResult = searchService.strQuery(indexName, searchDto);
+        PageResult<JSONObject> jsonNodePageResult = searchService.strQuery(indexName, searchDto);
         return Result.succeed(jsonNodePageResult);
     }
 
     //实时搜索
     @PostMapping("predictive/{indexName}")
     public Result predictive(@RequestBody PredictiveDto predictiveDto, @PathVariable String indexName) throws IOException {
-        PageResult<JsonNode> jsonNodePageResult = searchService.predictiveQuery(indexName, predictiveDto);
+        PageResult<JSONObject> jsonNodePageResult = searchService.predictiveQuery(indexName, predictiveDto);
         return Result.succeed(jsonNodePageResult);
     }
 }

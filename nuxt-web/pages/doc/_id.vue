@@ -9,8 +9,9 @@
       <h1 style="text-align: center;">
         <div class="text-white py-2 lh-5">{{ doc.title }}</div>
       </h1>
+
       <div class="d-flex py-1 ai-center">
-        <div class="d-flex fs-xs ai-center pt-1 grey--text text--lighten-1">
+        <div class="d-flex fs-xs ai-center pt-1 text-white">
           <v-icon small color="lime" class="pr-2">
             mdi-bullseye-arrow
           </v-icon>
@@ -20,11 +21,19 @@
           <v-icon small color="pink lighten-4" class="px-2">
             mdi-comment-eye
           </v-icon>
+
           {{ doc.views }}
+
+          <span class="px-1 pointer" @click="toEdit">
+            <v-icon small v-if="isOwner && show" color="orange">
+              mdi-pencil
+            </v-icon>
+            编辑
+          </span>
         </div>
       </div>
       <div class="tag d-flex ai-baseline mb-3">
-        <div class="grey--text text--lighten-1 fs-xs">阅读约 {{ Math.ceil(doc.counts / 275) }} 分钟</div>
+        <div class="text-white fs-xs">阅读约 {{ Math.ceil(doc.counts / 275) }} 分钟</div>
       </div>
     </div>
 
@@ -67,11 +76,13 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 import { hljs, copy, gitTalk, fancybox } from '@/plugins/utils.js'
-
+import { mapGetters } from 'vuex'
 import { getDocDetail, getDocTree } from '@/api/doc'
 import tocjs from '~/plugins/toc.js'
 
-@Component({})
+@Component({
+  computed: mapGetters(['selectedDoc', 'userInfo'])
+})
 export default class Doc extends Vue {
   async asyncData({ params, store, redirect }: any) {
     const doc = await getDocDetail({ docId: params.id, isPublished: true })
@@ -90,9 +101,36 @@ export default class Doc extends Vue {
     }
   }
 
+  userInfo
+  selectedDoc
   doc: any = {}
-  onIntersect = false
   docTree = []
+
+  get show() {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs':
+        return false
+      case 'sm':
+        return false
+      case 'md':
+        return false
+      default:
+        return true
+    }
+  }
+
+  toEdit() {
+    this.$store.commit('SET_DOC', this.doc)
+    this.$router.push('/docs')
+  }
+
+  isOwner() {
+    if (this.userInfo.loggedIn) {
+      if (this.userInfo.id === this.doc.userId) {
+        return true
+      }
+    }
+  }
 
   head() {
     return {

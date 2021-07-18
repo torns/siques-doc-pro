@@ -6,6 +6,7 @@ import cn.siques.backend.service.SearchService;
 
 import cn.siques.backend.utils.SearchBuilder;
 import cn.siques.backend.utils.page.PageResult;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -26,7 +27,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PageResult<JsonNode> strQuery(String indexName, QueryStrDto searchDto) throws IOException {
+    public PageResult<JSONObject> strQuery(String indexName, QueryStrDto searchDto) throws IOException {
         return SearchBuilder.builder(elasticsearchRestTemplate, indexName)
                 .setStringQuery(searchDto.getQueryStr())
                 .addSort(searchDto.getSortCol(), SortOrder.DESC)
@@ -35,7 +36,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PageResult<JsonNode> predictiveQuery(String indexName, PredictiveDto predictiveDto) throws IOException {
+    public PageResult<JSONObject> predictiveQuery(String indexName, PredictiveDto predictiveDto) throws IOException {
         return SearchBuilder.builder(elasticsearchRestTemplate,indexName)
                 .matchPhrasePrefixQuery(predictiveDto.getFiledName(),predictiveDto.getPrefix())
                 .filter(new String[]{"id","type","title"},new String[]{})

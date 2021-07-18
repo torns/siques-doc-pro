@@ -1,4 +1,4 @@
-package cn.siques.backend.entity;
+package cn.siques.backend.utils.model;
 
 import lombok.Builder;
 import lombok.Data;

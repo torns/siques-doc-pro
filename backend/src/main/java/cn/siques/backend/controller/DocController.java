@@ -5,7 +5,6 @@ import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.entity.Collection;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
-import cn.siques.backend.entity.UserCollection;
 import cn.siques.backend.service.CollectionDocService;
 import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.DocService;
@@ -16,23 +15,18 @@ import cn.siques.backend.utils.model.DocEnum;
 import cn.siques.backend.utils.model.JwtUserDetails;
 import cn.siques.backend.utils.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -45,8 +39,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DocController {
 
-    @Autowired
-    RedisRepository redisRepository;
+
+     private RedisRepository redisRepository;
 
      private DocService docService;
 
@@ -242,7 +236,6 @@ public class DocController {
      */
     @PostMapping("/publish")
     @Transactional
-
     public Result publish(@LoginUser JwtUserDetails userDetails,@RequestBody List<Long> doPublishIds,@RequestParam Long collectionId){
         List<Doc> docs = docService.getDocsByCollectionId(collectionId);
         // 集合中所有文章的Id

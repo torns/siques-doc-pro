@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$store.state.modules.user.loggedIn">
     <DocInnerAppBar v-show="!loading && selectedDoc.id"></DocInnerAppBar>
     <v-main id="doc-content" style="padding-top:120px" app>
       <CkEditor v-show="!loading && selectedDoc.id" ref="editor" v-scroll-spy></CkEditor>
@@ -26,12 +26,6 @@ import toc from '@/plugins/toc'
   computed: mapGetters(['selectedDoc'])
 })
 export default class DocWrite extends Vue {
-  asyncData({ store, redirect }) {
-    if (!store.state.modules.user.loggedIn) {
-      return redirect('/')
-    }
-  }
-
   head() {
     return {
       title: '写文章'

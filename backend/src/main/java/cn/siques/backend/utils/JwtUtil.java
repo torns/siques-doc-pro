@@ -80,7 +80,7 @@ public class JwtUtil {
     }
 
     public String extractUserIdFromToken(String token) {
-        if(publicKey==null){
+        if(publicKey == null){
             signKey();
         }
         String userId;
