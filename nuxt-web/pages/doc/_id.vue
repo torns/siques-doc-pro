@@ -24,12 +24,10 @@
 
           {{ doc.views }}
 
-          <span class="px-1 pointer" @click="toEdit">
-            <v-icon small v-if="isOwner && show" color="orange">
-              mdi-pencil
-            </v-icon>
-            编辑
-          </span>
+          <v-icon class="px-2 pointer" @click="toEdit" small v-if="isOwner && show" color="orange">
+            mdi-pencil
+          </v-icon>
+          <span v-if="isOwner && show" class="pointer" @click="toEdit">编辑</span>
         </div>
       </div>
       <div class="tag d-flex ai-baseline mb-3">
