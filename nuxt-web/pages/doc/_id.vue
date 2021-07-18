@@ -122,7 +122,7 @@ export default class Doc extends Vue {
     this.$router.push('/docs')
   }
 
-  isOwner() {
+  get isOwner() {
     if (this.userInfo.loggedIn) {
       if (this.userInfo.id === this.doc.userId) {
         return true
