@@ -58,6 +58,7 @@ export const actions = {
     commit('modules/collection/SET_COLLECTION', [])
     commit('modules/collection/SET_DELCOLLECTION', [])
     commit('modules/user/SET_TOKEN', '')
+    commit('modules/user/SET_INFO', {})
     commit('modules/user/SET_STATUS', false)
   }
 }
