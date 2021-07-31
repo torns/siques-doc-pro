@@ -3,7 +3,7 @@ export default (windows) => {
   var canvas = document.getElementById('canvas')
   var ctx = canvas.getContext('2d')
   canvas.width = window.innerWidth
-  canvas.height = window.innerHeight - 200
+  canvas.height = window.innerHeight - 100
   var w = canvas.width
   var h = canvas.height
 

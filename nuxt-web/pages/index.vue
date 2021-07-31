@@ -6,7 +6,7 @@
         ><v-container dark style="height: 0;padding:0">
           <v-row no-gutters class=" jc-center">
             <v-col xs="10" sm="8" md="8" lg="8" xl="8">
-              <div class="d-flex justify-space-around " style="position: relative;top:258px">
+              <div class="d-flex justify-space-around " style="position: relative;top:calc(59vh - 237px)">
                 <div style="width: 100%; max-width: 380px">
                   <div class="text-white pb-3 text-center" style="font-size: 32px">从思考, 到创造</div>
                   <div @click.stop>
