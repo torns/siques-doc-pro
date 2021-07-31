@@ -148,11 +148,15 @@ export default class Doc extends Vue {
     }
   }
 
+  loading = false
+
   async selectDoc(id) {
+    const loading = this.$loading({ text: '努力加载中', status: this.loading })
     const res = await getDocDetail({ docId: id, isPublished: true })
     this.doc = res.datas
     window.scrollTo(0, 0)
     this.renderPage()
+    loading.close()
   }
 
   beforeMount() {

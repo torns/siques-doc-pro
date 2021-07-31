@@ -17,9 +17,14 @@ export default () => {
       if (top < 2) {
         $('#menu').addClass('up')
         $('#menu').removeClass('down')
+        $('#scroll-top').addClass('up')
+        $('#scroll-top').removeClass('down')
       } else {
         $('#menu').addClass('down')
         $('#menu').removeClass('up')
+
+        $('#scroll-top').addClass('down')
+        $('#scroll-top').removeClass('up')
       }
       if (top > 200) {
         $('#sidebar').css('position', 'fixed')

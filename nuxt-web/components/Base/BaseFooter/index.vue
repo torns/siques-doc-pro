@@ -1,5 +1,35 @@
 <template>
   <div>
+    <v-speed-dial
+      id="scroll-top"
+      class="up"
+      :top="top"
+      :bottom="bottom"
+      :right="right"
+      :left="left"
+      :direction="direction"
+      :transition="transition"
+    >
+      <template v-slot:activator>
+        <v-fab-transition>
+          <v-btn @click="scrollTop" color="indigo " dark fab>
+            <v-icon>
+              mdi-chevron-up
+            </v-icon>
+          </v-btn>
+        </v-fab-transition>
+      </template>
+      <!-- <v-btn fab dark small color="green">
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="indigo">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-btn  fab dark small color="red">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn> -->
+    </v-speed-dial>
+
     <section class="main-footer-waves-area waves-area">
       <svg
         style="background-color: #f7f7f7;"
@@ -81,7 +111,7 @@
             </a>
           </div> -->
           <div>
-            <a class="text-gray" rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
+            <a class="text-gray  " rel="nofollow" href="http://beian.miit.gov.cn">浙ICP备19035817号</a>
           </div>
           <!-- <li>
             {{ '❤ ' + Math.ceil((new Date() - Date.parse('2018-12-15')) / (1 * 24 * 60 * 60 * 1000)) + ' 天' }}
@@ -105,6 +135,18 @@ export default class Footer extends Vue {
   @Prop()
   topBorder: any
 
+  direction = 'top'
+  fab = false
+  fling = false
+  hover = true
+  tabs = null
+  top = false
+  right = true
+  bottom = true
+  left = false
+  scrollInvoked = 0
+  transition = 'slide-y-reverse-transition'
+
   techs = [
     { name: 'Vuetify', link: 'https://vuetifyjs.com/zh-Hans/' },
     { name: 'Node.js', link: 'https://www.nodeapp.cn/N' },
@@ -112,10 +154,29 @@ export default class Footer extends Vue {
     { name: 'Nuxtjs', link: 'https://www.nuxtjs.cn/guide' },
     { name: 'CKEditor', link: 'https://ckeditor.com/ckeditor-5/demo/#balloon-block' }
   ]
+
+  onScroll() {
+    this.scrollInvoked++
+  }
+
+  scrollTop() {
+    window.scroll(0, 0)
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.up {
+  transform-origin: center center;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.down {
+  transform-origin: center center;
+  opacity: 1;
+  transition: 0.5s;
+}
 .main-footer-waves-area .waves-area {
   background-color: #f7f7f7;
 }
@@ -212,5 +273,14 @@ svg {
 }
 .v-icon-star-on {
   color: rgb(255, 113, 168) !important;
+}
+
+.v-speed-dial {
+  position: fixed !important;
+  z-index: 20;
+}
+
+.v-btn--floating {
+  position: relative;
 }
 </style>
