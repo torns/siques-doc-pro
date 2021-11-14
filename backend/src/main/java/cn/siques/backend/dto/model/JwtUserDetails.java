@@ -1,4 +1,4 @@
-package cn.siques.backend.utils.model;
+package cn.siques.backend.dto.model;
 
 import lombok.Builder;
 import lombok.Data;

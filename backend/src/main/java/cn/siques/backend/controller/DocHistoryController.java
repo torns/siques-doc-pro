@@ -4,13 +4,12 @@ import cn.siques.backend.entity.Doc;
 import cn.siques.backend.entity.DocHistory;
 import cn.siques.backend.service.DocHistoryService;
 import cn.siques.backend.service.DocService;
-import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.dto.model.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**

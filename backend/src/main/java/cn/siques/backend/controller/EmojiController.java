@@ -1,6 +1,6 @@
 package cn.siques.backend.controller;
 
-import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.dto.model.Result;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import org.springframework.cache.annotation.Cacheable;

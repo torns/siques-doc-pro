@@ -1,24 +1,18 @@
 package cn.siques.backend.controller;
 
-import cn.hutool.core.date.format.FastDateFormat;
-import cn.hutool.extra.servlet.multipart.UploadFile;
 import cn.siques.backend.annotation.LoginUser;
 import cn.siques.backend.config.OssFactory;
-import cn.siques.backend.utils.model.JwtUserDetails;
-import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.dto.model.JwtUserDetails;
+import cn.siques.backend.dto.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author : heshenghao

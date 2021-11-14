@@ -1,11 +1,8 @@
 package cn.siques.backend.resolve;
 
 import cn.siques.backend.annotation.LoginUser;
-import cn.siques.backend.entity.User;
-import cn.siques.backend.utils.model.JwtUserDetails;
+import cn.siques.backend.dto.model.JwtUserDetails;
 import org.springframework.core.MethodParameter;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

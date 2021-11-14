@@ -3,11 +3,10 @@ package cn.siques.backend.utils;
 import cn.hutool.core.util.StrUtil;
 import cn.siques.backend.entity.User;
 import cn.siques.backend.service.UserService;
-import cn.siques.backend.utils.model.JwtUserDetails;
+import cn.siques.backend.dto.model.JwtUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +17,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import javax.servlet.http.HttpServletRequest;
 import java.security.*;
 import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
 
@@ -29,8 +26,8 @@ import java.util.HashMap;
  * @date : 22:48 2020/12/9
  */
 @Slf4j
-@Configuration
 public class JwtUtil {
+
     private static RSAPrivateCrtKey privateKey;
 
     private static PublicKey publicKey;
@@ -51,13 +48,18 @@ public class JwtUtil {
     }
 
     public static String genToken(User user){
-        if(privateKey == null){
-            signKey();
-        }
+        checkKey(privateKey == null);
         return Jwts.builder()
                 .setClaims(new HashMap<>(){{put("username",user.getUsername());
                     put("id",String.valueOf(user.getId()));}})
+                // 使用私钥加密
                 .signWith(privateKey,SignatureAlgorithm.RS512).compact();
+    }
+
+    private static void checkKey(boolean b) {
+        if (b) {
+            signKey();
+        }
     }
 
     public static UsernamePasswordAuthenticationToken authenticate(User user, HttpServletRequest request, UserService userService) {
@@ -71,7 +73,7 @@ public class JwtUtil {
         return authenticationToken;
     }
 
-    public String extractJwtFromRequest(HttpServletRequest request) {
+    public static String extractJwtFromRequest(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (StrUtil.isNotBlank(token) && token.startsWith("Bearer ")) {
             return token.substring(7);
@@ -79,20 +81,16 @@ public class JwtUtil {
         return null;
     }
 
-    public String extractUserIdFromToken(String token) {
-        if(publicKey == null){
-            signKey();
-        }
-        String userId;
+    public static String extractUserIdFromToken(String token) {
+        checkKey(publicKey == null);
+        String userId = null;
         try {
-
             userId = (String) Jwts.parserBuilder()
                     .setSigningKey(publicKey)
                     .build()
                     .parseClaimsJws(token).getBody().get("id");
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            userId = null;
+            log.error(e.getMessage());
         }
 
         return userId;

@@ -6,7 +6,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.siques.backend.config.ContentCensor;
 import cn.siques.backend.dao.CollectionDocDao;
 import cn.siques.backend.dao.DocDao;
-import cn.siques.backend.dao.UserDao;
 import cn.siques.backend.entity.CollectionDoc;
 import cn.siques.backend.entity.Doc;
 import cn.siques.backend.entity.DocHistory;
@@ -16,7 +15,7 @@ import cn.siques.backend.service.DocService;
 
 import cn.siques.backend.service.UserService;
 import cn.siques.backend.utils.RegexUtils;
-import cn.siques.backend.utils.model.DocEnum;
+import cn.siques.backend.dto.model.DocEnum;
 import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;

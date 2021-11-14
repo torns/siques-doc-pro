@@ -3,7 +3,7 @@ package cn.siques.backend.service.Impl;
 import cn.siques.backend.dao.UserDao;
 import cn.siques.backend.entity.User;
 import cn.siques.backend.service.UserService;
-import cn.siques.backend.utils.model.JwtUserDetails;
+import cn.siques.backend.dto.model.JwtUserDetails;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

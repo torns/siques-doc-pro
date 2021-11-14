@@ -8,8 +8,8 @@ import cn.siques.backend.entity.Doc;
 import cn.siques.backend.entity.UserCollection;
 import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.UserCollectionService;
-import cn.siques.backend.utils.model.JwtUserDetails;
-import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.dto.model.JwtUserDetails;
+import cn.siques.backend.dto.model.Result;
 import cn.siques.backend.utils.page.PageRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;

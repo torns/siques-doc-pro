@@ -1,6 +1,6 @@
 package cn.siques.backend.entity;
 
-import cn.siques.backend.utils.model.DocEnum;
+import cn.siques.backend.dto.model.DocEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author : heshenghao

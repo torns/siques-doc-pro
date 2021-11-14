@@ -25,18 +25,16 @@ import java.io.IOException;
 @Configuration
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    JwtUtil jwtUtil;
 
     @Autowired
     UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String token = jwtUtil.extractJwtFromRequest(request);
+        String token =JwtUtil.extractJwtFromRequest(request);
         if(StrUtil.isNotEmpty(token)) {
-            // 解析token
-            String userId = jwtUtil.extractUserIdFromToken(token);
+            // 从token中解析userId
+            String userId = JwtUtil.extractUserIdFromToken(token);
             if(ObjectUtil.isNull(userId)){
                 filterChain.doFilter(request,response);
                 return;

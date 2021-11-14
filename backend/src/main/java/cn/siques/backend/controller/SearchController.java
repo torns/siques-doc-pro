@@ -4,10 +4,9 @@ import cn.siques.backend.dto.PredictiveDto;
 import cn.siques.backend.dto.QueryStrDto;
 import cn.siques.backend.service.SearchService;
 
-import cn.siques.backend.utils.model.Result;
+import cn.siques.backend.dto.model.Result;
 import cn.siques.backend.utils.page.PageResult;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
