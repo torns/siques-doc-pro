@@ -139,15 +139,15 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
-  sitemap: {
-    hostname: mode ? 'https://www.siques.cn' : 'http://localhost:3002',
-    gzip: true,
-    exclude: ['/docs'],
-    routes: async () => {
-      const res = await axios.get(`${mode ? 'https://www.siques.cn/api' : 'http://localhost:3002'}/doc/seo/sitemap`)
-      return res.data.datas.map((list) => `/doc/${list.id}`)
-    }
-  },
+  // sitemap: {
+  //   hostname: mode ? 'https://www.siques.cn' : 'http://localhost:3002',
+  //   gzip: true,
+  //   exclude: ['/docs'],
+  //   routes: async () => {
+  //     const res = await axios.get(`${mode ? 'https://www.siques.cn/api' : 'http://localhost:3002'}/doc/seo/sitemap`)
+  //     return res.data.datas.map((list) => `/doc/${list.id}`)
+  //   }
+  // },
 
   /*
    ** Axios module configuration
