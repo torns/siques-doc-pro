@@ -20,8 +20,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: l1itdhjaoiqw32kwqe$5asasd*a21
-    url: jdbc:mysql://106.54.247.224:3306/nest?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    password: l1itdhjaoiqw32kwqe
+    url: jdbc:mysql://139.198.34.81:3306/siques-doc?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
   servlet:
     multipart:
       enabled: true
