@@ -25,9 +25,9 @@ import java.util.Map;
 /**
  * redis 配置类
  */
-@EnableConfigurationProperties({RedisProperties.class, CacheManagerProperties.class})
-@EnableCaching
-@Configuration
+//@EnableConfigurationProperties({RedisProperties.class, CacheManagerProperties.class})
+//@EnableCaching
+//@Configuration
 public class RedisAutoConfigure {
     @Autowired
     private CacheManagerProperties cacheManagerProperties;

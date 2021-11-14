@@ -3,12 +3,15 @@ version: '3'
 services:
   siques-web:
     image: registry.cn-hangzhou.aliyuncs.com/shenghao-nestjs/fontend:v0.1
+    networks:
+      - default
     ports:
       - 3000:3000
     restart: always
   siques-backend:
     image: registry.cn-hangzhou.aliyuncs.com/shenghao-nestjs/backend:v0.1
+    networks:
+      - default
     ports:
       - 3002:3002
-    restart: always   
-      
+    restart: always
