@@ -2,8 +2,7 @@ package cn.siques.backend.service.Impl;
 
 
 import cn.siques.backend.service.ValidateCodeService;
-import cn.siques.backend.template.RedisRepository;
-import com.alibaba.fastjson.JSON;
+import cn.siques.backend.config.RedisRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import okhttp3.*;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

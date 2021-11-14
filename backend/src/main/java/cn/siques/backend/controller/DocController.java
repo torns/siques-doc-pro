@@ -9,7 +9,7 @@ import cn.siques.backend.service.CollectionDocService;
 import cn.siques.backend.service.CollectionService;
 import cn.siques.backend.service.DocService;
 import cn.siques.backend.service.UserCollectionService;
-import cn.siques.backend.template.RedisRepository;
+import cn.siques.backend.config.RedisRepository;
 import cn.siques.backend.utils.ReactiveAddrUtil;
 import cn.siques.backend.utils.model.DocEnum;
 import cn.siques.backend.utils.model.JwtUserDetails;
